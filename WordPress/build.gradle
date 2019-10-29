@@ -121,7 +121,8 @@ android {
         }
     }
 
-    lintOptions{
+    lintOptions {
+        abortOnError false
         checkDependencies = true
         lintConfig file('lint.xml')
         baseline file("lint-baseline.xml")
