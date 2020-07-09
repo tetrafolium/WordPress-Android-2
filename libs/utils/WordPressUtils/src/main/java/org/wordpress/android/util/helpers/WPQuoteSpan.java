@@ -24,7 +24,7 @@ public int getLeadingMargin(boolean first) {
 }
 
 /**
- * Draw a nice thick gray bar if Ice Cream Sandwhich or newer. There's a
+ * Draw a nice thick gray bar if Ice Cream Sandwich or newer. There's a
  * bug on older devices that does not respect the increased margin.
  */
 @Override

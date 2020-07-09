@@ -126,7 +126,7 @@ public static void cancelPendingDraftAlarms(Context context, int postId) {
 
 public static int makePendingDraftNotificationId(int localPostId) {
 	// constructs a notification ID (int) based on a localPostId (long) which
-	// should be low numbers by casting explicitely Integer.MAX_VALUE should be
+	// should be low numbers by casting explicitly Integer.MAX_VALUE should be
 	// enough notifications
 	return PENDING_DRAFTS_NOTIFICATION_ID + localPostId;
 }

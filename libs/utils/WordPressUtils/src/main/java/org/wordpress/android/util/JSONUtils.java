@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import org.wordpress.android.util.AppLog.T;
 
 public class JSONUtils {
-private static final String QUERY_SEPERATOR = ".";
+private static final String QUERY_SEPARATOR = ".";
 private static final String QUERY_ARRAY_INDEX_START = "[";
 private static final String QUERY_ARRAY_INDEX_END = "]";
 private static final String QUERY_ARRAY_FIRST = "first";
@@ -32,7 +32,7 @@ public static <U> U queryJSON(JSONObject source, String query,
 		AppLog.e(T.UTILS, "Parameter query is null");
 		return defaultObject;
 	}
-	int nextSeperator = query.indexOf(QUERY_SEPERATOR);
+	int nextSeperator = query.indexOf(QUERY_SEPARATOR);
 	int nextIndexStart = query.indexOf(QUERY_ARRAY_INDEX_START);
 	if (nextSeperator == -1 && nextIndexStart == -1) {
 		// last item let's get it
@@ -73,7 +73,7 @@ public static <U> U queryJSON(JSONObject source, String query,
 	String nextQuery = query.substring(endQuery);
 	String key = query.substring(0, endQuery);
 	try {
-		if (nextQuery.indexOf(QUERY_SEPERATOR) == 0) {
+		if (nextQuery.indexOf(QUERY_SEPARATOR) == 0) {
 			return queryJSON(source.getJSONObject(key), nextQuery.substring(1),
 			                 defaultObject);
 		} else if (nextQuery.indexOf(QUERY_ARRAY_INDEX_START) == 0) {
@@ -146,7 +146,7 @@ public static <U> U queryJSON(JSONArray source, String query,
 		if (remainingQuery.indexOf(QUERY_ARRAY_INDEX_START) == 0) {
 			return queryJSON(source.getJSONArray(index), remainingQuery,
 			                 defaultObject);
-		} else if (remainingQuery.indexOf(QUERY_SEPERATOR) == 0) {
+		} else if (remainingQuery.indexOf(QUERY_SEPARATOR) == 0) {
 			return queryJSON(source.getJSONObject(index),
 			                 remainingQuery.substring(1), defaultObject);
 		} else if (!remainingQuery.equals("")) {

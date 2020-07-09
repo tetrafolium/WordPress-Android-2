@@ -384,7 +384,7 @@ private void setEditorProgressBarVisibility(boolean shown) {
 }
 
 public void resetUploadingMediaToFailed(Set<Integer> failedMediaIds) {
-	// get all media failed for this post, and represent it on tje UI
+	// get all media failed for this post, and represent it on the UI
 	if (failedMediaIds != null && !failedMediaIds.isEmpty()) {
 		for (Integer mediaId : failedMediaIds) {
 			// and keep track of failed ids around

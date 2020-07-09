@@ -125,7 +125,7 @@ public void onCreate(Bundle savedInstanceState) {
 
 private void removeSightAndSoundsForAPI26() {
 	// on API26 we removed the Sight & Sounds category altogether, as it can
-	// always be overriden by the user in the Device settings, and the settings
+	// always be overridden by the user in the Device settings, and the settings
 	// here wouldn't either reflect nor have any effect anyway.
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 		PreferenceScreen preferenceScreen = (PreferenceScreen)findPreference(

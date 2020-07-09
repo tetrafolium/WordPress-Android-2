@@ -188,7 +188,7 @@ private void handleOnMediaChangedError(@NonNull OnMediaChanged event) {
 		break;
 	case PARSE_ERROR:
 		AppLog.d(T.MEDIA,
-		         "Error parsing reponse to " + event.cause.toString() + ".");
+		         "Error parsing response to " + event.cause.toString() + ".");
 		completeCurrentDelete();
 		break;
 	default:

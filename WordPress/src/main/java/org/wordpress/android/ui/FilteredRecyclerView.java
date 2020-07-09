@@ -193,12 +193,12 @@ private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
 }
 
 private void setup(boolean refresh) {
-	List<FilterCriteria> criterias =
+	List<FilterCriteria> criteria =
 		mFilterListener.onLoadFilterCriteriaOptions(refresh);
-	if (criterias != null) {
-		mFilterCriteriaOptions = criterias;
+	if (criteria != null) {
+		mFilterCriteriaOptions = criteria;
 	}
-	if (criterias == null) {
+	if (criteria == null) {
 		mFilterListener.onLoadFilterCriteriaOptionsAsync(
 			new FilterCriteriaAsyncLoaderListener() {
 				@Override
@@ -408,7 +408,7 @@ public AppBarLayout getAppBarLayout() {
 }
 
 /*
- * use this if you need to reload the criterias for this FilteredRecyclerView.
+ * use this if you need to reload the criteria for this FilteredRecyclerView.
  * The actual data loading goes through the FilteredRecyclerView lifecycle
  * using its listeners:
  *
@@ -549,10 +549,10 @@ public boolean isFirstItemVisible() {
 public interface FilterListener {
 /**
  * Called upon initialization - provide an array of FilterCriterias here.
- * These are the possible criterias the Spinner is loaded with, and through
+ * These are the possible criteria the Spinner is loaded with, and through
  * which the data can be filtered.
  *
- * @param refresh "true"if the criterias need be refreshed
+ * @param refresh "true"if the criteria need be refreshed
  * @return an array of FilterCriteria to be used on Spinner initialization,
  *     or null if going to use the
  * Async method below
@@ -567,7 +567,7 @@ List<FilterCriteria> onLoadFilterCriteriaOptions(boolean refresh);
  * filtered.
  *
  * @param listener to be called to pass the FilterCriteria array when done
- * @param refresh "true"if the criterias need be refreshed
+ * @param refresh "true"if the criteria need be refreshed
  */
 void
 onLoadFilterCriteriaOptionsAsync(FilterCriteriaAsyncLoaderListener listener,

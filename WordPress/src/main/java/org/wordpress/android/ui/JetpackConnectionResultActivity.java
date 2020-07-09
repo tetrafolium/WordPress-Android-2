@@ -30,7 +30,7 @@ import org.wordpress.android.util.analytics.AnalyticsUtils;
  * <p>
  * wordpress://jetpack-connection?reason={error}
  * <p>
- * Redirects users to the stats activity if the jetpack connection was succesful
+ * Redirects users to the stats activity if the jetpack connection was successful
  */
 public class JetpackConnectionResultActivity extends AppCompatActivity {
 private static final String ALREADY_CONNECTED = "already-connected";

@@ -178,7 +178,7 @@ public View onCreateView(@NonNull LayoutInflater inflater,
 			}
 		});
 
-	mNewNotificationsBar = view.findViewById(R.id.layout_new_notificatons);
+	mNewNotificationsBar = view.findViewById(R.id.layout_new_notifications);
 	mNewNotificationsBar.setVisibility(View.GONE);
 	mNewNotificationsBar.setOnClickListener(new View.OnClickListener() {
 			@Override
