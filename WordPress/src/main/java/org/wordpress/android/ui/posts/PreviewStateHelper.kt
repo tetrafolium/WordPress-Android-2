@@ -2,11 +2,11 @@ package org.wordpress.android.ui.posts
 
 import androidx.fragment.app.FragmentActivity
 import dagger.Reusable
+import javax.inject.Inject
 import org.wordpress.android.fluxc.model.PostModel
 import org.wordpress.android.ui.posts.RemotePreviewLogicHelper.RemotePreviewType
 import org.wordpress.android.ui.uploads.UploadService
 import org.wordpress.android.util.AppLog
-import javax.inject.Inject
 
 @Reusable
 class PreviewStateHelper @Inject constructor() {

@@ -6,6 +6,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import java.util.Date
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.android.parcel.Parceler
 import kotlinx.android.parcel.Parcelize
 import org.wordpress.android.analytics.AnalyticsTracker.Stat.STATS_NEXT_DATE_TAPPED
@@ -21,9 +24,6 @@ import org.wordpress.android.ui.stats.refresh.utils.toStatsSection
 import org.wordpress.android.ui.stats.refresh.utils.trackWithSection
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import org.wordpress.android.util.filter
-import java.util.Date
-import javax.inject.Inject
-import javax.inject.Singleton
 
 private const val SELECTED_DATE_STATE_KEY = "selected_date_key"
 

@@ -6,14 +6,14 @@ import com.android.volley.Request.Priority
 import com.bumptech.glide.integration.volley.VolleyRequestFactory
 import com.bumptech.glide.integration.volley.VolleyStreamFetcher
 import com.bumptech.glide.load.data.DataFetcher.DataCallback
+import java.io.InputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 import org.wordpress.android.fluxc.network.HTTPAuthManager
 import org.wordpress.android.fluxc.network.UserAgent
 import org.wordpress.android.fluxc.network.rest.wpcom.auth.AccessToken
 import org.wordpress.android.util.UrlUtils
 import org.wordpress.android.util.WPUrlUtils
-import java.io.InputStream
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * RequestFactory which adds authorization headers to all Glide requests and makes sure requests to WPcom endpoints

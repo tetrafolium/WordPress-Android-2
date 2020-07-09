@@ -1,7 +1,7 @@
 package org.wordpress.android.models
 
-import org.wordpress.android.R
 import javax.inject.Inject
+import org.wordpress.android.R
 
 class NoticonUtils
 @Inject constructor() {

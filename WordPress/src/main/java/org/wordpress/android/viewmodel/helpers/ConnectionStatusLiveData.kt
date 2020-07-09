@@ -6,11 +6,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import androidx.lifecycle.LiveData
+import javax.inject.Inject
 import org.wordpress.android.util.distinct
 import org.wordpress.android.viewmodel.helpers.ConnectionStatus.AVAILABLE
 import org.wordpress.android.viewmodel.helpers.ConnectionStatus.UNAVAILABLE
 import org.wordpress.android.viewmodel.helpers.ConnectionStatusLiveData.Factory
-import javax.inject.Inject
 
 enum class ConnectionStatus {
     AVAILABLE,

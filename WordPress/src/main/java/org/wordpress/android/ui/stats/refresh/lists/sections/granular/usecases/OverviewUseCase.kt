@@ -1,5 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.granular.usecases
 
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.analytics.AnalyticsTracker
@@ -26,8 +28,6 @@ import org.wordpress.android.util.AppLog
 import org.wordpress.android.util.AppLog.T
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
-import javax.inject.Named
 
 const val OVERVIEW_ITEMS_TO_LOAD = 15
 

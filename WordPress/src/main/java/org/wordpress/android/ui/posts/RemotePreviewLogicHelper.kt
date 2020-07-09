@@ -2,6 +2,7 @@ package org.wordpress.android.ui.posts
 
 import android.app.Activity
 import dagger.Reusable
+import javax.inject.Inject
 import org.wordpress.android.fluxc.model.PostModel
 import org.wordpress.android.fluxc.model.SiteModel
 import org.wordpress.android.ui.ActivityLauncherWrapper
@@ -12,7 +13,6 @@ import org.wordpress.android.ui.uploads.UploadActionUseCase.UploadAction.REMOTE_
 import org.wordpress.android.ui.uploads.UploadActionUseCase.UploadAction.UPLOAD
 import org.wordpress.android.ui.uploads.UploadActionUseCase.UploadAction.UPLOAD_AS_DRAFT
 import org.wordpress.android.util.NetworkUtilsWrapper
-import javax.inject.Inject
 
 @Reusable
 class RemotePreviewLogicHelper @Inject constructor(

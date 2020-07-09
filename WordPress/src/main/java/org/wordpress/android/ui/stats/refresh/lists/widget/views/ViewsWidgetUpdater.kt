@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.widget.RemoteViews
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.analytics.AnalyticsTracker
 import org.wordpress.android.fluxc.store.AccountStore
@@ -18,7 +19,6 @@ import org.wordpress.android.ui.stats.refresh.utils.trackWithWidgetType
 import org.wordpress.android.util.NetworkUtilsWrapper
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
 
 class ViewsWidgetUpdater
 @Inject constructor(

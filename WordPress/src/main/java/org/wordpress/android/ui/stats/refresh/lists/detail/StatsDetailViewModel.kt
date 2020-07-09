@@ -2,6 +2,8 @@ package org.wordpress.android.ui.stats.refresh.lists.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import org.wordpress.android.R
@@ -17,8 +19,6 @@ import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
 import org.wordpress.android.util.NetworkUtilsWrapper
 import org.wordpress.android.util.mergeNotNull
 import org.wordpress.android.viewmodel.ScopedViewModel
-import javax.inject.Inject
-import javax.inject.Named
 
 class StatsDetailViewModel
 @Inject constructor(

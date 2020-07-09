@@ -9,6 +9,8 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import java.util.Random
+import java.util.UUID
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -21,8 +23,6 @@ import org.wordpress.android.fluxc.model.MediaModel
 import org.wordpress.android.util.NetworkUtilsWrapper
 import org.wordpress.android.viewmodel.giphy.GiphyPickerViewModel.EmptyDisplayMode
 import org.wordpress.android.viewmodel.giphy.GiphyPickerViewModel.State
-import java.util.Random
-import java.util.UUID
 
 @RunWith(MockitoJUnitRunner::class)
 class GiphyPickerViewModelTest {

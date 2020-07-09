@@ -2,6 +2,9 @@ package org.wordpress.android.ui.posts
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -20,9 +23,6 @@ import org.wordpress.android.ui.posts.EditPostPublishSettingsViewModel.CalendarE
 import org.wordpress.android.ui.posts.EditPostPublishSettingsViewModel.PublishUiModel
 import org.wordpress.android.util.LocaleManagerWrapper
 import org.wordpress.android.viewmodel.ResourceProvider
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
 
 class EditPostPublishSettingsViewModelTest : BaseUnitTest() {
     @Mock lateinit var resourceProvider: ResourceProvider

@@ -1,8 +1,8 @@
 package org.wordpress.android.ui.uploads
 
 import android.content.Context
-import org.wordpress.android.fluxc.model.PostModel
 import javax.inject.Inject
+import org.wordpress.android.fluxc.model.PostModel
 
 /**
  * An injectable class built on top of [UploadService].

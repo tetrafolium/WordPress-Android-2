@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
+import java.util.Locale
 import kotlinx.android.synthetic.main.reader_bookmark_button.view.*
 import org.wordpress.android.R
-import java.util.Locale
 
 /**
  * Bookmark button used in reader post detail

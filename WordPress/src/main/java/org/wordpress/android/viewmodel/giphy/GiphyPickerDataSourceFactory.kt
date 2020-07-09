@@ -6,8 +6,8 @@ import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
 import androidx.paging.DataSource.Factory
 import com.giphy.sdk.core.network.api.GPHApiClient
-import org.wordpress.android.BuildConfig
 import javax.inject.Inject
+import org.wordpress.android.BuildConfig
 
 /**
  * Creates instances of [GiphyPickerDataSource]

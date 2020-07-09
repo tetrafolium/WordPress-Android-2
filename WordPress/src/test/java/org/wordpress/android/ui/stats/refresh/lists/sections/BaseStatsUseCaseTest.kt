@@ -1,6 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections
 
 import com.nhaarman.mockitokotlin2.whenever
+import javax.inject.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.assertj.core.api.Assertions.assertThat
@@ -18,7 +19,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.BaseStatsUseCase.Us
 import org.wordpress.android.ui.stats.refresh.lists.sections.BaseStatsUseCase.UseCaseModel.UseCaseState
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Text
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Title
-import javax.inject.Provider
 
 @InternalCoroutinesApi
 class BaseStatsUseCaseTest : BaseUnitTest() {

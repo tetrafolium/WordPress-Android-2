@@ -3,6 +3,8 @@ package org.wordpress.android.ui.stats.refresh.lists.widget.configuration
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.R.string
@@ -11,8 +13,6 @@ import org.wordpress.android.modules.UI_THREAD
 import org.wordpress.android.ui.prefs.AppPrefsWrapper
 import org.wordpress.android.viewmodel.Event
 import org.wordpress.android.viewmodel.ScopedViewModel
-import javax.inject.Inject
-import javax.inject.Named
 
 class StatsDataTypeSelectionViewModel
 @Inject constructor(

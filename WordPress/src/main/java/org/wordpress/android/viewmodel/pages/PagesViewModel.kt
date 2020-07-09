@@ -3,6 +3,12 @@ package org.wordpress.android.viewmodel.pages
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import java.util.Date
+import java.util.SortedMap
+import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -66,12 +72,6 @@ import org.wordpress.android.viewmodel.pages.PageListViewModel.PageListType.DRAF
 import org.wordpress.android.viewmodel.pages.PageListViewModel.PageListType.PUBLISHED
 import org.wordpress.android.viewmodel.pages.PageListViewModel.PageListType.SCHEDULED
 import org.wordpress.android.viewmodel.pages.PageListViewModel.PageListType.TRASHED
-import java.util.Date
-import java.util.SortedMap
-import javax.inject.Inject
-import javax.inject.Named
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.resume
 
 private const val ACTION_DELAY = 100L
 private const val SEARCH_DELAY = 200L

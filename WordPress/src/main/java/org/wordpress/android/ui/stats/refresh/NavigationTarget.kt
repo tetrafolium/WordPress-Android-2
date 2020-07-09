@@ -1,8 +1,8 @@
 package org.wordpress.android.ui.stats.refresh
 
+import java.util.Date
 import org.wordpress.android.fluxc.network.utils.StatsGranularity
 import org.wordpress.android.ui.stats.StatsConstants
-import java.util.Date
 
 sealed class NavigationTarget {
     object AddNewPost : NavigationTarget()

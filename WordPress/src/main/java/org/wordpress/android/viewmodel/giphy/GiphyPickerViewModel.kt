@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.paging.PagedList.BoundaryCallback
+import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -21,7 +22,6 @@ import org.wordpress.android.fluxc.model.SiteModel
 import org.wordpress.android.util.NetworkUtilsWrapper
 import org.wordpress.android.util.getDistinct
 import org.wordpress.android.viewmodel.SingleLiveEvent
-import javax.inject.Inject
 
 /**
  * Holds the data for [org.wordpress.android.ui.giphy.GiphyPickerActivity]

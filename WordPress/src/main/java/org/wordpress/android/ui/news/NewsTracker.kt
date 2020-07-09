@@ -1,9 +1,8 @@
 package org.wordpress.android.ui.news
 
-import org.wordpress.android.util.analytics.AnalyticsUtils
 import javax.inject.Inject
-
 import javax.inject.Singleton
+import org.wordpress.android.util.analytics.AnalyticsUtils
 
 @Singleton
 class NewsTracker @Inject constructor() {

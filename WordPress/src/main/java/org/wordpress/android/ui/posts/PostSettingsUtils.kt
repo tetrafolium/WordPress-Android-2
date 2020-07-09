@@ -1,12 +1,12 @@
 package org.wordpress.android.ui.posts
 
 import android.text.TextUtils
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.PostModel
 import org.wordpress.android.fluxc.model.post.PostStatus
 import org.wordpress.android.ui.stats.refresh.utils.DateUtils
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
 
 class PostSettingsUtils
 @Inject constructor(

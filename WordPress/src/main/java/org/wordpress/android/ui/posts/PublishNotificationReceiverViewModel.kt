@@ -1,5 +1,6 @@
 package org.wordpress.android.ui.posts
 
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.post.PostStatus
 import org.wordpress.android.fluxc.model.post.PostStatus.SCHEDULED
@@ -10,7 +11,6 @@ import org.wordpress.android.fluxc.store.PostSchedulingNotificationStore.Schedul
 import org.wordpress.android.fluxc.store.PostSchedulingNotificationStore.SchedulingReminderModel.Period.WHEN_PUBLISHED
 import org.wordpress.android.fluxc.store.PostStore
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
 
 class PublishNotificationReceiverViewModel
 @Inject constructor(

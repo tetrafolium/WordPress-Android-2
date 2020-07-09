@@ -1,11 +1,11 @@
 package org.wordpress.android.ui.stats.refresh.utils
 
 import androidx.annotation.StringRes
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Header
 import org.wordpress.android.util.RtlUtils
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
 
 class ContentDescriptionHelper
 @Inject constructor(private val resourceProvider: ResourceProvider, private val rtlUtils: RtlUtils) {

@@ -3,8 +3,8 @@ package org.wordpress.android.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.wordpress.android.viewmodel.Event
 import javax.inject.Inject
+import org.wordpress.android.viewmodel.Event
 
 class CommentFullScreenDialogViewModel
 @Inject constructor() : ViewModel() {

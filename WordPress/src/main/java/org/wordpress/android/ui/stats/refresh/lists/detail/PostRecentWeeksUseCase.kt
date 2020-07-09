@@ -1,5 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.lists.detail
 
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.stats.PostDetailStatsModel
@@ -20,8 +22,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Title
 import org.wordpress.android.ui.stats.refresh.lists.sections.insights.InsightUseCaseFactory
 import org.wordpress.android.ui.stats.refresh.utils.StatsPostProvider
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
-import javax.inject.Inject
-import javax.inject.Named
 
 private const val BLOCK_ITEM_COUNT = 6
 private const val VIEW_ALL_ITEM_COUNT = 1000

@@ -3,6 +3,9 @@ package org.wordpress.android.ui.sitecreation.previews
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -40,9 +43,6 @@ import org.wordpress.android.util.AppLog.T
 import org.wordpress.android.util.NetworkUtilsWrapper
 import org.wordpress.android.util.UrlUtilsWrapper
 import org.wordpress.android.viewmodel.SingleLiveEvent
-import javax.inject.Inject
-import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 private const val CONNECTION_ERROR_DELAY_TO_SHOW_LOADING_STATE = 1000L
 private const val DELAY_TO_SHOW_WEB_VIEW_LOADING_SHIMMER = 1000L

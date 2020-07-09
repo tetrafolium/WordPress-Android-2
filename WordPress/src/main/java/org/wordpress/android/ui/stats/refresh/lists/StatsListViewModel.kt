@@ -3,6 +3,8 @@ package org.wordpress.android.ui.stats.refresh.lists
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -34,8 +36,6 @@ import org.wordpress.android.util.mergeNotNull
 import org.wordpress.android.util.throttle
 import org.wordpress.android.viewmodel.Event
 import org.wordpress.android.viewmodel.ScopedViewModel
-import javax.inject.Inject
-import javax.inject.Named
 
 const val SCROLL_EVENT_DELAY = 2000L
 

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.jetpack_remote_install_fragment.*
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
@@ -23,7 +24,6 @@ import org.wordpress.android.ui.JetpackRemoteInstallViewModel.JetpackResultActio
 import org.wordpress.android.ui.RequestCodes.JETPACK_LOGIN
 import org.wordpress.android.ui.accounts.LoginActivity
 import org.wordpress.android.util.AppLog
-import javax.inject.Inject
 
 class JetpackRemoteInstallFragment : Fragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory

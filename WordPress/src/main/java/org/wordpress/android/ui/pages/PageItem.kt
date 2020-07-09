@@ -2,6 +2,7 @@ package org.wordpress.android.ui.pages
 
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
+import java.util.Date
 import org.wordpress.android.R
 import org.wordpress.android.ui.pages.PageItem.Action.DELETE_PERMANENTLY
 import org.wordpress.android.ui.pages.PageItem.Action.MOVE_TO_DRAFT
@@ -12,7 +13,6 @@ import org.wordpress.android.ui.pages.PageItem.Action.VIEW_PAGE
 import org.wordpress.android.ui.pages.PageItem.Type.DIVIDER
 import org.wordpress.android.ui.pages.PageItem.Type.EMPTY
 import org.wordpress.android.ui.pages.PageItem.Type.PAGE
-import java.util.Date
 
 sealed class PageItem(open val type: Type) {
     abstract class Page(

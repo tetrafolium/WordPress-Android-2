@@ -1,5 +1,14 @@
 package org.wordpress.android.ui.stats.refresh.utils
 
+import java.text.DateFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit.MILLISECONDS
+import javax.inject.Inject
+import kotlin.math.abs
 import org.apache.commons.text.WordUtils
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.SiteModel
@@ -12,15 +21,6 @@ import org.wordpress.android.fluxc.utils.SiteUtils
 import org.wordpress.android.ui.stats.StatsConstants
 import org.wordpress.android.util.LocaleManagerWrapper
 import org.wordpress.android.viewmodel.ResourceProvider
-import java.text.DateFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import java.util.concurrent.TimeUnit.MILLISECONDS
-import javax.inject.Inject
-import kotlin.math.abs
 
 private const val STATS_INPUT_FORMAT = "yyyy-MM-dd"
 private const val MONTH_FORMAT = "MMM, yyyy"

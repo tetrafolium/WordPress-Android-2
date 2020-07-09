@@ -1,5 +1,6 @@
 package org.wordpress.android.ui.stats.refresh.lists.detail
 
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.stats.PostDetailStatsModel.Day
 import org.wordpress.android.fluxc.network.utils.StatsGranularity.DAYS
@@ -12,7 +13,6 @@ import org.wordpress.android.ui.stats.refresh.utils.HUNDRED_THOUSAND
 import org.wordpress.android.ui.stats.refresh.utils.StatsDateFormatter
 import org.wordpress.android.ui.stats.refresh.utils.toFormattedString
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
 
 class PostDayViewsMapper
 @Inject constructor(

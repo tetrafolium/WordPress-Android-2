@@ -10,12 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.ui.stats.refresh.lists.widget.configuration.StatsColorSelectionViewModel.Color
 import org.wordpress.android.ui.stats.refresh.lists.widget.configuration.StatsColorSelectionViewModel.Color.DARK
 import org.wordpress.android.ui.stats.refresh.lists.widget.configuration.StatsColorSelectionViewModel.Color.LIGHT
 import org.wordpress.android.util.image.ImageManager
-import javax.inject.Inject
 
 class StatsWidgetColorSelectionDialogFragment : AppCompatDialogFragment() {
     @Inject lateinit var imageManager: ImageManager

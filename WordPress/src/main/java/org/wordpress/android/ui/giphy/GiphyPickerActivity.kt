@@ -14,6 +14,7 @@ import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.media_picker_activity.*
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
@@ -32,7 +33,6 @@ import org.wordpress.android.viewmodel.giphy.GiphyMediaViewModel
 import org.wordpress.android.viewmodel.giphy.GiphyPickerViewModel
 import org.wordpress.android.viewmodel.giphy.GiphyPickerViewModel.EmptyDisplayMode
 import org.wordpress.android.viewmodel.giphy.GiphyPickerViewModel.State
-import javax.inject.Inject
 
 /**
  * Allows searching of gifs from Giphy

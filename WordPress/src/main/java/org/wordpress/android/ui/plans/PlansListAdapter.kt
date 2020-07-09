@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
 import org.wordpress.android.fluxc.model.plans.PlanOffersModel
@@ -16,7 +17,6 @@ import org.wordpress.android.ui.plans.PlansListAdapter.PlansItemViewHolder
 import org.wordpress.android.util.StringUtils
 import org.wordpress.android.util.image.ImageManager
 import org.wordpress.android.util.image.ImageType
-import javax.inject.Inject
 
 class PlansListAdapter(
     val activity: Activity,

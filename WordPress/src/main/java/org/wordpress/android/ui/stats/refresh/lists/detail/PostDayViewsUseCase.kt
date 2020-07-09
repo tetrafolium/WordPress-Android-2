@@ -1,5 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.lists.detail
 
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.stats.PostDetailStatsModel
@@ -19,8 +21,6 @@ import org.wordpress.android.ui.stats.refresh.utils.StatsPostProvider
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
 import org.wordpress.android.ui.stats.refresh.utils.toFormattedString
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
-import javax.inject.Named
 
 class PostDayViewsUseCase
 @Inject constructor(

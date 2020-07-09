@@ -9,11 +9,11 @@ import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.integration.volley.VolleyUrlLoader
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
-import org.wordpress.android.WordPress
-import org.wordpress.android.networking.GlideRequestFactory
 import java.io.InputStream
 import javax.inject.Inject
 import javax.inject.Named
+import org.wordpress.android.WordPress
+import org.wordpress.android.networking.GlideRequestFactory
 
 /**
  * Custom [AppGlideModule] that replaces Glide's default [RequestQueue] with FluxC's and sets custom GlideHeaderLoader

@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import java.util.Date
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -16,7 +17,6 @@ import org.wordpress.android.fluxc.store.UploadStore
 import org.wordpress.android.ui.posts.PostUtilsWrapper
 import org.wordpress.android.ui.uploads.UploadActionUseCase.UploadAction
 import org.wordpress.android.util.DateTimeUtils
-import java.util.Date
 
 private val POST_STATE_DRAFT = PostStatus.DRAFT.toString()
 

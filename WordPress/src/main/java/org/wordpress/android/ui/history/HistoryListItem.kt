@@ -2,6 +2,8 @@ package org.wordpress.android.ui.history
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
+import java.util.ArrayList
+import java.util.Date
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
@@ -14,8 +16,6 @@ import org.wordpress.android.ui.history.HistoryListItem.ViewType.REVISION
 import org.wordpress.android.util.DateTimeUtils
 import org.wordpress.android.util.toFormattedDateString
 import org.wordpress.android.util.toFormattedTimeString
-import java.util.ArrayList
-import java.util.Date
 
 sealed class HistoryListItem(val type: ViewType) {
     open fun longId(): Long = hashCode().toLong()

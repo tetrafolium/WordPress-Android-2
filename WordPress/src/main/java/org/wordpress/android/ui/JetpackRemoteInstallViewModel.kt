@@ -3,6 +3,7 @@ package org.wordpress.android.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.wordpress.android.analytics.AnalyticsTracker
@@ -28,7 +29,6 @@ import org.wordpress.android.ui.JetpackRemoteInstallViewState.Type.INSTALLED
 import org.wordpress.android.ui.JetpackRemoteInstallViewState.Type.INSTALLING
 import org.wordpress.android.ui.JetpackRemoteInstallViewState.Type.START
 import org.wordpress.android.viewmodel.SingleLiveEvent
-import javax.inject.Inject
 
 private const val INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
 private const val FORBIDDEN = "FORBIDDEN"

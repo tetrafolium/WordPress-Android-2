@@ -1,6 +1,9 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 
 import android.view.View
+import java.util.Calendar
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.stats.insights.PostingActivityModel
@@ -15,9 +18,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Empty
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Title
 import org.wordpress.android.ui.stats.refresh.utils.ItemPopupMenuHandler
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
-import java.util.Calendar
-import javax.inject.Inject
-import javax.inject.Named
 
 class PostingActivityUseCase
 @Inject constructor(

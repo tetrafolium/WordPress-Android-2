@@ -2,6 +2,8 @@ package org.wordpress.android.ui.stats.refresh.utils
 
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
+import javax.inject.Inject
+import javax.inject.Singleton
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.network.utils.StatsGranularity.YEARS
 import org.wordpress.android.ui.ActivityLauncher
@@ -48,8 +50,6 @@ import org.wordpress.android.ui.stats.refresh.NavigationTarget.ViewVideoPlays
 import org.wordpress.android.ui.stats.refresh.lists.detail.StatsDetailActivity
 import org.wordpress.android.ui.stats.refresh.lists.sections.granular.SelectedDateProvider
 import org.wordpress.android.util.ToastUtils
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 class StatsNavigator

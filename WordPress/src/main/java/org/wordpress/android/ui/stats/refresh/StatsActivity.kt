@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.toolbar.*
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
@@ -14,7 +15,6 @@ import org.wordpress.android.fluxc.model.SiteModel
 import org.wordpress.android.ui.stats.StatsTimeframe
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
 import org.wordpress.android.util.LocaleManager
-import javax.inject.Inject
 
 class StatsActivity : AppCompatActivity() {
     @Inject lateinit var statsSiteProvider: StatsSiteProvider

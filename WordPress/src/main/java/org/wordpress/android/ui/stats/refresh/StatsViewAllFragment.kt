@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayout.Tab
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.stats_date_selector.*
 import kotlinx.android.synthetic.main.stats_empty_view.*
 import kotlinx.android.synthetic.main.stats_error_view.*
@@ -39,7 +40,6 @@ import org.wordpress.android.util.WPSwipeToRefreshHelper
 import org.wordpress.android.util.helpers.SwipeToRefreshHelper
 import org.wordpress.android.util.image.ImageManager
 import org.wordpress.android.widgets.WPSnackbar
-import javax.inject.Inject
 
 class StatsViewAllFragment : DaggerFragment() {
     @Inject lateinit var viewModelFactoryBuilder: StatsViewAllViewModelFactory.Builder

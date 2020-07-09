@@ -3,6 +3,8 @@ package org.wordpress.android.ui.plans
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
@@ -18,8 +20,6 @@ import org.wordpress.android.ui.plans.PlansViewModel.PlansListStatus.DONE
 import org.wordpress.android.util.AppLog
 import org.wordpress.android.util.AppLog.T
 import org.wordpress.android.viewmodel.SingleLiveEvent
-import javax.inject.Inject
-import javax.inject.Named
 
 class PlansViewModel @Inject constructor(
     private val dispatcher: Dispatcher,

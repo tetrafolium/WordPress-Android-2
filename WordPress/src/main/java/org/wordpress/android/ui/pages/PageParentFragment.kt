@@ -16,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.android.synthetic.main.pages_list_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import org.wordpress.android.R
@@ -25,8 +27,6 @@ import org.wordpress.android.modules.UI_SCOPE
 import org.wordpress.android.util.DisplayUtils
 import org.wordpress.android.viewmodel.pages.PageParentViewModel
 import org.wordpress.android.widgets.RecyclerItemDecoration
-import javax.inject.Inject
-import javax.inject.Named
 
 class PageParentFragment : Fragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory

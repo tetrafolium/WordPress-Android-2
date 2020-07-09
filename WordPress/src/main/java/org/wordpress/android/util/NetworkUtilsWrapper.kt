@@ -1,8 +1,8 @@
 package org.wordpress.android.util
 
 import dagger.Reusable
-import org.wordpress.android.WordPress
 import javax.inject.Inject
+import org.wordpress.android.WordPress
 
 @Reusable
 class NetworkUtilsWrapper @Inject constructor() {

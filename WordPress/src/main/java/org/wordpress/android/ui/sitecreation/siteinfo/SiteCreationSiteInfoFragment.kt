@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputEditText
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
 import org.wordpress.android.ui.accounts.HelpActivity
@@ -24,7 +25,6 @@ import org.wordpress.android.ui.sitecreation.SiteCreationBaseFormFragment
 import org.wordpress.android.ui.sitecreation.misc.OnHelpClickedListener
 import org.wordpress.android.ui.sitecreation.misc.OnSkipClickedListener
 import org.wordpress.android.ui.sitecreation.verticals.SiteCreationSiteInfoViewModel
-import javax.inject.Inject
 
 class SiteCreationSiteInfoFragment : SiteCreationBaseFormFragment() {
     @Inject internal lateinit var viewModelFactory: ViewModelProvider.Factory

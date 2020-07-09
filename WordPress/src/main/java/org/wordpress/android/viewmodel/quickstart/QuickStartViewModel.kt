@@ -3,10 +3,10 @@ package org.wordpress.android.viewmodel.quickstart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 import org.wordpress.android.fluxc.store.QuickStartStore
 import org.wordpress.android.fluxc.store.QuickStartStore.QuickStartTask
 import org.wordpress.android.ui.quickstart.QuickStartTaskState
-import javax.inject.Inject
 
 class QuickStartViewModel @Inject constructor(private val quickStartStore: QuickStartStore) : ViewModel() {
     private val _quickStartTaskStateStates = MutableLiveData<List<QuickStartTaskState>>()

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
 import org.wordpress.android.fluxc.model.plans.PlanOffersModel
@@ -16,7 +17,6 @@ import org.wordpress.android.ui.FullScreenDialogFragment.FullScreenDialogControl
 import org.wordpress.android.util.StringUtils
 import org.wordpress.android.util.image.ImageManager
 import org.wordpress.android.util.image.ImageType
-import javax.inject.Inject
 
 class PlanDetailsFragment : Fragment(), FullScreenDialogContent {
     private var plan: PlanOffersModel? = null

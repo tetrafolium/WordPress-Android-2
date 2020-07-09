@@ -2,10 +2,10 @@ package org.wordpress.android.ui.news
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import org.wordpress.android.models.news.NewsItem
-import org.wordpress.android.ui.prefs.AppPrefsWrapper
 import javax.inject.Inject
 import javax.inject.Singleton
+import org.wordpress.android.models.news.NewsItem
+import org.wordpress.android.ui.prefs.AppPrefsWrapper
 
 /**
  * Business logic related to fetching/showing the News Card (a card used for announcing new features/updates).

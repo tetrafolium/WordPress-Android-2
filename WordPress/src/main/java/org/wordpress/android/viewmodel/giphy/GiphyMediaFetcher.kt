@@ -2,6 +2,7 @@ package org.wordpress.android.viewmodel.giphy
 
 import android.content.Context
 import android.webkit.MimeTypeMap
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,6 @@ import org.wordpress.android.fluxc.model.SiteModel
 import org.wordpress.android.fluxc.store.MediaStore
 import org.wordpress.android.util.FluxCUtils
 import org.wordpress.android.util.WPMediaUtils
-import javax.inject.Inject
 
 /**
  * Downloads [GiphyMediaViewModel.largeImageUri] objects and saves them as [MediaModel]

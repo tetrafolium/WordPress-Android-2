@@ -1,6 +1,8 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 
 import android.view.View
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.analytics.AnalyticsTracker
@@ -35,8 +37,6 @@ import org.wordpress.android.ui.stats.refresh.utils.getBarWidth
 import org.wordpress.android.ui.stats.refresh.utils.toFormattedString
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
-import javax.inject.Named
 
 private const val BLOCK_ITEM_COUNT = 6
 private const val VIEW_ALL_ITEM_COUNT = 1000

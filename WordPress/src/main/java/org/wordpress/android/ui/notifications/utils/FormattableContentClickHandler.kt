@@ -1,6 +1,7 @@
 package org.wordpress.android.ui.notifications.utils
 
 import androidx.fragment.app.FragmentActivity
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.datasets.ReaderPostTable
 import org.wordpress.android.fluxc.model.SiteModel
@@ -28,7 +29,6 @@ import org.wordpress.android.ui.stats.StatsViewType.FOLLOWERS
 import org.wordpress.android.util.AppLog
 import org.wordpress.android.util.AppLog.T.API
 import org.wordpress.android.util.ToastUtils
-import javax.inject.Inject
 
 private const val DOMAIN_WP_COM = "wordpress.com"
 

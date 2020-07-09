@@ -1,5 +1,6 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.stats.YearsInsightsModel.YearInsights
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem
@@ -8,7 +9,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Quick
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.QuickScanItem.Column
 import org.wordpress.android.ui.stats.refresh.utils.ContentDescriptionHelper
 import org.wordpress.android.ui.stats.refresh.utils.toFormattedString
-import javax.inject.Inject
 
 class AnnualStatsMapper
 @Inject constructor(private val contentDescriptionHelper: ContentDescriptionHelper) {

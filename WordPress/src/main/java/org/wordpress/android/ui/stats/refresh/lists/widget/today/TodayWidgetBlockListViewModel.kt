@@ -1,6 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.lists.widget.today
 
 import android.content.Context
+import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.stats.VisitsModel
@@ -12,7 +13,6 @@ import org.wordpress.android.ui.stats.refresh.lists.widget.configuration.StatsCo
 import org.wordpress.android.ui.stats.refresh.utils.MILLION
 import org.wordpress.android.ui.stats.refresh.utils.toFormattedString
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
 
 class TodayWidgetBlockListViewModel
 @Inject constructor(

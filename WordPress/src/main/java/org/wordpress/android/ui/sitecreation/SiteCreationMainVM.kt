@@ -7,6 +7,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 import kotlinx.android.parcel.Parcelize
 import org.wordpress.android.R
 import org.wordpress.android.ui.sitecreation.SiteCreationMainVM.SiteCreationScreenTitle.ScreenTitleEmpty
@@ -26,7 +27,6 @@ import org.wordpress.android.util.wizard.WizardState
 import org.wordpress.android.viewmodel.SingleEventObservable
 import org.wordpress.android.viewmodel.SingleLiveEvent
 import org.wordpress.android.viewmodel.helpers.DialogHolder
-import javax.inject.Inject
 
 const val TAG_WARNING_DIALOG = "back_pressed_warning_dialog"
 const val KEY_CURRENT_STEP = "key_current_step"

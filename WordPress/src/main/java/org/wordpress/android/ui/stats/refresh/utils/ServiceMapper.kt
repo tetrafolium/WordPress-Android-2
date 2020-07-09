@@ -1,6 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.utils
 
 import androidx.annotation.StringRes
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.stats.PublicizeModel
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Header
@@ -12,7 +13,6 @@ import org.wordpress.android.ui.stats.refresh.utils.ServiceMapper.Service.PATH
 import org.wordpress.android.ui.stats.refresh.utils.ServiceMapper.Service.TUMBLR
 import org.wordpress.android.ui.stats.refresh.utils.ServiceMapper.Service.TWITTER
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
 
 private const val FACEBOOK_ICON = "https://secure.gravatar.com/blavatar/2343ec78a04c6ea9d80806345d31fd78?s="
 private const val TWITTER_ICON = "https://secure.gravatar.com/blavatar/7905d1c4e12c54933a44d19fcd5f9356?s="

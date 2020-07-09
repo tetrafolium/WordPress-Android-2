@@ -2,6 +2,7 @@ package org.wordpress.android.ui.stats.refresh.lists
 
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.whenever
+import java.util.Date
 import org.assertj.core.api.Assertions
 import org.junit.Before
 import org.junit.Test
@@ -16,7 +17,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.granular.SelectedDa
 import org.wordpress.android.ui.stats.refresh.utils.StatsDateFormatter
 import org.wordpress.android.ui.stats.refresh.utils.StatsDateSelector
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
-import java.util.Date
 
 class StatsDateSelectorTest : BaseUnitTest() {
     @Mock lateinit var selectedDateProvider: SelectedDateProvider

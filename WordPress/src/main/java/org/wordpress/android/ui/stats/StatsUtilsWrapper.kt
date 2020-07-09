@@ -1,10 +1,10 @@
 package org.wordpress.android.ui.stats
 
 import android.content.Context
-import org.wordpress.android.viewmodel.ResourceProvider
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
+import org.wordpress.android.viewmodel.ResourceProvider
 
 class StatsUtilsWrapper
 @Inject constructor(val resourceProvider: ResourceProvider) {

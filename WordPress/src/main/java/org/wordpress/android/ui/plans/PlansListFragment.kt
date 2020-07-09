@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.plans_list_fragment.*
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
@@ -20,7 +21,6 @@ import org.wordpress.android.ui.plans.PlansViewModel.PlansListStatus.FETCHING
 import org.wordpress.android.util.NetworkUtils
 import org.wordpress.android.util.WPSwipeToRefreshHelper
 import org.wordpress.android.util.helpers.SwipeToRefreshHelper
-import javax.inject.Inject
 
 class PlansListFragment : Fragment() {
     private lateinit var swipeToRefreshHelper: SwipeToRefreshHelper

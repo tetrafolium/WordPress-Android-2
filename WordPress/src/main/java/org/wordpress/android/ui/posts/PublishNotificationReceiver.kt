@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
-import javax.inject.Inject
 
 class PublishNotificationReceiver : BroadcastReceiver() {
     @Inject lateinit var publishNotificationReceiverViewModel: PublishNotificationReceiverViewModel

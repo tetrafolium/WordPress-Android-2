@@ -7,7 +7,6 @@ import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
-
 import org.wordpress.android.R
 
 /**

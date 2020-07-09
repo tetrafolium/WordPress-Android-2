@@ -3,6 +3,8 @@ package org.wordpress.android.ui.posts
 import android.content.Context
 import android.net.Uri
 import dagger.Reusable
+import java.util.ArrayList
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.Dispatcher
 import org.wordpress.android.fluxc.generated.MediaActionBuilder
@@ -21,8 +23,6 @@ import org.wordpress.android.util.FluxCUtils
 import org.wordpress.android.util.SiteUtils
 import org.wordpress.android.util.StringUtils
 import org.wordpress.android.util.ToastUtils
-import java.util.ArrayList
-import javax.inject.Inject
 
 const val EMPTY_LOCAL_POST_ID = -1
 

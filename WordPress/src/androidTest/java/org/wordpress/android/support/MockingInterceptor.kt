@@ -1,9 +1,9 @@
 package org.wordpress.android.support
 
-import okhttp3.Interceptor
-import okhttp3.Response
 import java.io.IOException
 import javax.inject.Singleton
+import okhttp3.Interceptor
+import okhttp3.Response
 
 @Singleton
 class MockingInterceptor : Interceptor {

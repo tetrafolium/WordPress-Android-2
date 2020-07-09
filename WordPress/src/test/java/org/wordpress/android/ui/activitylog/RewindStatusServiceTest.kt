@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.reset
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import java.util.Date
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -39,7 +40,6 @@ import org.wordpress.android.fluxc.store.ActivityLogStore.RewindStatusError
 import org.wordpress.android.fluxc.store.ActivityLogStore.RewindStatusErrorType.INVALID_RESPONSE
 import org.wordpress.android.fluxc.tools.FormattableContent
 import org.wordpress.android.ui.activitylog.RewindStatusService.RewindProgress
-import java.util.Date
 
 @RunWith(MockitoJUnitRunner::class)
 class RewindStatusServiceTest {

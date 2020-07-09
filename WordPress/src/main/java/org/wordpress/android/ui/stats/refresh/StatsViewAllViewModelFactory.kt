@@ -3,6 +3,9 @@ package org.wordpress.android.ui.stats.refresh
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import java.security.InvalidParameterException
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.network.utils.StatsGranularity
@@ -55,9 +58,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases.T
 import org.wordpress.android.ui.stats.refresh.utils.StatsDateSelector
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
 import org.wordpress.android.ui.stats.refresh.utils.toStatsSection
-import java.security.InvalidParameterException
-import javax.inject.Inject
-import javax.inject.Named
 
 class StatsViewAllViewModelFactory(
     private val mainDispatcher: CoroutineDispatcher,

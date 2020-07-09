@@ -1,5 +1,9 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.granular.usecases
 
+import java.util.Calendar
+import java.util.Date
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.analytics.AnalyticsTracker
@@ -30,10 +34,6 @@ import org.wordpress.android.ui.stats.refresh.utils.toFormattedString
 import org.wordpress.android.ui.stats.refresh.utils.trackGranular
 import org.wordpress.android.util.LocaleManagerWrapper
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
-import java.util.Calendar
-import java.util.Date
-import javax.inject.Inject
-import javax.inject.Named
 
 private const val BLOCK_ITEM_COUNT = 6
 private const val VIEW_ALL_ITEM_COUNT = 1000

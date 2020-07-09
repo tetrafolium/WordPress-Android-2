@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
+import kotlin.properties.Delegates
 import kotlinx.android.synthetic.main.site_creation_error_with_retry.view.*
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
@@ -25,8 +27,6 @@ import org.wordpress.android.ui.sitecreation.verticals.SiteCreationVerticalsView
 import org.wordpress.android.ui.sitecreation.verticals.SiteCreationVerticalsViewModel.VerticalsUiState.VerticalsFullscreenErrorUiState
 import org.wordpress.android.ui.sitecreation.verticals.SiteCreationVerticalsViewModel.VerticalsUiState.VerticalsFullscreenProgressUiState
 import org.wordpress.android.ui.utils.UiHelpers
-import javax.inject.Inject
-import kotlin.properties.Delegates
 
 private const val KEY_LIST_STATE = "list_state"
 

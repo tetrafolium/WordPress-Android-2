@@ -1,5 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 
+import java.util.Calendar
+import javax.inject.Inject
 import org.wordpress.android.fluxc.model.stats.insights.PostingActivityModel.Month
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.ActivityItem
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.ActivityItem.Block
@@ -11,8 +13,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Activ
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.ActivityItem.Box.VERY_HIGH
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.ActivityItem.Box.VERY_LOW
 import org.wordpress.android.util.LocaleManagerWrapper
-import java.util.Calendar
-import javax.inject.Inject
 
 private const val VERY_HIGH_LEVEL = 0.75
 private const val HIGH_LEVEL = 0.5

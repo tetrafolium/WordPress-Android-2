@@ -6,16 +6,13 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.DisplayMetrics
 import android.widget.ImageView.ScaleType.FIT_CENTER
-
 import com.bumptech.glide.request.target.BaseTarget
 import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.transition.Transition
-
-import org.wordpress.android.util.image.ImageManager
-import org.wordpress.aztec.Html
-
 import java.lang.ref.WeakReference
 import java.util.ArrayList
+import org.wordpress.android.util.image.ImageManager
+import org.wordpress.aztec.Html
 
 /**
  * Class which retrieves images from both local storage and remote url and informs the client about the progress

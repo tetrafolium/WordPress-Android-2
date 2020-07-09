@@ -3,9 +3,9 @@ package org.wordpress.android.ui.domains
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 import org.wordpress.android.analytics.AnalyticsTracker.Stat
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
-import javax.inject.Inject
 
 class DomainRegistrationMainViewModel @Inject constructor(
     private val analyticsTracker: AnalyticsTrackerWrapper

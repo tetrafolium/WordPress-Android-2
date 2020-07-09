@@ -1,5 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.analytics.AnalyticsTracker.Stat
@@ -13,8 +15,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.LinkB
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.NavigationAction
 import org.wordpress.android.ui.stats.refresh.utils.NewsCardHandler
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
-import javax.inject.Inject
-import javax.inject.Named
 
 class ManagementControlUseCase
 @Inject constructor(

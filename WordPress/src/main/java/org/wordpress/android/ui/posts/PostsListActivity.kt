@@ -24,6 +24,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
 import org.wordpress.android.fluxc.Dispatcher
@@ -45,7 +46,6 @@ import org.wordpress.android.util.AppLog
 import org.wordpress.android.util.LocaleManager
 import org.wordpress.android.util.redirectContextClickToLongPressListener
 import org.wordpress.android.widgets.WPSnackbar
-import javax.inject.Inject
 
 const val EXTRA_TARGET_POST_LOCAL_ID = "targetPostLocalId"
 const val STATE_KEY_PREVIEW_STATE = "stateKeyPreviewState"

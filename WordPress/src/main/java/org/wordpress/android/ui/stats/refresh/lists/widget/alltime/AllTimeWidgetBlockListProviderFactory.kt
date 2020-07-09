@@ -2,9 +2,9 @@ package org.wordpress.android.ui.stats.refresh.lists.widget.alltime
 
 import android.content.Context
 import android.content.Intent
+import javax.inject.Inject
 import org.wordpress.android.WordPress
 import org.wordpress.android.ui.stats.refresh.lists.widget.WidgetBlockListProvider
-import javax.inject.Inject
 
 class AllTimeWidgetBlockListProviderFactory(val context: Context, val intent: Intent) {
     @Inject lateinit var viewModel: AllTimeWidgetBlockListViewModel

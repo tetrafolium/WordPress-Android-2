@@ -1,5 +1,9 @@
 package org.wordpress.android.ui.sitecreation.services
 
+import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
+import kotlin.properties.Delegates
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -17,10 +21,6 @@ import org.wordpress.android.ui.sitecreation.services.SiteCreationServiceState.S
 import org.wordpress.android.ui.sitecreation.usecases.CreateSiteUseCase
 import org.wordpress.android.util.AppLog
 import org.wordpress.android.util.AppLog.T
-import javax.inject.Inject
-import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class SiteCreationServiceManager @Inject constructor(
     private val createSiteUseCase: CreateSiteUseCase,

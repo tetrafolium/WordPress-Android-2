@@ -24,12 +24,12 @@ import com.bumptech.glide.request.target.BaseTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.target.ViewTarget
 import com.bumptech.glide.signature.ObjectKey
+import javax.inject.Inject
+import javax.inject.Singleton
 import org.wordpress.android.WordPress
 import org.wordpress.android.modules.GlideApp
 import org.wordpress.android.modules.GlideRequest
 import org.wordpress.android.util.AppLog
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Singleton for asynchronous image fetching/loading with support for placeholders, transformations and more.

@@ -1,6 +1,8 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 
 import android.view.View
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.analytics.AnalyticsTracker.Stat.STATS_LATEST_POST_SUMMARY_ADD_NEW_POST_TAPPED
@@ -29,8 +31,6 @@ import org.wordpress.android.ui.stats.refresh.utils.MILLION
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
 import org.wordpress.android.ui.stats.refresh.utils.toFormattedString
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
-import javax.inject.Inject
-import javax.inject.Named
 
 class LatestPostSummaryUseCase
 @Inject constructor(

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import java.util.ArrayList
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.help_activity.*
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
@@ -21,8 +23,6 @@ import org.wordpress.android.ui.AppLogViewerActivity
 import org.wordpress.android.ui.prefs.AppPrefs
 import org.wordpress.android.util.LocaleManager
 import org.wordpress.android.util.SiteUtils
-import java.util.ArrayList
-import javax.inject.Inject
 
 class HelpActivity : AppCompatActivity() {
     @Inject lateinit var accountStore: AccountStore

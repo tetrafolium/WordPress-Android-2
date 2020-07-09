@@ -11,13 +11,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.wordpress.android.R
 import org.wordpress.android.ui.CollapseFullScreenDialogFragment.CollapseFullScreenDialogContent
 import org.wordpress.android.ui.CollapseFullScreenDialogFragment.CollapseFullScreenDialogController
 import org.wordpress.android.widgets.SuggestionAutoCompleteText
-import javax.inject.Inject
 
 class CommentFullScreenDialogFragment : Fragment(), CollapseFullScreenDialogContent {
     @Inject lateinit var viewModel: CommentFullScreenDialogViewModel

@@ -3,6 +3,9 @@ package org.wordpress.android.ui.sitecreation.segments
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
+import javax.inject.Named
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -28,9 +31,6 @@ import org.wordpress.android.ui.sitecreation.segments.SegmentsUiState.SegmentsEr
 import org.wordpress.android.ui.sitecreation.usecases.FetchSegmentsUseCase
 import org.wordpress.android.util.NetworkUtilsWrapper
 import org.wordpress.android.viewmodel.SingleLiveEvent
-import javax.inject.Inject
-import javax.inject.Named
-import kotlin.coroutines.CoroutineContext
 
 private const val CONNECTION_ERROR_DELAY_TO_SHOW_LOADING_STATE = 1000L
 private const val ERROR_CONTEXT = "segments"

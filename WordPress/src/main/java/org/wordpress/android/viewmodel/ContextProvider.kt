@@ -1,9 +1,9 @@
 package org.wordpress.android.viewmodel
 
 import android.content.Context
-import org.wordpress.android.util.LocaleManager
 import javax.inject.Inject
 import javax.inject.Singleton
+import org.wordpress.android.util.LocaleManager
 
 @Singleton
 class ContextProvider

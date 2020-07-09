@@ -1,10 +1,10 @@
 package org.wordpress.android.ui.stats.refresh.utils
 
+import java.util.Locale
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.Locale
 
 @RunWith(MockitoJUnitRunner::class)
 class StatsUtilsTest {

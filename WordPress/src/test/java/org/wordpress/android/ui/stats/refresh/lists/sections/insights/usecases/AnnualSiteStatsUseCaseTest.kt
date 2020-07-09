@@ -3,6 +3,8 @@ package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import java.util.Calendar
+import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.assertj.core.api.Assertions.assertThat
@@ -38,8 +40,6 @@ import org.wordpress.android.ui.stats.refresh.utils.ItemPopupMenuHandler
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
 import org.wordpress.android.util.LocaleManagerWrapper
 import org.wordpress.android.viewmodel.Event
-import java.util.Calendar
-import java.util.Locale
 
 @InternalCoroutinesApi
 class AnnualSiteStatsUseCaseTest : BaseUnitTest() {

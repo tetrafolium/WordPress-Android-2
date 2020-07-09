@@ -15,12 +15,12 @@ import androidx.work.Worker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import java.util.concurrent.TimeUnit.HOURS
 import kotlinx.coroutines.runBlocking
 import org.wordpress.android.WordPress
 import org.wordpress.android.fluxc.model.SiteModel
 import org.wordpress.android.fluxc.store.SiteStore
 import org.wordpress.android.ui.uploads.UploadStarter
-import java.util.concurrent.TimeUnit.HOURS
 
 class UploadWorker(
     appContext: Context,

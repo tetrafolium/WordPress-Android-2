@@ -9,6 +9,7 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
 import org.wordpress.android.ui.posts.AuthorFilterListItemUIState
@@ -17,7 +18,6 @@ import org.wordpress.android.ui.utils.UiHelpers
 import org.wordpress.android.util.GravatarUtils
 import org.wordpress.android.util.image.ImageManager
 import org.wordpress.android.util.image.ImageType.NO_PLACEHOLDER
-import javax.inject.Inject
 
 class AuthorSelectionAdapter(context: Context) : BaseAdapter() {
     @Inject lateinit var imageManager: ImageManager

@@ -1,9 +1,9 @@
 package org.wordpress.android.ui.sitecreation.misc
 
-import org.wordpress.android.analytics.AnalyticsTracker
-import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import javax.inject.Inject
 import javax.inject.Singleton
+import org.wordpress.android.analytics.AnalyticsTracker
+import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 
 enum class SiteCreationErrorType {
     INTERNET_UNAVAILABLE_ERROR,

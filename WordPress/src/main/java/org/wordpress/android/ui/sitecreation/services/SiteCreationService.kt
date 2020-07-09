@@ -4,6 +4,8 @@ import android.app.Notification
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import java.util.HashMap
+import javax.inject.Inject
 import org.wordpress.android.WordPress
 import org.wordpress.android.fluxc.Dispatcher
 import org.wordpress.android.ui.sitecreation.misc.SiteCreationTracker
@@ -16,8 +18,6 @@ import org.wordpress.android.util.AppLog
 import org.wordpress.android.util.AppLog.T
 import org.wordpress.android.util.AutoForeground
 import org.wordpress.android.util.LocaleManager
-import java.util.HashMap
-import javax.inject.Inject
 
 private val INITIAL_STATE = IDLE
 

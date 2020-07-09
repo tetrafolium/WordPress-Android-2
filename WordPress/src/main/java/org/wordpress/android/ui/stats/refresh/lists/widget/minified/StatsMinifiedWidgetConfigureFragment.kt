@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.stats_widget_configure_fragment.*
 import org.wordpress.android.R
 import org.wordpress.android.analytics.AnalyticsTracker.Stat.STATS_WIDGET_ADDED
@@ -24,11 +25,10 @@ import org.wordpress.android.ui.stats.refresh.lists.widget.configuration.StatsWi
 import org.wordpress.android.ui.stats.refresh.lists.widget.configuration.StatsWidgetDataTypeSelectionDialogFragment
 import org.wordpress.android.ui.stats.refresh.lists.widget.configuration.StatsWidgetSiteSelectionDialogFragment
 import org.wordpress.android.ui.stats.refresh.utils.trackMinifiedWidget
-import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import org.wordpress.android.util.ToastUtils
+import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import org.wordpress.android.util.image.ImageManager
 import org.wordpress.android.util.mergeNotNull
-import javax.inject.Inject
 
 class StatsMinifiedWidgetConfigureFragment : DaggerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory

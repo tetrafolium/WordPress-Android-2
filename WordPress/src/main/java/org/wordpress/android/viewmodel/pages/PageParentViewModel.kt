@@ -3,6 +3,8 @@ package org.wordpress.android.viewmodel.pages
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.wordpress.android.R
@@ -22,8 +24,6 @@ import org.wordpress.android.ui.pages.PageItem.Type.TOP_LEVEL_PARENT
 import org.wordpress.android.util.analytics.AnalyticsUtils
 import org.wordpress.android.viewmodel.ResourceProvider
 import org.wordpress.android.viewmodel.SingleLiveEvent
-import javax.inject.Inject
-import javax.inject.Named
 
 class PageParentViewModel
 @Inject constructor(

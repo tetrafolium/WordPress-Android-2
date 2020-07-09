@@ -1,6 +1,8 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 
 import android.view.View
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -25,8 +27,6 @@ import org.wordpress.android.ui.stats.refresh.utils.ContentDescriptionHelper
 import org.wordpress.android.ui.stats.refresh.utils.ItemPopupMenuHandler
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
 import org.wordpress.android.ui.stats.refresh.utils.toFormattedString
-import javax.inject.Inject
-import javax.inject.Named
 
 class FollowerTotalsUseCase
 @Inject constructor(

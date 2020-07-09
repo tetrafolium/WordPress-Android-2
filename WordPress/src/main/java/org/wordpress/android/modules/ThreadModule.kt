@@ -2,11 +2,11 @@ package org.wordpress.android.modules
 
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.wordpress.android.util.helpers.Debouncer
-import javax.inject.Named
 
 const val UI_SCOPE = "UI_SCOPE"
 const val DEFAULT_SCOPE = "DEFAULT_SCOPE"

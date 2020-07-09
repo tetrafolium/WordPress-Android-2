@@ -3,6 +3,8 @@ package org.wordpress.android.viewmodel.domains
 import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -40,8 +42,6 @@ import org.wordpress.android.util.DomainPhoneNumberUtils
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import org.wordpress.android.viewmodel.ScopedViewModel
 import org.wordpress.android.viewmodel.SingleLiveEvent
-import javax.inject.Inject
-import javax.inject.Named
 
 const val SITE_CHECK_DELAY_MS = 5000L
 const val MAX_SITE_CHECK_TRIES = 10

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.pages_list_fragment.*
 import org.wordpress.android.R
 import org.wordpress.android.WordPress
@@ -19,7 +20,6 @@ import org.wordpress.android.util.DisplayUtils
 import org.wordpress.android.viewmodel.pages.PagesViewModel
 import org.wordpress.android.viewmodel.pages.SearchListViewModel
 import org.wordpress.android.widgets.RecyclerItemDecoration
-import javax.inject.Inject
 
 class SearchListFragment : Fragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory

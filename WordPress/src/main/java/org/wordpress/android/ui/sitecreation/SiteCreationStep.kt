@@ -1,8 +1,8 @@
 package org.wordpress.android.ui.sitecreation
 
-import org.wordpress.android.util.wizard.WizardStep
 import javax.inject.Inject
 import javax.inject.Singleton
+import org.wordpress.android.util.wizard.WizardStep
 
 enum class SiteCreationStep : WizardStep {
     SEGMENTS, VERTICALS, SITE_INFO, DOMAINS, SITE_PREVIEW;

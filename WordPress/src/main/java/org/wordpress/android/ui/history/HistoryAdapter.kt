@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import javax.inject.Inject
 import org.wordpress.android.WordPress
 import org.wordpress.android.ui.history.HistoryListItem.Footer
 import org.wordpress.android.ui.history.HistoryListItem.Header
 import org.wordpress.android.ui.history.HistoryListItem.Revision
 import org.wordpress.android.ui.history.HistoryListItem.ViewType
 import org.wordpress.android.util.image.ImageManager
-import javax.inject.Inject
 
 class HistoryAdapter(
     val activity: Activity,

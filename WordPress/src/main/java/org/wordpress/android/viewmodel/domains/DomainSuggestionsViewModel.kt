@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import kotlin.properties.Delegates
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.wordpress.android.analytics.AnalyticsTracker.Stat
@@ -20,9 +23,6 @@ import org.wordpress.android.util.AppLog.T
 import org.wordpress.android.util.SiteUtils
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import org.wordpress.android.util.helpers.Debouncer
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import kotlin.properties.Delegates
 
 typealias DomainSuggestionsListState = ListState<DomainSuggestionResponse>
 

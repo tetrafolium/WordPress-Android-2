@@ -26,6 +26,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.snackbar.Snackbar
+import java.lang.ref.WeakReference
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.pages_fragment.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -67,8 +69,6 @@ import org.wordpress.android.viewmodel.pages.PageListViewModel.PageListType.TRAS
 import org.wordpress.android.viewmodel.pages.PagesViewModel
 import org.wordpress.android.widgets.WPDialogSnackbar
 import org.wordpress.android.widgets.WPSnackbar
-import java.lang.ref.WeakReference
-import javax.inject.Inject
 
 class PagesFragment : Fragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory

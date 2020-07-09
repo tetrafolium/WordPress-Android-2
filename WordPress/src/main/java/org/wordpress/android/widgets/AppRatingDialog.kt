@@ -11,12 +11,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import java.util.Date
+import java.util.concurrent.TimeUnit
 import org.wordpress.android.R
 import org.wordpress.android.analytics.AnalyticsTracker
 import org.wordpress.android.util.AppLog
 import org.wordpress.android.util.AppLog.T
-import java.util.Date
-import java.util.concurrent.TimeUnit
 
 object AppRatingDialog {
     private const val PREF_NAME = "rate_wpandroid"

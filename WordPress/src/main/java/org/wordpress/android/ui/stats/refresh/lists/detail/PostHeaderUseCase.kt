@@ -1,5 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.lists.detail
 
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.analytics.AnalyticsTracker
@@ -13,8 +15,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.Navig
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.ReferredItem
 import org.wordpress.android.ui.stats.refresh.utils.StatsPostProvider
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
-import javax.inject.Inject
-import javax.inject.Named
 
 class PostHeaderUseCase
 @Inject constructor(

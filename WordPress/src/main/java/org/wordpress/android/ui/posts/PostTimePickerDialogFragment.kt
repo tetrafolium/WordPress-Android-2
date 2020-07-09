@@ -10,9 +10,9 @@ import android.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import javax.inject.Inject
 import org.wordpress.android.R.style
 import org.wordpress.android.WordPress
-import javax.inject.Inject
 
 class PostTimePickerDialogFragment : DialogFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory

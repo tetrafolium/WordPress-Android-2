@@ -1,6 +1,7 @@
 package org.wordpress.android.ui.activitylog.list
 
 import androidx.annotation.DrawableRes
+import java.util.Date
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.activity.ActivityLogModel
 import org.wordpress.android.ui.activitylog.list.ActivityLogListItem.Icon.HISTORY
@@ -11,7 +12,6 @@ import org.wordpress.android.ui.activitylog.list.ActivityLogListItem.ViewType.LO
 import org.wordpress.android.ui.activitylog.list.ActivityLogListItem.ViewType.PROGRESS
 import org.wordpress.android.util.toFormattedDateString
 import org.wordpress.android.util.toFormattedTimeString
-import java.util.Date
 
 sealed class ActivityLogListItem(val type: ViewType) {
     interface IActionableItem {

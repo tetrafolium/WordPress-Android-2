@@ -3,8 +3,8 @@ package org.wordpress.android.ui.posts
 import android.app.ProgressDialog
 import android.content.Context
 import dagger.Reusable
-import org.wordpress.android.ui.utils.UiHelpers
 import javax.inject.Inject
+import org.wordpress.android.ui.utils.UiHelpers
 
 /**
  * This helper class allows to create, dismiss or ignore the state of a [dialog] ProgressDialog

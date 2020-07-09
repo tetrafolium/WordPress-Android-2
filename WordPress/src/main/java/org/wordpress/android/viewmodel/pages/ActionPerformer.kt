@@ -1,5 +1,8 @@
 package org.wordpress.android.viewmodel.pages
 
+import javax.inject.Inject
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
@@ -13,9 +16,6 @@ import org.wordpress.android.viewmodel.pages.ActionPerformer.PageAction.EventTyp
 import org.wordpress.android.viewmodel.pages.ActionPerformer.PageAction.EventType.DELETE
 import org.wordpress.android.viewmodel.pages.ActionPerformer.PageAction.EventType.UPDATE
 import org.wordpress.android.viewmodel.pages.ActionPerformer.PageAction.EventType.UPLOAD
-import javax.inject.Inject
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.resume
 
 class ActionPerformer
 @Inject constructor(private val dispatcher: Dispatcher) {

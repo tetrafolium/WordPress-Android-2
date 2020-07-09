@@ -3,6 +3,8 @@ package org.wordpress.android.ui.posts
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -36,8 +38,6 @@ import org.wordpress.android.ui.uploads.UploadService
 import org.wordpress.android.ui.uploads.VideoOptimizer
 import org.wordpress.android.util.AppLog
 import org.wordpress.android.util.AppLog.T
-import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 /**
  * This is a temporary class to make the PostListViewModel more manageable. Please feel free to refactor it any way

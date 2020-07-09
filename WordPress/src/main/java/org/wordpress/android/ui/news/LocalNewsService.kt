@@ -2,10 +2,10 @@ package org.wordpress.android.ui.news
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import javax.inject.Inject
 import org.wordpress.android.models.news.LocalNewsItem
 import org.wordpress.android.models.news.NewsItem
 import org.wordpress.android.viewmodel.ContextProvider
-import javax.inject.Inject
 
 /**
  * Service for fetching data for a News Card (Card with a new feature/update announcement) from a local resource.

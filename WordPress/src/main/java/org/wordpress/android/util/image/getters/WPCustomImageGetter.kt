@@ -5,14 +5,14 @@ import android.graphics.drawable.Drawable
 import android.text.Html
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import java.lang.ref.WeakReference
+import java.util.HashSet
+import javax.inject.Inject
 import org.wordpress.android.WordPress
 import org.wordpress.android.util.PhotonUtils
 import org.wordpress.android.util.R
 import org.wordpress.android.util.image.ImageManager
 import org.wordpress.android.util.image.ImageType
-import java.lang.ref.WeakReference
-import java.util.HashSet
-import javax.inject.Inject
 
 /**
  * ImageGetter for Html.fromHtml(). Retrieves images for HTML img tags using Glide library.

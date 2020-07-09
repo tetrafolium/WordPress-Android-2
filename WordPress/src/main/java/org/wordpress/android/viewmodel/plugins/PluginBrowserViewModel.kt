@@ -5,6 +5,9 @@ import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.util.ArrayList
+import javax.inject.Inject
+import kotlin.properties.Delegates
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.wordpress.android.WordPress
@@ -34,9 +37,6 @@ import org.wordpress.android.viewmodel.plugins.PluginBrowserViewModel.PluginList
 import org.wordpress.android.viewmodel.plugins.PluginBrowserViewModel.PluginListType.POPULAR
 import org.wordpress.android.viewmodel.plugins.PluginBrowserViewModel.PluginListType.SEARCH
 import org.wordpress.android.viewmodel.plugins.PluginBrowserViewModel.PluginListType.SITE
-import java.util.ArrayList
-import javax.inject.Inject
-import kotlin.properties.Delegates
 
 private const val KEY_SEARCH_QUERY = "KEY_SEARCH_QUERY"
 private const val KEY_TITLE = "KEY_TITLE"

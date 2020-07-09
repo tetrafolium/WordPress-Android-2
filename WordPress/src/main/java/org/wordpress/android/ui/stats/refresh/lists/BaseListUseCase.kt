@@ -3,6 +3,7 @@ package org.wordpress.android.ui.stats.refresh.lists
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -27,7 +28,6 @@ import org.wordpress.android.util.mergeAsyncNotNull
 import org.wordpress.android.util.mergeNotNull
 import org.wordpress.android.viewmodel.Event
 import org.wordpress.android.viewmodel.SingleLiveEvent
-import kotlin.coroutines.CoroutineContext
 
 class BaseListUseCase(
     private val bgDispatcher: CoroutineDispatcher,

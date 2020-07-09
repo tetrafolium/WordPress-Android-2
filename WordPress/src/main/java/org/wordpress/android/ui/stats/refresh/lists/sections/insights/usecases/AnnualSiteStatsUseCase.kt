@@ -1,6 +1,10 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 
 import android.view.View
+import java.util.Calendar
+import java.util.Date
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.stats.YearsInsightsModel
@@ -22,10 +26,6 @@ import org.wordpress.android.ui.stats.refresh.lists.sections.insights.InsightUse
 import org.wordpress.android.ui.stats.refresh.utils.ItemPopupMenuHandler
 import org.wordpress.android.ui.stats.refresh.utils.StatsSiteProvider
 import org.wordpress.android.util.LocaleManagerWrapper
-import java.util.Calendar
-import java.util.Date
-import javax.inject.Inject
-import javax.inject.Named
 
 private const val VISIBLE_ITEMS = 1
 

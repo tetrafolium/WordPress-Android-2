@@ -1,6 +1,7 @@
 package org.wordpress.android.ui.stats.refresh.lists.widget.views
 
 import androidx.annotation.LayoutRes
+import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.wordpress.android.R
 import org.wordpress.android.fluxc.model.stats.LimitMode
@@ -19,7 +20,6 @@ import org.wordpress.android.ui.stats.refresh.utils.MILLION
 import org.wordpress.android.ui.stats.refresh.utils.ONE_THOUSAND
 import org.wordpress.android.ui.stats.refresh.utils.StatsDateFormatter
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
 
 const val LIST_ITEM_COUNT = 7
 

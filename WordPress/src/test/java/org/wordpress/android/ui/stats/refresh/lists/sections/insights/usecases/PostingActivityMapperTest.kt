@@ -1,6 +1,8 @@
 package org.wordpress.android.ui.stats.refresh.lists.sections.insights.usecases
 
 import com.nhaarman.mockitokotlin2.whenever
+import java.util.Calendar
+import java.util.Locale
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -9,8 +11,6 @@ import org.wordpress.android.BaseUnitTest
 import org.wordpress.android.fluxc.model.stats.insights.PostingActivityModel.Month
 import org.wordpress.android.ui.stats.refresh.lists.sections.BlockListItem.ActivityItem.Box
 import org.wordpress.android.util.LocaleManagerWrapper
-import java.util.Calendar
-import java.util.Locale
 
 class PostingActivityMapperTest : BaseUnitTest() {
     @Mock lateinit var localeManagerWrapper: LocaleManagerWrapper

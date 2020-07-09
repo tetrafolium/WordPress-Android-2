@@ -1,8 +1,8 @@
 package org.wordpress.android.ui.posts
 
 import dagger.Reusable
-import org.wordpress.android.fluxc.model.PostModel
 import javax.inject.Inject
+import org.wordpress.android.fluxc.model.PostModel
 
 /**
  * Injectable wrapper around PostUtils.

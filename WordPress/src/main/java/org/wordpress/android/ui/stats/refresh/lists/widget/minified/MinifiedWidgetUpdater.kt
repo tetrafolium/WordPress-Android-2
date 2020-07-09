@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
+import javax.inject.Inject
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -32,7 +33,6 @@ import org.wordpress.android.ui.stats.refresh.utils.trackMinifiedWidget
 import org.wordpress.android.util.NetworkUtilsWrapper
 import org.wordpress.android.util.analytics.AnalyticsTrackerWrapper
 import org.wordpress.android.viewmodel.ResourceProvider
-import javax.inject.Inject
 
 class MinifiedWidgetUpdater
 @Inject constructor(

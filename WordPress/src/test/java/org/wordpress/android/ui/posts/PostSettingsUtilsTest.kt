@@ -3,6 +3,8 @@ package org.wordpress.android.ui.posts
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
+import java.util.Calendar
+import java.util.Date
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -14,8 +16,6 @@ import org.wordpress.android.fluxc.model.post.PostStatus
 import org.wordpress.android.ui.stats.refresh.utils.DateUtils
 import org.wordpress.android.util.DateTimeUtils
 import org.wordpress.android.viewmodel.ResourceProvider
-import java.util.Calendar
-import java.util.Date
 
 class PostSettingsUtilsTest : BaseUnitTest() {
     @Mock lateinit var resourceProvider: ResourceProvider

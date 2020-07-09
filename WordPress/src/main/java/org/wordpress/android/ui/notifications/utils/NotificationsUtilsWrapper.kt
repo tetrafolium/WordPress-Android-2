@@ -2,13 +2,13 @@ package org.wordpress.android.ui.notifications.utils
 
 import android.text.SpannableStringBuilder
 import android.widget.TextView
+import javax.inject.Inject
+import javax.inject.Singleton
 import org.json.JSONObject
 import org.wordpress.android.fluxc.tools.FormattableContent
 import org.wordpress.android.fluxc.tools.FormattableContentMapper
 import org.wordpress.android.fluxc.tools.FormattableRange
 import org.wordpress.android.ui.notifications.blocks.NoteBlock
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Injectable wrapper around NotificationsUtils.

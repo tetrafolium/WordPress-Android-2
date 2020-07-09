@@ -21,6 +21,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.facebook.shimmer.ShimmerFrameLayout
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.site_creation_preview_header_item.*
 import kotlinx.android.synthetic.main.site_creation_preview_screen_default.*
 import org.wordpress.android.R
@@ -41,7 +42,6 @@ import org.wordpress.android.util.AutoForeground.ServiceEventConnection
 import org.wordpress.android.util.ErrorManagedWebViewClient.ErrorManagedWebViewClientListener
 import org.wordpress.android.util.URLFilteredWebViewClient
 import org.wordpress.android.util.getColorFromAttribute
-import javax.inject.Inject
 
 private const val ARG_DATA = "arg_site_creation_data"
 private const val SLIDE_IN_ANIMATION_DURATION = 450L

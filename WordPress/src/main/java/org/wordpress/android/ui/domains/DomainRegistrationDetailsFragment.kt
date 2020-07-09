@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.domain_registration_details_fragment.*
 import org.apache.commons.lang3.StringEscapeUtils
 import org.wordpress.android.R
@@ -46,7 +47,6 @@ import org.wordpress.android.util.ToastUtils
 import org.wordpress.android.util.WPUrlUtils
 import org.wordpress.android.viewmodel.domains.DomainRegistrationDetailsViewModel
 import org.wordpress.android.viewmodel.domains.DomainRegistrationDetailsViewModel.DomainContactFormModel
-import javax.inject.Inject
 
 class DomainRegistrationDetailsFragment : Fragment() {
     companion object {

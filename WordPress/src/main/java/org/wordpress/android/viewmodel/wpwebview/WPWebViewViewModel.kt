@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 import org.wordpress.android.R
 import org.wordpress.android.ui.WPWebViewUsageCategory
 import org.wordpress.android.ui.utils.UiString.UiStringRes
@@ -20,7 +21,6 @@ import org.wordpress.android.viewmodel.wpwebview.WPWebViewViewModel.PreviewMode.
 import org.wordpress.android.viewmodel.wpwebview.WPWebViewViewModel.WebPreviewUiState.WebPreviewContentUiState
 import org.wordpress.android.viewmodel.wpwebview.WPWebViewViewModel.WebPreviewUiState.WebPreviewFullscreenProgressUiState
 import org.wordpress.android.viewmodel.wpwebview.WPWebViewViewModel.WebPreviewUiState.WebPreviewFullscreenUiState.WebPreviewFullscreenErrorUiState
-import javax.inject.Inject
 
 class WPWebViewViewModel
 @Inject constructor(

@@ -1,10 +1,10 @@
 package org.wordpress.android.viewmodel.giphy
 
 import androidx.lifecycle.ViewModel
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlin.coroutines.CoroutineContext
 
 /**
  * A base class for implementing Android [ViewModel] classes that also act as a [CoroutineScope].

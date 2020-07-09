@@ -12,10 +12,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.stats_widget_site_selector.*
 import org.wordpress.android.R
 import org.wordpress.android.util.image.ImageManager
-import javax.inject.Inject
 
 class StatsWidgetSiteSelectionDialogFragment : AppCompatDialogFragment() {
     @Inject lateinit var imageManager: ImageManager

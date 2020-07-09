@@ -2,6 +2,7 @@ package org.wordpress.android.viewmodel.pages
 
 import androidx.lifecycle.MutableLiveData
 import com.nhaarman.mockitokotlin2.whenever
+import java.util.Date
 import kotlinx.coroutines.Dispatchers
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -18,7 +19,6 @@ import org.wordpress.android.ui.pages.PageItem.Divider
 import org.wordpress.android.ui.pages.PageItem.PublishedPage
 import org.wordpress.android.viewmodel.pages.PageListViewModel.PageListState
 import org.wordpress.android.viewmodel.pages.PageListViewModel.PageListType.PUBLISHED
-import java.util.Date
 
 private const val HOUR_IN_MILLISECONDS = 3600000L
 

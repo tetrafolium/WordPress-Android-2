@@ -1,8 +1,8 @@
 package org.wordpress.android.ui.uploads
 
 import dagger.Reusable
-import org.wordpress.android.fluxc.model.SiteModel
 import javax.inject.Inject
+import org.wordpress.android.fluxc.model.SiteModel
 
 /**
  * Injectable wrapper around UploadUtils.
