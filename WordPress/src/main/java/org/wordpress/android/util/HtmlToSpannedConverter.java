@@ -101,11 +101,9 @@ public class HtmlToSpannedConverter implements ContentHandler {
       int end = mSpannableStringBuilder.getSpanEnd(obj[i]);
 
       // If the last line of the range is blank, back off by one.
-      if (end - 2 >= 0) {
-        if (mSpannableStringBuilder.charAt(end - 1) == '\n' &&
-            mSpannableStringBuilder.charAt(end - 2) == '\n') {
-          end--;
-        }
+      if ((end - 2 >= 0) && (mSpannableStringBuilder.charAt(end - 1) == '\n' &&
+            mSpannableStringBuilder.charAt(end - 2) == '\n')) {
+        end--;
       }
 
       if (end == start) {
@@ -124,14 +122,12 @@ public class HtmlToSpannedConverter implements ContentHandler {
 
   private void handleStartTag(String tag, Attributes attributes) {
     if (!mysteryTagFound) {
-      if (mPost != null) {
-        if (!mPost.isLocalDraft()) {
-          if (tag.equalsIgnoreCase("img")) {
-            startImg(mSpannableStringBuilder, attributes, mImageGetter);
-          }
-
-          return;
+      if ((mPost != null) && (!mPost.isLocalDraft())) {
+        if (tag.equalsIgnoreCase("img")) {
+          startImg(mSpannableStringBuilder, attributes, mImageGetter);
         }
+
+        return;
       }
 
       if (tag.equalsIgnoreCase("br")) {
@@ -199,10 +195,8 @@ public class HtmlToSpannedConverter implements ContentHandler {
   }
 
   private void handleEndTag(String tag) {
-    if (mPost != null) {
-      if (!mPost.isLocalDraft()) {
-        return;
-      }
+    if ((mPost != null) && (!mPost.isLocalDraft())) {
+      return;
     }
     if (!mysteryTagFound) {
       if (tag.equalsIgnoreCase("br")) {
@@ -382,19 +376,17 @@ public class HtmlToSpannedConverter implements ContentHandler {
                      Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
       }
     } else if (mPost != null) {
-      if (mPost.isLocalDraft()) {
-        if (attributes != null) {
-          text.append("<img");
-          for (int i = 0; i < attributes.getLength(); i++) {
-            String aName = attributes.getLocalName(i); // Attr name
-            if ("".equals(aName)) {
-              aName = attributes.getQName(i);
-            }
-            text.append(" ");
-            text.append(aName + "=\"" + attributes.getValue(i) + "\"");
+      if ((mPost.isLocalDraft()) && (attributes != null)) {
+        text.append("<img");
+        for (int i = 0; i < attributes.getLength(); i++) {
+          String aName = attributes.getLocalName(i); // Attr name
+          if ("".equals(aName)) {
+            aName = attributes.getQName(i);
           }
-          text.append(" />\n");
+          text.append(" ");
+          text.append(aName + "=\"" + attributes.getValue(i) + "\"");
         }
+        text.append(" />\n");
       }
     } else if (src == null) {
       // get regular src value from <img/> tag's src attribute
@@ -480,11 +472,9 @@ public class HtmlToSpannedConverter implements ContentHandler {
     if (where != len) {
       Href h = (Href)obj;
 
-      if (h != null) {
-        if (h.mHref != null) {
-          text.setSpan(new URLSpan(h.mHref), where, len,
-                       Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
+      if ((h != null) && (h.mHref != null)) {
+        text.setSpan(new URLSpan(h.mHref), where, len,
+                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
       }
     }
   }

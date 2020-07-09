@@ -25,11 +25,9 @@ public class EditTextWithKeyBackListener extends AppCompatEditText {
   }
 
   public boolean onKeyPreIme(int keyCode, KeyEvent event) {
-    if (event.getKeyCode() == KeyEvent.KEYCODE_BACK &&
-        event.getAction() == KeyEvent.ACTION_UP) {
-      if (this.mOnImeBackListener != null) {
-        this.mOnImeBackListener.onImeBack();
-      }
+    if ((event.getKeyCode() == KeyEvent.KEYCODE_BACK &&
+        event.getAction() == KeyEvent.ACTION_UP) && (this.mOnImeBackListener != null)) {
+      this.mOnImeBackListener.onImeBack();
     }
     return super.onKeyPreIme(keyCode, event);
   }

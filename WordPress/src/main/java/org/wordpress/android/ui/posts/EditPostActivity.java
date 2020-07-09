@@ -713,21 +713,15 @@ public class EditPostActivity extends AppCompatActivity
       HashSet<MediaModel> mediaToDeleteAssociationFor = new HashSet<>();
       for (MediaModel media : allMedia) {
         if (useAztec) {
-          if (!AztecEditorFragment.isMediaInPostBody(
-                  this, mPost.getContent(), String.valueOf(media.getId()))) {
-            // don't delete featured image uploads
-            if (!media.getMarkedLocallyAsFeatured()) {
-              mediaToDeleteAssociationFor.add(media);
-            }
+          // don't delete featured image uploads
+          if ((!AztecEditorFragment.isMediaInPostBody(
+                  this, mPost.getContent(), String.valueOf(media.getId()))) && (!media.getMarkedLocallyAsFeatured())) {
+            mediaToDeleteAssociationFor.add(media);
           }
-        } else if (useGutenberg) {
-          if (!PostUtils.isMediaInGutenbergPostBody(
-                  mPost.getContent(), String.valueOf(media.getId()))) {
-            // don't delete featured image uploads
-            if (!media.getMarkedLocallyAsFeatured()) {
-              mediaToDeleteAssociationFor.add(media);
-            }
-          }
+        } else // don't delete featured image uploads
+        if (((useGutenberg) && (!PostUtils.isMediaInGutenbergPostBody(
+                  mPost.getContent(), String.valueOf(media.getId())))) && (!media.getMarkedLocallyAsFeatured())) {
+          mediaToDeleteAssociationFor.add(media);
         }
       }
 
@@ -876,11 +870,9 @@ public class EditPostActivity extends AppCompatActivity
 
   @Override
   protected void onDestroy() {
-    if (!mIsConfigChange &&
-        (mRestartEditorOption == RestartEditorOptions.NO_RESTART)) {
-      if (mPostEditorAnalyticsSession != null) {
-        mPostEditorAnalyticsSession.end();
-      }
+    if ((!mIsConfigChange &&
+        (mRestartEditorOption == RestartEditorOptions.NO_RESTART)) && (mPostEditorAnalyticsSession != null)) {
+      mPostEditorAnalyticsSession.end();
     }
 
     mDispatcher.unregister(this);
@@ -3338,10 +3330,8 @@ public class EditPostActivity extends AppCompatActivity
           long mediaId =
               data.getLongExtra(PhotoPickerActivity.EXTRA_MEDIA_ID, 0);
           setFeaturedImageId(mediaId);
-        } else if (data.hasExtra(PhotoPickerActivity.EXTRA_MEDIA_QUEUED)) {
-          if (mEditPostSettingsFragment != null) {
-            mEditPostSettingsFragment.refreshViews();
-          }
+        } else if ((data.hasExtra(PhotoPickerActivity.EXTRA_MEDIA_QUEUED)) && (mEditPostSettingsFragment != null)) {
+          mEditPostSettingsFragment.refreshViews();
         }
         break;
       case RequestCodes.PICTURE_LIBRARY:
@@ -4025,14 +4015,12 @@ public class EditPostActivity extends AppCompatActivity
         }
       }
 
-      if (!found) {
-        if (mEditorFragment instanceof AztecEditorFragment) {
-          mAztecBackspaceDeletedOrGbBlockDeletedMediaItemIds.remove(mediaId);
-          // update the mediaIds list in UploadService
-          UploadService.setDeletedMediaItemIds(
-              mAztecBackspaceDeletedOrGbBlockDeletedMediaItemIds);
-          ((AztecEditorFragment)mEditorFragment).setMediaToFailed(mediaId);
-        }
+      if ((!found) && (mEditorFragment instanceof AztecEditorFragment)) {
+        mAztecBackspaceDeletedOrGbBlockDeletedMediaItemIds.remove(mediaId);
+        // update the mediaIds list in UploadService
+        UploadService.setDeletedMediaItemIds(
+            mAztecBackspaceDeletedOrGbBlockDeletedMediaItemIds);
+        ((AztecEditorFragment)mEditorFragment).setMediaToFailed(mediaId);
       }
     }
   }
@@ -4051,20 +4039,18 @@ public class EditPostActivity extends AppCompatActivity
       return;
     }
 
-    if (videoUrl.isEmpty()) {
-      if (PermissionUtils.checkAndRequestCameraAndStoragePermissions(
-              this, WPPermissionUtils.EDITOR_MEDIA_PERMISSION_REQUEST_CODE)) {
-        runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            if (mPendingVideoPressInfoRequests == null) {
-              mPendingVideoPressInfoRequests = new ArrayList<>();
-            }
-            mPendingVideoPressInfoRequests.add(videoId);
-            refreshBlogMedia();
+    if ((videoUrl.isEmpty()) && (PermissionUtils.checkAndRequestCameraAndStoragePermissions(
+              this, WPPermissionUtils.EDITOR_MEDIA_PERMISSION_REQUEST_CODE))) {
+      runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          if (mPendingVideoPressInfoRequests == null) {
+            mPendingVideoPressInfoRequests = new ArrayList<>();
           }
-        });
-      }
+          mPendingVideoPressInfoRequests.add(videoId);
+          refreshBlogMedia();
+        }
+      });
     }
 
     String posterUrl = WPMediaUtils.getVideoPressVideoPosterFromURL(videoUrl);

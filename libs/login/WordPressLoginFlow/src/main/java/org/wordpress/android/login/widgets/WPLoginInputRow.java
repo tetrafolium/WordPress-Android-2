@@ -123,12 +123,10 @@ public class WPLoginInputRow extends RelativeLayout {
               a.getColorStateList(
                   R.styleable.wpLoginInputRow_passwordToggleTint));
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-          if (a.hasValue(R.styleable.wpLoginInputRow_android_textAlignment)) {
-            mEditText.setTextAlignment(
-                a.getInt(R.styleable.wpLoginInputRow_android_textAlignment,
-                         TEXT_ALIGNMENT_GRAVITY));
-          }
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) && (a.hasValue(R.styleable.wpLoginInputRow_android_textAlignment))) {
+          mEditText.setTextAlignment(
+              a.getInt(R.styleable.wpLoginInputRow_android_textAlignment,
+                       TEXT_ALIGNMENT_GRAVITY));
         }
       } finally {
         a.recycle();

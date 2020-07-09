@@ -21,19 +21,17 @@ public class HtmlStyleTextWatcher implements TextWatcher {
     }
 
     int lastCharacterLocation = start + count - 1;
-    if (s.length() > lastCharacterLocation && lastCharacterLocation >= 0) {
-      if (after < count) {
-        if (after > 0) {
-          // Text was deleted and replaced by some other text
-          mLastOperation = Operation.REPLACE;
-        } else {
-          // Text was deleted only
-          mLastOperation = Operation.DELETE;
-        }
-
-        mOffset = start;
-        mModifiedText = s.subSequence(start + after, start + count);
+    if ((s.length() > lastCharacterLocation && lastCharacterLocation >= 0) && (after < count)) {
+      if (after > 0) {
+        // Text was deleted and replaced by some other text
+        mLastOperation = Operation.REPLACE;
+      } else {
+        // Text was deleted only
+        mLastOperation = Operation.DELETE;
       }
+
+      mOffset = start;
+      mModifiedText = s.subSequence(start + after, start + count);
     }
   }
 
@@ -44,18 +42,16 @@ public class HtmlStyleTextWatcher implements TextWatcher {
     }
 
     int lastCharacterLocation = start + count - 1;
-    if (s.length() > lastCharacterLocation) {
-      if (count > 0) {
-        if (before > 0) {
-          // Text was added, replacing some existing text
-          mLastOperation = Operation.REPLACE;
-          mModifiedText = s.subSequence(start, start + count);
-        } else {
-          // Text was added only
-          mLastOperation = Operation.INSERT;
-          mOffset = start;
-          mModifiedText = s.subSequence(start + before, start + count);
-        }
+    if ((s.length() > lastCharacterLocation) && (count > 0)) {
+      if (before > 0) {
+        // Text was added, replacing some existing text
+        mLastOperation = Operation.REPLACE;
+        mModifiedText = s.subSequence(start, start + count);
+      } else {
+        // Text was added only
+        mLastOperation = Operation.INSERT;
+        mOffset = start;
+        mModifiedText = s.subSequence(start + before, start + count);
       }
     }
   }

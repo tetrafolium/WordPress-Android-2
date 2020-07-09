@@ -81,10 +81,8 @@ public class EditCommentActivity extends AppCompatActivity {
 
     loadComment(getIntent());
 
-    if (icicle != null) {
-      if (icicle.getBoolean(ARG_CANCEL_EDITING_COMMENT_DIALOG_VISIBLE, false)) {
-        cancelEditCommentConfirmation();
-      }
+    if ((icicle != null) && (icicle.getBoolean(ARG_CANCEL_EDITING_COMMENT_DIALOG_VISIBLE, false))) {
+      cancelEditCommentConfirmation();
     }
 
     ActivityId.trackLastActivity(ActivityId.COMMENT_EDITOR);

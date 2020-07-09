@@ -122,19 +122,17 @@ public class LoginMagicLinkRequestFragment extends Fragment {
     mRequestMagicLinkButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (mLoginListener != null) {
-          if (NetworkUtils.checkConnection(getActivity())) {
-            showMagicLinkRequestProgressDialog();
-            AuthEmailPayloadSource source = getAuthEmailPayloadSource();
-            AuthEmailPayload authEmailPayload = new AuthEmailPayload(
-                mEmail, false,
-                mIsJetpackConnect ? AccountStore.AuthEmailPayloadFlow.JETPACK
-                                  : null,
-                source, mMagicLinkScheme);
-            mDispatcher.dispatch(
-                AuthenticationActionBuilder.newSendAuthEmailAction(
-                    authEmailPayload));
-          }
+        if ((mLoginListener != null) && (NetworkUtils.checkConnection(getActivity()))) {
+          showMagicLinkRequestProgressDialog();
+          AuthEmailPayloadSource source = getAuthEmailPayloadSource();
+          AuthEmailPayload authEmailPayload = new AuthEmailPayload(
+              mEmail, false,
+              mIsJetpackConnect ? AccountStore.AuthEmailPayloadFlow.JETPACK
+                                : null,
+              source, mMagicLinkScheme);
+          mDispatcher.dispatch(
+              AuthenticationActionBuilder.newSendAuthEmailAction(
+                  authEmailPayload));
         }
       }
     });

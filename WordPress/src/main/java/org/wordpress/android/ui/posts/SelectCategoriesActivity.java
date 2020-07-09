@@ -108,14 +108,12 @@ public class SelectCategoriesActivity extends AppCompatActivity {
     mSelectedCategories = new HashSet<>();
 
     Bundle extras = getIntent().getExtras();
-    if (extras != null) {
-      if (extras.containsKey(EXTRA_POST_LOCAL_ID)) {
-        int localPostId = extras.getInt(EXTRA_POST_LOCAL_ID);
-        PostModel post = mPostStore.getPostByLocalPostId(localPostId);
-        if (post != null) {
-          for (Long categoryId : post.getCategoryIdList()) {
-            mSelectedCategories.add(categoryId);
-          }
+    if ((extras != null) && (extras.containsKey(EXTRA_POST_LOCAL_ID))) {
+      int localPostId = extras.getInt(EXTRA_POST_LOCAL_ID);
+      PostModel post = mPostStore.getPostByLocalPostId(localPostId);
+      if (post != null) {
+        for (Long categoryId : post.getCategoryIdList()) {
+          mSelectedCategories.add(categoryId);
         }
       }
     }

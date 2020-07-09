@@ -185,11 +185,9 @@ public class AddQuickPressShortcutActivity extends ListActivity {
     super.onActivityResult(requestCode, resultCode, data);
     switch (requestCode) {
     case RequestCodes.ADD_ACCOUNT:
-      if (resultCode == RESULT_OK) {
-        if (mSiteStore.getVisibleSitesCount() > 0) {
-          displayAccounts();
-          break;
-        }
+      if ((resultCode == RESULT_OK) && (mSiteStore.getVisibleSitesCount() > 0)) {
+        displayAccounts();
+        break;
       }
       finish();
       break;

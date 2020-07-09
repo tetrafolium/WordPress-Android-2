@@ -652,12 +652,10 @@ public class AppPrefs {
     }
     // Check if the current site address is available in the set.
     boolean flag = false;
-    if (urls != null) {
-      if (urls.contains(siteURL)) {
-        flag = true;
-        // remove the flag from Prefs
-        setShowGutenbergInfoPopupForTheNewPosts(siteURL, false);
-      }
+    if ((urls != null) && (urls.contains(siteURL))) {
+      flag = true;
+      // remove the flag from Prefs
+      setShowGutenbergInfoPopupForTheNewPosts(siteURL, false);
     }
 
     return flag;

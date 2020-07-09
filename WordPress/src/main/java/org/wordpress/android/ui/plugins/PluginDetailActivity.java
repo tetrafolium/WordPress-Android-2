@@ -1810,25 +1810,23 @@ public class PluginDetailActivity
       // Automated Transfer since that's the only one triggered in this page and
       // only one we care about.
       return;
-    } else if (!mPlugin.isInstalled()) {
-      // it sometimes take a bit of time for plugin to get marked as installed,
-      // especially when Automated Transfer is performed right after domain
-      // registration
-      if (mIsShowingAutomatedTransferProgress) {
-        if (mPluginReCheckTimer < MAX_PLUGIN_CHECK_TRIES) {
-          AppLog.v(
-              T.PLUGINS,
-              "Targeted plugin is not marked as installed after Automated Transfer."
-                  + " Fetching the site plugins to reflect the changes.");
-          fetchPluginDirectory(PLUGIN_RETRY_DELAY_MS);
-          mPluginReCheckTimer++;
-          return;
-        } else {
-          // if plugin is still not marked as installed, we ask user to check
-          // back later, and proceed to finish Automated Transfer
-          ToastUtils.showToast(this, R.string.plugin_fetching_error_after_at,
-                               Duration.LONG);
-        }
+    } else // it sometimes take a bit of time for plugin to get marked as installed,
+    // especially when Automated Transfer is performed right after domain
+    // registration
+    if ((!mPlugin.isInstalled()) && (mIsShowingAutomatedTransferProgress)) {
+      if (mPluginReCheckTimer < MAX_PLUGIN_CHECK_TRIES) {
+        AppLog.v(
+            T.PLUGINS,
+            "Targeted plugin is not marked as installed after Automated Transfer."
+                + " Fetching the site plugins to reflect the changes.");
+        fetchPluginDirectory(PLUGIN_RETRY_DELAY_MS);
+        mPluginReCheckTimer++;
+        return;
+      } else {
+        // if plugin is still not marked as installed, we ask user to check
+        // back later, and proceed to finish Automated Transfer
+        ToastUtils.showToast(this, R.string.plugin_fetching_error_after_at,
+                             Duration.LONG);
       }
     }
     if (event.type == PluginDirectoryType.SITE &&

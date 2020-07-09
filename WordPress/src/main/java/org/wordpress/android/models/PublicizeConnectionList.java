@@ -45,12 +45,10 @@ public class PublicizeConnectionList extends ArrayList<PublicizeConnection> {
     }
 
     for (PublicizeConnection connection : this) {
-      if (connection.getService().equalsIgnoreCase(serviceId)) {
-        // shared connections are available to all users, otherwise the service
-        // userId must match the current userId to be considered connected
-        if (connection.isShared || connection.userId == userId) {
-          connections.add(connection);
-        }
+      // shared connections are available to all users, otherwise the service
+      // userId must match the current userId to be considered connected
+      if ((connection.getService().equalsIgnoreCase(serviceId)) && (connection.isShared || connection.userId == userId)) {
+        connections.add(connection);
       }
     }
     return connections;
@@ -63,10 +61,8 @@ public class PublicizeConnectionList extends ArrayList<PublicizeConnection> {
     }
 
     for (PublicizeConnection connection : this) {
-      if (connection.getService().equalsIgnoreCase(service.getId())) {
-        if (connection.isShared || connection.userId == userId) {
-          return true;
-        }
+      if ((connection.getService().equalsIgnoreCase(service.getId())) && (connection.isShared || connection.userId == userId)) {
+        return true;
       }
     }
     return false;

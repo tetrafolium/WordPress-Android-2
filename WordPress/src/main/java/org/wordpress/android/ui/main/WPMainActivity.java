@@ -449,7 +449,7 @@ public class WPMainActivity extends AppCompatActivity
         this, new Observer<Boolean>() {
           @Override
           public void onChanged(@Nullable Boolean showBadge) {
-            mBottomNav.showReaderBadge(showBadge != null ? showBadge : false);
+            mBottomNav.showReaderBadge(showBadge != null && showBadge);
           }
         });
     mNewsManager.pull(false);
@@ -728,18 +728,16 @@ public class WPMainActivity extends AppCompatActivity
       return;
     }
 
-    if (getSelectedSite() != null && getMySiteFragment() != null) {
-      if (getMySiteFragment().isQuickStartTaskActive(
-              QuickStartTask.PUBLISH_POST)) {
-        // PUBLISH_POST task requires special Quick Start notice logic, so we
-        // set the flag here
-        AppPrefs.setQuickStartNoticeRequired(!mQuickStartStore.hasDoneTask(
-            AppPrefs.getSelectedSite(), QuickStartTask.PUBLISH_POST));
-        // MySite fragment might not be attached to activity, so we need to
-        // remove focus point from here
-        QuickStartUtils.removeQuickStartFocusPoint(
-            (ViewGroup)findViewById(R.id.root_view_main));
-      }
+    if ((getSelectedSite() != null && getMySiteFragment() != null) && (getMySiteFragment().isQuickStartTaskActive(
+              QuickStartTask.PUBLISH_POST))) {
+      // PUBLISH_POST task requires special Quick Start notice logic, so we
+      // set the flag here
+      AppPrefs.setQuickStartNoticeRequired(!mQuickStartStore.hasDoneTask(
+          AppPrefs.getSelectedSite(), QuickStartTask.PUBLISH_POST));
+      // MySite fragment might not be attached to activity, so we need to
+      // remove focus point from here
+      QuickStartUtils.removeQuickStartFocusPoint(
+          (ViewGroup)findViewById(R.id.root_view_main));
     }
 
     ActivityLauncher.addNewPostForResult(this, getSelectedSite(), false);
@@ -1023,32 +1021,30 @@ public class WPMainActivity extends AppCompatActivity
       return;
     }
 
-    if (mAccountStore.hasAccessToken()) {
-      if (mIsMagicLinkLogin) {
-        if (mIsMagicLinkSignup) {
-          // Sets a flag that we need to track a magic link sign up.
-          // We'll handle it in onAccountChanged so we know we have
-          // updated account info.
-          AppPrefs.setShouldTrackMagicLinkSignup(true);
-          mDispatcher.dispatch(AccountActionBuilder.newFetchAccountAction());
-          if (mJetpackConnectSource != null) {
-            ActivityLauncher.continueJetpackConnect(this, mJetpackConnectSource,
-                                                    mSelectedSite);
-          } else {
-            ActivityLauncher.showSignupEpilogue(this, null, null, null, null,
-                                                true);
-          }
+    if ((mAccountStore.hasAccessToken()) && (mIsMagicLinkLogin)) {
+      if (mIsMagicLinkSignup) {
+        // Sets a flag that we need to track a magic link sign up.
+        // We'll handle it in onAccountChanged so we know we have
+        // updated account info.
+        AppPrefs.setShouldTrackMagicLinkSignup(true);
+        mDispatcher.dispatch(AccountActionBuilder.newFetchAccountAction());
+        if (mJetpackConnectSource != null) {
+          ActivityLauncher.continueJetpackConnect(this, mJetpackConnectSource,
+                                                  mSelectedSite);
         } else {
-          mLoginAnalyticsListener.trackLoginMagicLinkSucceeded();
+          ActivityLauncher.showSignupEpilogue(this, null, null, null, null,
+                                              true);
+        }
+      } else {
+        mLoginAnalyticsListener.trackLoginMagicLinkSucceeded();
 
-          if (mJetpackConnectSource != null) {
-            ActivityLauncher.continueJetpackConnect(this, mJetpackConnectSource,
-                                                    mSelectedSite);
-          } else {
-            ActivityLauncher.showLoginEpilogue(
-                this, true,
-                getIntent().getIntegerArrayListExtra(ARG_OLD_SITES_IDS));
-          }
+        if (mJetpackConnectSource != null) {
+          ActivityLauncher.continueJetpackConnect(this, mJetpackConnectSource,
+                                                  mSelectedSite);
+        } else {
+          ActivityLauncher.showLoginEpilogue(
+              this, true,
+              getIntent().getIntegerArrayListExtra(ARG_OLD_SITES_IDS));
         }
       }
     }
@@ -1305,13 +1301,11 @@ public class WPMainActivity extends AppCompatActivity
 
     // When alwaysRefreshUI is `true` we need to refresh the UI regardless of
     // the current site
-    if (!alwaysRefreshUI) {
-      // we need to refresh the UI only when the site IDs matches
-      if (getSelectedSite().getId() != localSiteID) {
-        // No need to refresh the UI, since the current selected site is another
-        // site
-        return;
-      }
+    // we need to refresh the UI only when the site IDs matches
+    if ((!alwaysRefreshUI) && (getSelectedSite().getId() != localSiteID)) {
+      // No need to refresh the UI, since the current selected site is another
+      // site
+      return;
     }
 
     SiteModel site = mSiteStore.getSiteByLocalId(getSelectedSite().getId());

@@ -1981,145 +1981,143 @@ public class AztecEditorFragment extends EditorFragmentAbstract
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
-    if (requestCode == EDITOR_MEDIA_SETTINGS) {
-      if (mTappedMediaPredicate != null) {
-        if (data == null || data.getExtras() == null) {
-          return;
+    if ((requestCode == EDITOR_MEDIA_SETTINGS) && (mTappedMediaPredicate != null)) {
+      if (data == null || data.getExtras() == null) {
+        return;
+      }
+
+      EditorImageMetaData metaData =
+          data.getParcelableExtra(ARG_EDITOR_IMAGE_METADATA);
+
+      if (metaData.isRemoved()) {
+        CaptionExtensionsKt.removeImageCaption(mContent,
+                                               mTappedMediaPredicate);
+        mContent.removeMedia(mTappedMediaPredicate);
+
+        if (isHistoryEnabled()) {
+          mContent.history.beforeTextChanged(mContent);
+        }
+      } else {
+        // changing image settings should be recorded in history
+        if (isHistoryEnabled()) {
+          mContent.history.beforeTextChanged(mContent);
         }
 
-        EditorImageMetaData metaData =
-            data.getParcelableExtra(ARG_EDITOR_IMAGE_METADATA);
+        AztecAttributes attributes =
+            mContent.getElementAttributes(mTappedMediaPredicate);
+        attributes.setValue(ATTR_SRC, metaData.getSrc());
 
-        if (metaData.isRemoved()) {
+        if (!TextUtils.isEmpty(metaData.getTitle())) {
+          attributes.setValue(ATTR_TITLE, metaData.getTitle());
+        } else {
+          attributes.removeAttribute(ATTR_TITLE);
+        }
+
+        if (!TextUtils.isEmpty(metaData.getAlt())) {
+          attributes.setValue(ATTR_ALT, metaData.getAlt());
+        } else {
+          attributes.removeAttribute(ATTR_ALT);
+        }
+
+        if (!TextUtils.isEmpty(metaData.getWidth())) {
+          attributes.setValue(ATTR_DIMEN_WIDTH, metaData.getWidth());
+        } else {
+          attributes.removeAttribute(ATTR_DIMEN_WIDTH);
+        }
+
+        if (!TextUtils.isEmpty(metaData.getHeight())) {
+          attributes.setValue(ATTR_DIMEN_HEIGHT, metaData.getHeight());
+        } else {
+          attributes.removeAttribute(ATTR_DIMEN_HEIGHT);
+        }
+
+        if (!TextUtils.isEmpty(metaData.getLinkUrl())) {
+          AztecAttributes linkAttributes =
+              MediaLinkExtensionsKt.getMediaLinkAttributes(
+                  mContent, mTappedMediaPredicate);
+
+          // without "noopener" img tag around img might be removed by calypso
+          // editor
+          linkAttributes.setValue("rel", "noopener");
+
+          // when reusing attributes do not forget to remove href
+          linkAttributes.removeAttribute("href");
+
+          if (metaData.isLinkTargetBlank()) {
+            linkAttributes.setValue(ATTR_TARGET, "_blank");
+          } else {
+            linkAttributes.removeAttribute(ATTR_TARGET);
+          }
+
+          MediaLinkExtensionsKt.addLinkToMedia(
+              mContent, mTappedMediaPredicate,
+              UrlUtils.addUrlSchemeIfNeeded(metaData.getLinkUrl(), false),
+              linkAttributes);
+        } else {
+          MediaLinkExtensionsKt.removeLinkFromMedia(mContent,
+                                                    mTappedMediaPredicate);
+        }
+
+        AttributesWithClass attributesWithClass =
+            getAttributesWithClass(attributes);
+
+        // remove previously set class attributes to add updated values
+        attributesWithClass.removeClassStartingWith(ATTR_ALIGN);
+        attributesWithClass.removeClassStartingWith(ATTR_SIZE_DASH);
+        attributesWithClass.removeClassStartingWith(ATTR_IMAGE_WP_DASH);
+
+        if (!TextUtils.isEmpty(metaData.getCaption())) {
+          AztecAttributes captionAttributes =
+              CaptionExtensionsKt.getImageCaptionAttributes(
+                  mContent, mTappedMediaPredicate);
+
+          // if caption is present apply align attribute to it instead of
+          // image
+          if (!TextUtils.isEmpty(metaData.getAlign())) {
+            captionAttributes.setValue(ATTR_ALIGN,
+                                       ATTR_ALIGN + metaData.getAlign());
+          } else {
+            captionAttributes.removeAttribute(ATTR_ALIGN);
+          }
+
+          // without width attribute caption will not render on the web
+          captionAttributes.setValue(ATTR_DIMEN_WIDTH, metaData.getWidth());
+
+          CaptionExtensionsKt.setImageCaption(mContent, mTappedMediaPredicate,
+                                              metaData.getCaption(),
+                                              captionAttributes);
+
+          // setting caption causes rendering issue in some cases, reset
+          // content to avoid them
+          mContent.fromHtml(mContent.toHtml(false), false);
+        } else {
+          // if no caption present apply align attribute directly to image
+          if (!TextUtils.isEmpty(metaData.getAlign())) {
+            attributesWithClass.addClass(ATTR_ALIGN + metaData.getAlign());
+          }
+
           CaptionExtensionsKt.removeImageCaption(mContent,
                                                  mTappedMediaPredicate);
-          mContent.removeMedia(mTappedMediaPredicate);
-
-          if (isHistoryEnabled()) {
-            mContent.history.beforeTextChanged(mContent);
-          }
-        } else {
-          // changing image settings should be recorded in history
-          if (isHistoryEnabled()) {
-            mContent.history.beforeTextChanged(mContent);
-          }
-
-          AztecAttributes attributes =
-              mContent.getElementAttributes(mTappedMediaPredicate);
-          attributes.setValue(ATTR_SRC, metaData.getSrc());
-
-          if (!TextUtils.isEmpty(metaData.getTitle())) {
-            attributes.setValue(ATTR_TITLE, metaData.getTitle());
-          } else {
-            attributes.removeAttribute(ATTR_TITLE);
-          }
-
-          if (!TextUtils.isEmpty(metaData.getAlt())) {
-            attributes.setValue(ATTR_ALT, metaData.getAlt());
-          } else {
-            attributes.removeAttribute(ATTR_ALT);
-          }
-
-          if (!TextUtils.isEmpty(metaData.getWidth())) {
-            attributes.setValue(ATTR_DIMEN_WIDTH, metaData.getWidth());
-          } else {
-            attributes.removeAttribute(ATTR_DIMEN_WIDTH);
-          }
-
-          if (!TextUtils.isEmpty(metaData.getHeight())) {
-            attributes.setValue(ATTR_DIMEN_HEIGHT, metaData.getHeight());
-          } else {
-            attributes.removeAttribute(ATTR_DIMEN_HEIGHT);
-          }
-
-          if (!TextUtils.isEmpty(metaData.getLinkUrl())) {
-            AztecAttributes linkAttributes =
-                MediaLinkExtensionsKt.getMediaLinkAttributes(
-                    mContent, mTappedMediaPredicate);
-
-            // without "noopener" img tag around img might be removed by calypso
-            // editor
-            linkAttributes.setValue("rel", "noopener");
-
-            // when reusing attributes do not forget to remove href
-            linkAttributes.removeAttribute("href");
-
-            if (metaData.isLinkTargetBlank()) {
-              linkAttributes.setValue(ATTR_TARGET, "_blank");
-            } else {
-              linkAttributes.removeAttribute(ATTR_TARGET);
-            }
-
-            MediaLinkExtensionsKt.addLinkToMedia(
-                mContent, mTappedMediaPredicate,
-                UrlUtils.addUrlSchemeIfNeeded(metaData.getLinkUrl(), false),
-                linkAttributes);
-          } else {
-            MediaLinkExtensionsKt.removeLinkFromMedia(mContent,
-                                                      mTappedMediaPredicate);
-          }
-
-          AttributesWithClass attributesWithClass =
-              getAttributesWithClass(attributes);
-
-          // remove previously set class attributes to add updated values
-          attributesWithClass.removeClassStartingWith(ATTR_ALIGN);
-          attributesWithClass.removeClassStartingWith(ATTR_SIZE_DASH);
-          attributesWithClass.removeClassStartingWith(ATTR_IMAGE_WP_DASH);
-
-          if (!TextUtils.isEmpty(metaData.getCaption())) {
-            AztecAttributes captionAttributes =
-                CaptionExtensionsKt.getImageCaptionAttributes(
-                    mContent, mTappedMediaPredicate);
-
-            // if caption is present apply align attribute to it instead of
-            // image
-            if (!TextUtils.isEmpty(metaData.getAlign())) {
-              captionAttributes.setValue(ATTR_ALIGN,
-                                         ATTR_ALIGN + metaData.getAlign());
-            } else {
-              captionAttributes.removeAttribute(ATTR_ALIGN);
-            }
-
-            // without width attribute caption will not render on the web
-            captionAttributes.setValue(ATTR_DIMEN_WIDTH, metaData.getWidth());
-
-            CaptionExtensionsKt.setImageCaption(mContent, mTappedMediaPredicate,
-                                                metaData.getCaption(),
-                                                captionAttributes);
-
-            // setting caption causes rendering issue in some cases, reset
-            // content to avoid them
-            mContent.fromHtml(mContent.toHtml(false), false);
-          } else {
-            // if no caption present apply align attribute directly to image
-            if (!TextUtils.isEmpty(metaData.getAlign())) {
-              attributesWithClass.addClass(ATTR_ALIGN + metaData.getAlign());
-            }
-
-            CaptionExtensionsKt.removeImageCaption(mContent,
-                                                   mTappedMediaPredicate);
-          }
-
-          if (!TextUtils.isEmpty(metaData.getSize())) {
-            attributesWithClass.addClass(metaData.getSize());
-          }
-
-          if (!TextUtils.isEmpty(metaData.getAttachmentId())) {
-            attributesWithClass.addClass(ATTR_IMAGE_WP_DASH +
-                                         metaData.getAttachmentId());
-          }
-
-          attributes.setValue(
-              ATTR_CLASS,
-              attributesWithClass.getAttributes().getValue(ATTR_CLASS));
-
-          attributes.removeAttribute(TEMP_IMAGE_ID);
-          mContent.updateElementAttributes(mTappedMediaPredicate, attributes);
         }
 
-        mTappedMediaPredicate = null;
+        if (!TextUtils.isEmpty(metaData.getSize())) {
+          attributesWithClass.addClass(metaData.getSize());
+        }
+
+        if (!TextUtils.isEmpty(metaData.getAttachmentId())) {
+          attributesWithClass.addClass(ATTR_IMAGE_WP_DASH +
+                                       metaData.getAttachmentId());
+        }
+
+        attributes.setValue(
+            ATTR_CLASS,
+            attributesWithClass.getAttributes().getValue(ATTR_CLASS));
+
+        attributes.removeAttribute(TEMP_IMAGE_ID);
+        mContent.updateElementAttributes(mTappedMediaPredicate, attributes);
       }
+
+      mTappedMediaPredicate = null;
     }
   }
 

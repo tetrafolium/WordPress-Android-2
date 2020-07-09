@@ -182,12 +182,10 @@ public class ReaderPhotoView extends RelativeLayout {
   protected void onLayout(boolean changed, int left, int top, int right,
                           int bottom) {
     super.onLayout(changed, left, top, right, bottom);
-    if (!isInEditMode()) {
-      if (mIsInitialLayout) {
-        mIsInitialLayout = false;
-        AppLog.d(AppLog.T.READER, "reader photo > initial layout");
-        loadImage();
-      }
+    if ((!isInEditMode()) && (mIsInitialLayout)) {
+      mIsInitialLayout = false;
+      AppLog.d(AppLog.T.READER, "reader photo > initial layout");
+      loadImage();
     }
   }
 

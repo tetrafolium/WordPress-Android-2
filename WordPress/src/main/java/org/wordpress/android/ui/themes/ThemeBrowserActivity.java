@@ -251,12 +251,10 @@ public class ThemeBrowserActivity
                            ToastUtils.Duration.SHORT);
 
       // set the new current theme to update header
-      if (mCurrentTheme != null && mThemeBrowserFragment != null) {
-        if (mThemeBrowserFragment.getCurrentThemeTextView() != null) {
-          mThemeBrowserFragment.getCurrentThemeTextView().setText(
-              mCurrentTheme.getName());
-          mThemeBrowserFragment.setCurrentThemeId(mCurrentTheme.getThemeId());
-        }
+      if ((mCurrentTheme != null && mThemeBrowserFragment != null) && (mThemeBrowserFragment.getCurrentThemeTextView() != null)) {
+        mThemeBrowserFragment.getCurrentThemeTextView().setText(
+            mCurrentTheme.getName());
+        mThemeBrowserFragment.setCurrentThemeId(mCurrentTheme.getThemeId());
       }
     } else {
       AppLog.d(T.THEMES, "Current Theme fetch successful!");

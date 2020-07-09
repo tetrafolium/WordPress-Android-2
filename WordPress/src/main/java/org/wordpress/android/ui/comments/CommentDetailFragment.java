@@ -1293,18 +1293,16 @@ public class CommentDetailFragment
                                ? Stat.NOTIFICATION_LIKED
                                : Stat.NOTIFICATION_UNLIKED);
 
-    if (mNotificationsDetailListFragment != null && mComment != null) {
-      // Optimistically set comment to approved when liking an unapproved
-      // comment WP.com will set a comment to approved if it is liked while
-      // unapproved
-      if (mBtnLikeComment.isActivated() &&
+    // Optimistically set comment to approved when liking an unapproved
+    // comment WP.com will set a comment to approved if it is liked while
+    // unapproved
+    if ((mNotificationsDetailListFragment != null && mComment != null) && (mBtnLikeComment.isActivated() &&
           CommentStatus.fromString(mComment.getStatus()) ==
-              CommentStatus.UNAPPROVED) {
-        mComment.setStatus(CommentStatus.APPROVED.toString());
-        mNotificationsDetailListFragment.refreshBlocksForCommentStatus(
-            CommentStatus.APPROVED);
-        setModerateButtonForStatus(CommentStatus.APPROVED);
-      }
+              CommentStatus.UNAPPROVED)) {
+      mComment.setStatus(CommentStatus.APPROVED.toString());
+      mNotificationsDetailListFragment.refreshBlocksForCommentStatus(
+          CommentStatus.APPROVED);
+      setModerateButtonForStatus(CommentStatus.APPROVED);
     }
     mDispatcher.dispatch(
         CommentActionBuilder.newLikeCommentAction(new RemoteLikeCommentPayload(

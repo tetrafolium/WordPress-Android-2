@@ -231,14 +231,12 @@ public class PhotoPickerFragment extends Fragment {
   public void doIconClicked(@NonNull PhotoPickerIcon icon) {
     mLastTappedIcon = icon;
 
-    if (icon == PhotoPickerIcon.ANDROID_CAPTURE_PHOTO ||
-        icon == PhotoPickerIcon.ANDROID_CAPTURE_VIDEO) {
-      if (ContextCompat.checkSelfPermission(getActivity(), permission.CAMERA) !=
+    if ((icon == PhotoPickerIcon.ANDROID_CAPTURE_PHOTO ||
+        icon == PhotoPickerIcon.ANDROID_CAPTURE_VIDEO) && (ContextCompat.checkSelfPermission(getActivity(), permission.CAMERA) !=
               PackageManager.PERMISSION_GRANTED ||
-          !hasStoragePermission()) {
-        requestCameraPermission();
-        return;
-      }
+          !hasStoragePermission())) {
+      requestCameraPermission();
+      return;
     }
 
     switch (icon) {

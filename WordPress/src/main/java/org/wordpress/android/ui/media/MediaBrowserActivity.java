@@ -905,11 +905,9 @@ public class MediaBrowserActivity extends AppCompatActivity
   private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
-      if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
-        // Coming from zero connection. Continue what's pending for delete
-        if (mMediaStore.hasSiteMediaToDelete(mSite)) {
-          startMediaDeleteService(null);
-        }
+      // Coming from zero connection. Continue what's pending for delete
+      if ((ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) && (mMediaStore.hasSiteMediaToDelete(mSite))) {
+        startMediaDeleteService(null);
       }
     }
   };

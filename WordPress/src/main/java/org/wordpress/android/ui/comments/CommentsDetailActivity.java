@@ -180,10 +180,8 @@ public class CommentsDetailActivity extends AppCompatActivity
         mCanLoadMoreComments = false;
       }
     }
-    if (event.isError()) {
-      if (!TextUtils.isEmpty(event.error.message)) {
-        ToastUtils.showToast(this, event.error.message);
-      }
+    if ((event.isError()) && (!TextUtils.isEmpty(event.error.message))) {
+      ToastUtils.showToast(this, event.error.message);
     }
   }
 

@@ -49,14 +49,12 @@ public class MultiUsernameEditText extends AppCompatEditText {
 
     @Override
     public boolean sendKeyEvent(KeyEvent event) {
-      if (event.getAction() == KeyEvent.ACTION_DOWN &&
-          event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
-        if (mOnBackspacePressedListener != null) {
-          // if username was not deleted pass event to parent method and return
-          // the result
-          return !mOnBackspacePressedListener.onBackspacePressed() &&
-              super.sendKeyEvent(event);
-        }
+      if ((event.getAction() == KeyEvent.ACTION_DOWN &&
+          event.getKeyCode() == KeyEvent.KEYCODE_DEL) && (mOnBackspacePressedListener != null)) {
+        // if username was not deleted pass event to parent method and return
+        // the result
+        return !mOnBackspacePressedListener.onBackspacePressed() &&
+            super.sendKeyEvent(event);
       }
       return super.sendKeyEvent(event);
     }

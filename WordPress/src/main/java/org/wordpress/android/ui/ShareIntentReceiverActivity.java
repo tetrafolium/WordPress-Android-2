@@ -192,13 +192,11 @@ public class ShareIntentReceiverActivity
   }
 
   private boolean checkAndRequestPermissions() {
-    if (!isSharingText()) {
-      // If we're sharing media, we must check we have Storage permission
-      // (needed for media upload).
-      if (!PermissionUtils.checkAndRequestStoragePermission(
-              this, WPPermissionUtils.SHARE_MEDIA_PERMISSION_REQUEST_CODE)) {
-        return false;
-      }
+    // If we're sharing media, we must check we have Storage permission
+    // (needed for media upload).
+    if ((!isSharingText()) && (!PermissionUtils.checkAndRequestStoragePermission(
+              this, WPPermissionUtils.SHARE_MEDIA_PERMISSION_REQUEST_CODE))) {
+      return false;
     }
     return true;
   }
