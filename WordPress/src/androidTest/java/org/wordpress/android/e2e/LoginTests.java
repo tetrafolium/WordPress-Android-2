@@ -20,42 +20,42 @@ import org.wordpress.android.ui.accounts.LoginMagicLinkInterceptActivity;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginTests extends BaseTest {
-  @Rule
-  public ActivityTestRule<LoginMagicLinkInterceptActivity>
-      mMagicLinkActivityTestRule =
-          new ActivityTestRule<>(LoginMagicLinkInterceptActivity.class);
+@Rule
+public ActivityTestRule<LoginMagicLinkInterceptActivity>
+mMagicLinkActivityTestRule =
+	new ActivityTestRule<>(LoginMagicLinkInterceptActivity.class);
 
-  @Before
-  public void setUp() {
-    logoutIfNecessary();
-  }
+@Before
+public void setUp() {
+	logoutIfNecessary();
+}
 
-  @Test
-  public void loginWithEmailPassword() {
-    wpLogin();
-  }
+@Test
+public void loginWithEmailPassword() {
+	wpLogin();
+}
 
-  @Test
-  public void loginWithSiteAddress() {
-    new LoginFlow().loginSiteAddress(E2E_WP_COM_USER_SITE_ADDRESS,
-                                     E2E_WP_COM_USER_USERNAME,
-                                     E2E_WP_COM_USER_PASSWORD);
-  }
+@Test
+public void loginWithSiteAddress() {
+	new LoginFlow().loginSiteAddress(E2E_WP_COM_USER_SITE_ADDRESS,
+	                                 E2E_WP_COM_USER_USERNAME,
+	                                 E2E_WP_COM_USER_PASSWORD);
+}
 
-  @Test
-  public void loginWithMagicLink() {
-    new LoginFlow().loginMagicLink(mMagicLinkActivityTestRule);
-  }
+@Test
+public void loginWithMagicLink() {
+	new LoginFlow().loginMagicLink(mMagicLinkActivityTestRule);
+}
 
-  @Test
-  public void loginWithSelfHostedAccount() {
-    new LoginFlow().loginSiteAddress(E2E_SELF_HOSTED_USER_SITE_ADDRESS,
-                                     E2E_SELF_HOSTED_USER_USERNAME,
-                                     E2E_SELF_HOSTED_USER_PASSWORD);
-  }
+@Test
+public void loginWithSelfHostedAccount() {
+	new LoginFlow().loginSiteAddress(E2E_SELF_HOSTED_USER_SITE_ADDRESS,
+	                                 E2E_SELF_HOSTED_USER_USERNAME,
+	                                 E2E_SELF_HOSTED_USER_PASSWORD);
+}
 
-  @After
-  public void tearDown() {
-    logoutIfNecessary();
-  }
+@After
+public void tearDown() {
+	logoutIfNecessary();
+}
 }

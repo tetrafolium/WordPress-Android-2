@@ -14,25 +14,25 @@ import org.wordpress.android.util.AppLog.T;
 import org.wordpress.android.util.SystemServiceFactoryAbstract;
 
 public class SystemServiceFactoryTest implements SystemServiceFactoryAbstract {
-  public static Answer sNotificationCallback;
+public static Answer sNotificationCallback;
 
-  public Object get(Context context, String name) {
-    System.setProperty("dexmaker.dexcache", context.getCacheDir().getPath());
-    if (Context.NOTIFICATION_SERVICE.equals(name)) {
-      NotificationManager notificationManager = mock(NotificationManager.class);
-      if (sNotificationCallback != null) {
-        doAnswer(sNotificationCallback)
-            .when(notificationManager)
-            .notify(anyInt(), any(Notification.class));
-        doAnswer(sNotificationCallback)
-            .when(notificationManager)
-            .cancel(anyInt());
-      }
-      return notificationManager;
-    } else {
-      AppLog.e(T.TESTS, "SystemService:" + name +
-                            "No supported in SystemServiceFactoryTest");
-    }
-    return null;
-  }
+public Object get(Context context, String name) {
+	System.setProperty("dexmaker.dexcache", context.getCacheDir().getPath());
+	if (Context.NOTIFICATION_SERVICE.equals(name)) {
+		NotificationManager notificationManager = mock(NotificationManager.class);
+		if (sNotificationCallback != null) {
+			doAnswer(sNotificationCallback)
+			.when(notificationManager)
+			.notify(anyInt(), any(Notification.class));
+			doAnswer(sNotificationCallback)
+			.when(notificationManager)
+			.cancel(anyInt());
+		}
+		return notificationManager;
+	} else {
+		AppLog.e(T.TESTS, "SystemService:" + name +
+		         "No supported in SystemServiceFactoryTest");
+	}
+	return null;
+}
 }

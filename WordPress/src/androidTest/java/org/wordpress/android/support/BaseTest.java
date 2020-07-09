@@ -21,52 +21,54 @@ import org.wordpress.android.modules.AppComponentTest;
 import org.wordpress.android.modules.DaggerAppComponentTest;
 
 public class BaseTest {
-  protected WordPress mAppContext;
-  protected AppComponentTest mMockedAppComponent;
+protected WordPress mAppContext;
+protected AppComponentTest mMockedAppComponent;
 
-  public static final int WIREMOCK_PORT = 8080;
+public static final int WIREMOCK_PORT = 8080;
 
-  @Before
-  public void setup() {
-    mAppContext = ApplicationProvider.getApplicationContext();
-    mMockedAppComponent =
-        DaggerAppComponentTest.builder().application(mAppContext).build();
-  }
+@Before
+public void setup() {
+	mAppContext = ApplicationProvider.getApplicationContext();
+	mMockedAppComponent =
+		DaggerAppComponentTest.builder().application(mAppContext).build();
+}
 
-  @Rule
-  public WireMockRule wireMockRule =
-      new WireMockRule(options()
-                           .port(WIREMOCK_PORT)
-                           .fileSource(new AssetFileSource(
-                               InstrumentationRegistry.getInstrumentation()
-                                   .getContext()
-                                   .getAssets()))
-                           .extensions(new ResponseTemplateTransformer(true))
-                           .notifier(new AndroidNotifier()));
+@Rule
+public WireMockRule wireMockRule =
+	new WireMockRule(options()
+	                 .port(WIREMOCK_PORT)
+	                 .fileSource(new AssetFileSource(
+					     InstrumentationRegistry.getInstrumentation()
+					     .getContext()
+					     .getAssets()))
+	                 .extensions(new ResponseTemplateTransformer(true))
+	                 .notifier(new AndroidNotifier()));
 
-  private void logout() {
-    boolean isSelfHosted = new MePage().go().isSelfHosted();
-    if (isSelfHosted) { // Logged in from self hosted connected
-      new MySitesPage().go().removeSite(E2E_SELF_HOSTED_USER_SITE_ADDRESS);
-    } else {
-      wpLogout();
-    }
-  }
+private void logout() {
+	boolean isSelfHosted = new MePage().go().isSelfHosted();
+	if (isSelfHosted) { // Logged in from self hosted connected
+		new MySitesPage().go().removeSite(E2E_SELF_HOSTED_USER_SITE_ADDRESS);
+	} else {
+		wpLogout();
+	}
+}
 
-  protected void logoutIfNecessary() {
-    if (isElementDisplayed(R.id.login_button) ||
-        isElementDisplayed(R.id.login_open_email_client)) {
-      return;
-    }
+protected void logoutIfNecessary() {
+	if (isElementDisplayed(R.id.login_button) ||
+	    isElementDisplayed(R.id.login_open_email_client)) {
+		return;
+	}
 
-    if (isElementDisplayed(R.id.nav_me)) {
-      logout();
-    }
-  }
-  protected void wpLogin() {
-    logoutIfNecessary();
-    new LoginFlow().loginEmailPassword();
-  }
+	if (isElementDisplayed(R.id.nav_me)) {
+		logout();
+	}
+}
+protected void wpLogin() {
+	logoutIfNecessary();
+	new LoginFlow().loginEmailPassword();
+}
 
-  private void wpLogout() { new MePage().go().logout(); }
+private void wpLogout() {
+	new MePage().go().logout();
+}
 }

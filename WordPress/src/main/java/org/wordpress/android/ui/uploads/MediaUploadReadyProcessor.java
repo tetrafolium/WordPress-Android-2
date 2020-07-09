@@ -10,45 +10,45 @@ import org.wordpress.android.ui.prefs.AppPrefs;
 import org.wordpress.android.util.helpers.MediaFile;
 
 public class MediaUploadReadyProcessor implements MediaUploadReadyListener {
-  @Override
-  public PostModel replaceMediaFileWithUrlInPost(@Nullable PostModel post,
-                                                 String localMediaId,
-                                                 MediaFile mediaFile) {
-    if (post != null) {
-      boolean showAztecEditor = AppPrefs.isAztecEditorEnabled();
-      boolean showGutenbergEditor = AppPrefs.isGutenbergEditorEnabled();
-
-      if (showGutenbergEditor &&
-          PostUtils.contentContainsGutenbergBlocks(post.getContent())) {
-        post.setContent(PostUtils.replaceMediaFileWithUrlInGutenbergPost(
-            post.getContent(), localMediaId, mediaFile));
-      } else if (showAztecEditor) {
-        post.setContent(AztecEditorFragment.replaceMediaFileWithUrl(
-            WordPress.getContext(), post.getContent(), localMediaId,
-            mediaFile));
-      }
-    }
-
-    return post;
-  }
-
-  @Override
-  public PostModel markMediaUploadFailedInPost(@Nullable PostModel post,
+@Override
+public PostModel replaceMediaFileWithUrlInPost(@Nullable PostModel post,
                                                String localMediaId,
-                                               final MediaFile mediaFile) {
-    if (post != null) {
-      boolean showAztecEditor = AppPrefs.isAztecEditorEnabled();
-      boolean showGutenbergEditor = AppPrefs.isGutenbergEditorEnabled();
+                                               MediaFile mediaFile) {
+	if (post != null) {
+		boolean showAztecEditor = AppPrefs.isAztecEditorEnabled();
+		boolean showGutenbergEditor = AppPrefs.isGutenbergEditorEnabled();
 
-      if (showGutenbergEditor) {
-        // TODO check if anything needs be done in Gutenberg
-      } else if (showAztecEditor) {
-        post.setContent(AztecEditorFragment.markMediaFailed(
-            WordPress.getContext(), post.getContent(), localMediaId,
-            mediaFile));
-      }
-    }
+		if (showGutenbergEditor &&
+		    PostUtils.contentContainsGutenbergBlocks(post.getContent())) {
+			post.setContent(PostUtils.replaceMediaFileWithUrlInGutenbergPost(
+						post.getContent(), localMediaId, mediaFile));
+		} else if (showAztecEditor) {
+			post.setContent(AztecEditorFragment.replaceMediaFileWithUrl(
+						WordPress.getContext(), post.getContent(), localMediaId,
+						mediaFile));
+		}
+	}
 
-    return post;
-  }
+	return post;
+}
+
+@Override
+public PostModel markMediaUploadFailedInPost(@Nullable PostModel post,
+                                             String localMediaId,
+                                             final MediaFile mediaFile) {
+	if (post != null) {
+		boolean showAztecEditor = AppPrefs.isAztecEditorEnabled();
+		boolean showGutenbergEditor = AppPrefs.isGutenbergEditorEnabled();
+
+		if (showGutenbergEditor) {
+			// TODO check if anything needs be done in Gutenberg
+		} else if (showAztecEditor) {
+			post.setContent(AztecEditorFragment.markMediaFailed(
+						WordPress.getContext(), post.getContent(), localMediaId,
+						mediaFile));
+		}
+	}
+
+	return post;
+}
 }

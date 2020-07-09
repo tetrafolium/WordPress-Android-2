@@ -7,39 +7,39 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class ListUtils {
-  @Nullable
-  public static ArrayList<Long> fromLongArray(long[] array) {
-    if (array == null) {
-      return null;
-    }
-    Long[] longObjects = ArrayUtils.toObject(array);
-    return new ArrayList<>(Arrays.asList(longObjects));
-  }
+@Nullable
+public static ArrayList<Long> fromLongArray(long[] array) {
+	if (array == null) {
+		return null;
+	}
+	Long[] longObjects = ArrayUtils.toObject(array);
+	return new ArrayList<>(Arrays.asList(longObjects));
+}
 
-  @Nullable
-  public static long[] toLongArray(List<Long> list) {
-    if (list == null) {
-      return null;
-    }
-    Long[] array = list.toArray(new Long[list.size()]);
-    return ArrayUtils.toPrimitive(array);
-  }
+@Nullable
+public static long[] toLongArray(List<Long> list) {
+	if (list == null) {
+		return null;
+	}
+	Long[] array = list.toArray(new Long[list.size()]);
+	return ArrayUtils.toPrimitive(array);
+}
 
-  @Nullable
-  public static ArrayList<Integer> fromIntArray(int[] array) {
-    if (array == null) {
-      return null;
-    }
-    Integer[] intObjects = ArrayUtils.toObject(array);
-    return new ArrayList<>(Arrays.asList(intObjects));
-  }
+@Nullable
+public static ArrayList<Integer> fromIntArray(int[] array) {
+	if (array == null) {
+		return null;
+	}
+	Integer[] intObjects = ArrayUtils.toObject(array);
+	return new ArrayList<>(Arrays.asList(intObjects));
+}
 
-  @Nullable
-  public static int[] toIntArray(List<Integer> list) {
-    if (list == null) {
-      return null;
-    }
-    Integer[] array = list.toArray(new Integer[list.size()]);
-    return ArrayUtils.toPrimitive(array);
-  }
+@Nullable
+public static int[] toIntArray(List<Integer> list) {
+	if (list == null) {
+		return null;
+	}
+	Integer[] array = list.toArray(new Integer[list.size()]);
+	return ArrayUtils.toPrimitive(array);
+}
 }

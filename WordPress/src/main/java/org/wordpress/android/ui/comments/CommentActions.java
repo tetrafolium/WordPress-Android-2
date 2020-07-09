@@ -12,20 +12,22 @@ import org.wordpress.android.models.Note;
  */
 
 public class CommentActions {
-  private CommentActions() { throw new AssertionError(); }
+private CommentActions() {
+	throw new AssertionError();
+}
 
-  /*
-   * used by comment fragments to alert container activity of a change to one or
-   * more comments (moderated, deleted, added, etc.)
-   */
-  public enum ChangeType { EDITED, REPLIED }
+/*
+ * used by comment fragments to alert container activity of a change to one or
+ * more comments (moderated, deleted, added, etc.)
+ */
+public enum ChangeType { EDITED, REPLIED }
 
-  public interface OnCommentActionListener {
-    void onModerateComment(SiteModel site, CommentModel comment,
-                           CommentStatus newStatus);
-  }
+public interface OnCommentActionListener {
+void onModerateComment(SiteModel site, CommentModel comment,
+                       CommentStatus newStatus);
+}
 
-  public interface OnNoteCommentActionListener {
-    void onModerateCommentForNote(Note note, CommentStatus newStatus);
-  }
+public interface OnNoteCommentActionListener {
+void onModerateCommentForNote(Note note, CommentStatus newStatus);
+}
 }

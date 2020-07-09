@@ -14,23 +14,23 @@ import org.wordpress.android.support.BaseTest;
 import org.wordpress.android.ui.accounts.LoginMagicLinkInterceptActivity;
 
 public class SignUpTests extends BaseTest {
-  @Rule
-  public ActivityTestRule<LoginMagicLinkInterceptActivity>
-      mMagicLinkActivityTestRule =
-          new ActivityTestRule<>(LoginMagicLinkInterceptActivity.class);
+@Rule
+public ActivityTestRule<LoginMagicLinkInterceptActivity>
+mMagicLinkActivityTestRule =
+	new ActivityTestRule<>(LoginMagicLinkInterceptActivity.class);
 
-  @Before
-  public void setUp() {
-    logoutIfNecessary();
-  }
+@Before
+public void setUp() {
+	logoutIfNecessary();
+}
 
-  @Test
-  public void signUpWithEmail() {
-    SignupFlow signupFlow = new SignupFlow();
-    signupFlow.chooseSignupWithEmail();
-    signupFlow.enterEmail(E2E_SIGNUP_EMAIL, mMagicLinkActivityTestRule);
-    signupFlow.checkEpilogue(E2E_SIGNUP_DISPLAY_NAME, E2E_SIGNUP_USERNAME);
-    signupFlow.enterPassword(E2E_SIGNUP_PASSWORD);
-    signupFlow.confirmSignup();
-  }
+@Test
+public void signUpWithEmail() {
+	SignupFlow signupFlow = new SignupFlow();
+	signupFlow.chooseSignupWithEmail();
+	signupFlow.enterEmail(E2E_SIGNUP_EMAIL, mMagicLinkActivityTestRule);
+	signupFlow.checkEpilogue(E2E_SIGNUP_DISPLAY_NAME, E2E_SIGNUP_USERNAME);
+	signupFlow.enterPassword(E2E_SIGNUP_PASSWORD);
+	signupFlow.confirmSignup();
+}
 }

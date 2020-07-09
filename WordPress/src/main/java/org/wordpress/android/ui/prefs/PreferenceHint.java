@@ -1,9 +1,9 @@
 package org.wordpress.android.ui.prefs;
 
 public interface PreferenceHint {
-  boolean hasHint();
+boolean hasHint();
 
-  String getHint();
+String getHint();
 
-  void setHint(String hint);
+void setHint(String hint);
 }

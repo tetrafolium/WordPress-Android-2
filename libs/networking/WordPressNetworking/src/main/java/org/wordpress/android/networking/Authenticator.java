@@ -10,5 +10,5 @@ package org.wordpress.android.networking;
  * the access token.
  */
 public interface Authenticator {
-  void authenticate(AuthenticatorRequest authenticatorRequest);
+void authenticate(AuthenticatorRequest authenticatorRequest);
 }

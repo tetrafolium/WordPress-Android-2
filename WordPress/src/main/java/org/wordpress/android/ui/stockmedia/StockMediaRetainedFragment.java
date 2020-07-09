@@ -9,52 +9,58 @@ import java.util.List;
 import org.wordpress.android.fluxc.model.StockMediaModel;
 
 public class StockMediaRetainedFragment extends Fragment {
-  static StockMediaRetainedFragment newInstance() {
-    return new StockMediaRetainedFragment();
-  }
+static StockMediaRetainedFragment newInstance() {
+	return new StockMediaRetainedFragment();
+}
 
-  static class StockMediaRetainedData {
-    private final List<StockMediaModel> mStockMediaList;
-    private final ArrayList<Integer> mSelectedItems;
-    private final boolean mCanLoadMore;
-    private final int mNextPage;
+static class StockMediaRetainedData {
+private final List<StockMediaModel> mStockMediaList;
+private final ArrayList<Integer> mSelectedItems;
+private final boolean mCanLoadMore;
+private final int mNextPage;
 
-    StockMediaRetainedData(@NonNull List<StockMediaModel> stockMediaList,
-                           @NonNull ArrayList<Integer> selectedItems,
-                           boolean canLoadMore, int nextPage) {
-      mStockMediaList = stockMediaList;
-      mSelectedItems = selectedItems;
-      mCanLoadMore = canLoadMore;
-      mNextPage = nextPage;
-    }
+StockMediaRetainedData(@NonNull List<StockMediaModel> stockMediaList,
+                       @NonNull ArrayList<Integer> selectedItems,
+                       boolean canLoadMore, int nextPage) {
+	mStockMediaList = stockMediaList;
+	mSelectedItems = selectedItems;
+	mCanLoadMore = canLoadMore;
+	mNextPage = nextPage;
+}
 
-    @NonNull
-    List<StockMediaModel> getStockMediaList() {
-      return mStockMediaList;
-    }
+@NonNull
+List<StockMediaModel> getStockMediaList() {
+	return mStockMediaList;
+}
 
-    @NonNull
-    List<Integer> getSelectedItems() {
-      return mSelectedItems;
-    }
+@NonNull
+List<Integer> getSelectedItems() {
+	return mSelectedItems;
+}
 
-    boolean canLoadMore() { return mCanLoadMore; }
+boolean canLoadMore() {
+	return mCanLoadMore;
+}
 
-    int getNextPage() { return mNextPage; }
-  }
+int getNextPage() {
+	return mNextPage;
+}
+}
 
-  private StockMediaRetainedData mData;
+private StockMediaRetainedData mData;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setRetainInstance(true);
-  }
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setRetainInstance(true);
+}
 
-  @Nullable
-  StockMediaRetainedData getData() {
-    return mData;
-  }
+@Nullable
+StockMediaRetainedData getData() {
+	return mData;
+}
 
-  void setData(@Nullable StockMediaRetainedData data) { mData = data; }
+void setData(@Nullable StockMediaRetainedData data) {
+	mData = data;
+}
 }

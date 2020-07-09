@@ -20,616 +20,616 @@ import org.wordpress.android.util.AppLog;
 import org.wordpress.android.util.AppLog.T;
 
 public class PeopleUtils {
-  // We limit followers we display to 1000 to avoid API performance issues
-  public static final int FOLLOWER_PAGE_LIMIT = 50;
-  public static final int FETCH_LIMIT = 20;
+// We limit followers we display to 1000 to avoid API performance issues
+public static final int FOLLOWER_PAGE_LIMIT = 50;
+public static final int FETCH_LIMIT = 20;
 
-  public static void fetchUsers(final SiteModel site, final int offset,
-                                final FetchUsersCallback callback) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject != null && callback != null) {
-          try {
-            JSONArray jsonArray = jsonObject.getJSONArray("users");
-            List<Person> people = peopleListFromJSON(jsonArray, site.getId(),
-                                                     Person.PersonType.USER);
-            int numberOfUsers = jsonObject.optInt("found");
-            boolean isEndOfList = (people.size() + offset) >= numberOfUsers;
-            callback.onSuccess(people, isEndOfList);
-          } catch (JSONException e) {
-            AppLog.e(
-                T.API,
-                "JSON exception occurred while parsing the response for sites/%s/users: " +
-                    e);
-            callback.onError();
-          }
-        }
-      }
-    };
-
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
-
-    Map<String, String> params = new HashMap<>();
-    params.put("number", Integer.toString(PeopleUtils.FETCH_LIMIT));
-    params.put("offset", Integer.toString(offset));
-    params.put("order_by", "display_name");
-    params.put("order", "ASC");
-    String path = String.format(Locale.US, "sites/%d/users", site.getSiteId());
-    WordPress.getRestClientUtilsV1_1().get(path, params, null, listener,
-                                           errorListener);
-  }
-
-  public static void
-  fetchRevisionAuthorsDetails(final SiteModel site, List<String> authors,
+public static void fetchUsers(final SiteModel site, final int offset,
                               final FetchUsersCallback callback) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject != null && callback != null) {
-          try {
-            List<Person> people = new ArrayList<>();
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (jsonObject != null && callback != null) {
+				try {
+					JSONArray jsonArray = jsonObject.getJSONArray("users");
+					List<Person> people = peopleListFromJSON(jsonArray, site.getId(),
+					                                         Person.PersonType.USER);
+					int numberOfUsers = jsonObject.optInt("found");
+					boolean isEndOfList = (people.size() + offset) >= numberOfUsers;
+					callback.onSuccess(people, isEndOfList);
+				} catch (JSONException e) {
+					AppLog.e(
+						T.API,
+						"JSON exception occurred while parsing the response for sites/%s/users: " +
+						e);
+					callback.onError();
+				}
+			}
+		}
+	};
 
-            Iterator<String> keys = jsonObject.keys();
-            while (keys.hasNext()) {
-              String key = keys.next();
-              if (jsonObject.get(key) instanceof JSONObject) {
-                JSONArray jsonArray =
-                    ((JSONObject)jsonObject.get(key)).getJSONArray("users");
-                people.addAll(peopleListFromJSON(jsonArray, site.getId(),
-                                                 Person.PersonType.USER));
-              }
-            }
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
 
-            callback.onSuccess(people, true);
-          } catch (JSONException e) {
-            AppLog.e(
-                T.API,
-                "JSON exception occurred while parsing the revision author details"
-                    + " from batch response for sites/%s/users: " + e);
-            callback.onError();
-          }
-        }
-      }
-    };
+	Map<String, String> params = new HashMap<>();
+	params.put("number", Integer.toString(PeopleUtils.FETCH_LIMIT));
+	params.put("offset", Integer.toString(offset));
+	params.put("order_by", "display_name");
+	params.put("order", "ASC");
+	String path = String.format(Locale.US, "sites/%d/users", site.getSiteId());
+	WordPress.getRestClientUtilsV1_1().get(path, params, null, listener,
+	                                       errorListener);
+}
 
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
+public static void
+fetchRevisionAuthorsDetails(final SiteModel site, List<String> authors,
+                            final FetchUsersCallback callback) {
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (jsonObject != null && callback != null) {
+				try {
+					List<Person> people = new ArrayList<>();
 
-    Map<String, String> batchParams = new HashMap<>();
+					Iterator<String> keys = jsonObject.keys();
+					while (keys.hasNext()) {
+						String key = keys.next();
+						if (jsonObject.get(key) instanceof JSONObject) {
+							JSONArray jsonArray =
+								((JSONObject)jsonObject.get(key)).getJSONArray("users");
+							people.addAll(peopleListFromJSON(jsonArray, site.getId(),
+							                                 Person.PersonType.USER));
+						}
+					}
 
-    for (int i = 0; i < authors.size(); i++) {
-      batchParams.put(
-          String.format(Locale.US, "urls[%d]", i),
-          String.format(Locale.US,
-                        "/sites/%d/users?search=%s&search_columns=ID",
-                        site.getSiteId(), authors.get(i)));
-    }
+					callback.onSuccess(people, true);
+				} catch (JSONException e) {
+					AppLog.e(
+						T.API,
+						"JSON exception occurred while parsing the revision author details"
+						+ " from batch response for sites/%s/users: " + e);
+					callback.onError();
+				}
+			}
+		}
+	};
 
-    WordPress.getRestClientUtilsV1_1().get("batch/", batchParams, null,
-                                           listener, errorListener);
-  }
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
 
-  public static void fetchFollowers(final SiteModel site, final int page,
-                                    final FetchFollowersCallback callback) {
-    fetchFollowers(site, page, callback, false);
-  }
+	Map<String, String> batchParams = new HashMap<>();
 
-  public static void
-  fetchEmailFollowers(final SiteModel site, final int page,
-                      final FetchFollowersCallback callback) {
-    fetchFollowers(site, page, callback, true);
-  }
+	for (int i = 0; i < authors.size(); i++) {
+		batchParams.put(
+			String.format(Locale.US, "urls[%d]", i),
+			String.format(Locale.US,
+			              "/sites/%d/users?search=%s&search_columns=ID",
+			              site.getSiteId(), authors.get(i)));
+	}
 
-  private static void fetchFollowers(final SiteModel site, final int page,
-                                     final FetchFollowersCallback callback,
-                                     final boolean isEmailFollower) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject != null && callback != null) {
-          try {
-            JSONArray jsonArray = jsonObject.getJSONArray("subscribers");
-            Person.PersonType personType =
-                isEmailFollower ? Person.PersonType.EMAIL_FOLLOWER
-                                : Person.PersonType.FOLLOWER;
-            List<Person> people =
-                peopleListFromJSON(jsonArray, site.getId(), personType);
-            int pageFetched = jsonObject.optInt("page");
-            int numberOfPages = jsonObject.optInt("pages");
-            boolean isEndOfList =
-                page >= numberOfPages || page >= FOLLOWER_PAGE_LIMIT;
-            callback.onSuccess(people, pageFetched, isEndOfList);
-          } catch (JSONException e) {
-            AppLog.e(T.API,
-                     "JSON exception occurred while parsing the response for "
-                         + "sites/%s/stats/followers: " + e);
-            callback.onError();
-          }
-        }
-      }
-    };
+	WordPress.getRestClientUtilsV1_1().get("batch/", batchParams, null,
+	                                       listener, errorListener);
+}
 
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
+public static void fetchFollowers(final SiteModel site, final int page,
+                                  final FetchFollowersCallback callback) {
+	fetchFollowers(site, page, callback, false);
+}
 
-    Map<String, String> params = new HashMap<>();
-    params.put("max", Integer.toString(FETCH_LIMIT));
-    params.put("page", Integer.toString(page));
-    params.put("type", isEmailFollower ? "email" : "wp_com");
-    String path =
-        String.format(Locale.US, "sites/%d/stats/followers", site.getSiteId());
-    WordPress.getRestClientUtilsV1_1().get(path, params, null, listener,
-                                           errorListener);
-  }
+public static void
+fetchEmailFollowers(final SiteModel site, final int page,
+                    final FetchFollowersCallback callback) {
+	fetchFollowers(site, page, callback, true);
+}
 
-  public static void fetchViewers(final SiteModel site, final int offset,
-                                  final FetchViewersCallback callback) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject != null && callback != null) {
-          try {
-            JSONArray jsonArray = jsonObject.getJSONArray("viewers");
-            List<Person> people = peopleListFromJSON(jsonArray, site.getId(),
-                                                     Person.PersonType.VIEWER);
-            int numberOfUsers = jsonObject.optInt("found");
-            boolean isEndOfList = (people.size() + offset) >= numberOfUsers;
-            callback.onSuccess(people, isEndOfList);
-          } catch (JSONException e) {
-            AppLog.e(T.API,
-                     "JSON exception occurred while parsing the response for "
-                         + "sites/%s/viewers: " + e);
-            callback.onError();
-          }
-        }
-      }
-    };
+private static void fetchFollowers(final SiteModel site, final int page,
+                                   final FetchFollowersCallback callback,
+                                   final boolean isEmailFollower) {
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (jsonObject != null && callback != null) {
+				try {
+					JSONArray jsonArray = jsonObject.getJSONArray("subscribers");
+					Person.PersonType personType =
+						isEmailFollower ? Person.PersonType.EMAIL_FOLLOWER
+				: Person.PersonType.FOLLOWER;
+					List<Person> people =
+						peopleListFromJSON(jsonArray, site.getId(), personType);
+					int pageFetched = jsonObject.optInt("page");
+					int numberOfPages = jsonObject.optInt("pages");
+					boolean isEndOfList =
+						page >= numberOfPages || page >= FOLLOWER_PAGE_LIMIT;
+					callback.onSuccess(people, pageFetched, isEndOfList);
+				} catch (JSONException e) {
+					AppLog.e(T.API,
+					         "JSON exception occurred while parsing the response for "
+					         + "sites/%s/stats/followers: " + e);
+					callback.onError();
+				}
+			}
+		}
+	};
 
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
 
-    int page = (offset / FETCH_LIMIT) + 1;
-    Map<String, String> params = new HashMap<>();
-    params.put("number", Integer.toString(FETCH_LIMIT));
-    params.put("page", Integer.toString(page));
-    String path =
-        String.format(Locale.US, "sites/%d/viewers", site.getSiteId());
-    WordPress.getRestClientUtilsV1_1().get(path, params, null, listener,
-                                           errorListener);
-  }
+	Map<String, String> params = new HashMap<>();
+	params.put("max", Integer.toString(FETCH_LIMIT));
+	params.put("page", Integer.toString(page));
+	params.put("type", isEmailFollower ? "email" : "wp_com");
+	String path =
+		String.format(Locale.US, "sites/%d/stats/followers", site.getSiteId());
+	WordPress.getRestClientUtilsV1_1().get(path, params, null, listener,
+	                                       errorListener);
+}
 
-  public static void updateRole(final SiteModel site, long personID,
-                                String newRole, final int localTableBlogId,
-                                final UpdateUserCallback callback) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject != null && callback != null) {
-          try {
-            Person person = Person.userFromJSON(jsonObject, localTableBlogId);
-            if (person != null) {
-              callback.onSuccess(person);
-            } else {
-              AppLog.e(T.API, "Couldn't map jsonObject + " + jsonObject +
-                                  " to person model.");
-              callback.onError();
-            }
-          } catch (JSONException e) {
-            callback.onError();
-          }
-        }
-      }
-    };
+public static void fetchViewers(final SiteModel site, final int offset,
+                                final FetchViewersCallback callback) {
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (jsonObject != null && callback != null) {
+				try {
+					JSONArray jsonArray = jsonObject.getJSONArray("viewers");
+					List<Person> people = peopleListFromJSON(jsonArray, site.getId(),
+					                                         Person.PersonType.VIEWER);
+					int numberOfUsers = jsonObject.optInt("found");
+					boolean isEndOfList = (people.size() + offset) >= numberOfUsers;
+					callback.onSuccess(people, isEndOfList);
+				} catch (JSONException e) {
+					AppLog.e(T.API,
+					         "JSON exception occurred while parsing the response for "
+					         + "sites/%s/viewers: " + e);
+					callback.onError();
+				}
+			}
+		}
+	};
 
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
 
-    Map<String, String> params = new HashMap<>();
-    params.put("roles", newRole);
-    String path = String.format(Locale.US, "sites/%d/users/%d",
-                                site.getSiteId(), personID);
-    WordPress.getRestClientUtilsV1_1().post(path, params, null, listener,
-                                            errorListener);
-  }
+	int page = (offset / FETCH_LIMIT) + 1;
+	Map<String, String> params = new HashMap<>();
+	params.put("number", Integer.toString(FETCH_LIMIT));
+	params.put("page", Integer.toString(page));
+	String path =
+		String.format(Locale.US, "sites/%d/viewers", site.getSiteId());
+	WordPress.getRestClientUtilsV1_1().get(path, params, null, listener,
+	                                       errorListener);
+}
 
-  public static void removeUser(final SiteModel site, final long personID,
-                                final RemovePersonCallback callback) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject != null && callback != null) {
-          // check if the call was successful
-          boolean success = jsonObject.optBoolean("success");
-          if (success) {
-            callback.onSuccess(personID, site.getId());
-          } else {
-            callback.onError();
-          }
-        }
-      }
-    };
+public static void updateRole(final SiteModel site, long personID,
+                              String newRole, final int localTableBlogId,
+                              final UpdateUserCallback callback) {
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (jsonObject != null && callback != null) {
+				try {
+					Person person = Person.userFromJSON(jsonObject, localTableBlogId);
+					if (person != null) {
+						callback.onSuccess(person);
+					} else {
+						AppLog.e(T.API, "Couldn't map jsonObject + " + jsonObject +
+						         " to person model.");
+						callback.onError();
+					}
+				} catch (JSONException e) {
+					callback.onError();
+				}
+			}
+		}
+	};
 
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
 
-    String path = String.format(Locale.US, "sites/%d/users/%d/delete",
-                                site.getSiteId(), personID);
-    WordPress.getRestClientUtilsV1_1().post(path, listener, errorListener);
-  }
+	Map<String, String> params = new HashMap<>();
+	params.put("roles", newRole);
+	String path = String.format(Locale.US, "sites/%d/users/%d",
+	                            site.getSiteId(), personID);
+	WordPress.getRestClientUtilsV1_1().post(path, params, null, listener,
+	                                        errorListener);
+}
 
-  public static void removeFollower(final SiteModel site, final long personID,
-                                    Person.PersonType personType,
-                                    final RemovePersonCallback callback) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject != null && callback != null) {
-          // check if the call was successful
-          boolean success = jsonObject.optBoolean("deleted");
-          if (success) {
-            callback.onSuccess(personID, site.getId());
-          } else {
-            callback.onError();
-          }
-        }
-      }
-    };
+public static void removeUser(final SiteModel site, final long personID,
+                              final RemovePersonCallback callback) {
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (jsonObject != null && callback != null) {
+				// check if the call was successful
+				boolean success = jsonObject.optBoolean("success");
+				if (success) {
+					callback.onSuccess(personID, site.getId());
+				} else {
+					callback.onError();
+				}
+			}
+		}
+	};
 
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
 
-    String path;
-    if (personType == Person.PersonType.EMAIL_FOLLOWER) {
-      path = String.format(Locale.US, "sites/%d/email-followers/%d/delete",
-                           site.getSiteId(), personID);
-    } else {
-      path = String.format(Locale.US, "sites/%d/followers/%d/delete",
-                           site.getSiteId(), personID);
-    }
-    WordPress.getRestClientUtilsV1_1().post(path, listener, errorListener);
-  }
+	String path = String.format(Locale.US, "sites/%d/users/%d/delete",
+	                            site.getSiteId(), personID);
+	WordPress.getRestClientUtilsV1_1().post(path, listener, errorListener);
+}
 
-  public static void removeViewer(final SiteModel site, final long personID,
+public static void removeFollower(final SiteModel site, final long personID,
+                                  Person.PersonType personType,
                                   final RemovePersonCallback callback) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject != null && callback != null) {
-          // check if the call was successful
-          boolean success = jsonObject.optBoolean("deleted");
-          if (success) {
-            callback.onSuccess(personID, site.getId());
-          } else {
-            callback.onError();
-          }
-        }
-      }
-    };
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (jsonObject != null && callback != null) {
+				// check if the call was successful
+				boolean success = jsonObject.optBoolean("deleted");
+				if (success) {
+					callback.onSuccess(personID, site.getId());
+				} else {
+					callback.onError();
+				}
+			}
+		}
+	};
 
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
 
-    String path = String.format(Locale.US, "sites/%d/viewers/%d/delete",
-                                site.getSiteId(), personID);
-    WordPress.getRestClientUtilsV1_1().post(path, listener, errorListener);
-  }
+	String path;
+	if (personType == Person.PersonType.EMAIL_FOLLOWER) {
+		path = String.format(Locale.US, "sites/%d/email-followers/%d/delete",
+		                     site.getSiteId(), personID);
+	} else {
+		path = String.format(Locale.US, "sites/%d/followers/%d/delete",
+		                     site.getSiteId(), personID);
+	}
+	WordPress.getRestClientUtilsV1_1().post(path, listener, errorListener);
+}
 
-  private static List<Person> peopleListFromJSON(JSONArray jsonArray,
-                                                 int localTableBlogId,
-                                                 Person.PersonType personType)
-      throws JSONException {
-    if (jsonArray == null) {
-      return null;
-    }
+public static void removeViewer(final SiteModel site, final long personID,
+                                final RemovePersonCallback callback) {
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (jsonObject != null && callback != null) {
+				// check if the call was successful
+				boolean success = jsonObject.optBoolean("deleted");
+				if (success) {
+					callback.onSuccess(personID, site.getId());
+				} else {
+					callback.onError();
+				}
+			}
+		}
+	};
 
-    ArrayList<Person> peopleList = new ArrayList<>(jsonArray.length());
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
 
-    for (int i = 0; i < jsonArray.length(); i++) {
-      Person person;
-      if (personType == Person.PersonType.USER) {
-        person =
-            Person.userFromJSON(jsonArray.optJSONObject(i), localTableBlogId);
-      } else if (personType == Person.PersonType.VIEWER) {
-        person =
-            Person.viewerFromJSON(jsonArray.optJSONObject(i), localTableBlogId);
-      } else {
-        boolean isEmailFollower =
-            (personType == Person.PersonType.EMAIL_FOLLOWER);
-        person = Person.followerFromJSON(jsonArray.optJSONObject(i),
-                                         localTableBlogId, isEmailFollower);
-      }
-      if (person != null) {
-        peopleList.add(person);
-      }
-    }
+	String path = String.format(Locale.US, "sites/%d/viewers/%d/delete",
+	                            site.getSiteId(), personID);
+	WordPress.getRestClientUtilsV1_1().post(path, listener, errorListener);
+}
 
-    return peopleList;
-  }
+private static List<Person> peopleListFromJSON(JSONArray jsonArray,
+                                               int localTableBlogId,
+                                               Person.PersonType personType)
+throws JSONException {
+	if (jsonArray == null) {
+		return null;
+	}
 
-  public interface FetchUsersCallback extends Callback {
-    void onSuccess(List<Person> peopleList, boolean isEndOfList);
-  }
+	ArrayList<Person> peopleList = new ArrayList<>(jsonArray.length());
 
-  public interface FetchFollowersCallback extends Callback {
-    void onSuccess(List<Person> peopleList, int pageFetched,
-                   boolean isEndOfList);
-  }
+	for (int i = 0; i < jsonArray.length(); i++) {
+		Person person;
+		if (personType == Person.PersonType.USER) {
+			person =
+				Person.userFromJSON(jsonArray.optJSONObject(i), localTableBlogId);
+		} else if (personType == Person.PersonType.VIEWER) {
+			person =
+				Person.viewerFromJSON(jsonArray.optJSONObject(i), localTableBlogId);
+		} else {
+			boolean isEmailFollower =
+				(personType == Person.PersonType.EMAIL_FOLLOWER);
+			person = Person.followerFromJSON(jsonArray.optJSONObject(i),
+			                                 localTableBlogId, isEmailFollower);
+		}
+		if (person != null) {
+			peopleList.add(person);
+		}
+	}
 
-  public interface FetchViewersCallback extends Callback {
-    void onSuccess(List<Person> peopleList, boolean isEndOfList);
-  }
+	return peopleList;
+}
 
-  public interface RemovePersonCallback extends Callback {
-    void onSuccess(long personID, int localTableBlogId);
-  }
+public interface FetchUsersCallback extends Callback {
+void onSuccess(List<Person> peopleList, boolean isEndOfList);
+}
 
-  public interface UpdateUserCallback extends Callback {
-    void onSuccess(Person person);
-  }
+public interface FetchFollowersCallback extends Callback {
+void onSuccess(List<Person> peopleList, int pageFetched,
+               boolean isEndOfList);
+}
 
-  public interface Callback { void onError(); }
+public interface FetchViewersCallback extends Callback {
+void onSuccess(List<Person> peopleList, boolean isEndOfList);
+}
 
-  public static void
-  validateUsernames(final List<String> usernames, String role, long wpComBlogId,
-                    final ValidateUsernameCallback callback) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject != null && callback != null) {
-          JSONObject errors = jsonObject.optJSONObject("errors");
+public interface RemovePersonCallback extends Callback {
+void onSuccess(long personID, int localTableBlogId);
+}
 
-          int errorredUsernameCount = 0;
+public interface UpdateUserCallback extends Callback {
+void onSuccess(Person person);
+}
 
-          if (errors != null) {
-            for (String username : usernames) {
-              JSONObject userError = errors.optJSONObject(username);
+public interface Callback { void onError(); }
 
-              if (userError == null) {
-                continue;
-              }
+public static void
+validateUsernames(final List<String> usernames, String role, long wpComBlogId,
+                  final ValidateUsernameCallback callback) {
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (jsonObject != null && callback != null) {
+				JSONObject errors = jsonObject.optJSONObject("errors");
 
-              errorredUsernameCount++;
+				int errorredUsernameCount = 0;
 
-              switch (userError.optString("code")) {
-              case "invalid_input":
-                switch (userError.optString("message")) {
-                case "Invalid email":
-                  callback.onUsernameValidation(username,
-                                                ValidationResult.INVALID_EMAIL);
-                  continue;
-                case "User not found":
-                // fall through to the default case
-                default:
-                  callback.onUsernameValidation(
-                      username, ValidationResult.USER_NOT_FOUND);
-                  continue;
-                }
-              case "invalid_input_has_role":
-                callback.onUsernameValidation(username,
-                                              ValidationResult.ALREADY_MEMBER);
-                continue;
-              case "invalid_input_following":
-                callback.onUsernameValidation(
-                    username, ValidationResult.ALREADY_FOLLOWING);
-                continue;
-              case "invalid_user_blocked_invites":
-                callback.onUsernameValidation(username,
-                                              ValidationResult.BLOCKED_INVITES);
-                continue;
-              }
+				if (errors != null) {
+					for (String username : usernames) {
+						JSONObject userError = errors.optJSONObject(username);
 
-              callback.onError();
-              callback.onValidationFinished();
-              return;
-            }
-          }
+						if (userError == null) {
+							continue;
+						}
 
-          JSONArray succeededUsernames = jsonObject.optJSONArray("success");
-          if (succeededUsernames == null) {
-            callback.onError();
-            callback.onValidationFinished();
-            return;
-          }
+						errorredUsernameCount++;
 
-          int succeededUsernameCount = 0;
+						switch (userError.optString("code")) {
+						case "invalid_input":
+							switch (userError.optString("message")) {
+							case "Invalid email":
+								callback.onUsernameValidation(username,
+								                              ValidationResult.INVALID_EMAIL);
+								continue;
+							case "User not found":
+							// fall through to the default case
+							default:
+								callback.onUsernameValidation(
+									username, ValidationResult.USER_NOT_FOUND);
+								continue;
+							}
+						case "invalid_input_has_role":
+							callback.onUsernameValidation(username,
+							                              ValidationResult.ALREADY_MEMBER);
+							continue;
+						case "invalid_input_following":
+							callback.onUsernameValidation(
+								username, ValidationResult.ALREADY_FOLLOWING);
+							continue;
+						case "invalid_user_blocked_invites":
+							callback.onUsernameValidation(username,
+							                              ValidationResult.BLOCKED_INVITES);
+							continue;
+						}
 
-          for (int i = 0; i < succeededUsernames.length(); i++) {
-            String username = succeededUsernames.optString(i);
-            if (usernames.contains(username)) {
-              succeededUsernameCount++;
-              callback.onUsernameValidation(username,
-                                            ValidationResult.USER_FOUND);
-            }
-          }
+						callback.onError();
+						callback.onValidationFinished();
+						return;
+					}
+				}
 
-          if (errorredUsernameCount + succeededUsernameCount !=
-              usernames.size()) {
-            callback.onError();
-            callback.onValidationFinished();
-          }
+				JSONArray succeededUsernames = jsonObject.optJSONArray("success");
+				if (succeededUsernames == null) {
+					callback.onError();
+					callback.onValidationFinished();
+					return;
+				}
 
-          callback.onValidationFinished();
-        }
-      }
-    };
+				int succeededUsernameCount = 0;
 
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(AppLog.T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
+				for (int i = 0; i < succeededUsernames.length(); i++) {
+					String username = succeededUsernames.optString(i);
+					if (usernames.contains(username)) {
+						succeededUsernameCount++;
+						callback.onUsernameValidation(username,
+						                              ValidationResult.USER_FOUND);
+					}
+				}
 
-    String path =
-        String.format(Locale.US, "sites/%d/invites/validate", wpComBlogId);
-    Map<String, String> params = new HashMap<>();
-    for (String username : usernames) {
-      params.put(
-          "invitees[" + username + "]",
-          username); // specify an array key so to make the map key unique
-    }
-    params.put("role", role);
-    WordPress.getRestClientUtilsV1_1().post(path, params, null, listener,
-                                            errorListener);
-  }
+				if (errorredUsernameCount + succeededUsernameCount !=
+				    usernames.size()) {
+					callback.onError();
+					callback.onValidationFinished();
+				}
 
-  public interface ValidateUsernameCallback {
-    enum ValidationResult {
-      USER_NOT_FOUND,
-      ALREADY_MEMBER,
-      ALREADY_FOLLOWING,
-      BLOCKED_INVITES,
-      INVALID_EMAIL,
-      USER_FOUND
-    }
+				callback.onValidationFinished();
+			}
+		}
+	};
 
-    void onUsernameValidation(String username,
-                              ValidationResult validationResult);
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(AppLog.T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
 
-    void onValidationFinished();
+	String path =
+		String.format(Locale.US, "sites/%d/invites/validate", wpComBlogId);
+	Map<String, String> params = new HashMap<>();
+	for (String username : usernames) {
+		params.put(
+			"invitees[" + username + "]",
+			username); // specify an array key so to make the map key unique
+	}
+	params.put("role", role);
+	WordPress.getRestClientUtilsV1_1().post(path, params, null, listener,
+	                                        errorListener);
+}
 
-    void onError();
-  }
+public interface ValidateUsernameCallback {
+enum ValidationResult {
+	USER_NOT_FOUND,
+	ALREADY_MEMBER,
+	ALREADY_FOLLOWING,
+	BLOCKED_INVITES,
+	INVALID_EMAIL,
+	USER_FOUND
+}
 
-  public static void sendInvitations(final List<String> usernames, String role,
-                                     String message, long wpComBlogId,
-                                     final InvitationsSendCallback callback) {
-    RestRequest.Listener listener = new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (callback == null) {
-          return;
-        }
+void onUsernameValidation(String username,
+                          ValidationResult validationResult);
 
-        if (jsonObject == null) {
-          callback.onError();
-          return;
-        }
+void onValidationFinished();
 
-        Map<String, String> failedUsernames = new LinkedHashMap<>();
+void onError();
+}
 
-        JSONObject errors = jsonObject.optJSONObject("errors");
-        if (errors != null) {
-          for (String username : usernames) {
-            JSONObject userError = errors.optJSONObject(username);
+public static void sendInvitations(final List<String> usernames, String role,
+                                   String message, long wpComBlogId,
+                                   final InvitationsSendCallback callback) {
+	RestRequest.Listener listener = new RestRequest.Listener() {
+		@Override
+		public void onResponse(JSONObject jsonObject) {
+			if (callback == null) {
+				return;
+			}
 
-            if (userError != null) {
-              failedUsernames.put(username, userError.optString("message"));
-            }
-          }
-        }
+			if (jsonObject == null) {
+				callback.onError();
+				return;
+			}
 
-        List<String> succeededUsernames = new ArrayList<>();
-        JSONArray succeededUsernamesJson = jsonObject.optJSONArray("sent");
-        if (succeededUsernamesJson == null) {
-          callback.onError();
-          return;
-        }
+			Map<String, String> failedUsernames = new LinkedHashMap<>();
 
-        for (int i = 0; i < succeededUsernamesJson.length(); i++) {
-          String username = succeededUsernamesJson.optString(i);
-          if (usernames.contains(username)) {
-            succeededUsernames.add(username);
-          }
-        }
+			JSONObject errors = jsonObject.optJSONObject("errors");
+			if (errors != null) {
+				for (String username : usernames) {
+					JSONObject userError = errors.optJSONObject(username);
 
-        if (failedUsernames.size() + succeededUsernames.size() !=
-            usernames.size()) {
-          callback.onError();
-        }
+					if (userError != null) {
+						failedUsernames.put(username, userError.optString("message"));
+					}
+				}
+			}
 
-        callback.onSent(succeededUsernames, failedUsernames);
-      }
-    };
+			List<String> succeededUsernames = new ArrayList<>();
+			JSONArray succeededUsernamesJson = jsonObject.optJSONArray("sent");
+			if (succeededUsernamesJson == null) {
+				callback.onError();
+				return;
+			}
 
-    RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        AppLog.e(AppLog.T.API, volleyError);
-        if (callback != null) {
-          callback.onError();
-        }
-      }
-    };
+			for (int i = 0; i < succeededUsernamesJson.length(); i++) {
+				String username = succeededUsernamesJson.optString(i);
+				if (usernames.contains(username)) {
+					succeededUsernames.add(username);
+				}
+			}
 
-    String path = String.format(Locale.US, "sites/%s/invites/new", wpComBlogId);
-    Map<String, String> params = new HashMap<>();
-    for (String username : usernames) {
-      params.put(
-          "invitees[" + username + "]",
-          username); // specify an array key so to make the map key unique
-    }
-    params.put("role", role);
-    params.put("message", message);
-    WordPress.getRestClientUtilsV1_1().post(path, params, null, listener,
-                                            errorListener);
-  }
+			if (failedUsernames.size() + succeededUsernames.size() !=
+			    usernames.size()) {
+				callback.onError();
+			}
 
-  public interface InvitationsSendCallback {
-    void onSent(List<String> succeededUsernames,
-                Map<String, String> failedUsernameErrors);
+			callback.onSent(succeededUsernames, failedUsernames);
+		}
+	};
 
-    void onError();
-  }
+	RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
+		@Override
+		public void onErrorResponse(VolleyError volleyError) {
+			AppLog.e(AppLog.T.API, volleyError);
+			if (callback != null) {
+				callback.onError();
+			}
+		}
+	};
+
+	String path = String.format(Locale.US, "sites/%s/invites/new", wpComBlogId);
+	Map<String, String> params = new HashMap<>();
+	for (String username : usernames) {
+		params.put(
+			"invitees[" + username + "]",
+			username); // specify an array key so to make the map key unique
+	}
+	params.put("role", role);
+	params.put("message", message);
+	WordPress.getRestClientUtilsV1_1().post(path, params, null, listener,
+	                                        errorListener);
+}
+
+public interface InvitationsSendCallback {
+void onSent(List<String> succeededUsernames,
+            Map<String, String> failedUsernameErrors);
+
+void onError();
+}
 }

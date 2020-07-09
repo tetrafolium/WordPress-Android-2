@@ -34,68 +34,74 @@ import android.text.TextPaint;
 import androidx.annotation.ColorInt;
 
 public class TextDrawable extends Drawable {
-  private static final int DEFAULT_COLOR = Color.WHITE;
-  private TextPaint mPaint;
-  private CharSequence mText;
-  private int mIntrinsicWidth;
-  private int mIntrinsicHeight;
-  private int mTranslateX;
-  private int mTranslateY;
-  private StaticLayout mTextLayout;
+private static final int DEFAULT_COLOR = Color.WHITE;
+private TextPaint mPaint;
+private CharSequence mText;
+private int mIntrinsicWidth;
+private int mIntrinsicHeight;
+private int mTranslateX;
+private int mTranslateY;
+private StaticLayout mTextLayout;
 
-  public TextDrawable(Resources res, CharSequence text, float textSize) {
-    mText = text;
-    mPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    mPaint.setColor(DEFAULT_COLOR);
-    mPaint.setTextAlign(Align.CENTER);
-    mPaint.setTextSize(textSize);
-    mIntrinsicWidth = (int)(mPaint.measureText(mText, 0, mText.length()) + .5);
-    mIntrinsicHeight = mPaint.getFontMetricsInt(null);
-    mTextLayout = new StaticLayout(mText, mPaint, mIntrinsicWidth,
-                                   Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
-  }
+public TextDrawable(Resources res, CharSequence text, float textSize) {
+	mText = text;
+	mPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+	mPaint.setColor(DEFAULT_COLOR);
+	mPaint.setTextAlign(Align.CENTER);
+	mPaint.setTextSize(textSize);
+	mIntrinsicWidth = (int)(mPaint.measureText(mText, 0, mText.length()) + .5);
+	mIntrinsicHeight = mPaint.getFontMetricsInt(null);
+	mTextLayout = new StaticLayout(mText, mPaint, mIntrinsicWidth,
+	                               Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+}
 
-  @Override
-  public void draw(Canvas canvas) {
-    Rect bounds = getBounds();
-    canvas.translate(bounds.centerX() + mTranslateX,
-                     bounds.centerY() + mTranslateY);
-    mTextLayout.draw(canvas);
-  }
+@Override
+public void draw(Canvas canvas) {
+	Rect bounds = getBounds();
+	canvas.translate(bounds.centerX() + mTranslateX,
+	                 bounds.centerY() + mTranslateY);
+	mTextLayout.draw(canvas);
+}
 
-  @Override
-  public int getOpacity() {
-    return mPaint.getAlpha();
-  }
+@Override
+public int getOpacity() {
+	return mPaint.getAlpha();
+}
 
-  @Override
-  public int getIntrinsicWidth() {
-    return mIntrinsicWidth;
-  }
+@Override
+public int getIntrinsicWidth() {
+	return mIntrinsicWidth;
+}
 
-  @Override
-  public int getIntrinsicHeight() {
-    return mIntrinsicHeight;
-  }
+@Override
+public int getIntrinsicHeight() {
+	return mIntrinsicHeight;
+}
 
-  @Override
-  public void setAlpha(int alpha) {
-    mPaint.setAlpha(alpha);
-  }
+@Override
+public void setAlpha(int alpha) {
+	mPaint.setAlpha(alpha);
+}
 
-  @Override
-  public void setColorFilter(ColorFilter filter) {
-    mPaint.setColorFilter(filter);
-  }
+@Override
+public void setColorFilter(ColorFilter filter) {
+	mPaint.setColorFilter(filter);
+}
 
-  public void setColor(@ColorInt int color) { mPaint.setColor(color); }
+public void setColor(@ColorInt int color) {
+	mPaint.setColor(color);
+}
 
-  /**
-   * Shift the text on the x axis by @param x pixels.
-   */
-  public void setTranslateX(int x) { mTranslateX = x; }
-  /**
-   * Shift the text on the y axis by @param y pixels.
-   */
-  public void setTranslateY(int y) { mTranslateY = y; }
+/**
+ * Shift the text on the x axis by @param x pixels.
+ */
+public void setTranslateX(int x) {
+	mTranslateX = x;
+}
+/**
+ * Shift the text on the y axis by @param y pixels.
+ */
+public void setTranslateY(int y) {
+	mTranslateY = y;
+}
 }

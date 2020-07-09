@@ -25,10 +25,10 @@ import org.wordpress.android.ui.stats.refresh.StatsModule;
                       LoginServiceModule.class, SupportModule.class,
                       ThreadModule.class})
 public interface AppComponentDebug extends AppComponent {
-  @Component.Builder
-  interface Builder extends AppComponent.Builder {
-    @Override
-    @BindsInstance
-    AppComponentDebug.Builder application(Application application);
-  }
+@Component.Builder
+interface Builder extends AppComponent.Builder {
+@Override
+@BindsInstance
+AppComponentDebug.Builder application(Application application);
+}
 }

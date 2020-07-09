@@ -6,5 +6,5 @@ import org.wordpress.android.login.LoginWpcomService;
 
 @Module
 public abstract class LoginServiceModule {
-  @ContributesAndroidInjector abstract LoginWpcomService loginWpcomService();
+@ContributesAndroidInjector abstract LoginWpcomService loginWpcomService();
 }

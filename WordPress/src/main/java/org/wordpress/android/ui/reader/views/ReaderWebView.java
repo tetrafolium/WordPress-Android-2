@@ -28,339 +28,347 @@ import org.wordpress.android.util.WPUrlUtils;
  * displaying fullscreen video and detecting url/image clicks
  */
 public class ReaderWebView extends WebView {
-  public interface ReaderWebViewUrlClickListener {
-    @SuppressWarnings("SameReturnValue") boolean onUrlClick(String url);
+public interface ReaderWebViewUrlClickListener {
+@SuppressWarnings("SameReturnValue") boolean onUrlClick(String url);
 
-    boolean onImageUrlClick(String imageUrl, View view, int x, int y);
+boolean onImageUrlClick(String imageUrl, View view, int x, int y);
 
-    boolean onFileDownloadClick(String fileUrl);
-  }
+boolean onFileDownloadClick(String fileUrl);
+}
 
-  public interface ReaderCustomViewListener {
-    void onCustomViewShown();
+public interface ReaderCustomViewListener {
+void onCustomViewShown();
 
-    void onCustomViewHidden();
+void onCustomViewHidden();
 
-    ViewGroup onRequestCustomView();
+ViewGroup onRequestCustomView();
 
-    ViewGroup onRequestContentView();
-  }
+ViewGroup onRequestContentView();
+}
 
-  public interface ReaderWebViewPageFinishedListener {
-    void onPageFinished(WebView view, String url);
-  }
+public interface ReaderWebViewPageFinishedListener {
+void onPageFinished(WebView view, String url);
+}
 
-  /**
-   * Timeout in milliseconds for read / connect timeouts
-   */
-  private static final int TIMEOUT_MS = 30000;
+/**
+ * Timeout in milliseconds for read / connect timeouts
+ */
+private static final int TIMEOUT_MS = 30000;
 
-  private ReaderWebChromeClient mReaderChromeClient;
-  private ReaderCustomViewListener mCustomViewListener;
-  private ReaderWebViewUrlClickListener mUrlClickListener;
-  private ReaderWebViewPageFinishedListener mPageFinishedListener;
+private ReaderWebChromeClient mReaderChromeClient;
+private ReaderCustomViewListener mCustomViewListener;
+private ReaderWebViewUrlClickListener mUrlClickListener;
+private ReaderWebViewPageFinishedListener mPageFinishedListener;
 
-  private static String mToken;
-  private static boolean mIsPrivatePost;
-  private static boolean mBlogSchemeIsHttps;
+private static String mToken;
+private static boolean mIsPrivatePost;
+private static boolean mBlogSchemeIsHttps;
 
-  private boolean mIsDestroyed;
-  @Inject AccountStore mAccountStore;
+private boolean mIsDestroyed;
+@Inject AccountStore mAccountStore;
 
-  public ReaderWebView(Context context) {
-    super(context);
-    init(context);
-  }
+public ReaderWebView(Context context) {
+	super(context);
+	init(context);
+}
 
-  public ReaderWebView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    init(context);
-  }
+public ReaderWebView(Context context, AttributeSet attrs) {
+	super(context, attrs);
+	init(context);
+}
 
-  public ReaderWebView(Context context, AttributeSet attrs, int defStyle) {
-    super(context, attrs, defStyle);
-    init(context);
-  }
+public ReaderWebView(Context context, AttributeSet attrs, int defStyle) {
+	super(context, attrs, defStyle);
+	init(context);
+}
 
-  @SuppressLint("NewApi")
-  private void init(Context context) {
-    ((WordPress)context.getApplicationContext()).component().inject(this);
+@SuppressLint("NewApi")
+private void init(Context context) {
+	((WordPress)context.getApplicationContext()).component().inject(this);
 
-    if (!isInEditMode()) {
-      mToken = mAccountStore.getAccessToken();
+	if (!isInEditMode()) {
+		mToken = mAccountStore.getAccessToken();
 
-      mReaderChromeClient = new ReaderWebChromeClient(this);
-      this.setWebChromeClient(mReaderChromeClient);
-      this.setWebViewClient(new ReaderWebViewClient(this));
-      this.getSettings().setUserAgentString(WordPress.getUserAgent());
-      this.getSettings().setMediaPlaybackRequiresUserGesture(false);
+		mReaderChromeClient = new ReaderWebChromeClient(this);
+		this.setWebChromeClient(mReaderChromeClient);
+		this.setWebViewClient(new ReaderWebViewClient(this));
+		this.getSettings().setUserAgentString(WordPress.getUserAgent());
+		this.getSettings().setMediaPlaybackRequiresUserGesture(false);
 
-      // Enable third-party cookies since they are disabled by default;
-      // we need third-party cookies to support authenticated images
-      CookieManager.getInstance().setAcceptThirdPartyCookies(this, true);
-      this.setDownloadListener(
-          (url, userAgent, contentDisposition, mimetype, contentLength) -> {
-            if (hasUrlClickListener()) {
-              mUrlClickListener.onFileDownloadClick(url);
-            }
-          });
-    }
-  }
+		// Enable third-party cookies since they are disabled by default;
+		// we need third-party cookies to support authenticated images
+		CookieManager.getInstance().setAcceptThirdPartyCookies(this, true);
+		this.setDownloadListener(
+			(url, userAgent, contentDisposition, mimetype, contentLength)->{
+				if (hasUrlClickListener()) {
+				        mUrlClickListener.onFileDownloadClick(url);
+				}
+			});
+	}
+}
 
-  @Override
-  public void destroy() {
-    mIsDestroyed = true;
-    super.destroy();
-  }
+@Override
+public void destroy() {
+	mIsDestroyed = true;
+	super.destroy();
+}
 
-  public boolean isDestroyed() { return mIsDestroyed; }
+public boolean isDestroyed() {
+	return mIsDestroyed;
+}
 
-  public void clearContent() { loadUrl("about:blank"); }
+public void clearContent() {
+	loadUrl("about:blank");
+}
 
-  private ReaderWebViewUrlClickListener getUrlClickListener() {
-    return mUrlClickListener;
-  }
+private ReaderWebViewUrlClickListener getUrlClickListener() {
+	return mUrlClickListener;
+}
 
-  public void setUrlClickListener(ReaderWebViewUrlClickListener listener) {
-    mUrlClickListener = listener;
-  }
+public void setUrlClickListener(ReaderWebViewUrlClickListener listener) {
+	mUrlClickListener = listener;
+}
 
-  private boolean hasUrlClickListener() { return (mUrlClickListener != null); }
+private boolean hasUrlClickListener() {
+	return (mUrlClickListener != null);
+}
 
-  private ReaderWebViewPageFinishedListener getPageFinishedListener() {
-    return mPageFinishedListener;
-  }
+private ReaderWebViewPageFinishedListener getPageFinishedListener() {
+	return mPageFinishedListener;
+}
 
-  public void
-  setPageFinishedListener(ReaderWebViewPageFinishedListener listener) {
-    mPageFinishedListener = listener;
-  }
+public void
+setPageFinishedListener(ReaderWebViewPageFinishedListener listener) {
+	mPageFinishedListener = listener;
+}
 
-  private boolean hasPageFinishedListener() {
-    return (mPageFinishedListener != null);
-  }
+private boolean hasPageFinishedListener() {
+	return (mPageFinishedListener != null);
+}
 
-  public void setCustomViewListener(ReaderCustomViewListener listener) {
-    mCustomViewListener = listener;
-  }
+public void setCustomViewListener(ReaderCustomViewListener listener) {
+	mCustomViewListener = listener;
+}
 
-  private boolean hasCustomViewListener() {
-    return (mCustomViewListener != null);
-  }
+private boolean hasCustomViewListener() {
+	return (mCustomViewListener != null);
+}
 
-  private ReaderCustomViewListener getCustomViewListener() {
-    return mCustomViewListener;
-  }
+private ReaderCustomViewListener getCustomViewListener() {
+	return mCustomViewListener;
+}
 
-  public void setIsPrivatePost(boolean isPrivatePost) {
-    mIsPrivatePost = isPrivatePost;
-  }
+public void setIsPrivatePost(boolean isPrivatePost) {
+	mIsPrivatePost = isPrivatePost;
+}
 
-  public void setBlogSchemeIsHttps(boolean blogSchemeIsHttps) {
-    mBlogSchemeIsHttps = blogSchemeIsHttps;
-  }
+public void setBlogSchemeIsHttps(boolean blogSchemeIsHttps) {
+	mBlogSchemeIsHttps = blogSchemeIsHttps;
+}
 
-  private static boolean isValidClickedUrl(String url) {
-    // only return true for http(s) urls so we avoid file: and data: clicks
-    return (url != null &&
-            (url.startsWith("http") || url.startsWith("wordpress:")));
-  }
+private static boolean isValidClickedUrl(String url) {
+	// only return true for http(s) urls so we avoid file: and data: clicks
+	return (url != null &&
+	        (url.startsWith("http") || url.startsWith("wordpress:")));
+}
 
-  public boolean isCustomViewShowing() {
-    return mReaderChromeClient.isCustomViewShowing();
-  }
+public boolean isCustomViewShowing() {
+	return mReaderChromeClient.isCustomViewShowing();
+}
 
-  public void hideCustomView() {
-    if (isCustomViewShowing()) {
-      mReaderChromeClient.onHideCustomView();
-    }
-  }
+public void hideCustomView() {
+	if (isCustomViewShowing()) {
+		mReaderChromeClient.onHideCustomView();
+	}
+}
 
-  /*
-   * detect when a link is tapped
-   */
-  @SuppressLint("ClickableViewAccessibility") // works as is
-  @Override
-  public boolean onTouchEvent(MotionEvent event) {
-    if (event.getAction() == MotionEvent.ACTION_UP &&
-        mUrlClickListener != null) {
-      HitTestResult hr = getHitTestResult();
-      if (hr != null && isValidClickedUrl(hr.getExtra())) {
-        if (UrlUtils.isImageUrl(hr.getExtra())) {
-          return mUrlClickListener.onImageUrlClick(
-              hr.getExtra(), this, (int)event.getX(), (int)event.getY());
-        } else {
-          return mUrlClickListener.onUrlClick(hr.getExtra());
-        }
-      }
-    }
-    return super.onTouchEvent(event);
-  }
+/*
+ * detect when a link is tapped
+ */
+@SuppressLint("ClickableViewAccessibility")   // works as is
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+	if (event.getAction() == MotionEvent.ACTION_UP &&
+	    mUrlClickListener != null) {
+		HitTestResult hr = getHitTestResult();
+		if (hr != null && isValidClickedUrl(hr.getExtra())) {
+			if (UrlUtils.isImageUrl(hr.getExtra())) {
+				return mUrlClickListener.onImageUrlClick(
+					hr.getExtra(), this, (int)event.getX(), (int)event.getY());
+			} else {
+				return mUrlClickListener.onUrlClick(hr.getExtra());
+			}
+		}
+	}
+	return super.onTouchEvent(event);
+}
 
-  private static class ReaderWebViewClient extends WebViewClient {
-    private final ReaderWebView mReaderWebView;
+private static class ReaderWebViewClient extends WebViewClient {
+private final ReaderWebView mReaderWebView;
 
-    ReaderWebViewClient(ReaderWebView readerWebView) {
-      if (readerWebView == null) {
-        throw new IllegalArgumentException(
-            "ReaderWebViewClient requires readerWebView");
-      }
-      mReaderWebView = readerWebView;
-    }
+ReaderWebViewClient(ReaderWebView readerWebView) {
+	if (readerWebView == null) {
+		throw new IllegalArgumentException(
+			      "ReaderWebViewClient requires readerWebView");
+	}
+	mReaderWebView = readerWebView;
+}
 
-    @Override
-    public void onPageFinished(WebView view, String url) {
-      if (mReaderWebView.hasPageFinishedListener()) {
-        mReaderWebView.getPageFinishedListener().onPageFinished(view, url);
-      }
-    }
+@Override
+public void onPageFinished(WebView view, String url) {
+	if (mReaderWebView.hasPageFinishedListener()) {
+		mReaderWebView.getPageFinishedListener().onPageFinished(view, url);
+	}
+}
 
-    @Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-      // fire the url click listener, but only do this when webView has
-      // loaded (is visible) - have seen some posts containing iframes
-      // automatically try to open urls (without being clicked)
-      // before the page has loaded
-      return view.getVisibility() == View.VISIBLE &&
-          mReaderWebView.hasUrlClickListener() && isValidClickedUrl(url) &&
-          mReaderWebView.getUrlClickListener().onUrlClick(url);
-    }
+@Override
+public boolean shouldOverrideUrlLoading(WebView view, String url) {
+	// fire the url click listener, but only do this when webView has
+	// loaded (is visible) - have seen some posts containing iframes
+	// automatically try to open urls (without being clicked)
+	// before the page has loaded
+	return view.getVisibility() == View.VISIBLE &&
+	       mReaderWebView.hasUrlClickListener() && isValidClickedUrl(url) &&
+	       mReaderWebView.getUrlClickListener().onUrlClick(url);
+}
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public WebResourceResponse shouldInterceptRequest(WebView view,
-                                                      String url) {
-      URL imageUrl = null;
-      if (mIsPrivatePost && mBlogSchemeIsHttps && UrlUtils.isImageUrl(url)) {
-        try {
-          imageUrl = new URL(UrlUtils.makeHttps(url));
-        } catch (MalformedURLException e) {
-          AppLog.e(AppLog.T.READER, e);
-        }
-      }
-      // Intercept requests for private images and add the WP.com authorization
-      // header
-      if (imageUrl != null &&
-          WPUrlUtils.safeToAddWordPressComAuthToken(imageUrl) &&
-          !TextUtils.isEmpty(mToken)) {
-        try {
-          HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
-          conn.setRequestProperty("Authorization", "Bearer " + mToken);
-          conn.setReadTimeout(TIMEOUT_MS);
-          conn.setConnectTimeout(TIMEOUT_MS);
-          conn.setRequestProperty("User-Agent", WordPress.getUserAgent());
-          conn.setRequestProperty("Connection", "Keep-Alive");
-          return new WebResourceResponse(conn.getContentType(),
-                                         conn.getContentEncoding(),
-                                         conn.getInputStream());
-        } catch (IOException e) {
-          AppLog.e(AppLog.T.READER, e);
-        }
-      }
+@SuppressWarnings("deprecation")
+@Override
+public WebResourceResponse shouldInterceptRequest(WebView view,
+                                                  String url) {
+	URL imageUrl = null;
+	if (mIsPrivatePost && mBlogSchemeIsHttps && UrlUtils.isImageUrl(url)) {
+		try {
+			imageUrl = new URL(UrlUtils.makeHttps(url));
+		} catch (MalformedURLException e) {
+			AppLog.e(AppLog.T.READER, e);
+		}
+	}
+	// Intercept requests for private images and add the WP.com authorization
+	// header
+	if (imageUrl != null &&
+	    WPUrlUtils.safeToAddWordPressComAuthToken(imageUrl) &&
+	    !TextUtils.isEmpty(mToken)) {
+		try {
+			HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
+			conn.setRequestProperty("Authorization", "Bearer " + mToken);
+			conn.setReadTimeout(TIMEOUT_MS);
+			conn.setConnectTimeout(TIMEOUT_MS);
+			conn.setRequestProperty("User-Agent", WordPress.getUserAgent());
+			conn.setRequestProperty("Connection", "Keep-Alive");
+			return new WebResourceResponse(conn.getContentType(),
+			                               conn.getContentEncoding(),
+			                               conn.getInputStream());
+		} catch (IOException e) {
+			AppLog.e(AppLog.T.READER, e);
+		}
+	}
 
-      return super.shouldInterceptRequest(view, url);
-    }
-  }
+	return super.shouldInterceptRequest(view, url);
+}
+}
 
-  private static class ReaderWebChromeClient extends WebChromeClient {
-    private final ReaderWebView mReaderWebView;
-    private View mCustomView;
-    private CustomViewCallback mCustomViewCallback;
+private static class ReaderWebChromeClient extends WebChromeClient {
+private final ReaderWebView mReaderWebView;
+private View mCustomView;
+private CustomViewCallback mCustomViewCallback;
 
-    ReaderWebChromeClient(ReaderWebView readerWebView) {
-      if (readerWebView == null) {
-        throw new IllegalArgumentException(
-            "ReaderWebChromeClient requires readerWebView");
-      }
-      mReaderWebView = readerWebView;
-    }
+ReaderWebChromeClient(ReaderWebView readerWebView) {
+	if (readerWebView == null) {
+		throw new IllegalArgumentException(
+			      "ReaderWebChromeClient requires readerWebView");
+	}
+	mReaderWebView = readerWebView;
+}
 
-    /*
-     * request the view that will host the fullscreen video
-     */
-    private ViewGroup getTargetView() {
-      if (mReaderWebView.hasCustomViewListener()) {
-        return mReaderWebView.getCustomViewListener().onRequestCustomView();
-      } else {
-        return null;
-      }
-    }
+/*
+ * request the view that will host the fullscreen video
+ */
+private ViewGroup getTargetView() {
+	if (mReaderWebView.hasCustomViewListener()) {
+		return mReaderWebView.getCustomViewListener().onRequestCustomView();
+	} else {
+		return null;
+	}
+}
 
-    /*
-     * request the view that should be hidden when showing fullscreen video
-     */
-    private ViewGroup getContentView() {
-      if (mReaderWebView.hasCustomViewListener()) {
-        return mReaderWebView.getCustomViewListener().onRequestContentView();
-      } else {
-        return null;
-      }
-    }
+/*
+ * request the view that should be hidden when showing fullscreen video
+ */
+private ViewGroup getContentView() {
+	if (mReaderWebView.hasCustomViewListener()) {
+		return mReaderWebView.getCustomViewListener().onRequestContentView();
+	} else {
+		return null;
+	}
+}
 
-    @Override
-    public void onShowCustomView(View view, CustomViewCallback callback) {
-      AppLog.i(AppLog.T.READER, "onShowCustomView");
+@Override
+public void onShowCustomView(View view, CustomViewCallback callback) {
+	AppLog.i(AppLog.T.READER, "onShowCustomView");
 
-      if (mCustomView != null) {
-        AppLog.w(AppLog.T.READER, "customView already showing");
-        onHideCustomView();
-        return;
-      }
+	if (mCustomView != null) {
+		AppLog.w(AppLog.T.READER, "customView already showing");
+		onHideCustomView();
+		return;
+	}
 
-      // hide the post detail content
-      ViewGroup contentView = getContentView();
-      if (contentView != null) {
-        contentView.setVisibility(View.INVISIBLE);
-      }
+	// hide the post detail content
+	ViewGroup contentView = getContentView();
+	if (contentView != null) {
+		contentView.setVisibility(View.INVISIBLE);
+	}
 
-      // show the full screen view
-      ViewGroup targetView = getTargetView();
-      if (targetView != null) {
-        targetView.addView(view);
-        targetView.setVisibility(View.VISIBLE);
-      }
+	// show the full screen view
+	ViewGroup targetView = getTargetView();
+	if (targetView != null) {
+		targetView.addView(view);
+		targetView.setVisibility(View.VISIBLE);
+	}
 
-      if (mReaderWebView.hasCustomViewListener()) {
-        mReaderWebView.getCustomViewListener().onCustomViewShown();
-      }
+	if (mReaderWebView.hasCustomViewListener()) {
+		mReaderWebView.getCustomViewListener().onCustomViewShown();
+	}
 
-      mCustomView = view;
-      mCustomViewCallback = callback;
-    }
+	mCustomView = view;
+	mCustomViewCallback = callback;
+}
 
-    @Override
-    public void onHideCustomView() {
-      AppLog.i(AppLog.T.READER, "onHideCustomView");
+@Override
+public void onHideCustomView() {
+	AppLog.i(AppLog.T.READER, "onHideCustomView");
 
-      if (mCustomView == null) {
-        AppLog.w(AppLog.T.READER, "customView does not exist");
-        return;
-      }
+	if (mCustomView == null) {
+		AppLog.w(AppLog.T.READER, "customView does not exist");
+		return;
+	}
 
-      // hide the target view
-      ViewGroup targetView = getTargetView();
-      if (targetView != null) {
-        targetView.removeView(mCustomView);
-        targetView.setVisibility(View.GONE);
-      }
+	// hide the target view
+	ViewGroup targetView = getTargetView();
+	if (targetView != null) {
+		targetView.removeView(mCustomView);
+		targetView.setVisibility(View.GONE);
+	}
 
-      // redisplay the post detail content
-      ViewGroup contentView = getContentView();
-      if (contentView != null) {
-        contentView.setVisibility(View.VISIBLE);
-      }
+	// redisplay the post detail content
+	ViewGroup contentView = getContentView();
+	if (contentView != null) {
+		contentView.setVisibility(View.VISIBLE);
+	}
 
-      if (mCustomViewCallback != null) {
-        mCustomViewCallback.onCustomViewHidden();
-      }
-      if (mReaderWebView.hasCustomViewListener()) {
-        mReaderWebView.getCustomViewListener().onCustomViewHidden();
-      }
+	if (mCustomViewCallback != null) {
+		mCustomViewCallback.onCustomViewHidden();
+	}
+	if (mReaderWebView.hasCustomViewListener()) {
+		mReaderWebView.getCustomViewListener().onCustomViewHidden();
+	}
 
-      mCustomView = null;
-      mCustomViewCallback = null;
-    }
+	mCustomView = null;
+	mCustomViewCallback = null;
+}
 
-    boolean isCustomViewShowing() { return (mCustomView != null); }
-  }
+boolean isCustomViewShowing() {
+	return (mCustomView != null);
+}
+}
 }

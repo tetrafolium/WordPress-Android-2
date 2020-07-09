@@ -10,28 +10,30 @@ import okio.Okio;
 import okio.Source;
 
 public class StreamingRequest extends RequestBody {
-  public static final int CHUNK_SIZE = 2048;
+public static final int CHUNK_SIZE = 2048;
 
-  private final File mFile;
+private final File mFile;
 
-  public StreamingRequest(File file) { mFile = file; }
+public StreamingRequest(File file) {
+	mFile = file;
+}
 
-  @Override
-  public MediaType contentType() {
-    return MediaType.parse("multipart/form-data");
-  }
+@Override
+public MediaType contentType() {
+	return MediaType.parse("multipart/form-data");
+}
 
-  @Override
-  public void writeTo(BufferedSink sink) throws IOException {
-    Source source = null;
-    try {
-      source = Okio.source(mFile);
+@Override
+public void writeTo(BufferedSink sink) throws IOException {
+	Source source = null;
+	try {
+		source = Okio.source(mFile);
 
-      while (source.read(sink.buffer(), CHUNK_SIZE) != -1) {
-        sink.flush();
-      }
-    } finally {
-      Util.closeQuietly(source);
-    }
-  }
+		while (source.read(sink.buffer(), CHUNK_SIZE) != -1) {
+			sink.flush();
+		}
+	} finally {
+		Util.closeQuietly(source);
+	}
+}
 };

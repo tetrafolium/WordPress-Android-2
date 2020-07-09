@@ -10,15 +10,15 @@ import org.wordpress.android.networking.OAuthAuthenticator;
 
 @Module
 public class LegacyModule {
-  @Singleton
-  @Provides
-  ImageCache provideImageCache() {
-    return WordPress.getBitmapCache();
-  }
+@Singleton
+@Provides
+ImageCache provideImageCache() {
+	return WordPress.getBitmapCache();
+}
 
-  @Singleton
-  @Provides
-  OAuthAuthenticator provideOAuthAuthenicator(AccessToken accessToken) {
-    return new OAuthAuthenticator(accessToken);
-  }
+@Singleton
+@Provides
+OAuthAuthenticator provideOAuthAuthenicator(AccessToken accessToken) {
+	return new OAuthAuthenticator(accessToken);
+}
 }

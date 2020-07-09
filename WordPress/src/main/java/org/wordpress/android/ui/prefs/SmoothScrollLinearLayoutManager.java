@@ -12,53 +12,53 @@ import androidx.recyclerview.widget.RecyclerView;
  * milliseconds).
  */
 public class SmoothScrollLinearLayoutManager extends LinearLayoutManager {
-  private final int mDuration;
+private final int mDuration;
 
-  public SmoothScrollLinearLayoutManager(Context context, int orientation,
-                                         boolean reverseLayout, int duration) {
-    super(context, orientation, reverseLayout);
-    this.mDuration = duration;
-  }
+public SmoothScrollLinearLayoutManager(Context context, int orientation,
+                                       boolean reverseLayout, int duration) {
+	super(context, orientation, reverseLayout);
+	this.mDuration = duration;
+}
 
-  @Override
-  public void smoothScrollToPosition(RecyclerView recyclerView,
-                                     RecyclerView.State state, int position) {
-    final View firstVisibleChild = recyclerView.getChildAt(0);
-    final int itemHeight = firstVisibleChild.getHeight();
-    final int currentPosition =
-        recyclerView.getChildAdapterPosition(firstVisibleChild);
-    int distanceInPixels = Math.abs((currentPosition - position) * itemHeight);
+@Override
+public void smoothScrollToPosition(RecyclerView recyclerView,
+                                   RecyclerView.State state, int position) {
+	final View firstVisibleChild = recyclerView.getChildAt(0);
+	final int itemHeight = firstVisibleChild.getHeight();
+	final int currentPosition =
+		recyclerView.getChildAdapterPosition(firstVisibleChild);
+	int distanceInPixels = Math.abs((currentPosition - position) * itemHeight);
 
-    if (distanceInPixels == 0) {
-      distanceInPixels = (int)Math.abs(firstVisibleChild.getY());
-    }
+	if (distanceInPixels == 0) {
+		distanceInPixels = (int)Math.abs(firstVisibleChild.getY());
+	}
 
-    final SmoothScroller smoothScroller = new SmoothScroller(
-        recyclerView.getContext(), distanceInPixels, mDuration);
-    smoothScroller.setTargetPosition(position);
-    startSmoothScroll(smoothScroller);
-  }
+	final SmoothScroller smoothScroller = new SmoothScroller(
+		recyclerView.getContext(), distanceInPixels, mDuration);
+	smoothScroller.setTargetPosition(position);
+	startSmoothScroll(smoothScroller);
+}
 
-  private class SmoothScroller extends LinearSmoothScroller {
-    private final float mDistanceInPixels;
-    private final float mDuration;
+private class SmoothScroller extends LinearSmoothScroller {
+private final float mDistanceInPixels;
+private final float mDuration;
 
-    SmoothScroller(Context context, int distanceInPixels, int duration) {
-      super(context);
-      this.mDistanceInPixels = distanceInPixels;
-      this.mDuration = duration;
-    }
+SmoothScroller(Context context, int distanceInPixels, int duration) {
+	super(context);
+	this.mDistanceInPixels = distanceInPixels;
+	this.mDuration = duration;
+}
 
-    @Override
-    protected int calculateTimeForScrolling(int distance) {
-      final float proportion = (float)distance / mDistanceInPixels;
-      return (int)(mDuration * proportion);
-    }
+@Override
+protected int calculateTimeForScrolling(int distance) {
+	final float proportion = (float)distance / mDistanceInPixels;
+	return (int)(mDuration * proportion);
+}
 
-    @Override
-    public PointF computeScrollVectorForPosition(int targetPosition) {
-      return SmoothScrollLinearLayoutManager.this
-          .computeScrollVectorForPosition(targetPosition);
-    }
-  }
+@Override
+public PointF computeScrollVectorForPosition(int targetPosition) {
+	return SmoothScrollLinearLayoutManager.this
+	       .computeScrollVectorForPosition(targetPosition);
+}
+}
 }

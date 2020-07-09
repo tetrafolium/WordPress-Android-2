@@ -15,33 +15,36 @@ import androidx.test.espresso.ViewInteraction;
 import org.wordpress.android.R;
 
 public class MySitesPage {
-  private static ViewInteraction chooseSiteLabel =
-      onView(allOf(isAssignableFrom(TextView.class),
-                   withParent(isAssignableFrom(Toolbar.class))));
+private static ViewInteraction chooseSiteLabel =
+	onView(allOf(isAssignableFrom(TextView.class),
+	             withParent(isAssignableFrom(Toolbar.class))));
 
-  public MySitesPage() {}
+public MySitesPage() {
+}
 
-  public MySitesPage go() {
-    clickOn(R.id.nav_sites);
+public MySitesPage go() {
+	clickOn(R.id.nav_sites);
 
-    return this;
-  }
+	return this;
+}
 
-  public void switchSite() {
-    clickOn(R.id.switch_site);
-    chooseSiteLabel.check(matches(withText("Choose site")));
-  }
+public void switchSite() {
+	clickOn(R.id.switch_site);
+	chooseSiteLabel.check(matches(withText("Choose site")));
+}
 
-  private void longClickSite(String siteName) {
-    ViewInteraction siteRow = onView(withText(siteName));
-    longClickOn(siteRow);
-  }
+private void longClickSite(String siteName) {
+	ViewInteraction siteRow = onView(withText(siteName));
+	longClickOn(siteRow);
+}
 
-  public void removeSite(String siteName) {
-    switchSite();
-    longClickSite(siteName);
-    clickOn(android.R.id.button1);
-  }
+public void removeSite(String siteName) {
+	switchSite();
+	longClickSite(siteName);
+	clickOn(android.R.id.button1);
+}
 
-  public void startNewPost() { clickOn("id/fab_button"); }
+public void startNewPost() {
+	clickOn("id/fab_button");
+}
 }

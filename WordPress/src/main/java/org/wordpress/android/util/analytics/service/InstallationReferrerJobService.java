@@ -20,26 +20,26 @@ import org.wordpress.android.util.AppLog.T;
  */
 @TargetApi(21)
 public class InstallationReferrerJobService extends JobService
-    implements InstallationReferrerServiceLogic.ServiceCompletionListener {
-  @Override
-  public boolean onStartJob(JobParameters params) {
-    AppLog.i(T.UTILS, "installation referrer job service > started");
-    InstallationReferrerServiceLogic logic =
-        new InstallationReferrerServiceLogic(this, this);
-    logic.performTask(new Bundle(params.getExtras()), params);
-    return true;
-  }
+	implements InstallationReferrerServiceLogic.ServiceCompletionListener {
+@Override
+public boolean onStartJob(JobParameters params) {
+	AppLog.i(T.UTILS, "installation referrer job service > started");
+	InstallationReferrerServiceLogic logic =
+		new InstallationReferrerServiceLogic(this, this);
+	logic.performTask(new Bundle(params.getExtras()), params);
+	return true;
+}
 
-  @Override
-  public boolean onStopJob(JobParameters params) {
-    AppLog.i(T.UTILS, "installation referrer job service > stopped");
-    jobFinished(params, false);
-    return false;
-  }
+@Override
+public boolean onStopJob(JobParameters params) {
+	AppLog.i(T.UTILS, "installation referrer job service > stopped");
+	jobFinished(params, false);
+	return false;
+}
 
-  @Override
-  public void onCompleted(Object companion) {
-    AppLog.i(T.UTILS, "installation referrer job service > completed");
-    jobFinished((JobParameters)companion, false);
-  }
+@Override
+public void onCompleted(Object companion) {
+	AppLog.i(T.UTILS, "installation referrer job service > completed");
+	jobFinished((JobParameters)companion, false);
+}
 }

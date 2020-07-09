@@ -21,58 +21,58 @@ import org.wordpress.android.util.AppLog;
  */
 
 public class ReaderPostService
-    extends Service implements ServiceCompletionListener {
-  private ReaderPostLogic mReaderPostLogic;
+	extends Service implements ServiceCompletionListener {
+private ReaderPostLogic mReaderPostLogic;
 
-  @Override
-  public IBinder onBind(Intent intent) {
-    return null;
-  }
+@Override
+public IBinder onBind(Intent intent) {
+	return null;
+}
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    mReaderPostLogic = new ReaderPostLogic(this);
-    AppLog.i(AppLog.T.READER, "reader post service > created");
-  }
+@Override
+public void onCreate() {
+	super.onCreate();
+	mReaderPostLogic = new ReaderPostLogic(this);
+	AppLog.i(AppLog.T.READER, "reader post service > created");
+}
 
-  @Override
-  public void onDestroy() {
-    AppLog.i(AppLog.T.READER, "reader post service > destroyed");
-    super.onDestroy();
-  }
+@Override
+public void onDestroy() {
+	AppLog.i(AppLog.T.READER, "reader post service > destroyed");
+	super.onDestroy();
+}
 
-  @Override
-  public int onStartCommand(Intent intent, int flags, int startId) {
-    if (intent == null) {
-      return START_NOT_STICKY;
-    }
+@Override
+public int onStartCommand(Intent intent, int flags, int startId) {
+	if (intent == null) {
+		return START_NOT_STICKY;
+	}
 
-    UpdateAction action;
-    if (intent.hasExtra(ARG_ACTION)) {
-      action = (UpdateAction)intent.getSerializableExtra(ARG_ACTION);
-    } else {
-      action = UpdateAction.REQUEST_NEWER;
-    }
+	UpdateAction action;
+	if (intent.hasExtra(ARG_ACTION)) {
+		action = (UpdateAction)intent.getSerializableExtra(ARG_ACTION);
+	} else {
+		action = UpdateAction.REQUEST_NEWER;
+	}
 
-    EventBus.getDefault().post(new ReaderEvents.UpdatePostsStarted(action));
+	EventBus.getDefault().post(new ReaderEvents.UpdatePostsStarted(action));
 
-    if (intent.hasExtra(ARG_TAG)) {
-      ReaderTag tag = (ReaderTag)intent.getSerializableExtra(ARG_TAG);
-      mReaderPostLogic.performTask(null, action, tag, -1, -1);
-    } else if (intent.hasExtra(ARG_BLOG_ID)) {
-      long blogId = intent.getLongExtra(ARG_BLOG_ID, 0);
-      mReaderPostLogic.performTask(null, action, null, blogId, -1);
-    } else if (intent.hasExtra(ARG_FEED_ID)) {
-      long feedId = intent.getLongExtra(ARG_FEED_ID, 0);
-      mReaderPostLogic.performTask(null, action, null, -1, feedId);
-    }
+	if (intent.hasExtra(ARG_TAG)) {
+		ReaderTag tag = (ReaderTag)intent.getSerializableExtra(ARG_TAG);
+		mReaderPostLogic.performTask(null, action, tag, -1, -1);
+	} else if (intent.hasExtra(ARG_BLOG_ID)) {
+		long blogId = intent.getLongExtra(ARG_BLOG_ID, 0);
+		mReaderPostLogic.performTask(null, action, null, blogId, -1);
+	} else if (intent.hasExtra(ARG_FEED_ID)) {
+		long feedId = intent.getLongExtra(ARG_FEED_ID, 0);
+		mReaderPostLogic.performTask(null, action, null, -1, feedId);
+	}
 
-    return START_NOT_STICKY;
-  }
+	return START_NOT_STICKY;
+}
 
-  @Override
-  public void onCompleted(Object companion) {
-    stopSelf();
-  }
+@Override
+public void onCompleted(Object companion) {
+	stopSelf();
+}
 }

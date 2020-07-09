@@ -26,178 +26,180 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  * version of the image
  */
 public class ReaderPhotoView extends RelativeLayout {
-  public interface PhotoViewListener { void onTapPhotoView(); }
+public interface PhotoViewListener { void onTapPhotoView(); }
 
-  private PhotoViewListener mPhotoViewListener;
-  private String mLoResImageUrl;
-  private String mHiResImageUrl;
+private PhotoViewListener mPhotoViewListener;
+private String mLoResImageUrl;
+private String mHiResImageUrl;
 
-  private final ImageView mImageView;
-  private final ProgressBar mProgress;
-  private final TextView mTxtError;
-  private boolean mIsInitialLayout = true;
-  private final ImageManager mImageManager;
+private final ImageView mImageView;
+private final ProgressBar mProgress;
+private final TextView mTxtError;
+private boolean mIsInitialLayout = true;
+private final ImageManager mImageManager;
 
-  public ReaderPhotoView(Context context) { this(context, null); }
+public ReaderPhotoView(Context context) {
+	this(context, null);
+}
 
-  public ReaderPhotoView(Context context, AttributeSet attrs) {
-    super(context, attrs);
+public ReaderPhotoView(Context context, AttributeSet attrs) {
+	super(context, attrs);
 
-    inflate(context, R.layout.reader_photo_view, this);
+	inflate(context, R.layout.reader_photo_view, this);
 
-    // ImageView which contains the downloaded image
-    mImageView = findViewById(R.id.image_photo);
+	// ImageView which contains the downloaded image
+	mImageView = findViewById(R.id.image_photo);
 
-    // error text that appears when download fails
-    mTxtError = findViewById(R.id.text_error);
+	// error text that appears when download fails
+	mTxtError = findViewById(R.id.text_error);
 
-    // progress bar which appears while downloading
-    mProgress = findViewById(R.id.progress_loading);
+	// progress bar which appears while downloading
+	mProgress = findViewById(R.id.progress_loading);
 
-    mImageManager = ImageManager.getInstance();
-  }
+	mImageManager = ImageManager.getInstance();
+}
 
-  /**
-   * @param imageUrl   the url of the image to load
-   * @param hiResWidth maximum width of the full-size image
-   * @param isPrivate  whether this is an image from a private blog
-   * @param listener   listener for taps on this view
-   */
-  public void setImageUrl(String imageUrl, int hiResWidth, boolean isPrivate,
-                          PhotoViewListener listener) {
-    int loResWidth = (int)(hiResWidth * 0.10f);
-    mLoResImageUrl = ReaderUtils.getResizedImageUrl(
-        imageUrl, loResWidth, 0, isPrivate, PhotonUtils.Quality.LOW);
-    mHiResImageUrl = ReaderUtils.getResizedImageUrl(
-        imageUrl, hiResWidth, 0, isPrivate, PhotonUtils.Quality.MEDIUM);
+/**
+ * @param imageUrl   the url of the image to load
+ * @param hiResWidth maximum width of the full-size image
+ * @param isPrivate  whether this is an image from a private blog
+ * @param listener   listener for taps on this view
+ */
+public void setImageUrl(String imageUrl, int hiResWidth, boolean isPrivate,
+                        PhotoViewListener listener) {
+	int loResWidth = (int)(hiResWidth * 0.10f);
+	mLoResImageUrl = ReaderUtils.getResizedImageUrl(
+		imageUrl, loResWidth, 0, isPrivate, PhotonUtils.Quality.LOW);
+	mHiResImageUrl = ReaderUtils.getResizedImageUrl(
+		imageUrl, hiResWidth, 0, isPrivate, PhotonUtils.Quality.MEDIUM);
 
-    mPhotoViewListener = listener;
-    loadImage();
-  }
+	mPhotoViewListener = listener;
+	loadImage();
+}
 
-  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-  private boolean hasLayout() {
-    // if the view's bounds aren't known yet, and this is not a
-    // wrap-content/wrap-content view, hold off on loading the image.
-    if (getWidth() == 0 && getHeight() == 0) {
-      boolean isFullyWrapContent =
-          getLayoutParams() != null &&
-          getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT &&
-          getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT;
-      if (!isFullyWrapContent) {
-        return false;
-      }
-    }
+@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+private boolean hasLayout() {
+	// if the view's bounds aren't known yet, and this is not a
+	// wrap-content/wrap-content view, hold off on loading the image.
+	if (getWidth() == 0 && getHeight() == 0) {
+		boolean isFullyWrapContent =
+			getLayoutParams() != null &&
+			getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT &&
+			getLayoutParams().width == ViewGroup.LayoutParams.WRAP_CONTENT;
+		if (!isFullyWrapContent) {
+			return false;
+		}
+	}
 
-    return true;
-  }
+	return true;
+}
 
-  private void loadImage() {
-    if (!hasLayout()) {
-      return;
-    }
+private void loadImage() {
+	if (!hasLayout()) {
+		return;
+	}
 
-    showProgress();
+	showProgress();
 
-    mImageManager.loadWithResultListener(
-        mImageView, ImageType.IMAGE, mHiResImageUrl, ScaleType.CENTER,
-        mLoResImageUrl, new RequestListener<Drawable>() {
-          @Override
-          public void onLoadFailed(@Nullable Exception e) {
-            if (e != null) {
-              AppLog.e(AppLog.T.READER, e);
-            }
-            boolean lowResNotLoadedYet = isLoading();
-            if (lowResNotLoadedYet) {
-              hideProgress();
-              showError();
-            }
-          }
+	mImageManager.loadWithResultListener(
+		mImageView, ImageType.IMAGE, mHiResImageUrl, ScaleType.CENTER,
+		mLoResImageUrl, new RequestListener<Drawable>() {
+			@Override
+			public void onLoadFailed(@Nullable Exception e) {
+			        if (e != null) {
+			                AppLog.e(AppLog.T.READER, e);
+				}
+			        boolean lowResNotLoadedYet = isLoading();
+			        if (lowResNotLoadedYet) {
+			                hideProgress();
+			                showError();
+				}
+			}
 
-          @Override
-          public void onResourceReady(Drawable resource) {
-            handleResponse();
-          }
-        });
-  }
+			@Override
+			public void onResourceReady(Drawable resource) {
+			        handleResponse();
+			}
+		});
+}
 
-  private void handleResponse() {
-    hideProgress();
-    hideError();
-    // attach the pinch/zoom handler
-    setAttacher();
-  }
+private void handleResponse() {
+	hideProgress();
+	hideError();
+	// attach the pinch/zoom handler
+	setAttacher();
+}
 
-  private void setAttacher() {
-    PhotoViewAttacher attacher = new PhotoViewAttacher(mImageView);
-    attacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-      @Override
-      public void onPhotoTap(View view, float v, float v2) {
-        if (mPhotoViewListener != null) {
-          mPhotoViewListener.onTapPhotoView();
-        }
-      }
-    });
-    attacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
-      @Override
-      public void onViewTap(View view, float v, float v2) {
-        if (mPhotoViewListener != null) {
-          mPhotoViewListener.onTapPhotoView();
-        }
-      }
-    });
-  }
+private void setAttacher() {
+	PhotoViewAttacher attacher = new PhotoViewAttacher(mImageView);
+	attacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+			@Override
+			public void onPhotoTap(View view, float v, float v2) {
+			        if (mPhotoViewListener != null) {
+			                mPhotoViewListener.onTapPhotoView();
+				}
+			}
+		});
+	attacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+			@Override
+			public void onViewTap(View view, float v, float v2) {
+			        if (mPhotoViewListener != null) {
+			                mPhotoViewListener.onTapPhotoView();
+				}
+			}
+		});
+}
 
-  private void showError() {
-    hideProgress();
-    if (mTxtError != null) {
-      mTxtError.setVisibility(View.VISIBLE);
-    }
-  }
+private void showError() {
+	hideProgress();
+	if (mTxtError != null) {
+		mTxtError.setVisibility(View.VISIBLE);
+	}
+}
 
-  private void hideError() {
-    hideProgress();
-    if (mTxtError != null) {
-      mTxtError.setVisibility(View.GONE);
-    }
-  }
+private void hideError() {
+	hideProgress();
+	if (mTxtError != null) {
+		mTxtError.setVisibility(View.GONE);
+	}
+}
 
-  private void showProgress() {
-    if (mProgress != null) {
-      mProgress.setVisibility(View.VISIBLE);
-    }
-  }
+private void showProgress() {
+	if (mProgress != null) {
+		mProgress.setVisibility(View.VISIBLE);
+	}
+}
 
-  private void hideProgress() {
-    if (mProgress != null) {
-      mProgress.setVisibility(View.GONE);
-    }
-  }
+private void hideProgress() {
+	if (mProgress != null) {
+		mProgress.setVisibility(View.GONE);
+	}
+}
 
-  private boolean isLoading() {
-    return mProgress != null && mProgress.getVisibility() == VISIBLE;
-  }
+private boolean isLoading() {
+	return mProgress != null && mProgress.getVisibility() == VISIBLE;
+}
 
-  @Override
-  protected void onLayout(boolean changed, int left, int top, int right,
-                          int bottom) {
-    super.onLayout(changed, left, top, right, bottom);
-    if ((!isInEditMode()) && (mIsInitialLayout)) {
-      mIsInitialLayout = false;
-      AppLog.d(AppLog.T.READER, "reader photo > initial layout");
-      loadImage();
-    }
-  }
+@Override
+protected void onLayout(boolean changed, int left, int top, int right,
+                        int bottom) {
+	super.onLayout(changed, left, top, right, bottom);
+	if ((!isInEditMode()) && (mIsInitialLayout)) {
+		mIsInitialLayout = false;
+		AppLog.d(AppLog.T.READER, "reader photo > initial layout");
+		loadImage();
+	}
+}
 
-  @Override
-  protected void onDetachedFromWindow() {
-    mIsInitialLayout = true;
-    super.onDetachedFromWindow();
-  }
+@Override
+protected void onDetachedFromWindow() {
+	mIsInitialLayout = true;
+	super.onDetachedFromWindow();
+}
 
-  @Override
-  protected void drawableStateChanged() {
-    super.drawableStateChanged();
-    invalidate();
-  }
+@Override
+protected void drawableStateChanged() {
+	super.drawableStateChanged();
+	invalidate();
+}
 }

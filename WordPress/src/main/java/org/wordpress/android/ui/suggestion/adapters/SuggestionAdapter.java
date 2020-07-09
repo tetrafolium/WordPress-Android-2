@@ -21,149 +21,149 @@ import org.wordpress.android.util.image.ImageManager;
 import org.wordpress.android.util.image.ImageType;
 
 public class SuggestionAdapter extends BaseAdapter implements Filterable {
-  private final LayoutInflater mInflater;
-  private Filter mSuggestionFilter;
-  private List<Suggestion> mSuggestionList;
-  private List<Suggestion> mOrigSuggestionList;
-  private int mAvatarSz;
+private final LayoutInflater mInflater;
+private Filter mSuggestionFilter;
+private List<Suggestion> mSuggestionList;
+private List<Suggestion> mOrigSuggestionList;
+private int mAvatarSz;
 
-  @Inject protected ImageManager mImageManager;
+@Inject protected ImageManager mImageManager;
 
-  public SuggestionAdapter(Context context) {
-    ((WordPress)context.getApplicationContext()).component().inject(this);
-    mAvatarSz =
-        context.getResources().getDimensionPixelSize(R.dimen.avatar_sz_small);
-    mInflater = LayoutInflater.from(context);
-  }
+public SuggestionAdapter(Context context) {
+	((WordPress)context.getApplicationContext()).component().inject(this);
+	mAvatarSz =
+		context.getResources().getDimensionPixelSize(R.dimen.avatar_sz_small);
+	mInflater = LayoutInflater.from(context);
+}
 
-  public void setSuggestionList(List<Suggestion> suggestionList) {
-    mOrigSuggestionList = suggestionList;
-  }
+public void setSuggestionList(List<Suggestion> suggestionList) {
+	mOrigSuggestionList = suggestionList;
+}
 
-  @Override
-  public int getCount() {
-    if (mSuggestionList == null) {
-      return 0;
-    }
-    return mSuggestionList.size();
-  }
+@Override
+public int getCount() {
+	if (mSuggestionList == null) {
+		return 0;
+	}
+	return mSuggestionList.size();
+}
 
-  @Override
-  public Suggestion getItem(int position) {
-    if (mSuggestionList == null) {
-      return null;
-    }
-    return mSuggestionList.get(position);
-  }
+@Override
+public Suggestion getItem(int position) {
+	if (mSuggestionList == null) {
+		return null;
+	}
+	return mSuggestionList.get(position);
+}
 
-  @Override
-  public long getItemId(int position) {
-    return position;
-  }
+@Override
+public long getItemId(int position) {
+	return position;
+}
 
-  @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
-    final SuggestionViewHolder holder;
+@Override
+public View getView(int position, View convertView, ViewGroup parent) {
+	final SuggestionViewHolder holder;
 
-    if (convertView == null || convertView.getTag() == null) {
-      convertView =
-          mInflater.inflate(R.layout.suggestion_list_row, parent, false);
-      holder = new SuggestionViewHolder(convertView);
-      convertView.setTag(holder);
-    } else {
-      holder = (SuggestionViewHolder)convertView.getTag();
-    }
+	if (convertView == null || convertView.getTag() == null) {
+		convertView =
+			mInflater.inflate(R.layout.suggestion_list_row, parent, false);
+		holder = new SuggestionViewHolder(convertView);
+		convertView.setTag(holder);
+	} else {
+		holder = (SuggestionViewHolder)convertView.getTag();
+	}
 
-    Suggestion suggestion = getItem(position);
+	Suggestion suggestion = getItem(position);
 
-    if (suggestion != null) {
-      String avatarUrl =
-          GravatarUtils.fixGravatarUrl(suggestion.getImageUrl(), mAvatarSz);
-      mImageManager.loadIntoCircle(holder.mImgAvatar,
-                                   ImageType.AVATAR_WITH_BACKGROUND, avatarUrl);
-      holder.mTxtUserLogin.setText(convertView.getResources().getString(
-          R.string.at_username, suggestion.getUserLogin()));
-      holder.mTxtDisplayName.setText(suggestion.getDisplayName());
-    }
+	if (suggestion != null) {
+		String avatarUrl =
+			GravatarUtils.fixGravatarUrl(suggestion.getImageUrl(), mAvatarSz);
+		mImageManager.loadIntoCircle(holder.mImgAvatar,
+		                             ImageType.AVATAR_WITH_BACKGROUND, avatarUrl);
+		holder.mTxtUserLogin.setText(convertView.getResources().getString(
+						     R.string.at_username, suggestion.getUserLogin()));
+		holder.mTxtDisplayName.setText(suggestion.getDisplayName());
+	}
 
-    return convertView;
-  }
+	return convertView;
+}
 
-  @Override
-  public Filter getFilter() {
-    if (mSuggestionFilter == null) {
-      mSuggestionFilter = new SuggestionFilter();
-    }
+@Override
+public Filter getFilter() {
+	if (mSuggestionFilter == null) {
+		mSuggestionFilter = new SuggestionFilter();
+	}
 
-    return mSuggestionFilter;
-  }
+	return mSuggestionFilter;
+}
 
-  private class SuggestionViewHolder {
-    private final ImageView mImgAvatar;
-    private final TextView mTxtUserLogin;
-    private final TextView mTxtDisplayName;
+private class SuggestionViewHolder {
+private final ImageView mImgAvatar;
+private final TextView mTxtUserLogin;
+private final TextView mTxtDisplayName;
 
-    SuggestionViewHolder(View row) {
-      mImgAvatar = row.findViewById(R.id.suggest_list_row_avatar);
-      mTxtUserLogin =
-          row.findViewById(R.id.suggestion_list_row_user_login_label);
-      mTxtDisplayName =
-          row.findViewById(R.id.suggestion_list_row_display_name_label);
-    }
-  }
+SuggestionViewHolder(View row) {
+	mImgAvatar = row.findViewById(R.id.suggest_list_row_avatar);
+	mTxtUserLogin =
+		row.findViewById(R.id.suggestion_list_row_user_login_label);
+	mTxtDisplayName =
+		row.findViewById(R.id.suggestion_list_row_display_name_label);
+}
+}
 
-  private class SuggestionFilter extends Filter {
-    @Override
-    protected FilterResults performFiltering(CharSequence constraint) {
-      FilterResults results = new FilterResults();
+private class SuggestionFilter extends Filter {
+@Override
+protected FilterResults performFiltering(CharSequence constraint) {
+	FilterResults results = new FilterResults();
 
-      if (mOrigSuggestionList == null) {
-        results.values = null;
-        results.count = 0;
-      } else if (constraint == null || constraint.length() == 0) {
-        results.values = mOrigSuggestionList;
-        results.count = mOrigSuggestionList.size();
-      } else {
-        List<Suggestion> nSuggestionList = new ArrayList<>();
+	if (mOrigSuggestionList == null) {
+		results.values = null;
+		results.count = 0;
+	} else if (constraint == null || constraint.length() == 0) {
+		results.values = mOrigSuggestionList;
+		results.count = mOrigSuggestionList.size();
+	} else {
+		List<Suggestion> nSuggestionList = new ArrayList<>();
 
-        for (Suggestion suggestion : mOrigSuggestionList) {
-          String lowerCaseConstraint =
-              constraint.toString().toLowerCase(Locale.getDefault());
-          if (suggestion.getUserLogin()
-                  .toLowerCase(Locale.ROOT)
-                  .startsWith(lowerCaseConstraint) ||
-              suggestion.getDisplayName()
-                  .toLowerCase(Locale.getDefault())
-                  .startsWith(lowerCaseConstraint) ||
-              suggestion.getDisplayName()
-                  .toLowerCase(Locale.getDefault())
-                  .contains(" " + lowerCaseConstraint)) {
-            nSuggestionList.add(suggestion);
-          }
-        }
+		for (Suggestion suggestion : mOrigSuggestionList) {
+			String lowerCaseConstraint =
+				constraint.toString().toLowerCase(Locale.getDefault());
+			if (suggestion.getUserLogin()
+			    .toLowerCase(Locale.ROOT)
+			    .startsWith(lowerCaseConstraint) ||
+			    suggestion.getDisplayName()
+			    .toLowerCase(Locale.getDefault())
+			    .startsWith(lowerCaseConstraint) ||
+			    suggestion.getDisplayName()
+			    .toLowerCase(Locale.getDefault())
+			    .contains(" " + lowerCaseConstraint)) {
+				nSuggestionList.add(suggestion);
+			}
+		}
 
-        results.values = nSuggestionList;
-        results.count = nSuggestionList.size();
-      }
-      return results;
-    }
+		results.values = nSuggestionList;
+		results.count = nSuggestionList.size();
+	}
+	return results;
+}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void publishResults(CharSequence constraint,
-                                  FilterResults results) {
-      if (results.count == 0) {
-        notifyDataSetInvalidated();
-      } else {
-        mSuggestionList = (List<Suggestion>)results.values;
-        notifyDataSetChanged();
-      }
-    }
+@SuppressWarnings("unchecked")
+@Override
+protected void publishResults(CharSequence constraint,
+                              FilterResults results) {
+	if (results.count == 0) {
+		notifyDataSetInvalidated();
+	} else {
+		mSuggestionList = (List<Suggestion>)results.values;
+		notifyDataSetChanged();
+	}
+}
 
-    @Override
-    public CharSequence convertResultToString(Object resultValue) {
-      Suggestion suggestion = (Suggestion)resultValue;
-      return suggestion.getUserLogin();
-    }
-  }
+@Override
+public CharSequence convertResultToString(Object resultValue) {
+	Suggestion suggestion = (Suggestion)resultValue;
+	return suggestion.getUserLogin();
+}
+}
 }

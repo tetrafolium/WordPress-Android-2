@@ -53,508 +53,508 @@ import org.wordpress.android.viewmodel.plugins.PluginBrowserViewModel;
 import org.wordpress.android.viewmodel.plugins.PluginBrowserViewModel.PluginListType;
 
 public class PluginBrowserActivity extends AppCompatActivity
-    implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
-  @Inject ViewModelProvider.Factory mViewModelFactory;
-  @Inject ImageManager mImageManager;
-  private PluginBrowserViewModel mViewModel;
+	implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
+@Inject ViewModelProvider.Factory mViewModelFactory;
+@Inject ImageManager mImageManager;
+private PluginBrowserViewModel mViewModel;
 
-  private RecyclerView mSitePluginsRecycler;
-  private RecyclerView mFeaturedPluginsRecycler;
-  private RecyclerView mPopularPluginsRecycler;
-  private RecyclerView mNewPluginsRecycler;
+private RecyclerView mSitePluginsRecycler;
+private RecyclerView mFeaturedPluginsRecycler;
+private RecyclerView mPopularPluginsRecycler;
+private RecyclerView mNewPluginsRecycler;
 
-  private MenuItem mSearchMenuItem;
-  private SearchView mSearchView;
+private MenuItem mSearchMenuItem;
+private SearchView mSearchView;
 
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(LocaleManager.setLocale(newBase));
-  }
+@Override
+protected void attachBaseContext(Context newBase) {
+	super.attachBaseContext(LocaleManager.setLocale(newBase));
+}
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ((WordPress)getApplication()).component().inject(this);
-    setContentView(R.layout.plugin_browser_activity);
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	((WordPress)getApplication()).component().inject(this);
+	setContentView(R.layout.plugin_browser_activity);
 
-    mViewModel = ViewModelProviders.of(this, mViewModelFactory)
-                     .get(PluginBrowserViewModel.class);
+	mViewModel = ViewModelProviders.of(this, mViewModelFactory)
+	             .get(PluginBrowserViewModel.class);
 
-    mSitePluginsRecycler = findViewById(R.id.installed_plugins_recycler);
-    mFeaturedPluginsRecycler = findViewById(R.id.featured_plugins_recycler);
-    mPopularPluginsRecycler = findViewById(R.id.popular_plugins_recycler);
-    mNewPluginsRecycler = findViewById(R.id.new_plugins_recycler);
+	mSitePluginsRecycler = findViewById(R.id.installed_plugins_recycler);
+	mFeaturedPluginsRecycler = findViewById(R.id.featured_plugins_recycler);
+	mPopularPluginsRecycler = findViewById(R.id.popular_plugins_recycler);
+	mNewPluginsRecycler = findViewById(R.id.new_plugins_recycler);
 
-    Toolbar toolbar = findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setHomeButtonEnabled(true);
-      actionBar.setDisplayHomeAsUpEnabled(true);
-    }
+	Toolbar toolbar = findViewById(R.id.toolbar);
+	setSupportActionBar(toolbar);
+	ActionBar actionBar = getSupportActionBar();
+	if (actionBar != null) {
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+	}
 
-    SiteModel siteModel =
-        (SiteModel)getIntent().getSerializableExtra(WordPress.SITE);
-    if (siteModel == null) {
-      ToastUtils.showToast(this, R.string.blog_not_found);
-      finish();
-      return;
-    }
+	SiteModel siteModel =
+		(SiteModel)getIntent().getSerializableExtra(WordPress.SITE);
+	if (siteModel == null) {
+		ToastUtils.showToast(this, R.string.blog_not_found);
+		finish();
+		return;
+	}
 
-    if (savedInstanceState == null) {
-      mViewModel.setSite(siteModel);
-    } else {
-      mViewModel.readFromBundle(savedInstanceState);
-    }
-    mViewModel.start();
+	if (savedInstanceState == null) {
+		mViewModel.setSite(siteModel);
+	} else {
+		mViewModel.readFromBundle(savedInstanceState);
+	}
+	mViewModel.start();
 
-    // site plugin list
-    findViewById(R.id.text_manage)
-        .setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            showListFragment(PluginListType.SITE);
-          }
-        });
+	// site plugin list
+	findViewById(R.id.text_manage)
+	.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        showListFragment(PluginListType.SITE);
+			}
+		});
 
-    // featured plugin list
-    findViewById(R.id.text_all_featured)
-        .setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            showListFragment(PluginListType.FEATURED);
-          }
-        });
+	// featured plugin list
+	findViewById(R.id.text_all_featured)
+	.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        showListFragment(PluginListType.FEATURED);
+			}
+		});
 
-    // popular plugin list
-    findViewById(R.id.text_all_popular)
-        .setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            showListFragment(PluginListType.POPULAR);
-          }
-        });
+	// popular plugin list
+	findViewById(R.id.text_all_popular)
+	.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        showListFragment(PluginListType.POPULAR);
+			}
+		});
 
-    // new plugin list
-    findViewById(R.id.text_all_new)
-        .setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            showListFragment(PluginListType.NEW);
-          }
-        });
+	// new plugin list
+	findViewById(R.id.text_all_new)
+	.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        showListFragment(PluginListType.NEW);
+			}
+		});
 
-    getSupportFragmentManager().addOnBackStackChangedListener(
-        new FragmentManager.OnBackStackChangedListener() {
-          @Override
-          public void onBackStackChanged() {
-            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-              mViewModel.setTitle(getString(R.string.plugins));
-            }
-          }
-        });
+	getSupportFragmentManager().addOnBackStackChangedListener(
+		new FragmentManager.OnBackStackChangedListener() {
+			@Override
+			public void onBackStackChanged() {
+			        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+			                mViewModel.setTitle(getString(R.string.plugins));
+				}
+			}
+		});
 
-    configureRecycler(mSitePluginsRecycler);
-    configureRecycler(mFeaturedPluginsRecycler);
-    configureRecycler(mPopularPluginsRecycler);
-    configureRecycler(mNewPluginsRecycler);
+	configureRecycler(mSitePluginsRecycler);
+	configureRecycler(mFeaturedPluginsRecycler);
+	configureRecycler(mPopularPluginsRecycler);
+	configureRecycler(mNewPluginsRecycler);
 
-    setupObservers();
-  }
+	setupObservers();
+}
 
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    mViewModel.writeToBundle(outState);
-  }
+@Override
+protected void onSaveInstanceState(Bundle outState) {
+	super.onSaveInstanceState(outState);
+	mViewModel.writeToBundle(outState);
+}
 
-  private void setupObservers() {
-    mViewModel.getTitle().observe(this, new Observer<String>() {
-      @Override
-      public void onChanged(@Nullable String title) {
-        setTitle(title);
-      }
-    });
+private void setupObservers() {
+	mViewModel.getTitle().observe(this, new Observer<String>() {
+			@Override
+			public void onChanged(@Nullable String title) {
+			        setTitle(title);
+			}
+		});
 
-    mViewModel.getSitePluginsLiveData().observe(
-        this, new Observer<ListState<ImmutablePluginModel>>() {
-          @Override
-          public void onChanged(
-              @Nullable ListState<ImmutablePluginModel> listState) {
-            if (listState != null) {
-              reloadPluginAdapterAndVisibility(PluginListType.SITE, listState);
+	mViewModel.getSitePluginsLiveData().observe(
+		this, new Observer<ListState<ImmutablePluginModel> >() {
+			@Override
+			public void onChanged(
+				@Nullable ListState<ImmutablePluginModel> listState) {
+			        if (listState != null) {
+			                reloadPluginAdapterAndVisibility(PluginListType.SITE, listState);
 
-              showProgress(listState.isFetchingFirstPage() &&
-                           listState.getData().isEmpty());
+			                showProgress(listState.isFetchingFirstPage() &&
+			                             listState.getData().isEmpty());
 
-              // We should ignore the errors due to network condition, unless
-              // this is the first fetch, the user can use the cached data and
-              // showing the error while the data is loaded might cause
-              // confusion
-              if (listState instanceof ListState.Error &&
-                  NetworkUtils.isNetworkAvailable(PluginBrowserActivity.this)) {
-                ToastUtils.showToast(PluginBrowserActivity.this,
-                                     R.string.plugin_fetch_error);
-              }
-            }
-          }
-        });
+			                // We should ignore the errors due to network condition, unless
+			                // this is the first fetch, the user can use the cached data and
+			                // showing the error while the data is loaded might cause
+			                // confusion
+			                if (listState instanceof ListState.Error &&
+			                    NetworkUtils.isNetworkAvailable(PluginBrowserActivity.this)) {
+			                        ToastUtils.showToast(PluginBrowserActivity.this,
+			                                             R.string.plugin_fetch_error);
+					}
+				}
+			}
+		});
 
-    mViewModel.getFeaturedPluginsLiveData().observe(
-        this, new Observer<ListState<ImmutablePluginModel>>() {
-          @Override
-          public void onChanged(
-              @Nullable ListState<ImmutablePluginModel> listState) {
-            if (listState != null) {
-              reloadPluginAdapterAndVisibility(PluginListType.FEATURED,
-                                               listState);
-            }
-          }
-        });
+	mViewModel.getFeaturedPluginsLiveData().observe(
+		this, new Observer<ListState<ImmutablePluginModel> >() {
+			@Override
+			public void onChanged(
+				@Nullable ListState<ImmutablePluginModel> listState) {
+			        if (listState != null) {
+			                reloadPluginAdapterAndVisibility(PluginListType.FEATURED,
+			                                                 listState);
+				}
+			}
+		});
 
-    mViewModel.getPopularPluginsLiveData().observe(
-        this, new Observer<ListState<ImmutablePluginModel>>() {
-          @Override
-          public void onChanged(
-              @Nullable ListState<ImmutablePluginModel> listState) {
-            if (listState != null) {
-              reloadPluginAdapterAndVisibility(PluginListType.POPULAR,
-                                               listState);
-            }
-          }
-        });
+	mViewModel.getPopularPluginsLiveData().observe(
+		this, new Observer<ListState<ImmutablePluginModel> >() {
+			@Override
+			public void onChanged(
+				@Nullable ListState<ImmutablePluginModel> listState) {
+			        if (listState != null) {
+			                reloadPluginAdapterAndVisibility(PluginListType.POPULAR,
+			                                                 listState);
+				}
+			}
+		});
 
-    mViewModel.getNewPluginsLiveData().observe(
-        this, new Observer<ListState<ImmutablePluginModel>>() {
-          @Override
-          public void onChanged(
-              @Nullable ListState<ImmutablePluginModel> listState) {
-            if (listState != null) {
-              reloadPluginAdapterAndVisibility(PluginListType.NEW, listState);
-            }
-          }
-        });
-  }
+	mViewModel.getNewPluginsLiveData().observe(
+		this, new Observer<ListState<ImmutablePluginModel> >() {
+			@Override
+			public void onChanged(
+				@Nullable ListState<ImmutablePluginModel> listState) {
+			        if (listState != null) {
+			                reloadPluginAdapterAndVisibility(PluginListType.NEW, listState);
+				}
+			}
+		});
+}
 
-  private void configureRecycler(@NonNull RecyclerView recycler) {
-    recycler.setLayoutManager(
-        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-    recycler.setHasFixedSize(true);
-    recycler.setAdapter(new PluginBrowserAdapter(this));
-  }
+private void configureRecycler(@NonNull RecyclerView recycler) {
+	recycler.setLayoutManager(
+		new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+	recycler.setHasFixedSize(true);
+	recycler.setAdapter(new PluginBrowserAdapter(this));
+}
 
-  @Override
-  protected void onDestroy() {
-    if (mSearchMenuItem != null) {
-      mSearchMenuItem.setOnActionExpandListener(null);
-    }
-    if (mSearchView != null) {
-      mSearchView.setOnQueryTextListener(null);
-    }
-    super.onDestroy();
-  }
+@Override
+protected void onDestroy() {
+	if (mSearchMenuItem != null) {
+		mSearchMenuItem.setOnActionExpandListener(null);
+	}
+	if (mSearchView != null) {
+		mSearchView.setOnQueryTextListener(null);
+	}
+	super.onDestroy();
+}
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.search, menu);
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+	getMenuInflater().inflate(R.menu.search, menu);
 
-    mSearchMenuItem = menu.findItem(R.id.menu_search);
-    mSearchView = (SearchView)mSearchMenuItem.getActionView();
+	mSearchMenuItem = menu.findItem(R.id.menu_search);
+	mSearchView = (SearchView)mSearchMenuItem.getActionView();
 
-    PluginListFragment currentFragment = getCurrentFragment();
-    if (currentFragment != null &&
-        currentFragment.getListType() == PluginListType.SEARCH) {
-      mSearchMenuItem.expandActionView();
-      mSearchView.setQuery(mViewModel.getSearchQuery(), false);
-      mSearchView.setOnQueryTextListener(this);
-    }
+	PluginListFragment currentFragment = getCurrentFragment();
+	if (currentFragment != null &&
+	    currentFragment.getListType() == PluginListType.SEARCH) {
+		mSearchMenuItem.expandActionView();
+		mSearchView.setQuery(mViewModel.getSearchQuery(), false);
+		mSearchView.setOnQueryTextListener(this);
+	}
 
-    mSearchMenuItem.setOnActionExpandListener(this);
+	mSearchMenuItem.setOnActionExpandListener(this);
 
-    return super.onCreateOptionsMenu(menu);
-  }
+	return super.onCreateOptionsMenu(menu);
+}
 
-  @Override
-  public boolean onOptionsItemSelected(final MenuItem item) {
-    if (item.getItemId() == android.R.id.home) {
-      onBackPressed();
-      return true;
-    }
-    return super.onOptionsItemSelected(item);
-  }
+@Override
+public boolean onOptionsItemSelected(final MenuItem item) {
+	if (item.getItemId() == android.R.id.home) {
+		onBackPressed();
+		return true;
+	}
+	return super.onOptionsItemSelected(item);
+}
 
-  private void reloadPluginAdapterAndVisibility(
-      @NonNull PluginListType pluginType,
-      @Nullable ListState<ImmutablePluginModel> listState) {
-    if (listState == null) {
-      return;
-    }
-    PluginBrowserAdapter adapter = null;
-    View cardView = null;
-    switch (pluginType) {
-    case SITE:
-      adapter = (PluginBrowserAdapter)mSitePluginsRecycler.getAdapter();
-      cardView = findViewById(R.id.installed_plugins_cardview);
-      break;
-    case FEATURED:
-      adapter = (PluginBrowserAdapter)mFeaturedPluginsRecycler.getAdapter();
-      cardView = findViewById(R.id.featured_plugins_cardview);
-      break;
-    case POPULAR:
-      adapter = (PluginBrowserAdapter)mPopularPluginsRecycler.getAdapter();
-      cardView = findViewById(R.id.popular_plugins_cardview);
-      break;
-    case NEW:
-      adapter = (PluginBrowserAdapter)mNewPluginsRecycler.getAdapter();
-      cardView = findViewById(R.id.new_plugins_cardview);
-      break;
-    case SEARCH:
-      return;
-    }
-    if (adapter == null || cardView == null) {
-      return;
-    }
-    List<ImmutablePluginModel> plugins = listState.getData();
-    adapter.setPlugins(plugins);
+private void reloadPluginAdapterAndVisibility(
+	@NonNull PluginListType pluginType,
+	@Nullable ListState<ImmutablePluginModel> listState) {
+	if (listState == null) {
+		return;
+	}
+	PluginBrowserAdapter adapter = null;
+	View cardView = null;
+	switch (pluginType) {
+	case SITE:
+		adapter = (PluginBrowserAdapter)mSitePluginsRecycler.getAdapter();
+		cardView = findViewById(R.id.installed_plugins_cardview);
+		break;
+	case FEATURED:
+		adapter = (PluginBrowserAdapter)mFeaturedPluginsRecycler.getAdapter();
+		cardView = findViewById(R.id.featured_plugins_cardview);
+		break;
+	case POPULAR:
+		adapter = (PluginBrowserAdapter)mPopularPluginsRecycler.getAdapter();
+		cardView = findViewById(R.id.popular_plugins_cardview);
+		break;
+	case NEW:
+		adapter = (PluginBrowserAdapter)mNewPluginsRecycler.getAdapter();
+		cardView = findViewById(R.id.new_plugins_cardview);
+		break;
+	case SEARCH:
+		return;
+	}
+	if (adapter == null || cardView == null) {
+		return;
+	}
+	List<ImmutablePluginModel> plugins = listState.getData();
+	adapter.setPlugins(plugins);
 
-    int newVisibility = plugins.size() > 0 ? View.VISIBLE : View.GONE;
-    int oldVisibility = cardView.getVisibility();
-    if (newVisibility == View.VISIBLE && oldVisibility != View.VISIBLE) {
-      AniUtils.fadeIn(cardView, AniUtils.Duration.MEDIUM);
-    } else if (newVisibility != View.VISIBLE && oldVisibility == View.VISIBLE) {
-      AniUtils.fadeOut(cardView, AniUtils.Duration.MEDIUM);
-    }
-  }
+	int newVisibility = plugins.size() > 0 ? View.VISIBLE : View.GONE;
+	int oldVisibility = cardView.getVisibility();
+	if (newVisibility == View.VISIBLE && oldVisibility != View.VISIBLE) {
+		AniUtils.fadeIn(cardView, AniUtils.Duration.MEDIUM);
+	} else if (newVisibility != View.VISIBLE && oldVisibility == View.VISIBLE) {
+		AniUtils.fadeOut(cardView, AniUtils.Duration.MEDIUM);
+	}
+}
 
-  @Override
-  public boolean onQueryTextSubmit(String query) {
-    if (mSearchView != null) {
-      mSearchView.clearFocus();
-    }
-    ActivityUtils.hideKeyboard(this);
-    return true;
-  }
+@Override
+public boolean onQueryTextSubmit(String query) {
+	if (mSearchView != null) {
+		mSearchView.clearFocus();
+	}
+	ActivityUtils.hideKeyboard(this);
+	return true;
+}
 
-  @Override
-  public boolean onQueryTextChange(String query) {
-    mViewModel.setSearchQuery(query != null ? query : "");
-    return true;
-  }
+@Override
+public boolean onQueryTextChange(String query) {
+	mViewModel.setSearchQuery(query != null ? query : "");
+	return true;
+}
 
-  private void showListFragment(@NonNull PluginListType listType) {
-    PluginListFragment listFragment =
-        PluginListFragment.newInstance(mViewModel.getSite(), listType);
-    getSupportFragmentManager()
-        .beginTransaction()
-        .add(R.id.fragment_container, listFragment, PluginListFragment.TAG)
-        .addToBackStack(null)
-        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        .commit();
-    mViewModel.setTitle(getTitleForListType(listType));
-    trackPluginListOpened(listType);
-  }
+private void showListFragment(@NonNull PluginListType listType) {
+	PluginListFragment listFragment =
+		PluginListFragment.newInstance(mViewModel.getSite(), listType);
+	getSupportFragmentManager()
+	.beginTransaction()
+	.add(R.id.fragment_container, listFragment, PluginListFragment.TAG)
+	.addToBackStack(null)
+	.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+	.commit();
+	mViewModel.setTitle(getTitleForListType(listType));
+	trackPluginListOpened(listType);
+}
 
-  private @Nullable PluginListFragment getCurrentFragment() {
-    return (PluginListFragment)getSupportFragmentManager().findFragmentByTag(
-        PluginListFragment.TAG);
-  }
+private @Nullable PluginListFragment getCurrentFragment() {
+	return (PluginListFragment)getSupportFragmentManager().findFragmentByTag(
+		PluginListFragment.TAG);
+}
 
-  private void hideListFragment() {
-    if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-      onBackPressed();
-    }
-  }
+private void hideListFragment() {
+	if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+		onBackPressed();
+	}
+}
 
-  private void showProgress(boolean show) {
-    findViewById(R.id.progress).setVisibility(show ? View.VISIBLE : View.GONE);
-  }
+private void showProgress(boolean show) {
+	findViewById(R.id.progress).setVisibility(show ? View.VISIBLE : View.GONE);
+}
 
-  @Override
-  public boolean onMenuItemActionExpand(MenuItem menuItem) {
-    showListFragment(PluginListType.SEARCH);
-    mSearchView.setOnQueryTextListener(this);
-    return true;
-  }
+@Override
+public boolean onMenuItemActionExpand(MenuItem menuItem) {
+	showListFragment(PluginListType.SEARCH);
+	mSearchView.setOnQueryTextListener(this);
+	return true;
+}
 
-  @Override
-  public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-    mSearchView.setOnQueryTextListener(null);
-    hideListFragment();
-    mViewModel.setSearchQuery("");
-    return true;
-  }
+@Override
+public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+	mSearchView.setOnQueryTextListener(null);
+	hideListFragment();
+	mViewModel.setSearchQuery("");
+	return true;
+}
 
-  private class PluginBrowserAdapter extends RecyclerView.Adapter<ViewHolder> {
-    private final PluginList mItems = new PluginList();
-    private final LayoutInflater mLayoutInflater;
+private class PluginBrowserAdapter extends RecyclerView.Adapter<ViewHolder> {
+private final PluginList mItems = new PluginList();
+private final LayoutInflater mLayoutInflater;
 
-    PluginBrowserAdapter(Context context) {
-      mLayoutInflater = LayoutInflater.from(context);
-      setHasStableIds(true);
-    }
+PluginBrowserAdapter(Context context) {
+	mLayoutInflater = LayoutInflater.from(context);
+	setHasStableIds(true);
+}
 
-    void setPlugins(@NonNull List<ImmutablePluginModel> items) {
-      DiffUtil.DiffResult diffResult =
-          DiffUtil.calculateDiff(mViewModel.getDiffCallback(mItems, items));
-      mItems.clear();
-      mItems.addAll(items);
-      diffResult.dispatchUpdatesTo(this);
-    }
+void setPlugins(@NonNull List<ImmutablePluginModel> items) {
+	DiffUtil.DiffResult diffResult =
+		DiffUtil.calculateDiff(mViewModel.getDiffCallback(mItems, items));
+	mItems.clear();
+	mItems.addAll(items);
+	diffResult.dispatchUpdatesTo(this);
+}
 
-    private @Nullable Object getItem(int position) {
-      return mItems.getItem(position);
-    }
+private @Nullable Object getItem(int position) {
+	return mItems.getItem(position);
+}
 
-    @Override
-    public int getItemCount() {
-      return mItems.size();
-    }
+@Override
+public int getItemCount() {
+	return mItems.size();
+}
 
-    @Override
-    public long getItemId(int position) {
-      return mItems.getItemId(position);
-    }
+@Override
+public long getItemId(int position) {
+	return mItems.getItemId(position);
+}
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      View view =
-          mLayoutInflater.inflate(R.layout.plugin_browser_row, parent, false);
-      return new PluginBrowserViewHolder(view);
-    }
+@Override
+public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	View view =
+		mLayoutInflater.inflate(R.layout.plugin_browser_row, parent, false);
+	return new PluginBrowserViewHolder(view);
+}
 
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
-      PluginBrowserViewHolder holder = (PluginBrowserViewHolder)viewHolder;
-      ImmutablePluginModel plugin = (ImmutablePluginModel)getItem(position);
-      if (plugin == null) {
-        return;
-      }
+@Override
+public void onBindViewHolder(ViewHolder viewHolder, int position) {
+	PluginBrowserViewHolder holder = (PluginBrowserViewHolder)viewHolder;
+	ImmutablePluginModel plugin = (ImmutablePluginModel)getItem(position);
+	if (plugin == null) {
+		return;
+	}
 
-      holder.mNameText.setText(plugin.getDisplayName());
-      holder.mAuthorText.setText(plugin.getAuthorName());
-      mImageManager.load(holder.mIcon, ImageType.PLUGIN,
-                         StringUtils.notNullStr(plugin.getIcon()));
+	holder.mNameText.setText(plugin.getDisplayName());
+	holder.mAuthorText.setText(plugin.getAuthorName());
+	mImageManager.load(holder.mIcon, ImageType.PLUGIN,
+	                   StringUtils.notNullStr(plugin.getIcon()));
 
-      if (plugin.isInstalled()) {
-        @StringRes int textResId;
-        @ColorRes int colorResId;
-        @DrawableRes int drawableResId;
-        boolean isAutoManaged =
-            PluginUtils.isAutoManaged(mViewModel.getSite(), plugin);
-        if (isAutoManaged) {
-          textResId = R.string.plugin_auto_managed;
-          colorResId = R.color.success_50;
-          drawableResId = android.R.color.transparent;
-        } else if (PluginUtils.isUpdateAvailable(plugin)) {
-          textResId = R.string.plugin_needs_update;
-          colorResId = R.color.warning_50;
-          drawableResId = R.drawable.ic_sync_white_24dp;
-        } else if (plugin.isActive()) {
-          textResId = R.string.plugin_active;
-          colorResId = R.color.success_50;
-          drawableResId = R.drawable.ic_checkmark_white_24dp;
-        } else {
-          textResId = R.string.plugin_inactive;
-          colorResId = R.color.neutral_30;
-          drawableResId = R.drawable.ic_cross_white_24dp;
-        }
-        holder.mStatusText.setText(textResId);
-        holder.mStatusText.setTextColor(getResources().getColor(colorResId));
-        holder.mStatusIcon.setVisibility(isAutoManaged ? View.GONE
-                                                       : View.VISIBLE);
-        ColorUtils.INSTANCE.setImageResourceWithTint(holder.mStatusIcon,
-                                                     drawableResId, colorResId);
-        holder.mStatusContainer.setVisibility(View.VISIBLE);
-        holder.mRatingBar.setVisibility(View.GONE);
-      } else {
-        holder.mStatusContainer.setVisibility(View.GONE);
-        holder.mRatingBar.setVisibility(View.VISIBLE);
-        holder.mRatingBar.setRating(plugin.getAverageStarRating());
-      }
-    }
+	if (plugin.isInstalled()) {
+		@StringRes int textResId;
+		@ColorRes int colorResId;
+		@DrawableRes int drawableResId;
+		boolean isAutoManaged =
+			PluginUtils.isAutoManaged(mViewModel.getSite(), plugin);
+		if (isAutoManaged) {
+			textResId = R.string.plugin_auto_managed;
+			colorResId = R.color.success_50;
+			drawableResId = android.R.color.transparent;
+		} else if (PluginUtils.isUpdateAvailable(plugin)) {
+			textResId = R.string.plugin_needs_update;
+			colorResId = R.color.warning_50;
+			drawableResId = R.drawable.ic_sync_white_24dp;
+		} else if (plugin.isActive()) {
+			textResId = R.string.plugin_active;
+			colorResId = R.color.success_50;
+			drawableResId = R.drawable.ic_checkmark_white_24dp;
+		} else {
+			textResId = R.string.plugin_inactive;
+			colorResId = R.color.neutral_30;
+			drawableResId = R.drawable.ic_cross_white_24dp;
+		}
+		holder.mStatusText.setText(textResId);
+		holder.mStatusText.setTextColor(getResources().getColor(colorResId));
+		holder.mStatusIcon.setVisibility(isAutoManaged ? View.GONE
+		                                       : View.VISIBLE);
+		ColorUtils.INSTANCE.setImageResourceWithTint(holder.mStatusIcon,
+		                                             drawableResId, colorResId);
+		holder.mStatusContainer.setVisibility(View.VISIBLE);
+		holder.mRatingBar.setVisibility(View.GONE);
+	} else {
+		holder.mStatusContainer.setVisibility(View.GONE);
+		holder.mRatingBar.setVisibility(View.VISIBLE);
+		holder.mRatingBar.setRating(plugin.getAverageStarRating());
+	}
+}
 
-    private class PluginBrowserViewHolder extends ViewHolder {
-      private final TextView mNameText;
-      private final TextView mAuthorText;
-      private final ViewGroup mStatusContainer;
-      private final TextView mStatusText;
-      private final ImageView mStatusIcon;
-      private final ImageView mIcon;
-      private final RatingBar mRatingBar;
+private class PluginBrowserViewHolder extends ViewHolder {
+private final TextView mNameText;
+private final TextView mAuthorText;
+private final ViewGroup mStatusContainer;
+private final TextView mStatusText;
+private final ImageView mStatusIcon;
+private final ImageView mIcon;
+private final RatingBar mRatingBar;
 
-      PluginBrowserViewHolder(View view) {
-        super(view);
-        mNameText = view.findViewById(R.id.plugin_name);
-        mAuthorText = view.findViewById(R.id.plugin_author);
-        mIcon = view.findViewById(R.id.plugin_icon);
-        mRatingBar = view.findViewById(R.id.rating_bar);
+PluginBrowserViewHolder(View view) {
+	super(view);
+	mNameText = view.findViewById(R.id.plugin_name);
+	mAuthorText = view.findViewById(R.id.plugin_author);
+	mIcon = view.findViewById(R.id.plugin_icon);
+	mRatingBar = view.findViewById(R.id.rating_bar);
 
-        mStatusContainer = view.findViewById(R.id.plugin_status_container);
-        mStatusText = mStatusContainer.findViewById(R.id.plugin_status_text);
-        mStatusIcon = mStatusContainer.findViewById(R.id.plugin_status_icon);
+	mStatusContainer = view.findViewById(R.id.plugin_status_container);
+	mStatusText = mStatusContainer.findViewById(R.id.plugin_status_text);
+	mStatusIcon = mStatusContainer.findViewById(R.id.plugin_status_icon);
 
-        view.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            int position = getAdapterPosition();
-            ImmutablePluginModel plugin =
-                (ImmutablePluginModel)getItem(position);
-            if (plugin == null) {
-              return;
-            }
+	view.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+					        int position = getAdapterPosition();
+					        ImmutablePluginModel plugin =
+							(ImmutablePluginModel)getItem(position);
+					        if (plugin == null) {
+					                return;
+						}
 
-            ActivityLauncher.viewPluginDetail(PluginBrowserActivity.this,
-                                              mViewModel.getSite(),
-                                              plugin.getSlug());
-          }
-        });
-      }
-    }
-  }
+					        ActivityLauncher.viewPluginDetail(PluginBrowserActivity.this,
+					                                          mViewModel.getSite(),
+					                                          plugin.getSlug());
+					}
+				});
+}
+}
+}
 
-  private String getTitleForListType(@NonNull PluginListType pluginListType) {
-    switch (pluginListType) {
-    case FEATURED:
-      return getString(R.string.plugin_caption_featured);
-    case POPULAR:
-      return getString(R.string.plugin_caption_popular);
-    case NEW:
-      return getString(R.string.plugin_caption_new);
-    case SEARCH:
-      return getString(R.string.plugin_caption_search);
-    case SITE:
-      return getString(R.string.plugin_caption_installed);
-    }
-    return getString(R.string.plugins);
-  }
+private String getTitleForListType(@NonNull PluginListType pluginListType) {
+	switch (pluginListType) {
+	case FEATURED:
+		return getString(R.string.plugin_caption_featured);
+	case POPULAR:
+		return getString(R.string.plugin_caption_popular);
+	case NEW:
+		return getString(R.string.plugin_caption_new);
+	case SEARCH:
+		return getString(R.string.plugin_caption_search);
+	case SITE:
+		return getString(R.string.plugin_caption_installed);
+	}
+	return getString(R.string.plugins);
+}
 
-  private void trackPluginListOpened(PluginListType listType) {
-    if (listType == PluginListType.SEARCH) {
-      // Although it's named as "search performed" we are actually only tracking
-      // the first search
-      AnalyticsUtils.trackWithSiteDetails(
-          AnalyticsTracker.Stat.PLUGIN_SEARCH_PERFORMED, mViewModel.getSite());
-      return;
-    }
-    Map<String, Object> properties = new HashMap<>();
-    String type = null;
-    switch (listType) {
-    case SITE:
-      type = "installed";
-      break;
-    case FEATURED:
-      type = "featured";
-      break;
-    case POPULAR:
-      type = "popular";
-      break;
-    case NEW:
-      type = "newest";
-      break;
-    }
-    properties.put("type", type);
-    AnalyticsUtils.trackWithSiteDetails(
-        AnalyticsTracker.Stat.OPENED_PLUGIN_LIST, mViewModel.getSite(),
-        properties);
-  }
+private void trackPluginListOpened(PluginListType listType) {
+	if (listType == PluginListType.SEARCH) {
+		// Although it's named as "search performed" we are actually only tracking
+		// the first search
+		AnalyticsUtils.trackWithSiteDetails(
+			AnalyticsTracker.Stat.PLUGIN_SEARCH_PERFORMED, mViewModel.getSite());
+		return;
+	}
+	Map<String, Object> properties = new HashMap<>();
+	String type = null;
+	switch (listType) {
+	case SITE:
+		type = "installed";
+		break;
+	case FEATURED:
+		type = "featured";
+		break;
+	case POPULAR:
+		type = "popular";
+		break;
+	case NEW:
+		type = "newest";
+		break;
+	}
+	properties.put("type", type);
+	AnalyticsUtils.trackWithSiteDetails(
+		AnalyticsTracker.Stat.OPENED_PLUGIN_LIST, mViewModel.getSite(),
+		properties);
+}
 }

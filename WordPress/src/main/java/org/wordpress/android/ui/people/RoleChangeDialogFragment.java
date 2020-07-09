@@ -23,154 +23,164 @@ import org.wordpress.android.fluxc.model.SiteModel;
 import org.wordpress.android.fluxc.store.SiteStore;
 
 public class RoleChangeDialogFragment extends DialogFragment {
-  private static final String PERSON_ID_TAG = "person_id";
-  private static final String ROLE_TAG = "role";
+private static final String PERSON_ID_TAG = "person_id";
+private static final String ROLE_TAG = "role";
 
-  @Inject SiteStore mSiteStore;
+@Inject SiteStore mSiteStore;
 
-  private RoleListAdapter mRoleListAdapter;
+private RoleListAdapter mRoleListAdapter;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ((WordPress)getActivity().getApplicationContext()).component().inject(this);
-  }
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	((WordPress)getActivity().getApplicationContext()).component().inject(this);
+}
 
-  @Override
-  public void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    String role = mRoleListAdapter.getSelectedRole();
-    outState.putSerializable(ROLE_TAG, role);
-  }
+@Override
+public void onSaveInstanceState(Bundle outState) {
+	super.onSaveInstanceState(outState);
+	String role = mRoleListAdapter.getSelectedRole();
+	outState.putSerializable(ROLE_TAG, role);
+}
 
-  public static RoleChangeDialogFragment
-  newInstance(long personID, SiteModel site, String role) {
-    RoleChangeDialogFragment roleChangeDialogFragment =
-        new RoleChangeDialogFragment();
-    Bundle args = new Bundle();
+public static RoleChangeDialogFragment
+newInstance(long personID, SiteModel site, String role) {
+	RoleChangeDialogFragment roleChangeDialogFragment =
+		new RoleChangeDialogFragment();
+	Bundle args = new Bundle();
 
-    args.putLong(PERSON_ID_TAG, personID);
-    args.putString(ROLE_TAG, role);
-    args.putSerializable(WordPress.SITE, site);
+	args.putLong(PERSON_ID_TAG, personID);
+	args.putString(ROLE_TAG, role);
+	args.putSerializable(WordPress.SITE, site);
 
-    roleChangeDialogFragment.setArguments(args);
-    return roleChangeDialogFragment;
-  }
+	roleChangeDialogFragment.setArguments(args);
+	return roleChangeDialogFragment;
+}
 
-  @Override
-  public Dialog onCreateDialog(Bundle savedInstanceState) {
-    final SiteModel site =
-        (SiteModel)getArguments().getSerializable(WordPress.SITE);
+@Override
+public Dialog onCreateDialog(Bundle savedInstanceState) {
+	final SiteModel site =
+		(SiteModel)getArguments().getSerializable(WordPress.SITE);
 
-    AlertDialog.Builder builder = new AlertDialog.Builder(
-        new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
-    builder.setTitle(R.string.role);
-    builder.setNegativeButton(R.string.cancel, null);
-    builder.setPositiveButton(
-        android.R.string.ok, new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            String role = mRoleListAdapter.getSelectedRole();
-            Bundle args = getArguments();
-            if (args != null) {
-              long personID = args.getLong(PERSON_ID_TAG);
-              if (site != null) {
-                EventBus.getDefault().post(
-                    new RoleChangeEvent(personID, site.getId(), role));
-              }
-            }
-          }
-        });
+	AlertDialog.Builder builder = new AlertDialog.Builder(
+		new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+	builder.setTitle(R.string.role);
+	builder.setNegativeButton(R.string.cancel, null);
+	builder.setPositiveButton(
+		android.R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			        String role = mRoleListAdapter.getSelectedRole();
+			        Bundle args = getArguments();
+			        if (args != null) {
+			                long personID = args.getLong(PERSON_ID_TAG);
+			                if (site != null) {
+			                        EventBus.getDefault().post(
+							new RoleChangeEvent(personID, site.getId(), role));
+					}
+				}
+			}
+		});
 
-    if (mRoleListAdapter == null && site != null) {
-      List<RoleModel> roleList = mSiteStore.getUserRoles(site);
-      RoleModel[] userRoles = roleList.toArray(new RoleModel[roleList.size()]);
-      mRoleListAdapter =
-          new RoleListAdapter(getActivity(), R.layout.role_list_row, userRoles);
-    }
-    if (savedInstanceState != null) {
-      String savedRole = savedInstanceState.getString(ROLE_TAG);
-      mRoleListAdapter.setSelectedRole(savedRole);
-    } else {
-      Bundle args = getArguments();
-      if (args != null) {
-        String role = args.getString(ROLE_TAG);
-        mRoleListAdapter.setSelectedRole(role);
-      }
-    }
-    builder.setAdapter(mRoleListAdapter, null);
+	if (mRoleListAdapter == null && site != null) {
+		List<RoleModel> roleList = mSiteStore.getUserRoles(site);
+		RoleModel[] userRoles = roleList.toArray(new RoleModel[roleList.size()]);
+		mRoleListAdapter =
+			new RoleListAdapter(getActivity(), R.layout.role_list_row, userRoles);
+	}
+	if (savedInstanceState != null) {
+		String savedRole = savedInstanceState.getString(ROLE_TAG);
+		mRoleListAdapter.setSelectedRole(savedRole);
+	} else {
+		Bundle args = getArguments();
+		if (args != null) {
+			String role = args.getString(ROLE_TAG);
+			mRoleListAdapter.setSelectedRole(role);
+		}
+	}
+	builder.setAdapter(mRoleListAdapter, null);
 
-    return builder.create();
-  }
+	return builder.create();
+}
 
-  private class RoleListAdapter extends ArrayAdapter<RoleModel> {
-    private String mSelectedRole;
+private class RoleListAdapter extends ArrayAdapter<RoleModel> {
+private String mSelectedRole;
 
-    RoleListAdapter(Context context, int resource, RoleModel[] userRoles) {
-      super(context, resource, userRoles);
-    }
+RoleListAdapter(Context context, int resource, RoleModel[] userRoles) {
+	super(context, resource, userRoles);
+}
 
-    @NonNull
-    @Override
-    public View getView(final int position, View convertView,
-                        @NonNull ViewGroup parent) {
-      if (convertView == null) {
-        convertView = View.inflate(getContext(), R.layout.role_list_row, null);
-      }
+@NonNull
+@Override
+public View getView(final int position, View convertView,
+                    @NonNull ViewGroup parent) {
+	if (convertView == null) {
+		convertView = View.inflate(getContext(), R.layout.role_list_row, null);
+	}
 
-      TextView mainText = (TextView)convertView.findViewById(R.id.role_label);
-      final RadioButton radioButton =
-          (RadioButton)convertView.findViewById(R.id.radio);
-      radioButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          changeSelection(position);
-        }
-      });
-      convertView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          changeSelection(position);
-        }
-      });
+	TextView mainText = (TextView)convertView.findViewById(R.id.role_label);
+	final RadioButton radioButton =
+		(RadioButton)convertView.findViewById(R.id.radio);
+	radioButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+				        changeSelection(position);
+				}
+			});
+	convertView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+				        changeSelection(position);
+				}
+			});
 
-      RoleModel role = getItem(position);
-      if (role != null) {
-        radioButton.setChecked(role.getName().equals(mSelectedRole));
-        mainText.setText(role.getDisplayName());
-      }
+	RoleModel role = getItem(position);
+	if (role != null) {
+		radioButton.setChecked(role.getName().equals(mSelectedRole));
+		mainText.setText(role.getDisplayName());
+	}
 
-      return convertView;
-    }
+	return convertView;
+}
 
-    private void changeSelection(int position) {
-      RoleModel roleModel = getItem(position);
-      if (roleModel != null) {
-        mSelectedRole = roleModel.getName();
-        notifyDataSetChanged();
-      }
-    }
+private void changeSelection(int position) {
+	RoleModel roleModel = getItem(position);
+	if (roleModel != null) {
+		mSelectedRole = roleModel.getName();
+		notifyDataSetChanged();
+	}
+}
 
-    String getSelectedRole() { return mSelectedRole; }
+String getSelectedRole() {
+	return mSelectedRole;
+}
 
-    void setSelectedRole(String role) { mSelectedRole = role; }
-  }
+void setSelectedRole(String role) {
+	mSelectedRole = role;
+}
+}
 
-  static class RoleChangeEvent {
-    private final long mPersonID;
-    private final int mLocalTableBlogId;
-    private final String mNewRole;
+static class RoleChangeEvent {
+private final long mPersonID;
+private final int mLocalTableBlogId;
+private final String mNewRole;
 
-    RoleChangeEvent(long personID, int localTableBlogId, String newRole) {
-      mPersonID = personID;
-      mLocalTableBlogId = localTableBlogId;
-      mNewRole = newRole;
-    }
+RoleChangeEvent(long personID, int localTableBlogId, String newRole) {
+	mPersonID = personID;
+	mLocalTableBlogId = localTableBlogId;
+	mNewRole = newRole;
+}
 
-    public long getPersonID() { return mPersonID; }
+public long getPersonID() {
+	return mPersonID;
+}
 
-    public int getLocalTableBlogId() { return mLocalTableBlogId; }
+public int getLocalTableBlogId() {
+	return mLocalTableBlogId;
+}
 
-    public String getNewRole() { return mNewRole; }
-  }
+public String getNewRole() {
+	return mNewRole;
+}
+}
 }

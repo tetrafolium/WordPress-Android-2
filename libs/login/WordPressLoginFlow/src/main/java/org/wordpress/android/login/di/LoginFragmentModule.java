@@ -17,38 +17,38 @@ import org.wordpress.android.login.SignupMagicLinkFragment;
 
 @Module
 public abstract class LoginFragmentModule {
-  @ContributesAndroidInjector abstract Login2FaFragment login2FaFragment();
+@ContributesAndroidInjector abstract Login2FaFragment login2FaFragment();
 
-  @ContributesAndroidInjector abstract LoginEmailFragment loginEmailFragment();
+@ContributesAndroidInjector abstract LoginEmailFragment loginEmailFragment();
 
-  @ContributesAndroidInjector
-  abstract LoginEmailPasswordFragment loginEmailPasswordFragment();
+@ContributesAndroidInjector
+abstract LoginEmailPasswordFragment loginEmailPasswordFragment();
 
-  @ContributesAndroidInjector
-  abstract LoginGoogleFragment loginGoogleFragment();
+@ContributesAndroidInjector
+abstract LoginGoogleFragment loginGoogleFragment();
 
-  @ContributesAndroidInjector
-  abstract LoginMagicLinkRequestFragment loginMagicLinkRequestFragment();
+@ContributesAndroidInjector
+abstract LoginMagicLinkRequestFragment loginMagicLinkRequestFragment();
 
-  @ContributesAndroidInjector
-  abstract LoginMagicLinkSentFragment loginMagicLinkSentFragment();
+@ContributesAndroidInjector
+abstract LoginMagicLinkSentFragment loginMagicLinkSentFragment();
 
-  @ContributesAndroidInjector
-  abstract LoginSiteAddressFragment loginSiteAddressFragment();
+@ContributesAndroidInjector
+abstract LoginSiteAddressFragment loginSiteAddressFragment();
 
-  @ContributesAndroidInjector
-  abstract LoginSiteAddressHelpDialogFragment
-  loginSiteAddressHelpDialogFragment();
+@ContributesAndroidInjector
+abstract LoginSiteAddressHelpDialogFragment
+loginSiteAddressHelpDialogFragment();
 
-  @ContributesAndroidInjector
-  abstract LoginUsernamePasswordFragment loginUsernamePasswordFragment();
+@ContributesAndroidInjector
+abstract LoginUsernamePasswordFragment loginUsernamePasswordFragment();
 
-  @ContributesAndroidInjector
-  abstract SignupEmailFragment signupEmailFragment();
+@ContributesAndroidInjector
+abstract SignupEmailFragment signupEmailFragment();
 
-  @ContributesAndroidInjector
-  abstract SignupGoogleFragment signupGoogleFragment();
+@ContributesAndroidInjector
+abstract SignupGoogleFragment signupGoogleFragment();
 
-  @ContributesAndroidInjector
-  abstract SignupMagicLinkFragment signupMagicLinkFragment();
+@ContributesAndroidInjector
+abstract SignupMagicLinkFragment signupMagicLinkFragment();
 }

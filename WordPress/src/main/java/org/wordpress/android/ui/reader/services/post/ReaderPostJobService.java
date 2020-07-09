@@ -26,71 +26,71 @@ import org.wordpress.android.util.AppLog;
  */
 
 public class ReaderPostJobService
-    extends JobService implements ServiceCompletionListener {
-  private ReaderPostLogic mReaderPostLogic;
+	extends JobService implements ServiceCompletionListener {
+private ReaderPostLogic mReaderPostLogic;
 
-  @Override
-  public boolean onStartJob(JobParameters params) {
-    AppLog.i(AppLog.T.READER, "reader post job service > started");
-    UpdateAction action;
-    if (params.getExtras() != null) {
-      if (params.getExtras().containsKey(ARG_ACTION)) {
-        action =
-            UpdateAction.values()[(Integer)params.getExtras().get(ARG_ACTION)];
-      } else {
-        action = UpdateAction.REQUEST_NEWER;
-      }
+@Override
+public boolean onStartJob(JobParameters params) {
+	AppLog.i(AppLog.T.READER, "reader post job service > started");
+	UpdateAction action;
+	if (params.getExtras() != null) {
+		if (params.getExtras().containsKey(ARG_ACTION)) {
+			action =
+				UpdateAction.values()[(Integer)params.getExtras().get(ARG_ACTION)];
+		} else {
+			action = UpdateAction.REQUEST_NEWER;
+		}
 
-      EventBus.getDefault().post(new ReaderEvents.UpdatePostsStarted(action));
+		EventBus.getDefault().post(new ReaderEvents.UpdatePostsStarted(action));
 
-      if (params.getExtras().containsKey(ARG_TAG_PARAM_SLUG)) {
-        ReaderTag tag = getReaderTagFromBundleParams(params.getExtras());
-        mReaderPostLogic.performTask(params, action, tag, -1, -1);
-      } else if (params.getExtras().containsKey(ARG_BLOG_ID)) {
-        long blogId = params.getExtras().getLong(ARG_BLOG_ID, 0);
-        mReaderPostLogic.performTask(params, action, null, blogId, -1);
-      } else if (params.getExtras().containsKey(ARG_FEED_ID)) {
-        long feedId = params.getExtras().getLong(ARG_FEED_ID, 0);
-        mReaderPostLogic.performTask(params, action, null, -1, feedId);
-      }
-    }
-    return true;
-  }
+		if (params.getExtras().containsKey(ARG_TAG_PARAM_SLUG)) {
+			ReaderTag tag = getReaderTagFromBundleParams(params.getExtras());
+			mReaderPostLogic.performTask(params, action, tag, -1, -1);
+		} else if (params.getExtras().containsKey(ARG_BLOG_ID)) {
+			long blogId = params.getExtras().getLong(ARG_BLOG_ID, 0);
+			mReaderPostLogic.performTask(params, action, null, blogId, -1);
+		} else if (params.getExtras().containsKey(ARG_FEED_ID)) {
+			long feedId = params.getExtras().getLong(ARG_FEED_ID, 0);
+			mReaderPostLogic.performTask(params, action, null, -1, feedId);
+		}
+	}
+	return true;
+}
 
-  @Override
-  public boolean onStopJob(JobParameters params) {
-    AppLog.i(AppLog.T.READER, "reader post job service > stopped");
-    jobFinished(params, false);
-    return false;
-  }
+@Override
+public boolean onStopJob(JobParameters params) {
+	AppLog.i(AppLog.T.READER, "reader post job service > stopped");
+	jobFinished(params, false);
+	return false;
+}
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    mReaderPostLogic = new ReaderPostLogic(this);
-    AppLog.i(AppLog.T.READER, "reader post job service > created");
-  }
+@Override
+public void onCreate() {
+	super.onCreate();
+	mReaderPostLogic = new ReaderPostLogic(this);
+	AppLog.i(AppLog.T.READER, "reader post job service > created");
+}
 
-  @Override
-  public void onDestroy() {
-    AppLog.i(AppLog.T.READER, "reader post job service > destroyed");
-    super.onDestroy();
-  }
+@Override
+public void onDestroy() {
+	AppLog.i(AppLog.T.READER, "reader post job service > destroyed");
+	super.onDestroy();
+}
 
-  @Override
-  public void onCompleted(Object companion) {
-    AppLog.i(AppLog.T.READER, "reader post job service > all tasks completed");
-    jobFinished((JobParameters)companion, false);
-  }
+@Override
+public void onCompleted(Object companion) {
+	AppLog.i(AppLog.T.READER, "reader post job service > all tasks completed");
+	jobFinished((JobParameters)companion, false);
+}
 
-  private ReaderTag getReaderTagFromBundleParams(PersistableBundle bundle) {
-    String slug = bundle.getString(ARG_TAG_PARAM_SLUG);
-    String displayName = bundle.getString(ARG_TAG_PARAM_DISPLAY_NAME);
-    String title = bundle.getString(ARG_TAG_PARAM_TITLE);
-    String endpoint = bundle.getString(ARG_TAG_PARAM_ENDPOINT);
-    int tagType = bundle.getInt(ARG_TAG_PARAM_TAGTYPE);
-    ReaderTag tag = new ReaderTag(slug, displayName, title, endpoint,
-                                  ReaderTagType.fromInt(tagType));
-    return tag;
-  }
+private ReaderTag getReaderTagFromBundleParams(PersistableBundle bundle) {
+	String slug = bundle.getString(ARG_TAG_PARAM_SLUG);
+	String displayName = bundle.getString(ARG_TAG_PARAM_DISPLAY_NAME);
+	String title = bundle.getString(ARG_TAG_PARAM_TITLE);
+	String endpoint = bundle.getString(ARG_TAG_PARAM_ENDPOINT);
+	int tagType = bundle.getInt(ARG_TAG_PARAM_TAGTYPE);
+	ReaderTag tag = new ReaderTag(slug, displayName, title, endpoint,
+	                              ReaderTagType.fromInt(tagType));
+	return tag;
+}
 }

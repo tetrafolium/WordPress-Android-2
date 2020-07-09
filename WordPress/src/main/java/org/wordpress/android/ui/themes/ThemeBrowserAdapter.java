@@ -35,301 +35,303 @@ import org.wordpress.android.util.image.ImageType;
 import org.wordpress.android.widgets.HeaderGridView;
 
 class ThemeBrowserAdapter extends BaseAdapter implements Filterable {
-  private static final String THEME_IMAGE_PARAMETER = "?w=";
+private static final String THEME_IMAGE_PARAMETER = "?w=";
 
-  private final Context mContext;
-  private final long mSitePlanId;
-  private final LayoutInflater mInflater;
-  private final ThemeBrowserFragmentCallback mCallback;
-  private final ImageManager mImageManager;
+private final Context mContext;
+private final long mSitePlanId;
+private final LayoutInflater mInflater;
+private final ThemeBrowserFragmentCallback mCallback;
+private final ImageManager mImageManager;
 
-  private int mViewWidth;
-  private String mQuery;
+private int mViewWidth;
+private String mQuery;
 
-  private final List<ThemeModel> mAllThemes = new ArrayList<>();
-  private final List<ThemeModel> mFilteredThemes = new ArrayList<>();
+private final List<ThemeModel> mAllThemes = new ArrayList<>();
+private final List<ThemeModel> mFilteredThemes = new ArrayList<>();
 
-  ThemeBrowserAdapter(Context context, long sitePlanId,
-                      ThemeBrowserFragmentCallback callback,
-                      ImageManager imageManager) {
-    mContext = context;
-    mSitePlanId = sitePlanId;
-    mInflater = LayoutInflater.from(context);
-    mCallback = callback;
-    mViewWidth = AppPrefs.getThemeImageSizeWidth();
-    mImageManager = imageManager;
-  }
+ThemeBrowserAdapter(Context context, long sitePlanId,
+                    ThemeBrowserFragmentCallback callback,
+                    ImageManager imageManager) {
+	mContext = context;
+	mSitePlanId = sitePlanId;
+	mInflater = LayoutInflater.from(context);
+	mCallback = callback;
+	mViewWidth = AppPrefs.getThemeImageSizeWidth();
+	mImageManager = imageManager;
+}
 
-  private static class ThemeViewHolder {
-    private final CardView mCardView;
-    private final ImageView mImageView;
-    private final TextView mNameView;
-    private final TextView mActiveView;
-    private final TextView mPriceView;
-    private final ImageButton mImageButton;
-    private final FrameLayout mFrameLayout;
-    private final RelativeLayout mDetailsView;
+private static class ThemeViewHolder {
+private final CardView mCardView;
+private final ImageView mImageView;
+private final TextView mNameView;
+private final TextView mActiveView;
+private final TextView mPriceView;
+private final ImageButton mImageButton;
+private final FrameLayout mFrameLayout;
+private final RelativeLayout mDetailsView;
 
-    ThemeViewHolder(View view) {
-      mCardView = view.findViewById(R.id.theme_grid_card);
-      mImageView = view.findViewById(R.id.theme_grid_item_image);
-      mNameView = view.findViewById(R.id.theme_grid_item_name);
-      mPriceView = view.findViewById(R.id.theme_grid_item_price);
-      mActiveView = view.findViewById(R.id.theme_grid_item_active);
-      mImageButton = view.findViewById(R.id.theme_grid_item_image_button);
-      mFrameLayout = view.findViewById(R.id.theme_grid_item_image_layout);
-      mDetailsView = view.findViewById(R.id.theme_grid_item_details);
-    }
-  }
+ThemeViewHolder(View view) {
+	mCardView = view.findViewById(R.id.theme_grid_card);
+	mImageView = view.findViewById(R.id.theme_grid_item_image);
+	mNameView = view.findViewById(R.id.theme_grid_item_name);
+	mPriceView = view.findViewById(R.id.theme_grid_item_price);
+	mActiveView = view.findViewById(R.id.theme_grid_item_active);
+	mImageButton = view.findViewById(R.id.theme_grid_item_image_button);
+	mFrameLayout = view.findViewById(R.id.theme_grid_item_image_layout);
+	mDetailsView = view.findViewById(R.id.theme_grid_item_details);
+}
+}
 
-  @Override
-  public int getCount() {
-    return mFilteredThemes.size();
-  }
+@Override
+public int getCount() {
+	return mFilteredThemes.size();
+}
 
-  public int getUnfilteredCount() { return mAllThemes.size(); }
+public int getUnfilteredCount() {
+	return mAllThemes.size();
+}
 
-  @Override
-  public Object getItem(int position) {
-    return mFilteredThemes.get(position);
-  }
+@Override
+public Object getItem(int position) {
+	return mFilteredThemes.get(position);
+}
 
-  @Override
-  public long getItemId(int position) {
-    return position;
-  }
+@Override
+public long getItemId(int position) {
+	return position;
+}
 
-  void setThemeList(@NonNull List<ThemeModel> themes) {
-    mAllThemes.clear();
-    mAllThemes.addAll(themes);
+void setThemeList(@NonNull List<ThemeModel> themes) {
+	mAllThemes.clear();
+	mAllThemes.addAll(themes);
 
-    mFilteredThemes.clear();
-    mFilteredThemes.addAll(themes);
+	mFilteredThemes.clear();
+	mFilteredThemes.addAll(themes);
 
-    if (!TextUtils.isEmpty(mQuery)) {
-      getFilter().filter(mQuery);
-    } else {
-      notifyDataSetChanged();
-    }
-  }
+	if (!TextUtils.isEmpty(mQuery)) {
+		getFilter().filter(mQuery);
+	} else {
+		notifyDataSetChanged();
+	}
+}
 
-  @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
-    ThemeViewHolder holder;
-    if (convertView == null || convertView.getTag() == null) {
-      convertView = mInflater.inflate(R.layout.theme_grid_item, parent, false);
-      holder = new ThemeViewHolder(convertView);
-      convertView.setTag(holder);
-    } else {
-      holder = (ThemeViewHolder)convertView.getTag();
-    }
+@Override
+public View getView(int position, View convertView, ViewGroup parent) {
+	ThemeViewHolder holder;
+	if (convertView == null || convertView.getTag() == null) {
+		convertView = mInflater.inflate(R.layout.theme_grid_item, parent, false);
+		holder = new ThemeViewHolder(convertView);
+		convertView.setTag(holder);
+	} else {
+		holder = (ThemeViewHolder)convertView.getTag();
+	}
 
-    configureThemeImageSize(parent);
-    ThemeModel theme = mFilteredThemes.get(position);
+	configureThemeImageSize(parent);
+	ThemeModel theme = mFilteredThemes.get(position);
 
-    String screenshotURL = theme.getScreenshotUrl();
-    String themeId = theme.getThemeId();
-    boolean isPremium = !theme.isFree();
-    boolean isCurrent = theme.getActive();
+	String screenshotURL = theme.getScreenshotUrl();
+	String themeId = theme.getThemeId();
+	boolean isPremium = !theme.isFree();
+	boolean isCurrent = theme.getActive();
 
-    holder.mNameView.setText(theme.getName());
-    if (isPremium) {
-      holder.mPriceView.setText(theme.getPriceText());
-      holder.mPriceView.setVisibility(View.VISIBLE);
-    } else {
-      holder.mPriceView.setVisibility(View.GONE);
-    }
+	holder.mNameView.setText(theme.getName());
+	if (isPremium) {
+		holder.mPriceView.setText(theme.getPriceText());
+		holder.mPriceView.setVisibility(View.VISIBLE);
+	} else {
+		holder.mPriceView.setVisibility(View.GONE);
+	}
 
-    // catch the case where a URL has no protocol
-    if (!screenshotURL.startsWith(ThemeWebActivity.THEME_HTTP_PREFIX)) {
-      // some APIs return a URL starting with // so the protocol can be supplied
-      // by the client strip // before adding the protocol
-      if (screenshotURL.startsWith("//")) {
-        screenshotURL = screenshotURL.substring(2);
-      }
-      screenshotURL = ThemeWebActivity.THEME_HTTPS_PROTOCOL + screenshotURL;
-    }
+	// catch the case where a URL has no protocol
+	if (!screenshotURL.startsWith(ThemeWebActivity.THEME_HTTP_PREFIX)) {
+		// some APIs return a URL starting with // so the protocol can be supplied
+		// by the client strip // before adding the protocol
+		if (screenshotURL.startsWith("//")) {
+			screenshotURL = screenshotURL.substring(2);
+		}
+		screenshotURL = ThemeWebActivity.THEME_HTTPS_PROTOCOL + screenshotURL;
+	}
 
-    configureImageView(holder, screenshotURL, themeId, isCurrent);
-    configureImageButton(holder, themeId, isPremium, isCurrent);
-    configureCardView(holder, isCurrent);
-    return convertView;
-  }
+	configureImageView(holder, screenshotURL, themeId, isCurrent);
+	configureImageButton(holder, themeId, isPremium, isCurrent);
+	configureCardView(holder, isCurrent);
+	return convertView;
+}
 
-  @SuppressWarnings("deprecation")
-  private void configureCardView(ThemeViewHolder themeViewHolder,
-                                 boolean isCurrent) {
-    Resources resources = mContext.getResources();
-    if (isCurrent) {
-      ColorStateList color = ColorStateList.valueOf(
-          ContextCompat.getColor(mContext, android.R.color.white));
-      themeViewHolder.mDetailsView.setBackgroundColor(
-          resources.getColor(R.color.primary_50));
-      themeViewHolder.mNameView.setTextColor(color);
-      themeViewHolder.mActiveView.setVisibility(View.VISIBLE);
-      themeViewHolder.mCardView.setCardBackgroundColor(
-          resources.getColor(R.color.primary_50));
-      themeViewHolder.mImageButton.setImageTintList(color);
-    } else {
-      ColorStateList color = ColorStateList.valueOf(
-          ContextCompat.getColor(mContext, android.R.color.black));
-      themeViewHolder.mDetailsView.setBackgroundColor(
-          resources.getColor(android.R.color.white));
-      themeViewHolder.mNameView.setTextColor(color);
-      themeViewHolder.mActiveView.setVisibility(View.GONE);
-      themeViewHolder.mCardView.setCardBackgroundColor(
-          resources.getColor(android.R.color.white));
-      themeViewHolder.mImageButton.setImageTintList(color);
-    }
-  }
+@SuppressWarnings("deprecation")
+private void configureCardView(ThemeViewHolder themeViewHolder,
+                               boolean isCurrent) {
+	Resources resources = mContext.getResources();
+	if (isCurrent) {
+		ColorStateList color = ColorStateList.valueOf(
+			ContextCompat.getColor(mContext, android.R.color.white));
+		themeViewHolder.mDetailsView.setBackgroundColor(
+			resources.getColor(R.color.primary_50));
+		themeViewHolder.mNameView.setTextColor(color);
+		themeViewHolder.mActiveView.setVisibility(View.VISIBLE);
+		themeViewHolder.mCardView.setCardBackgroundColor(
+			resources.getColor(R.color.primary_50));
+		themeViewHolder.mImageButton.setImageTintList(color);
+	} else {
+		ColorStateList color = ColorStateList.valueOf(
+			ContextCompat.getColor(mContext, android.R.color.black));
+		themeViewHolder.mDetailsView.setBackgroundColor(
+			resources.getColor(android.R.color.white));
+		themeViewHolder.mNameView.setTextColor(color);
+		themeViewHolder.mActiveView.setVisibility(View.GONE);
+		themeViewHolder.mCardView.setCardBackgroundColor(
+			resources.getColor(android.R.color.white));
+		themeViewHolder.mImageButton.setImageTintList(color);
+	}
+}
 
-  private void configureImageView(ThemeViewHolder themeViewHolder,
-                                  String screenshotURL, final String themeId,
-                                  final boolean isCurrent) {
-    mImageManager.load(themeViewHolder.mImageView, ImageType.THEME,
-                       screenshotURL + THEME_IMAGE_PARAMETER + mViewWidth,
-                       ScaleType.FIT_CENTER);
+private void configureImageView(ThemeViewHolder themeViewHolder,
+                                String screenshotURL, final String themeId,
+                                final boolean isCurrent) {
+	mImageManager.load(themeViewHolder.mImageView, ImageType.THEME,
+	                   screenshotURL + THEME_IMAGE_PARAMETER + mViewWidth,
+	                   ScaleType.FIT_CENTER);
 
-    themeViewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (isCurrent) {
-          mCallback.onTryAndCustomizeSelected(themeId);
-        } else {
-          mCallback.onViewSelected(themeId);
-        }
-      }
-    });
-  }
+	themeViewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        if (isCurrent) {
+			                mCallback.onTryAndCustomizeSelected(themeId);
+				} else {
+			                mCallback.onViewSelected(themeId);
+				}
+			}
+		});
+}
 
-  private void configureImageButton(ThemeViewHolder themeViewHolder,
-                                    final String themeId,
-                                    final boolean isPremium,
-                                    boolean isCurrent) {
-    final PopupMenu popupMenu =
-        new PopupMenu(mContext, themeViewHolder.mImageButton);
-    popupMenu.getMenuInflater().inflate(R.menu.theme_more, popupMenu.getMenu());
+private void configureImageButton(ThemeViewHolder themeViewHolder,
+                                  final String themeId,
+                                  final boolean isPremium,
+                                  boolean isCurrent) {
+	final PopupMenu popupMenu =
+		new PopupMenu(mContext, themeViewHolder.mImageButton);
+	popupMenu.getMenuInflater().inflate(R.menu.theme_more, popupMenu.getMenu());
 
-    configureMenuForTheme(popupMenu.getMenu(), isCurrent);
+	configureMenuForTheme(popupMenu.getMenu(), isCurrent);
 
-    popupMenu.setOnMenuItemClickListener(
-        new PopupMenu.OnMenuItemClickListener() {
-          @Override
-          public boolean onMenuItemClick(MenuItem item) {
-            int i = item.getItemId();
-            if (i == R.id.menu_activate) {
-              if (canActivateThemeDirectly(isPremium, mSitePlanId)) {
-                mCallback.onActivateSelected(themeId);
-              } else {
-                // forward the user online to complete the activation
-                mCallback.onDetailsSelected(themeId);
-              }
-            } else if (i == R.id.menu_try_and_customize) {
-              mCallback.onTryAndCustomizeSelected(themeId);
-            } else if (i == R.id.menu_view) {
-              mCallback.onViewSelected(themeId);
-            } else if (i == R.id.menu_details) {
-              mCallback.onDetailsSelected(themeId);
-            } else {
-              mCallback.onSupportSelected(themeId);
-            }
+	popupMenu.setOnMenuItemClickListener(
+		new PopupMenu.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+			        int i = item.getItemId();
+			        if (i == R.id.menu_activate) {
+			                if (canActivateThemeDirectly(isPremium, mSitePlanId)) {
+			                        mCallback.onActivateSelected(themeId);
+					} else {
+			                        // forward the user online to complete the activation
+			                        mCallback.onDetailsSelected(themeId);
+					}
+				} else if (i == R.id.menu_try_and_customize) {
+			                mCallback.onTryAndCustomizeSelected(themeId);
+				} else if (i == R.id.menu_view) {
+			                mCallback.onViewSelected(themeId);
+				} else if (i == R.id.menu_details) {
+			                mCallback.onDetailsSelected(themeId);
+				} else {
+			                mCallback.onSupportSelected(themeId);
+				}
 
-            return true;
-          }
-        });
-    themeViewHolder.mImageButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        popupMenu.show();
-      }
-    });
-  }
+			        return true;
+			}
+		});
+	themeViewHolder.mImageButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        popupMenu.show();
+			}
+		});
+}
 
-  private boolean canActivateThemeDirectly(final boolean isPremiumTheme,
-                                           final long sitePlanId) {
-    if (!isPremiumTheme) {
-      // It's a free theme so, can always activate directly
-      return true;
-    }
+private boolean canActivateThemeDirectly(final boolean isPremiumTheme,
+                                         final long sitePlanId) {
+	if (!isPremiumTheme) {
+		// It's a free theme so, can always activate directly
+		return true;
+	}
 
-    if (sitePlanId == PlansConstants.PREMIUM_PLAN_ID ||
-        mSitePlanId == PlansConstants.BUSINESS_PLAN_ID) {
-      // Can activate any theme on a Premium and Business site plan
-      return true;
-    }
+	if (sitePlanId == PlansConstants.PREMIUM_PLAN_ID ||
+	    mSitePlanId == PlansConstants.BUSINESS_PLAN_ID) {
+		// Can activate any theme on a Premium and Business site plan
+		return true;
+	}
 
-    // Theme cannot be activated directly and needs to be purchased
-    return false;
-  }
+	// Theme cannot be activated directly and needs to be purchased
+	return false;
+}
 
-  private void configureMenuForTheme(Menu menu, boolean isCurrent) {
-    MenuItem activate = menu.findItem(R.id.menu_activate);
-    MenuItem customize = menu.findItem(R.id.menu_try_and_customize);
-    MenuItem view = menu.findItem(R.id.menu_view);
+private void configureMenuForTheme(Menu menu, boolean isCurrent) {
+	MenuItem activate = menu.findItem(R.id.menu_activate);
+	MenuItem customize = menu.findItem(R.id.menu_try_and_customize);
+	MenuItem view = menu.findItem(R.id.menu_view);
 
-    if (activate != null) {
-      activate.setVisible(!isCurrent);
-    }
-    if (customize != null) {
-      if (isCurrent) {
-        customize.setTitle(R.string.customize);
-      } else {
-        customize.setTitle(R.string.theme_try_and_customize);
-      }
-    }
-    if (view != null) {
-      view.setVisible(!isCurrent);
-    }
-  }
+	if (activate != null) {
+		activate.setVisible(!isCurrent);
+	}
+	if (customize != null) {
+		if (isCurrent) {
+			customize.setTitle(R.string.customize);
+		} else {
+			customize.setTitle(R.string.theme_try_and_customize);
+		}
+	}
+	if (view != null) {
+		view.setVisible(!isCurrent);
+	}
+}
 
-  private void configureThemeImageSize(ViewGroup parent) {
-    HeaderGridView gridView = parent.findViewById(R.id.theme_listview);
-    int numColumns = gridView.getNumColumns();
-    int screenWidth = gridView.getWidth();
-    int imageWidth = screenWidth / numColumns;
-    if (imageWidth > mViewWidth) {
-      mViewWidth = imageWidth;
-      AppPrefs.setThemeImageSizeWidth(mViewWidth);
-    }
-  }
+private void configureThemeImageSize(ViewGroup parent) {
+	HeaderGridView gridView = parent.findViewById(R.id.theme_listview);
+	int numColumns = gridView.getNumColumns();
+	int screenWidth = gridView.getWidth();
+	int imageWidth = screenWidth / numColumns;
+	if (imageWidth > mViewWidth) {
+		mViewWidth = imageWidth;
+		AppPrefs.setThemeImageSizeWidth(mViewWidth);
+	}
+}
 
-  @Override
-  public Filter getFilter() {
-    return new Filter() {
-      @SuppressWarnings("unchecked")
-      @Override
-      protected void publishResults(CharSequence constraint,
-                                    FilterResults results) {
-        mFilteredThemes.clear();
-        mFilteredThemes.addAll((List<ThemeModel>)results.values);
-        ThemeBrowserAdapter.this.notifyDataSetChanged();
-      }
+@Override
+public Filter getFilter() {
+	return new Filter() {
+		       @SuppressWarnings("unchecked")
+		       @Override
+		       protected void publishResults(CharSequence constraint,
+		                                     FilterResults results) {
+			       mFilteredThemes.clear();
+			       mFilteredThemes.addAll((List<ThemeModel>)results.values);
+			       ThemeBrowserAdapter.this.notifyDataSetChanged();
+		       }
 
-      @Override
-      protected FilterResults performFiltering(CharSequence constraint) {
-        List<ThemeModel> filtered = new ArrayList<>();
-        if (TextUtils.isEmpty(constraint)) {
-          mQuery = null;
-          filtered.addAll(mAllThemes);
-        } else {
-          mQuery = constraint.toString();
-          // Locale.ROOT is used on user input for convenience as all the theme
-          // names are in english
-          String lcConstraint = constraint.toString().toLowerCase(Locale.ROOT);
-          for (ThemeModel theme : mAllThemes) {
-            if (theme.getName()
-                    .toLowerCase(Locale.ROOT)
-                    .contains(lcConstraint)) {
-              filtered.add(theme);
-            }
-          }
-        }
+		       @Override
+		       protected FilterResults performFiltering(CharSequence constraint) {
+			       List<ThemeModel> filtered = new ArrayList<>();
+			       if (TextUtils.isEmpty(constraint)) {
+				       mQuery = null;
+				       filtered.addAll(mAllThemes);
+			       } else {
+				       mQuery = constraint.toString();
+				       // Locale.ROOT is used on user input for convenience as all the theme
+				       // names are in english
+				       String lcConstraint = constraint.toString().toLowerCase(Locale.ROOT);
+				       for (ThemeModel theme : mAllThemes) {
+					       if (theme.getName()
+					           .toLowerCase(Locale.ROOT)
+					           .contains(lcConstraint)) {
+						       filtered.add(theme);
+					       }
+				       }
+			       }
 
-        FilterResults results = new FilterResults();
-        results.values = filtered;
+			       FilterResults results = new FilterResults();
+			       results.values = filtered;
 
-        return results;
-      }
-    };
-  }
+			       return results;
+		       }
+	};
+}
 }

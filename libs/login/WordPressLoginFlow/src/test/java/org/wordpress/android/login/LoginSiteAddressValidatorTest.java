@@ -26,103 +26,103 @@ import org.wordpress.android.util.helpers.Debouncer;
 
 @RunWith(RobolectricTestRunner.class)
 public class LoginSiteAddressValidatorTest {
-  @Rule
-  public InstantTaskExecutorRule instantTaskExecutorRule =
-      new InstantTaskExecutorRule();
+@Rule
+public InstantTaskExecutorRule instantTaskExecutorRule =
+	new InstantTaskExecutorRule();
 
-  private Debouncer mDebouncer;
-  private LoginSiteAddressValidator mValidator;
+private Debouncer mDebouncer;
+private LoginSiteAddressValidator mValidator;
 
-  @Before
-  public void setUp() {
-    mDebouncer = mock(Debouncer.class);
-    doAnswer(new Answer<Void>() {
-      @Override
-      public Void answer(InvocationOnMock invocation) {
-        final Runnable runnable = invocation.getArgument(1);
-        runnable.run();
-        return null;
-      }
-    })
-        .when(mDebouncer)
-        .debounce(any(), any(Runnable.class), anyLong(), any(TimeUnit.class));
+@Before
+public void setUp() {
+	mDebouncer = mock(Debouncer.class);
+	doAnswer(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) {
+			        final Runnable runnable = invocation.getArgument(1);
+			        runnable.run();
+			        return null;
+			}
+		})
+	.when(mDebouncer)
+	.debounce(any(), any(Runnable.class), anyLong(), any(TimeUnit.class));
 
-    mValidator = new LoginSiteAddressValidator(mDebouncer);
-  }
+	mValidator = new LoginSiteAddressValidator(mDebouncer);
+}
 
-  @After
-  public void tearDown() {
-    mValidator = null;
-    mDebouncer = null;
-  }
+@After
+public void tearDown() {
+	mValidator = null;
+	mDebouncer = null;
+}
 
-  @Test
-  public void testAnErrorIsReturnedWhenGivenAnInvalidAddress() {
-    // Arrange
-    assertThat(mValidator.getErrorMessageResId().getValue()).isNull();
+@Test
+public void testAnErrorIsReturnedWhenGivenAnInvalidAddress() {
+	// Arrange
+	assertThat(mValidator.getErrorMessageResId().getValue()).isNull();
 
-    // Act
-    mValidator.setAddress("invalid");
+	// Act
+	mValidator.setAddress("invalid");
 
-    // Assert
-    assertThat(mValidator.getErrorMessageResId().getValue()).isNotNull();
-    assertThat(mValidator.getCleanedSiteAddress()).isEqualTo("invalid");
-    assertThat(mValidator.getIsValid().getValue()).isFalse();
-  }
+	// Assert
+	assertThat(mValidator.getErrorMessageResId().getValue()).isNotNull();
+	assertThat(mValidator.getCleanedSiteAddress()).isEqualTo("invalid");
+	assertThat(mValidator.getIsValid().getValue()).isFalse();
+}
 
-  @Test
-  public void testNoErrorIsReturnedButIsInvalidWhenGivenAnEmptyAddress() {
-    // Act
-    mValidator.setAddress("");
+@Test
+public void testNoErrorIsReturnedButIsInvalidWhenGivenAnEmptyAddress() {
+	// Act
+	mValidator.setAddress("");
 
-    // Assert
-    assertThat(mValidator.getErrorMessageResId().getValue()).isNull();
-    assertThat(mValidator.getIsValid().getValue()).isFalse();
-    assertThat(mValidator.getCleanedSiteAddress()).isEqualTo("");
-  }
+	// Assert
+	assertThat(mValidator.getErrorMessageResId().getValue()).isNull();
+	assertThat(mValidator.getIsValid().getValue()).isFalse();
+	assertThat(mValidator.getCleanedSiteAddress()).isEqualTo("");
+}
 
-  @Test
-  public void testTheErrorIsImmediatelyClearedWhenANewAddressIsGiven() {
-    // Arrange
-    final ArrayList<Optional<Integer>> resIdValues = new ArrayList<>();
-    mValidator.getErrorMessageResId().observeForever(new Observer<Integer>() {
-      @Override
-      public void onChanged(Integer resId) {
-        resIdValues.add(Optional.ofNullable(resId));
-      }
-    });
+@Test
+public void testTheErrorIsImmediatelyClearedWhenANewAddressIsGiven() {
+	// Arrange
+	final ArrayList<Optional<Integer> > resIdValues = new ArrayList<>();
+	mValidator.getErrorMessageResId().observeForever(new Observer<Integer>() {
+			@Override
+			public void onChanged(Integer resId) {
+			        resIdValues.add(Optional.ofNullable(resId));
+			}
+		});
 
-    // Act
-    mValidator.setAddress("invalid");
-    mValidator.setAddress("another-invalid");
+	// Act
+	mValidator.setAddress("invalid");
+	mValidator.setAddress("another-invalid");
 
-    // Assert
-    assertThat(resIdValues).hasSize(4);
-    assertThat(resIdValues.get(0)).isEmpty();
-    assertThat(resIdValues.get(1)).isNotEmpty();
-    assertThat(resIdValues.get(2)).isEmpty();
-    assertThat(resIdValues.get(3)).isNotEmpty();
-  }
+	// Assert
+	assertThat(resIdValues).hasSize(4);
+	assertThat(resIdValues.get(0)).isEmpty();
+	assertThat(resIdValues.get(1)).isNotEmpty();
+	assertThat(resIdValues.get(2)).isEmpty();
+	assertThat(resIdValues.get(3)).isNotEmpty();
+}
 
-  @Test
-  public void testItReturnsValidWhenGivenValidURLs() {
-    // Arrange
-    final List<String> validUrls = Arrays.asList(
-        "http://subdomain.example.com", "http://example.ca", "example.ca",
-        "subdomain.example.com", "  space-with-subdomain.example.net",
-        "https://subdomain.example.com/folder",
-        "http://subdomain.example.com/folder/over/there ", "7.7.7.7",
-        "http://7.7.13.45", "http://47.147.43.45/folder   ");
+@Test
+public void testItReturnsValidWhenGivenValidURLs() {
+	// Arrange
+	final List<String> validUrls = Arrays.asList(
+		"http://subdomain.example.com", "http://example.ca", "example.ca",
+		"subdomain.example.com", "  space-with-subdomain.example.net",
+		"https://subdomain.example.com/folder",
+		"http://subdomain.example.com/folder/over/there ", "7.7.7.7",
+		"http://7.7.13.45", "http://47.147.43.45/folder   ");
 
-    // Act and Assert
-    assertThat(validUrls).allSatisfy(new Consumer<String>() {
-      @Override
-      public void accept(String url) {
-        mValidator.setAddress(url);
+	// Act and Assert
+	assertThat(validUrls).allSatisfy(new Consumer<String>() {
+			@Override
+			public void accept(String url) {
+			        mValidator.setAddress(url);
 
-        assertThat(mValidator.getErrorMessageResId().getValue()).isNull();
-        assertThat(mValidator.getIsValid().getValue()).isTrue();
-      }
-    });
-  }
+			        assertThat(mValidator.getErrorMessageResId().getValue()).isNull();
+			        assertThat(mValidator.getIsValid().getValue()).isTrue();
+			}
+		});
+}
 }

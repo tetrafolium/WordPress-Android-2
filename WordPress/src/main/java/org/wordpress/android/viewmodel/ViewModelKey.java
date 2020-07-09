@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @MapKey
 public @interface ViewModelKey {
-  Class<? extends ViewModel> value();
+Class<? extends ViewModel> value();
 }

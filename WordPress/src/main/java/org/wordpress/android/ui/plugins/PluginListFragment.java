@@ -45,314 +45,316 @@ import org.wordpress.android.viewmodel.plugins.PluginBrowserViewModel;
 import org.wordpress.android.viewmodel.plugins.PluginBrowserViewModel.PluginListType;
 
 public class PluginListFragment extends Fragment {
-  public static final String TAG = PluginListFragment.class.getName();
+public static final String TAG = PluginListFragment.class.getName();
 
-  @Inject ViewModelProvider.Factory mViewModelFactory;
-  @Inject ImageManager mImageManager;
+@Inject ViewModelProvider.Factory mViewModelFactory;
+@Inject ImageManager mImageManager;
 
-  private static final String ARG_LIST_TYPE = "list_type";
+private static final String ARG_LIST_TYPE = "list_type";
 
-  private PluginBrowserViewModel mViewModel;
+private PluginBrowserViewModel mViewModel;
 
-  private RecyclerView mRecycler;
-  private PluginListType mListType;
-  private SwipeToRefreshHelper mSwipeToRefreshHelper;
+private RecyclerView mRecycler;
+private PluginListType mListType;
+private SwipeToRefreshHelper mSwipeToRefreshHelper;
 
-  public static PluginListFragment
-  newInstance(@NonNull SiteModel site, @NonNull PluginListType listType) {
-    PluginListFragment fragment = new PluginListFragment();
-    Bundle bundle = new Bundle();
-    bundle.putSerializable(WordPress.SITE, site);
-    bundle.putSerializable(ARG_LIST_TYPE, listType);
-    fragment.setArguments(bundle);
-    return fragment;
-  }
+public static PluginListFragment
+newInstance(@NonNull SiteModel site, @NonNull PluginListType listType) {
+	PluginListFragment fragment = new PluginListFragment();
+	Bundle bundle = new Bundle();
+	bundle.putSerializable(WordPress.SITE, site);
+	bundle.putSerializable(ARG_LIST_TYPE, listType);
+	fragment.setArguments(bundle);
+	return fragment;
+}
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ((WordPress)getActivity().getApplication()).component().inject(this);
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	((WordPress)getActivity().getApplication()).component().inject(this);
 
-    mListType = (PluginListType)getArguments().getSerializable(ARG_LIST_TYPE);
-  }
+	mListType = (PluginListType)getArguments().getSerializable(ARG_LIST_TYPE);
+}
 
-  @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    // this enables us to clear the search icon in onCreateOptionsMenu when the
-    // list isn't showing search results
-    setHasOptionsMenu(mListType != PluginListType.SEARCH);
+@Override
+public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+	super.onActivityCreated(savedInstanceState);
+	// this enables us to clear the search icon in onCreateOptionsMenu when the
+	// list isn't showing search results
+	setHasOptionsMenu(mListType != PluginListType.SEARCH);
 
-    // Use the same view model as the PluginBrowserActivity
-    mViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory)
-                     .get(PluginBrowserViewModel.class);
-    setupObservers();
-  }
+	// Use the same view model as the PluginBrowserActivity
+	mViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory)
+	             .get(PluginBrowserViewModel.class);
+	setupObservers();
+}
 
-  private void setupObservers() {
-    mViewModel.getSitePluginsLiveData().observe(
-        this, new Observer<ListState<ImmutablePluginModel>>() {
-          @Override
-          public void onChanged(
-              @Nullable ListState<ImmutablePluginModel> listState) {
-            if (mListType == PluginListType.SITE) {
-              refreshPluginsAndProgressBars(listState);
-            }
-          }
-        });
+private void setupObservers() {
+	mViewModel.getSitePluginsLiveData().observe(
+		this, new Observer<ListState<ImmutablePluginModel> >() {
+			@Override
+			public void onChanged(
+				@Nullable ListState<ImmutablePluginModel> listState) {
+			        if (mListType == PluginListType.SITE) {
+			                refreshPluginsAndProgressBars(listState);
+				}
+			}
+		});
 
-    mViewModel.getFeaturedPluginsLiveData().observe(
-        this, new Observer<ListState<ImmutablePluginModel>>() {
-          @Override
-          public void onChanged(
-              @Nullable ListState<ImmutablePluginModel> listState) {
-            if (mListType == PluginListType.FEATURED) {
-              refreshPluginsAndProgressBars(listState);
-            }
-          }
-        });
+	mViewModel.getFeaturedPluginsLiveData().observe(
+		this, new Observer<ListState<ImmutablePluginModel> >() {
+			@Override
+			public void onChanged(
+				@Nullable ListState<ImmutablePluginModel> listState) {
+			        if (mListType == PluginListType.FEATURED) {
+			                refreshPluginsAndProgressBars(listState);
+				}
+			}
+		});
 
-    mViewModel.getPopularPluginsLiveData().observe(
-        this, new Observer<ListState<ImmutablePluginModel>>() {
-          @Override
-          public void onChanged(
-              @Nullable ListState<ImmutablePluginModel> listState) {
-            if (mListType == PluginListType.POPULAR) {
-              refreshPluginsAndProgressBars(listState);
-            }
-          }
-        });
+	mViewModel.getPopularPluginsLiveData().observe(
+		this, new Observer<ListState<ImmutablePluginModel> >() {
+			@Override
+			public void onChanged(
+				@Nullable ListState<ImmutablePluginModel> listState) {
+			        if (mListType == PluginListType.POPULAR) {
+			                refreshPluginsAndProgressBars(listState);
+				}
+			}
+		});
 
-    mViewModel.getNewPluginsLiveData().observe(
-        this, new Observer<ListState<ImmutablePluginModel>>() {
-          @Override
-          public void onChanged(
-              @Nullable ListState<ImmutablePluginModel> listState) {
-            if (mListType == PluginListType.NEW) {
-              refreshPluginsAndProgressBars(listState);
-            }
-          }
-        });
+	mViewModel.getNewPluginsLiveData().observe(
+		this, new Observer<ListState<ImmutablePluginModel> >() {
+			@Override
+			public void onChanged(
+				@Nullable ListState<ImmutablePluginModel> listState) {
+			        if (mListType == PluginListType.NEW) {
+			                refreshPluginsAndProgressBars(listState);
+				}
+			}
+		});
 
-    mViewModel.getSearchResultsLiveData().observe(
-        this, new Observer<ListState<ImmutablePluginModel>>() {
-          @Override
-          public void onChanged(
-              @Nullable ListState<ImmutablePluginModel> listState) {
-            if (mListType == PluginListType.SEARCH) {
-              refreshPluginsAndProgressBars(listState);
+	mViewModel.getSearchResultsLiveData().observe(
+		this, new Observer<ListState<ImmutablePluginModel> >() {
+			@Override
+			public void onChanged(
+				@Nullable ListState<ImmutablePluginModel> listState) {
+			        if (mListType == PluginListType.SEARCH) {
+			                refreshPluginsAndProgressBars(listState);
 
-              if (listState instanceof ListState.Error) {
-                ToastUtils.showToast(getActivity(),
-                                     R.string.plugin_search_error);
-              }
+			                if (listState instanceof ListState.Error) {
+			                        ToastUtils.showToast(getActivity(),
+			                                             R.string.plugin_search_error);
+					}
 
-              showEmptyView(mViewModel.shouldShowEmptySearchResultsView());
-            }
-          }
-        });
-  }
+			                showEmptyView(mViewModel.shouldShowEmptySearchResultsView());
+				}
+			}
+		});
+}
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    View view =
-        inflater.inflate(R.layout.plugin_list_fragment, container, false);
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                         Bundle savedInstanceState) {
+	View view =
+		inflater.inflate(R.layout.plugin_list_fragment, container, false);
 
-    mRecycler = view.findViewById(R.id.recycler);
-    mRecycler.setLayoutManager(
-        new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-    mRecycler.addItemDecoration(new DividerItemDecoration(
-        getActivity(), DividerItemDecoration.VERTICAL));
+	mRecycler = view.findViewById(R.id.recycler);
+	mRecycler.setLayoutManager(
+		new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+	mRecycler.addItemDecoration(new DividerItemDecoration(
+					    getActivity(), DividerItemDecoration.VERTICAL));
 
-    mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-        (CustomSwipeRefreshLayout)view.findViewById(R.id.ptr_layout),
-        new SwipeToRefreshHelper.RefreshListener() {
-          @Override
-          public void onRefreshStarted() {
-            if (NetworkUtils.checkConnection(getActivity())) {
-              mViewModel.pullToRefresh(mListType);
-            } else {
-              mSwipeToRefreshHelper.setRefreshing(false);
-            }
-          }
-        });
-    return view;
-  }
+	mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
+		(CustomSwipeRefreshLayout)view.findViewById(R.id.ptr_layout),
+		new SwipeToRefreshHelper.RefreshListener() {
+			@Override
+			public void onRefreshStarted() {
+			        if (NetworkUtils.checkConnection(getActivity())) {
+			                mViewModel.pullToRefresh(mListType);
+				} else {
+			                mSwipeToRefreshHelper.setRefreshing(false);
+				}
+			}
+		});
+	return view;
+}
 
-  @Override
-  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    menu.clear();
-    super.onCreateOptionsMenu(menu, inflater);
-  }
+@Override
+public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	menu.clear();
+	super.onCreateOptionsMenu(menu, inflater);
+}
 
-  public PluginListType getListType() { return mListType; }
+public PluginListType getListType() {
+	return mListType;
+}
 
-  private void refreshPluginsAndProgressBars(
-      @Nullable ListState<ImmutablePluginModel> listState) {
-    if (listState == null) {
-      return;
-    }
-    final PluginListAdapter adapter;
-    if (mRecycler.getAdapter() == null) {
-      adapter = new PluginListAdapter(getActivity());
-      mRecycler.setAdapter(adapter);
-    } else {
-      adapter = (PluginListAdapter)mRecycler.getAdapter();
-    }
-    adapter.setPlugins(listState.getData());
-    refreshProgressBars(listState);
-  }
+private void refreshPluginsAndProgressBars(
+	@Nullable ListState<ImmutablePluginModel> listState) {
+	if (listState == null) {
+		return;
+	}
+	final PluginListAdapter adapter;
+	if (mRecycler.getAdapter() == null) {
+		adapter = new PluginListAdapter(getActivity());
+		mRecycler.setAdapter(adapter);
+	} else {
+		adapter = (PluginListAdapter)mRecycler.getAdapter();
+	}
+	adapter.setPlugins(listState.getData());
+	refreshProgressBars(listState);
+}
 
-  private void refreshProgressBars(@Nullable ListState listState) {
-    if (!isAdded() || getView() == null || listState == null) {
-      return;
-    }
-    // We want to show the swipe refresher for the initial fetch but not while
-    // loading more
-    mSwipeToRefreshHelper.setRefreshing(listState.isFetchingFirstPage());
-    // We want to show the progress bar at the bottom while loading more but not
-    // for initial fetch
-    getView()
-        .findViewById(R.id.progress)
-        .setVisibility(listState.isLoadingMore() ? View.VISIBLE : View.GONE);
-  }
+private void refreshProgressBars(@Nullable ListState listState) {
+	if (!isAdded() || getView() == null || listState == null) {
+		return;
+	}
+	// We want to show the swipe refresher for the initial fetch but not while
+	// loading more
+	mSwipeToRefreshHelper.setRefreshing(listState.isFetchingFirstPage());
+	// We want to show the progress bar at the bottom while loading more but not
+	// for initial fetch
+	getView()
+	.findViewById(R.id.progress)
+	.setVisibility(listState.isLoadingMore() ? View.VISIBLE : View.GONE);
+}
 
-  private void showEmptyView(boolean show) {
-    if (isAdded() && getView() != null) {
-      getView()
-          .findViewById(R.id.text_empty)
-          .setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-  }
+private void showEmptyView(boolean show) {
+	if (isAdded() && getView() != null) {
+		getView()
+		.findViewById(R.id.text_empty)
+		.setVisibility(show ? View.VISIBLE : View.GONE);
+	}
+}
 
-  private class PluginListAdapter
-      extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final PluginList mItems = new PluginList();
-    private final LayoutInflater mLayoutInflater;
+private class PluginListAdapter
+	extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+private final PluginList mItems = new PluginList();
+private final LayoutInflater mLayoutInflater;
 
-    PluginListAdapter(Context context) {
-      mLayoutInflater = LayoutInflater.from(context);
-      setHasStableIds(true);
-    }
+PluginListAdapter(Context context) {
+	mLayoutInflater = LayoutInflater.from(context);
+	setHasStableIds(true);
+}
 
-    void setPlugins(@NonNull List<ImmutablePluginModel> items) {
-      DiffUtil.DiffResult diffResult =
-          DiffUtil.calculateDiff(mViewModel.getDiffCallback(mItems, items));
-      mItems.clear();
-      mItems.addAll(items);
-      diffResult.dispatchUpdatesTo(this);
-    }
+void setPlugins(@NonNull List<ImmutablePluginModel> items) {
+	DiffUtil.DiffResult diffResult =
+		DiffUtil.calculateDiff(mViewModel.getDiffCallback(mItems, items));
+	mItems.clear();
+	mItems.addAll(items);
+	diffResult.dispatchUpdatesTo(this);
+}
 
-    private @Nullable Object getItem(int position) {
-      return mItems.getItem(position);
-    }
+private @Nullable Object getItem(int position) {
+	return mItems.getItem(position);
+}
 
-    @Override
-    public long getItemId(int position) {
-      return mItems.getItemId(position);
-    }
+@Override
+public long getItemId(int position) {
+	return mItems.getItemId(position);
+}
 
-    @Override
-    public int getItemCount() {
-      return mItems.size();
-    }
+@Override
+public int getItemCount() {
+	return mItems.size();
+}
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
-      View view =
-          mLayoutInflater.inflate(R.layout.plugin_list_row, parent, false);
-      return new PluginViewHolder(view);
-    }
+@Override
+public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                  int viewType) {
+	View view =
+		mLayoutInflater.inflate(R.layout.plugin_list_row, parent, false);
+	return new PluginViewHolder(view);
+}
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder,
-                                 int position) {
-      ImmutablePluginModel plugin = (ImmutablePluginModel)getItem(position);
-      if (plugin == null) {
-        return;
-      }
+@Override
+public void onBindViewHolder(RecyclerView.ViewHolder viewHolder,
+                             int position) {
+	ImmutablePluginModel plugin = (ImmutablePluginModel)getItem(position);
+	if (plugin == null) {
+		return;
+	}
 
-      PluginViewHolder holder = (PluginViewHolder)viewHolder;
-      holder.mName.setText(plugin.getDisplayName());
-      holder.mAuthor.setText(plugin.getAuthorName());
-      mImageManager.load(holder.mIcon, ImageType.PLUGIN,
-                         StringUtils.notNullStr(plugin.getIcon()));
+	PluginViewHolder holder = (PluginViewHolder)viewHolder;
+	holder.mName.setText(plugin.getDisplayName());
+	holder.mAuthor.setText(plugin.getAuthorName());
+	mImageManager.load(holder.mIcon, ImageType.PLUGIN,
+	                   StringUtils.notNullStr(plugin.getIcon()));
 
-      if (plugin.isInstalled()) {
-        @StringRes int textResId;
-        @ColorRes int colorResId;
-        @DrawableRes int drawableResId;
-        if (PluginUtils.isAutoManaged(mViewModel.getSite(), plugin)) {
-          textResId = R.string.plugin_auto_managed;
-          colorResId = R.color.success_50;
-          drawableResId = android.R.color.transparent;
-        } else if (PluginUtils.isUpdateAvailable(plugin)) {
-          textResId = R.string.plugin_needs_update;
-          colorResId = R.color.warning_50;
-          drawableResId = R.drawable.ic_sync_white_24dp;
-        } else if (plugin.isActive()) {
-          textResId = R.string.plugin_active;
-          colorResId = R.color.success_50;
-          drawableResId = R.drawable.ic_checkmark_white_24dp;
-        } else {
-          textResId = R.string.plugin_inactive;
-          colorResId = R.color.neutral_30;
-          drawableResId = R.drawable.ic_cross_white_24dp;
-        }
-        int color = getResources().getColor(colorResId);
-        holder.mStatusText.setText(textResId);
-        holder.mStatusText.setTextColor(color);
-        ColorUtils.INSTANCE.setImageResourceWithTint(holder.mStatusIcon,
-                                                     drawableResId, colorResId);
-        holder.mStatusText.setVisibility(View.VISIBLE);
-        holder.mStatusIcon.setVisibility(View.VISIBLE);
-        holder.mRatingBar.setVisibility(View.GONE);
-      } else {
-        holder.mStatusText.setVisibility(View.GONE);
-        holder.mStatusIcon.setVisibility(View.GONE);
-        holder.mRatingBar.setVisibility(View.VISIBLE);
-        holder.mRatingBar.setRating(plugin.getAverageStarRating());
-      }
+	if (plugin.isInstalled()) {
+		@StringRes int textResId;
+		@ColorRes int colorResId;
+		@DrawableRes int drawableResId;
+		if (PluginUtils.isAutoManaged(mViewModel.getSite(), plugin)) {
+			textResId = R.string.plugin_auto_managed;
+			colorResId = R.color.success_50;
+			drawableResId = android.R.color.transparent;
+		} else if (PluginUtils.isUpdateAvailable(plugin)) {
+			textResId = R.string.plugin_needs_update;
+			colorResId = R.color.warning_50;
+			drawableResId = R.drawable.ic_sync_white_24dp;
+		} else if (plugin.isActive()) {
+			textResId = R.string.plugin_active;
+			colorResId = R.color.success_50;
+			drawableResId = R.drawable.ic_checkmark_white_24dp;
+		} else {
+			textResId = R.string.plugin_inactive;
+			colorResId = R.color.neutral_30;
+			drawableResId = R.drawable.ic_cross_white_24dp;
+		}
+		int color = getResources().getColor(colorResId);
+		holder.mStatusText.setText(textResId);
+		holder.mStatusText.setTextColor(color);
+		ColorUtils.INSTANCE.setImageResourceWithTint(holder.mStatusIcon,
+		                                             drawableResId, colorResId);
+		holder.mStatusText.setVisibility(View.VISIBLE);
+		holder.mStatusIcon.setVisibility(View.VISIBLE);
+		holder.mRatingBar.setVisibility(View.GONE);
+	} else {
+		holder.mStatusText.setVisibility(View.GONE);
+		holder.mStatusIcon.setVisibility(View.GONE);
+		holder.mRatingBar.setVisibility(View.VISIBLE);
+		holder.mRatingBar.setRating(plugin.getAverageStarRating());
+	}
 
-      if (position == getItemCount() - 1) {
-        mViewModel.loadMore(mListType);
-      }
-    }
+	if (position == getItemCount() - 1) {
+		mViewModel.loadMore(mListType);
+	}
+}
 
-    private class PluginViewHolder extends RecyclerView.ViewHolder {
-      private final TextView mName;
-      private final TextView mAuthor;
-      private final TextView mStatusText;
-      private final ImageView mStatusIcon;
-      private final ImageView mIcon;
-      private final RatingBar mRatingBar;
+private class PluginViewHolder extends RecyclerView.ViewHolder {
+private final TextView mName;
+private final TextView mAuthor;
+private final TextView mStatusText;
+private final ImageView mStatusIcon;
+private final ImageView mIcon;
+private final RatingBar mRatingBar;
 
-      PluginViewHolder(View view) {
-        super(view);
-        mName = view.findViewById(R.id.plugin_name);
-        mAuthor = view.findViewById(R.id.plugin_author);
-        mStatusText = view.findViewById(R.id.plugin_status_text);
-        mStatusIcon = view.findViewById(R.id.plugin_status_icon);
-        mIcon = view.findViewById(R.id.plugin_icon);
-        mRatingBar = view.findViewById(R.id.rating_bar);
+PluginViewHolder(View view) {
+	super(view);
+	mName = view.findViewById(R.id.plugin_name);
+	mAuthor = view.findViewById(R.id.plugin_author);
+	mStatusText = view.findViewById(R.id.plugin_status_text);
+	mStatusIcon = view.findViewById(R.id.plugin_status_icon);
+	mIcon = view.findViewById(R.id.plugin_icon);
+	mRatingBar = view.findViewById(R.id.rating_bar);
 
-        view.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            int position = getAdapterPosition();
-            ImmutablePluginModel plugin =
-                (ImmutablePluginModel)getItem(position);
-            if (plugin == null) {
-              return;
-            }
+	view.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+					        int position = getAdapterPosition();
+					        ImmutablePluginModel plugin =
+							(ImmutablePluginModel)getItem(position);
+					        if (plugin == null) {
+					                return;
+						}
 
-            ActivityLauncher.viewPluginDetail(
-                getActivity(), mViewModel.getSite(), plugin.getSlug());
-          }
-        });
-      }
-    }
-  }
+					        ActivityLauncher.viewPluginDetail(
+							getActivity(), mViewModel.getSite(), plugin.getSlug());
+					}
+				});
+}
+}
+}
 }

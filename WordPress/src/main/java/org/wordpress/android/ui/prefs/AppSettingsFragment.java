@@ -45,445 +45,445 @@ import org.wordpress.android.util.analytics.AnalyticsUtils;
 import org.wordpress.android.viewmodel.ContextProvider;
 
 public class AppSettingsFragment extends PreferenceFragment
-    implements OnPreferenceClickListener,
-               Preference.OnPreferenceChangeListener {
-  public static final int LANGUAGE_CHANGED = 1000;
+	implements OnPreferenceClickListener,
+	                                 Preference.OnPreferenceChangeListener {
+public static final int LANGUAGE_CHANGED = 1000;
 
-  private DetailListPreference mLanguagePreference;
+private DetailListPreference mLanguagePreference;
 
-  // This Device settings
-  private WPSwitchPreference mOptimizedImage;
-  private DetailListPreference mImageMaxSizePref;
-  private DetailListPreference mImageQualityPref;
-  private WPSwitchPreference mOptimizedVideo;
-  private DetailListPreference mVideoWidthPref;
-  private DetailListPreference mVideoEncorderBitratePref;
-  private PreferenceScreen mPrivacySettings;
-  private WPSwitchPreference mStripImageLocation;
+// This Device settings
+private WPSwitchPreference mOptimizedImage;
+private DetailListPreference mImageMaxSizePref;
+private DetailListPreference mImageQualityPref;
+private WPSwitchPreference mOptimizedVideo;
+private DetailListPreference mVideoWidthPref;
+private DetailListPreference mVideoEncorderBitratePref;
+private PreferenceScreen mPrivacySettings;
+private WPSwitchPreference mStripImageLocation;
 
-  @Inject SiteStore mSiteStore;
-  @Inject AccountStore mAccountStore;
-  @Inject Dispatcher mDispatcher;
-  @Inject ContextProvider mContextProvider;
+@Inject SiteStore mSiteStore;
+@Inject AccountStore mAccountStore;
+@Inject Dispatcher mDispatcher;
+@Inject ContextProvider mContextProvider;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ((WordPress)getActivity().getApplication()).component().inject(this);
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	((WordPress)getActivity().getApplication()).component().inject(this);
 
-    setRetainInstance(true);
-    addPreferencesFromResource(R.xml.app_settings);
+	setRetainInstance(true);
+	addPreferencesFromResource(R.xml.app_settings);
 
-    findPreference(getString(R.string.pref_key_send_usage))
-        .setOnPreferenceChangeListener(
-            new Preference.OnPreferenceChangeListener() {
-              @Override
-              public boolean onPreferenceChange(Preference preference,
-                                                Object newValue) {
-                if (newValue == null) {
-                  return false;
-                }
-                boolean hasUserOptedOut = !(boolean)newValue;
-                AnalyticsUtils.updateAnalyticsPreference(
-                    getActivity(), mDispatcher, mAccountStore, hasUserOptedOut);
+	findPreference(getString(R.string.pref_key_send_usage))
+	.setOnPreferenceChangeListener(
+		new Preference.OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference,
+			                                  Object newValue) {
+			        if (newValue == null) {
+			                return false;
+				}
+			        boolean hasUserOptedOut = !(boolean)newValue;
+			        AnalyticsUtils.updateAnalyticsPreference(
+					getActivity(), mDispatcher, mAccountStore, hasUserOptedOut);
 
-                CrashLoggingUtils.stopCrashLogging();
+			        CrashLoggingUtils.stopCrashLogging();
 
-                return true;
-              }
-            });
-    updateAnalyticsSyncUI();
+			        return true;
+			}
+		});
+	updateAnalyticsSyncUI();
 
-    mLanguagePreference = (DetailListPreference)findPreference(
-        getString(R.string.pref_key_language));
-    mLanguagePreference.setOnPreferenceChangeListener(this);
+	mLanguagePreference = (DetailListPreference)findPreference(
+		getString(R.string.pref_key_language));
+	mLanguagePreference.setOnPreferenceChangeListener(this);
 
-    findPreference(getString(R.string.pref_key_language))
-        .setOnPreferenceClickListener(this);
-    findPreference(getString(R.string.pref_key_device_settings))
-        .setOnPreferenceClickListener(this);
-    findPreference(getString(R.string.pref_key_app_about))
-        .setOnPreferenceClickListener(this);
-    findPreference(getString(R.string.pref_key_oss_licenses))
-        .setOnPreferenceClickListener(this);
+	findPreference(getString(R.string.pref_key_language))
+	.setOnPreferenceClickListener(this);
+	findPreference(getString(R.string.pref_key_device_settings))
+	.setOnPreferenceClickListener(this);
+	findPreference(getString(R.string.pref_key_app_about))
+	.setOnPreferenceClickListener(this);
+	findPreference(getString(R.string.pref_key_oss_licenses))
+	.setOnPreferenceClickListener(this);
 
-    mOptimizedImage =
-        (WPSwitchPreference)WPPrefUtils.getPrefAndSetChangeListener(
-            this, R.string.pref_key_optimize_image, this);
-    mImageMaxSizePref =
-        (DetailListPreference)WPPrefUtils.getPrefAndSetChangeListener(
-            this, R.string.pref_key_site_image_width, this);
-    mImageQualityPref =
-        (DetailListPreference)WPPrefUtils.getPrefAndSetChangeListener(
-            this, R.string.pref_key_site_image_quality, this);
-    mOptimizedVideo =
-        (WPSwitchPreference)WPPrefUtils.getPrefAndSetChangeListener(
-            this, R.string.pref_key_optimize_video, this);
+	mOptimizedImage =
+		(WPSwitchPreference)WPPrefUtils.getPrefAndSetChangeListener(
+			this, R.string.pref_key_optimize_image, this);
+	mImageMaxSizePref =
+		(DetailListPreference)WPPrefUtils.getPrefAndSetChangeListener(
+			this, R.string.pref_key_site_image_width, this);
+	mImageQualityPref =
+		(DetailListPreference)WPPrefUtils.getPrefAndSetChangeListener(
+			this, R.string.pref_key_site_image_quality, this);
+	mOptimizedVideo =
+		(WPSwitchPreference)WPPrefUtils.getPrefAndSetChangeListener(
+			this, R.string.pref_key_optimize_video, this);
 
-    mVideoWidthPref =
-        (DetailListPreference)WPPrefUtils.getPrefAndSetChangeListener(
-            this, R.string.pref_key_site_video_width, this);
-    mVideoEncorderBitratePref =
-        (DetailListPreference)WPPrefUtils.getPrefAndSetChangeListener(
-            this, R.string.pref_key_site_video_encoder_bitrate, this);
-    mPrivacySettings = (PreferenceScreen)WPPrefUtils.getPrefAndSetClickListener(
-        this, R.string.pref_key_privacy_settings, this);
+	mVideoWidthPref =
+		(DetailListPreference)WPPrefUtils.getPrefAndSetChangeListener(
+			this, R.string.pref_key_site_video_width, this);
+	mVideoEncorderBitratePref =
+		(DetailListPreference)WPPrefUtils.getPrefAndSetChangeListener(
+			this, R.string.pref_key_site_video_encoder_bitrate, this);
+	mPrivacySettings = (PreferenceScreen)WPPrefUtils.getPrefAndSetClickListener(
+		this, R.string.pref_key_privacy_settings, this);
 
-    mStripImageLocation =
-        (WPSwitchPreference)WPPrefUtils.getPrefAndSetChangeListener(
-            this, R.string.pref_key_strip_image_location, this);
+	mStripImageLocation =
+		(WPSwitchPreference)WPPrefUtils.getPrefAndSetChangeListener(
+			this, R.string.pref_key_strip_image_location, this);
 
-    // Set Local settings
-    mOptimizedImage.setChecked(AppPrefs.isImageOptimize());
-    setDetailListPreferenceValue(
-        mImageMaxSizePref, String.valueOf(AppPrefs.getImageOptimizeMaxSize()),
-        getLabelForImageMaxSizeValue(AppPrefs.getImageOptimizeMaxSize()));
-    setDetailListPreferenceValue(
-        mImageQualityPref, String.valueOf(AppPrefs.getImageOptimizeQuality()),
-        getLabelForImageQualityValue(AppPrefs.getImageOptimizeQuality()));
+	// Set Local settings
+	mOptimizedImage.setChecked(AppPrefs.isImageOptimize());
+	setDetailListPreferenceValue(
+		mImageMaxSizePref, String.valueOf(AppPrefs.getImageOptimizeMaxSize()),
+		getLabelForImageMaxSizeValue(AppPrefs.getImageOptimizeMaxSize()));
+	setDetailListPreferenceValue(
+		mImageQualityPref, String.valueOf(AppPrefs.getImageOptimizeQuality()),
+		getLabelForImageQualityValue(AppPrefs.getImageOptimizeQuality()));
 
-    mOptimizedVideo.setChecked(AppPrefs.isVideoOptimize());
-    setDetailListPreferenceValue(
-        mVideoWidthPref, String.valueOf(AppPrefs.getVideoOptimizeWidth()),
-        getLabelForVideoMaxWidthValue(AppPrefs.getVideoOptimizeWidth()));
-    setDetailListPreferenceValue(
-        mVideoEncorderBitratePref,
-        String.valueOf(AppPrefs.getVideoOptimizeQuality()),
-        getLabelForVideoEncoderBitrateValue(
-            AppPrefs.getVideoOptimizeQuality()));
+	mOptimizedVideo.setChecked(AppPrefs.isVideoOptimize());
+	setDetailListPreferenceValue(
+		mVideoWidthPref, String.valueOf(AppPrefs.getVideoOptimizeWidth()),
+		getLabelForVideoMaxWidthValue(AppPrefs.getVideoOptimizeWidth()));
+	setDetailListPreferenceValue(
+		mVideoEncorderBitratePref,
+		String.valueOf(AppPrefs.getVideoOptimizeQuality()),
+		getLabelForVideoEncoderBitrateValue(
+			AppPrefs.getVideoOptimizeQuality()));
 
-    mStripImageLocation.setChecked(AppPrefs.isStripImageLocation());
+	mStripImageLocation.setChecked(AppPrefs.isStripImageLocation());
 
-    if (!BuildConfig.OFFER_GUTENBERG) {
-      removeExperimentalCategory();
-    }
-  }
+	if (!BuildConfig.OFFER_GUTENBERG) {
+		removeExperimentalCategory();
+	}
+}
 
-  private void removeExperimentalCategory() {
-    PreferenceCategory experimentalPreferenceCategory =
-        (PreferenceCategory)findPreference(
-            getString(R.string.pref_key_experimental_section));
-    PreferenceScreen preferenceScreen = (PreferenceScreen)findPreference(
-        getString(R.string.pref_key_app_settings_root));
-    preferenceScreen.removePreference(experimentalPreferenceCategory);
-  }
+private void removeExperimentalCategory() {
+	PreferenceCategory experimentalPreferenceCategory =
+		(PreferenceCategory)findPreference(
+			getString(R.string.pref_key_experimental_section));
+	PreferenceScreen preferenceScreen = (PreferenceScreen)findPreference(
+		getString(R.string.pref_key_app_settings_root));
+	preferenceScreen.removePreference(experimentalPreferenceCategory);
+}
 
-  @Override
-  public void onResume() {
-    super.onResume();
-    if (mAccountStore.hasAccessToken() &&
-        NetworkUtils.isNetworkAvailable(getActivity())) {
-      mDispatcher.dispatch(AccountActionBuilder.newFetchSettingsAction());
-    }
-  }
+@Override
+public void onResume() {
+	super.onResume();
+	if (mAccountStore.hasAccessToken() &&
+	    NetworkUtils.isNetworkAvailable(getActivity())) {
+		mDispatcher.dispatch(AccountActionBuilder.newFetchSettingsAction());
+	}
+}
 
-  @Override
-  public void onStart() {
-    super.onStart();
-    mDispatcher.register(this);
-  }
+@Override
+public void onStart() {
+	super.onStart();
+	mDispatcher.register(this);
+}
 
-  @Override
-  public void onStop() {
-    mDispatcher.unregister(this);
-    super.onStop();
-  }
+@Override
+public void onStop() {
+	mDispatcher.unregister(this);
+	super.onStop();
+}
 
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+@Override
+public void onActivityCreated(Bundle savedInstanceState) {
+	super.onActivityCreated(savedInstanceState);
 
-    updateLanguagePreference(
-        getResources().getConfiguration().locale.toString());
-    // flush gathered events (if any)
-    AnalyticsTracker.flush();
-  }
+	updateLanguagePreference(
+		getResources().getConfiguration().locale.toString());
+	// flush gathered events (if any)
+	AnalyticsTracker.flush();
+}
 
-  @SuppressWarnings("unused")
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onAccountChanged(OnAccountChanged event) {
-    if (!isAdded()) {
-      return;
-    }
+@SuppressWarnings("unused")
+@Subscribe(threadMode = ThreadMode.MAIN)
+public void onAccountChanged(OnAccountChanged event) {
+	if (!isAdded()) {
+		return;
+	}
 
-    if (event.isError()) {
-      switch (event.error.type) {
-      case SETTINGS_FETCH_GENERIC_ERROR:
-        ToastUtils.showToast(getActivity(),
-                             R.string.error_fetch_account_settings,
-                             ToastUtils.Duration.LONG);
-        break;
-      case SETTINGS_FETCH_REAUTHORIZATION_REQUIRED_ERROR:
-        ToastUtils.showToast(getActivity(), R.string.error_disabled_apis,
-                             ToastUtils.Duration.LONG);
-        break;
-      case SETTINGS_POST_ERROR:
-        ToastUtils.showToast(getActivity(),
-                             R.string.error_post_account_settings,
-                             ToastUtils.Duration.LONG);
-        break;
-      }
-    } else if (event.causeOfChange == AccountAction.FETCH_SETTINGS) {
-      // no need to sync with remote here, or do anything else here, since the
-      // logic is already in WordPress.java
-      updateAnalyticsSyncUI();
-    }
-  }
+	if (event.isError()) {
+		switch (event.error.type) {
+		case SETTINGS_FETCH_GENERIC_ERROR:
+			ToastUtils.showToast(getActivity(),
+			                     R.string.error_fetch_account_settings,
+			                     ToastUtils.Duration.LONG);
+			break;
+		case SETTINGS_FETCH_REAUTHORIZATION_REQUIRED_ERROR:
+			ToastUtils.showToast(getActivity(), R.string.error_disabled_apis,
+			                     ToastUtils.Duration.LONG);
+			break;
+		case SETTINGS_POST_ERROR:
+			ToastUtils.showToast(getActivity(),
+			                     R.string.error_post_account_settings,
+			                     ToastUtils.Duration.LONG);
+			break;
+		}
+	} else if (event.causeOfChange == AccountAction.FETCH_SETTINGS) {
+		// no need to sync with remote here, or do anything else here, since the
+		// logic is already in WordPress.java
+		updateAnalyticsSyncUI();
+	}
+}
 
-  /* Make sure the UI is synced with the backend value */
-  private void updateAnalyticsSyncUI() {
-    if (!isAdded()) {
-      return;
-    }
-    if (mAccountStore.hasAccessToken()) {
-      SwitchPreference tracksOptOutPreference =
-          (SwitchPreference)findPreference(
-              getString(R.string.pref_key_send_usage));
-      tracksOptOutPreference.setChecked(
-          !mAccountStore.getAccount().getTracksOptOut());
-    }
-  }
+/* Make sure the UI is synced with the backend value */
+private void updateAnalyticsSyncUI() {
+	if (!isAdded()) {
+		return;
+	}
+	if (mAccountStore.hasAccessToken()) {
+		SwitchPreference tracksOptOutPreference =
+			(SwitchPreference)findPreference(
+				getString(R.string.pref_key_send_usage));
+		tracksOptOutPreference.setChecked(
+			!mAccountStore.getAccount().getTracksOptOut());
+	}
+}
 
-  @Override
-  public boolean onPreferenceClick(Preference preference) {
-    String preferenceKey = preference != null ? preference.getKey() : "";
+@Override
+public boolean onPreferenceClick(Preference preference) {
+	String preferenceKey = preference != null ? preference.getKey() : "";
 
-    if (preferenceKey.equals(getString(R.string.pref_key_device_settings))) {
-      return handleDevicePreferenceClick();
-    } else if (preferenceKey.equals(getString(R.string.pref_key_app_about))) {
-      return handleAboutPreferenceClick();
-    } else if (preferenceKey.equals(
-                   getString(R.string.pref_key_oss_licenses))) {
-      return handleOssPreferenceClick();
-    } else if (preference == mPrivacySettings) {
-      return handlePrivacyClick();
-    }
+	if (preferenceKey.equals(getString(R.string.pref_key_device_settings))) {
+		return handleDevicePreferenceClick();
+	} else if (preferenceKey.equals(getString(R.string.pref_key_app_about))) {
+		return handleAboutPreferenceClick();
+	} else if (preferenceKey.equals(
+			   getString(R.string.pref_key_oss_licenses))) {
+		return handleOssPreferenceClick();
+	} else if (preference == mPrivacySettings) {
+		return handlePrivacyClick();
+	}
 
-    return false;
-  }
+	return false;
+}
 
-  @Override
-  public boolean onPreferenceChange(Preference preference, Object newValue) {
-    if (newValue == null) {
-      return false;
-    }
+@Override
+public boolean onPreferenceChange(Preference preference, Object newValue) {
+	if (newValue == null) {
+		return false;
+	}
 
-    if (preference == mLanguagePreference) {
-      changeLanguage(newValue.toString());
-      return false;
-    } else if (preference == mOptimizedImage) {
-      AppPrefs.setImageOptimize((Boolean)newValue);
-      mImageMaxSizePref.setEnabled((Boolean)newValue);
-      Map<String, Object> properties = new HashMap<>();
-      properties.put("enabled", newValue);
-      AnalyticsTracker.track(
-          AnalyticsTracker.Stat.SITE_SETTINGS_OPTIMIZE_IMAGES_CHANGED,
-          properties);
-    } else if (preference == mImageMaxSizePref) {
-      int newWidth = Integer.parseInt(newValue.toString());
-      AppPrefs.setImageOptimizeMaxSize(newWidth);
-      setDetailListPreferenceValue(
-          mImageMaxSizePref, newValue.toString(),
-          getLabelForImageMaxSizeValue(AppPrefs.getImageOptimizeMaxSize()));
-    } else if (preference == mImageQualityPref) {
-      AppPrefs.setImageOptimizeQuality(Integer.parseInt(newValue.toString()));
-      setDetailListPreferenceValue(
-          mImageQualityPref, newValue.toString(),
-          getLabelForImageQualityValue(AppPrefs.getImageOptimizeQuality()));
-    } else if (preference == mOptimizedVideo) {
-      AppPrefs.setVideoOptimize((Boolean)newValue);
-      mVideoEncorderBitratePref.setEnabled((Boolean)newValue);
-    } else if (preference == mVideoWidthPref) {
-      int newWidth = Integer.parseInt(newValue.toString());
-      AppPrefs.setVideoOptimizeWidth(newWidth);
-      setDetailListPreferenceValue(
-          mVideoWidthPref, newValue.toString(),
-          getLabelForVideoMaxWidthValue(AppPrefs.getVideoOptimizeWidth()));
-    } else if (preference == mVideoEncorderBitratePref) {
-      AppPrefs.setVideoOptimizeQuality(Integer.parseInt(newValue.toString()));
-      setDetailListPreferenceValue(mVideoEncorderBitratePref,
-                                   newValue.toString(),
-                                   getLabelForVideoEncoderBitrateValue(
-                                       AppPrefs.getVideoOptimizeQuality()));
-    } else if (preference == mStripImageLocation) {
-      AppPrefs.setStripImageLocation((Boolean)newValue);
-    }
-    return true;
-  }
+	if (preference == mLanguagePreference) {
+		changeLanguage(newValue.toString());
+		return false;
+	} else if (preference == mOptimizedImage) {
+		AppPrefs.setImageOptimize((Boolean)newValue);
+		mImageMaxSizePref.setEnabled((Boolean)newValue);
+		Map<String, Object> properties = new HashMap<>();
+		properties.put("enabled", newValue);
+		AnalyticsTracker.track(
+			AnalyticsTracker.Stat.SITE_SETTINGS_OPTIMIZE_IMAGES_CHANGED,
+			properties);
+	} else if (preference == mImageMaxSizePref) {
+		int newWidth = Integer.parseInt(newValue.toString());
+		AppPrefs.setImageOptimizeMaxSize(newWidth);
+		setDetailListPreferenceValue(
+			mImageMaxSizePref, newValue.toString(),
+			getLabelForImageMaxSizeValue(AppPrefs.getImageOptimizeMaxSize()));
+	} else if (preference == mImageQualityPref) {
+		AppPrefs.setImageOptimizeQuality(Integer.parseInt(newValue.toString()));
+		setDetailListPreferenceValue(
+			mImageQualityPref, newValue.toString(),
+			getLabelForImageQualityValue(AppPrefs.getImageOptimizeQuality()));
+	} else if (preference == mOptimizedVideo) {
+		AppPrefs.setVideoOptimize((Boolean)newValue);
+		mVideoEncorderBitratePref.setEnabled((Boolean)newValue);
+	} else if (preference == mVideoWidthPref) {
+		int newWidth = Integer.parseInt(newValue.toString());
+		AppPrefs.setVideoOptimizeWidth(newWidth);
+		setDetailListPreferenceValue(
+			mVideoWidthPref, newValue.toString(),
+			getLabelForVideoMaxWidthValue(AppPrefs.getVideoOptimizeWidth()));
+	} else if (preference == mVideoEncorderBitratePref) {
+		AppPrefs.setVideoOptimizeQuality(Integer.parseInt(newValue.toString()));
+		setDetailListPreferenceValue(mVideoEncorderBitratePref,
+		                             newValue.toString(),
+		                             getLabelForVideoEncoderBitrateValue(
+						     AppPrefs.getVideoOptimizeQuality()));
+	} else if (preference == mStripImageLocation) {
+		AppPrefs.setStripImageLocation((Boolean)newValue);
+	}
+	return true;
+}
 
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-    case android.R.id.home:
-      getActivity().finish();
-    }
-    return super.onOptionsItemSelected(item);
-  }
+public boolean onOptionsItemSelected(MenuItem item) {
+	switch (item.getItemId()) {
+	case android.R.id.home:
+		getActivity().finish();
+	}
+	return super.onOptionsItemSelected(item);
+}
 
-  private void changeLanguage(String languageCode) {
-    if (mLanguagePreference == null || TextUtils.isEmpty(languageCode)) {
-      return;
-    }
+private void changeLanguage(String languageCode) {
+	if (mLanguagePreference == null || TextUtils.isEmpty(languageCode)) {
+		return;
+	}
 
-    if (LocaleManager.isSameLanguage(languageCode)) {
-      return;
-    }
+	if (LocaleManager.isSameLanguage(languageCode)) {
+		return;
+	}
 
-    LocaleManager.setNewLocale(WordPress.getContext(), languageCode);
-    WordPress.updateContextLocale();
-    updateLanguagePreference(languageCode);
-    mContextProvider.refreshContext();
+	LocaleManager.setNewLocale(WordPress.getContext(), languageCode);
+	WordPress.updateContextLocale();
+	updateLanguagePreference(languageCode);
+	mContextProvider.refreshContext();
 
-    // Track language change on Analytics because we have both the device
-    // language and app selected language data in Tracks metadata.
-    Map<String, Object> properties = new HashMap<>();
-    properties.put("app_locale", Locale.getDefault());
-    AnalyticsTracker.track(Stat.ACCOUNT_SETTINGS_LANGUAGE_CHANGED, properties);
+	// Track language change on Analytics because we have both the device
+	// language and app selected language data in Tracks metadata.
+	Map<String, Object> properties = new HashMap<>();
+	properties.put("app_locale", Locale.getDefault());
+	AnalyticsTracker.track(Stat.ACCOUNT_SETTINGS_LANGUAGE_CHANGED, properties);
 
-    // Language is now part of metadata, so we need to refresh them
-    AnalyticsUtils.refreshMetadata(mAccountStore, mSiteStore);
+	// Language is now part of metadata, so we need to refresh them
+	AnalyticsUtils.refreshMetadata(mAccountStore, mSiteStore);
 
-    // Refresh the app
-    Intent refresh = new Intent(getActivity(), getActivity().getClass());
-    startActivity(refresh);
-    getActivity().setResult(LANGUAGE_CHANGED);
-    getActivity().finish();
+	// Refresh the app
+	Intent refresh = new Intent(getActivity(), getActivity().getClass());
+	startActivity(refresh);
+	getActivity().setResult(LANGUAGE_CHANGED);
+	getActivity().finish();
 
-    // update Reader tags as they need be localized
-    ReaderUpdateServiceStarter.startService(
-        WordPress.getContext(), EnumSet.of(ReaderUpdateLogic.UpdateTask.TAGS));
-  }
+	// update Reader tags as they need be localized
+	ReaderUpdateServiceStarter.startService(
+		WordPress.getContext(), EnumSet.of(ReaderUpdateLogic.UpdateTask.TAGS));
+}
 
-  private void updateLanguagePreference(String languageCode) {
-    if (mLanguagePreference == null || TextUtils.isEmpty(languageCode)) {
-      return;
-    }
+private void updateLanguagePreference(String languageCode) {
+	if (mLanguagePreference == null || TextUtils.isEmpty(languageCode)) {
+		return;
+	}
 
-    Locale languageLocale = LocaleManager.languageLocale(languageCode);
-    String[] availableLocales =
-        getResources().getStringArray(R.array.available_languages);
+	Locale languageLocale = LocaleManager.languageLocale(languageCode);
+	String[] availableLocales =
+		getResources().getStringArray(R.array.available_languages);
 
-    Pair<String[], String[]> pair =
-        LocaleManager.createSortedLanguageDisplayStrings(availableLocales,
-                                                         languageLocale);
-    // check for a possible NPE
-    if (pair == null) {
-      return;
-    }
+	Pair<String[], String[]> pair =
+		LocaleManager.createSortedLanguageDisplayStrings(availableLocales,
+		                                                 languageLocale);
+	// check for a possible NPE
+	if (pair == null) {
+		return;
+	}
 
-    String[] sortedEntries = pair.first;
-    String[] sortedValues = pair.second;
+	String[] sortedEntries = pair.first;
+	String[] sortedValues = pair.second;
 
-    mLanguagePreference.setEntries(sortedEntries);
-    mLanguagePreference.setEntryValues(sortedValues);
-    mLanguagePreference.setDetails(
-        LocaleManager.createLanguageDetailDisplayStrings(sortedValues));
+	mLanguagePreference.setEntries(sortedEntries);
+	mLanguagePreference.setEntryValues(sortedValues);
+	mLanguagePreference.setDetails(
+		LocaleManager.createLanguageDetailDisplayStrings(sortedValues));
 
-    mLanguagePreference.setValue(languageCode);
-    mLanguagePreference.setSummary(
-        LocaleManager.getLanguageString(languageCode, languageLocale));
-    mLanguagePreference.refreshAdapter();
-  }
+	mLanguagePreference.setValue(languageCode);
+	mLanguagePreference.setSummary(
+		LocaleManager.getLanguageString(languageCode, languageLocale));
+	mLanguagePreference.refreshAdapter();
+}
 
-  private boolean handleAboutPreferenceClick() {
-    startActivity(new Intent(getActivity(), AboutActivity.class));
-    return true;
-  }
+private boolean handleAboutPreferenceClick() {
+	startActivity(new Intent(getActivity(), AboutActivity.class));
+	return true;
+}
 
-  private boolean handleDevicePreferenceClick() {
-    try {
-      // open specific app info screen
-      Intent intent = new Intent(
-          android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-      intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
-      startActivity(intent);
-    } catch (ActivityNotFoundException exception) {
-      AppLog.w(AppLog.T.SETTINGS, exception.getMessage());
-      // open generic apps screen
-      Intent intent = new Intent(
-          android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
-      startActivity(intent);
-    }
+private boolean handleDevicePreferenceClick() {
+	try {
+		// open specific app info screen
+		Intent intent = new Intent(
+			android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+		intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
+		startActivity(intent);
+	} catch (ActivityNotFoundException exception) {
+		AppLog.w(AppLog.T.SETTINGS, exception.getMessage());
+		// open generic apps screen
+		Intent intent = new Intent(
+			android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+		startActivity(intent);
+	}
 
-    return true;
-  }
+	return true;
+}
 
-  private boolean handleOssPreferenceClick() {
-    startActivity(new Intent(getActivity(), LicensesActivity.class));
-    return true;
-  }
+private boolean handleOssPreferenceClick() {
+	startActivity(new Intent(getActivity(), LicensesActivity.class));
+	return true;
+}
 
-  private String getLabelForImageMaxSizeValue(int newValue) {
-    String[] values = getActivity().getResources().getStringArray(
-        R.array.site_settings_image_max_size_values);
-    String[] entries = getActivity().getResources().getStringArray(
-        R.array.site_settings_image_max_size_entries);
-    for (int i = 0; i < values.length; i++) {
-      if (values[i].equals(String.valueOf(newValue))) {
-        return entries[i];
-      }
-    }
+private String getLabelForImageMaxSizeValue(int newValue) {
+	String[] values = getActivity().getResources().getStringArray(
+		R.array.site_settings_image_max_size_values);
+	String[] entries = getActivity().getResources().getStringArray(
+		R.array.site_settings_image_max_size_entries);
+	for (int i = 0; i < values.length; i++) {
+		if (values[i].equals(String.valueOf(newValue))) {
+			return entries[i];
+		}
+	}
 
-    return entries[0];
-  }
+	return entries[0];
+}
 
-  private String getLabelForImageQualityValue(int newValue) {
-    String[] values = getActivity().getResources().getStringArray(
-        R.array.site_settings_image_quality_values);
-    String[] entries = getActivity().getResources().getStringArray(
-        R.array.site_settings_image_quality_entries);
-    for (int i = 0; i < values.length; i++) {
-      if (values[i].equals(String.valueOf(newValue))) {
-        return entries[i];
-      }
-    }
+private String getLabelForImageQualityValue(int newValue) {
+	String[] values = getActivity().getResources().getStringArray(
+		R.array.site_settings_image_quality_values);
+	String[] entries = getActivity().getResources().getStringArray(
+		R.array.site_settings_image_quality_entries);
+	for (int i = 0; i < values.length; i++) {
+		if (values[i].equals(String.valueOf(newValue))) {
+			return entries[i];
+		}
+	}
 
-    return entries[0];
-  }
+	return entries[0];
+}
 
-  private String getLabelForVideoMaxWidthValue(int newValue) {
-    String[] values = getActivity().getResources().getStringArray(
-        R.array.site_settings_video_width_values);
-    String[] entries = getActivity().getResources().getStringArray(
-        R.array.site_settings_video_width_entries);
-    for (int i = 0; i < values.length; i++) {
-      if (values[i].equals(String.valueOf(newValue))) {
-        return entries[i];
-      }
-    }
+private String getLabelForVideoMaxWidthValue(int newValue) {
+	String[] values = getActivity().getResources().getStringArray(
+		R.array.site_settings_video_width_values);
+	String[] entries = getActivity().getResources().getStringArray(
+		R.array.site_settings_video_width_entries);
+	for (int i = 0; i < values.length; i++) {
+		if (values[i].equals(String.valueOf(newValue))) {
+			return entries[i];
+		}
+	}
 
-    return entries[0];
-  }
+	return entries[0];
+}
 
-  private String getLabelForVideoEncoderBitrateValue(int newValue) {
-    String[] values = getActivity().getResources().getStringArray(
-        R.array.site_settings_video_bitrate_values);
-    String[] entries = getActivity().getResources().getStringArray(
-        R.array.site_settings_video_bitrate_entries);
-    for (int i = 0; i < values.length; i++) {
-      if (values[i].equals(String.valueOf(newValue))) {
-        return entries[i];
-      }
-    }
+private String getLabelForVideoEncoderBitrateValue(int newValue) {
+	String[] values = getActivity().getResources().getStringArray(
+		R.array.site_settings_video_bitrate_values);
+	String[] entries = getActivity().getResources().getStringArray(
+		R.array.site_settings_video_bitrate_entries);
+	for (int i = 0; i < values.length; i++) {
+		if (values[i].equals(String.valueOf(newValue))) {
+			return entries[i];
+		}
+	}
 
-    return entries[0];
-  }
+	return entries[0];
+}
 
-  private void setDetailListPreferenceValue(DetailListPreference pref,
-                                            String value, String summary) {
-    pref.setValue(value);
-    pref.setSummary(summary);
-    pref.refreshAdapter();
-  }
+private void setDetailListPreferenceValue(DetailListPreference pref,
+                                          String value, String summary) {
+	pref.setValue(value);
+	pref.setSummary(summary);
+	pref.refreshAdapter();
+}
 
-  private boolean handlePrivacyClick() {
-    if (mPrivacySettings == null || !isAdded()) {
-      return false;
-    }
-    String title = getString(R.string.preference_privacy_settings);
-    Dialog dialog = mPrivacySettings.getDialog();
-    if (dialog != null) {
-      WPActivityUtils.addToolbarToDialog(this, dialog, title);
-    }
-    return true;
-  }
+private boolean handlePrivacyClick() {
+	if (mPrivacySettings == null || !isAdded()) {
+		return false;
+	}
+	String title = getString(R.string.preference_privacy_settings);
+	Dialog dialog = mPrivacySettings.getDialog();
+	if (dialog != null) {
+		WPActivityUtils.addToolbarToDialog(this, dialog, title);
+	}
+	return true;
+}
 }

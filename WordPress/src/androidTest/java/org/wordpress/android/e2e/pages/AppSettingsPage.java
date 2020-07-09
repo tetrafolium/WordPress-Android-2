@@ -14,27 +14,31 @@ import androidx.test.espresso.ViewInteraction;
 import junit.framework.AssertionFailedError;
 
 public class AppSettingsPage {
-  private static ViewInteraction appSettingsLabel =
-      onView(withText("App Settings"));
-  private static ViewInteraction backArrow =
-      onView(withContentDescription("Navigate up"));
+private static ViewInteraction appSettingsLabel =
+	onView(withText("App Settings"));
+private static ViewInteraction backArrow =
+	onView(withContentDescription("Navigate up"));
 
-  private static ViewInteraction editorTypeButton = onView(allOf(
-      withId(android.R.id.summary), hasSibling(withText("Set editor type"))));
+private static ViewInteraction editorTypeButton = onView(allOf(
+								 withId(android.R.id.summary), hasSibling(withText("Set editor type"))));
 
-  public AppSettingsPage() { appSettingsLabel.check(matches(isDisplayed())); }
+public AppSettingsPage() {
+	appSettingsLabel.check(matches(isDisplayed()));
+}
 
-  public AppSettingsPage setEditor(String editorType) {
-    try {
-      editorTypeButton.check(matches(withText(editorType)));
-    } catch (AssertionFailedError e) {
-      editorTypeButton.perform(click());
-      onView(allOf(withId(android.R.id.text1), withText(editorType)))
-          .perform(click());
-    }
+public AppSettingsPage setEditor(String editorType) {
+	try {
+		editorTypeButton.check(matches(withText(editorType)));
+	} catch (AssertionFailedError e) {
+		editorTypeButton.perform(click());
+		onView(allOf(withId(android.R.id.text1), withText(editorType)))
+		.perform(click());
+	}
 
-    return this;
-  }
+	return this;
+}
 
-  public void goBack() { backArrow.perform(click()); }
+public void goBack() {
+	backArrow.perform(click());
+}
 }

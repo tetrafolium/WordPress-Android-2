@@ -17,63 +17,63 @@ import org.wordpress.android.util.NetworkUtils;
  * filled in - designed for use inside ReaderPostAdapter
  */
 public class ReaderGapMarkerView extends RelativeLayout {
-  private TextView mText;
-  private ProgressBar mProgress;
-  private ReaderTag mCurrentTag;
+private TextView mText;
+private ProgressBar mProgress;
+private ReaderTag mCurrentTag;
 
-  public ReaderGapMarkerView(Context context) {
-    super(context);
-    initView(context);
-  }
+public ReaderGapMarkerView(Context context) {
+	super(context);
+	initView(context);
+}
 
-  public ReaderGapMarkerView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    initView(context);
-  }
+public ReaderGapMarkerView(Context context, AttributeSet attrs) {
+	super(context, attrs);
+	initView(context);
+}
 
-  public ReaderGapMarkerView(Context context, AttributeSet attrs,
-                             int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    initView(context);
-  }
+public ReaderGapMarkerView(Context context, AttributeSet attrs,
+                           int defStyleAttr) {
+	super(context, attrs, defStyleAttr);
+	initView(context);
+}
 
-  private void initView(Context context) {
-    View view = inflate(context, R.layout.reader_gap_marker_view, this);
-    mText = (TextView)view.findViewById(R.id.text_gap_marker);
-    mProgress = (ProgressBar)view.findViewById(R.id.progress_gap_marker);
+private void initView(Context context) {
+	View view = inflate(context, R.layout.reader_gap_marker_view, this);
+	mText = (TextView)view.findViewById(R.id.text_gap_marker);
+	mProgress = (ProgressBar)view.findViewById(R.id.progress_gap_marker);
 
-    mText.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        fillTheGap();
-      }
-    });
-  }
+	mText.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        fillTheGap();
+			}
+		});
+}
 
-  public void setCurrentTag(ReaderTag tag) {
-    mCurrentTag = tag;
-    hideProgress();
-  }
+public void setCurrentTag(ReaderTag tag) {
+	mCurrentTag = tag;
+	hideProgress();
+}
 
-  private void fillTheGap() {
-    if (mCurrentTag == null || !NetworkUtils.checkConnection(getContext())) {
-      return;
-    }
+private void fillTheGap() {
+	if (mCurrentTag == null || !NetworkUtils.checkConnection(getContext())) {
+		return;
+	}
 
-    // start service to fill the gap - EventBus will notify the owning fragment
-    // of new posts, and will take care of hiding this view
-    ReaderPostServiceStarter.startServiceForTag(
-        getContext(), mCurrentTag, UpdateAction.REQUEST_OLDER_THAN_GAP);
-    showProgress();
-  }
+	// start service to fill the gap - EventBus will notify the owning fragment
+	// of new posts, and will take care of hiding this view
+	ReaderPostServiceStarter.startServiceForTag(
+		getContext(), mCurrentTag, UpdateAction.REQUEST_OLDER_THAN_GAP);
+	showProgress();
+}
 
-  private void showProgress() {
-    mText.setVisibility(View.INVISIBLE);
-    mProgress.setVisibility(View.VISIBLE);
-  }
+private void showProgress() {
+	mText.setVisibility(View.INVISIBLE);
+	mProgress.setVisibility(View.VISIBLE);
+}
 
-  private void hideProgress() {
-    mText.setVisibility(View.VISIBLE);
-    mProgress.setVisibility(View.GONE);
-  }
+private void hideProgress() {
+	mText.setVisibility(View.VISIBLE);
+	mProgress.setVisibility(View.GONE);
+}
 }

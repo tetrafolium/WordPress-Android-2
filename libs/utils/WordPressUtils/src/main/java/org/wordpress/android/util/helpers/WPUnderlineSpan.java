@@ -25,7 +25,11 @@ import android.text.style.UnderlineSpan;
  * our formatting.
  */
 public class WPUnderlineSpan extends UnderlineSpan {
-  public WPUnderlineSpan() { super(); }
+public WPUnderlineSpan() {
+	super();
+}
 
-  public WPUnderlineSpan(Parcel src) { super(src); }
+public WPUnderlineSpan(Parcel src) {
+	super(src);
+}
 }

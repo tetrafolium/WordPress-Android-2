@@ -22,121 +22,123 @@ import org.wordpress.android.util.AccessibilityUtils;
  * message.
  */
 public class WPDialogSnackbar {
-  private Snackbar mSnackbar;
-  private View mContentView;
+private Snackbar mSnackbar;
+private View mContentView;
 
-  private WPDialogSnackbar(@NonNull View view, @NonNull CharSequence text,
-                           int duration) {
-    mSnackbar = Snackbar.make(
-        view, "", // CHECKSTYLE IGNORE
-        AccessibilityUtils.getSnackbarDuration(view.getContext(), duration));
+private WPDialogSnackbar(@NonNull View view, @NonNull CharSequence text,
+                         int duration) {
+	mSnackbar = Snackbar.make(
+		view, "", // CHECKSTYLE IGNORE
+		AccessibilityUtils.getSnackbarDuration(view.getContext(), duration));
 
-    // Set underlying snackbar layout.
-    SnackbarLayout snackbarLayout = (SnackbarLayout)mSnackbar.getView();
-    ViewGroup.MarginLayoutParams params =
-        (ViewGroup.MarginLayoutParams)snackbarLayout.getLayoutParams();
-    Context context = view.getContext();
-    int margin =
-        (int)context.getResources().getDimension(R.dimen.margin_medium);
-    params.setMargins(margin, margin, margin, margin);
-    snackbarLayout.setLayoutParams(params);
-    snackbarLayout.setPadding(0, 0, 0, 0);
-    snackbarLayout.setBackground(context.getDrawable(R.drawable.bg_snackbar));
+	// Set underlying snackbar layout.
+	SnackbarLayout snackbarLayout = (SnackbarLayout)mSnackbar.getView();
+	ViewGroup.MarginLayoutParams params =
+		(ViewGroup.MarginLayoutParams)snackbarLayout.getLayoutParams();
+	Context context = view.getContext();
+	int margin =
+		(int)context.getResources().getDimension(R.dimen.margin_medium);
+	params.setMargins(margin, margin, margin, margin);
+	snackbarLayout.setLayoutParams(params);
+	snackbarLayout.setPadding(0, 0, 0, 0);
+	snackbarLayout.setBackground(context.getDrawable(R.drawable.bg_snackbar));
 
-    // Hide underlying snackbar text and action.
-    TextView snackbarText = snackbarLayout.findViewById(
-        com.google.android.material.R.id.snackbar_text);
-    snackbarText.setVisibility(View.INVISIBLE);
-    TextView snackbarAction = snackbarLayout.findViewById(
-        com.google.android.material.R.id.snackbar_action);
-    snackbarAction.setVisibility(View.INVISIBLE);
+	// Hide underlying snackbar text and action.
+	TextView snackbarText = snackbarLayout.findViewById(
+		com.google.android.material.R.id.snackbar_text);
+	snackbarText.setVisibility(View.INVISIBLE);
+	TextView snackbarAction = snackbarLayout.findViewById(
+		com.google.android.material.R.id.snackbar_action);
+	snackbarAction.setVisibility(View.INVISIBLE);
 
-    mContentView = LayoutInflater.from(view.getContext())
-                       .inflate(R.layout.dialog_snackbar, null);
+	mContentView = LayoutInflater.from(view.getContext())
+	               .inflate(R.layout.dialog_snackbar, null);
 
-    TextView message = mContentView.findViewById(R.id.message);
+	TextView message = mContentView.findViewById(R.id.message);
 
-    // Hide message view when text is empty.
-    if (TextUtils.isEmpty(text)) {
-      message.setVisibility(View.GONE);
-    } else {
-      message.setVisibility(View.VISIBLE);
-      message.setText(text);
-    }
+	// Hide message view when text is empty.
+	if (TextUtils.isEmpty(text)) {
+		message.setVisibility(View.GONE);
+	} else {
+		message.setVisibility(View.VISIBLE);
+		message.setText(text);
+	}
 
-    snackbarLayout.addView(mContentView, 0);
-  }
+	snackbarLayout.addView(mContentView, 0);
+}
 
-  public void dismiss() {
-    if (mSnackbar != null) {
-      mSnackbar.dismiss();
-    }
-  }
+public void dismiss() {
+	if (mSnackbar != null) {
+		mSnackbar.dismiss();
+	}
+}
 
-  public boolean isShowing() {
-    return mSnackbar != null && mSnackbar.isShown();
-  }
+public boolean isShowing() {
+	return mSnackbar != null && mSnackbar.isShown();
+}
 
-  public static WPDialogSnackbar
-  make(@NonNull View view, @NonNull CharSequence text, int duration) {
-    return new WPDialogSnackbar(view, text, duration);
-  }
+public static WPDialogSnackbar
+make(@NonNull View view, @NonNull CharSequence text, int duration) {
+	return new WPDialogSnackbar(view, text, duration);
+}
 
-  private void setButtonTextAndVisibility(Button button, CharSequence text,
-                                          final View.OnClickListener listener) {
-    // Hide button when text is empty or listener is null.
-    if (TextUtils.isEmpty(text) || listener == null) {
-      button.setVisibility(View.GONE);
-      button.setOnClickListener(null);
-    } else {
-      button.setVisibility(View.VISIBLE);
-      button.setText(text);
-      button.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          listener.onClick(view);
-          dismiss();
-        }
-      });
-    }
-  }
+private void setButtonTextAndVisibility(Button button, CharSequence text,
+                                        final View.OnClickListener listener) {
+	// Hide button when text is empty or listener is null.
+	if (TextUtils.isEmpty(text) || listener == null) {
+		button.setVisibility(View.GONE);
+		button.setOnClickListener(null);
+	} else {
+		button.setVisibility(View.VISIBLE);
+		button.setText(text);
+		button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+				        listener.onClick(view);
+				        dismiss();
+				}
+			});
+	}
+}
 
-  public WPDialogSnackbar setNegativeButton(CharSequence text,
-                                            View.OnClickListener listener) {
-    setButtonTextAndVisibility(
-        (Button)mContentView.findViewById(R.id.button_negative), text,
-        listener);
-    return this;
-  }
+public WPDialogSnackbar setNegativeButton(CharSequence text,
+                                          View.OnClickListener listener) {
+	setButtonTextAndVisibility(
+		(Button)mContentView.findViewById(R.id.button_negative), text,
+		listener);
+	return this;
+}
 
-  public WPDialogSnackbar setNeutralButton(CharSequence text,
-                                           View.OnClickListener listener) {
-    setButtonTextAndVisibility(
-        (Button)mContentView.findViewById(R.id.button_neutral), text, listener);
-    return this;
-  }
+public WPDialogSnackbar setNeutralButton(CharSequence text,
+                                         View.OnClickListener listener) {
+	setButtonTextAndVisibility(
+		(Button)mContentView.findViewById(R.id.button_neutral), text, listener);
+	return this;
+}
 
-  public WPDialogSnackbar setPositiveButton(CharSequence text,
-                                            View.OnClickListener listener) {
-    setButtonTextAndVisibility(
-        (Button)mContentView.findViewById(R.id.button_positive), text,
-        listener);
-    return this;
-  }
+public WPDialogSnackbar setPositiveButton(CharSequence text,
+                                          View.OnClickListener listener) {
+	setButtonTextAndVisibility(
+		(Button)mContentView.findViewById(R.id.button_positive), text,
+		listener);
+	return this;
+}
 
-  public WPDialogSnackbar setTitle(@NonNull CharSequence text) {
-    TextView title = mContentView.findViewById(R.id.title);
+public WPDialogSnackbar setTitle(@NonNull CharSequence text) {
+	TextView title = mContentView.findViewById(R.id.title);
 
-    // Hide title view when text is empty.
-    if (TextUtils.isEmpty(text)) {
-      title.setVisibility(View.GONE);
-    } else {
-      title.setVisibility(View.VISIBLE);
-      title.setText(text);
-    }
+	// Hide title view when text is empty.
+	if (TextUtils.isEmpty(text)) {
+		title.setVisibility(View.GONE);
+	} else {
+		title.setVisibility(View.VISIBLE);
+		title.setText(text);
+	}
 
-    return this;
-  }
+	return this;
+}
 
-  public void show() { mSnackbar.show(); }
+public void show() {
+	mSnackbar.show();
+}
 }

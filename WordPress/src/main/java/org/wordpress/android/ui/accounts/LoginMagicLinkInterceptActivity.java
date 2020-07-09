@@ -15,91 +15,91 @@ import org.wordpress.android.ui.main.WPMainActivity;
  * is routed to login or signup based on deep link scheme, host, and parameters.
  */
 public class LoginMagicLinkInterceptActivity extends Activity {
-  private static final String PARAMETER_FLOW = "flow";
-  private static final String PARAMETER_FLOW_JETPACK = "jetpack";
-  private static final String PARAMETER_SOURCE = "source";
+private static final String PARAMETER_FLOW = "flow";
+private static final String PARAMETER_FLOW_JETPACK = "jetpack";
+private static final String PARAMETER_SOURCE = "source";
 
-  private String mAction;
-  private Uri mUri;
+private String mAction;
+private Uri mUri;
 
-  @Inject protected LoginAnalyticsListener mLoginAnalyticsListener;
+@Inject protected LoginAnalyticsListener mLoginAnalyticsListener;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ((WordPress)getApplication()).component().inject(this);
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	((WordPress)getApplication()).component().inject(this);
 
-    mAction = getIntent().getAction();
-    mUri = getIntent().getData();
+	mAction = getIntent().getAction();
+	mUri = getIntent().getData();
 
-    Intent intent = new Intent(this, WPMainActivity.class);
-    intent.setAction(mAction);
-    intent.setData(mUri);
+	Intent intent = new Intent(this, WPMainActivity.class);
+	intent.setAction(mAction);
+	intent.setData(mUri);
 
-    if (hasMagicLinkLoginIntent()) {
-      intent.putExtra(WPMainActivity.ARG_IS_MAGIC_LINK_LOGIN, true);
+	if (hasMagicLinkLoginIntent()) {
+		intent.putExtra(WPMainActivity.ARG_IS_MAGIC_LINK_LOGIN, true);
 
-      if (hasMagicLinkSignupIntent()) {
-        mLoginAnalyticsListener.trackSignupMagicLinkOpened();
-        intent.putExtra(WPMainActivity.ARG_IS_MAGIC_LINK_SIGNUP, true);
-      } else {
-        mLoginAnalyticsListener.trackLoginMagicLinkOpened();
-        intent.putExtra(WPMainActivity.ARG_IS_MAGIC_LINK_SIGNUP, false);
-      }
-    }
+		if (hasMagicLinkSignupIntent()) {
+			mLoginAnalyticsListener.trackSignupMagicLinkOpened();
+			intent.putExtra(WPMainActivity.ARG_IS_MAGIC_LINK_SIGNUP, true);
+		} else {
+			mLoginAnalyticsListener.trackLoginMagicLinkOpened();
+			intent.putExtra(WPMainActivity.ARG_IS_MAGIC_LINK_SIGNUP, false);
+		}
+	}
 
-    if (isJetpackConnectFlow()) {
-      intent.putExtra(WPMainActivity.ARG_JETPACK_CONNECT_SOURCE,
-                      getJetpackConnectSource());
-    }
+	if (isJetpackConnectFlow()) {
+		intent.putExtra(WPMainActivity.ARG_JETPACK_CONNECT_SOURCE,
+		                getJetpackConnectSource());
+	}
 
-    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_NEW_TASK |
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
-    startActivity(intent);
-    finish();
-  }
+	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+	                Intent.FLAG_ACTIVITY_NEW_TASK |
+	                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	startActivity(intent);
+	finish();
+}
 
-  private boolean hasMagicLinkLoginIntent() {
-    String host =
-        (mUri != null && mUri.getHost() != null) ? mUri.getHost() : "";
-    return Intent.ACTION_VIEW.equals(mAction) &&
-        host.contains(LoginActivity.MAGIC_LOGIN);
-  }
+private boolean hasMagicLinkLoginIntent() {
+	String host =
+		(mUri != null && mUri.getHost() != null) ? mUri.getHost() : "";
+	return Intent.ACTION_VIEW.equals(mAction) &&
+	       host.contains(LoginActivity.MAGIC_LOGIN);
+}
 
-  private boolean hasMagicLinkSignupIntent() {
-    if (mUri != null) {
-      String parameter = SignupEpilogueActivity.MAGIC_SIGNUP_PARAMETER;
-      String value = (mUri.getQueryParameterNames() != null &&
-                      mUri.getQueryParameter(parameter) != null)
-                         ? mUri.getQueryParameter(parameter)
-                         : "";
-      return Intent.ACTION_VIEW.equals(mAction) &&
-          value.equalsIgnoreCase(SignupEpilogueActivity.MAGIC_SIGNUP_VALUE);
-    } else {
-      return false;
-    }
-  }
+private boolean hasMagicLinkSignupIntent() {
+	if (mUri != null) {
+		String parameter = SignupEpilogueActivity.MAGIC_SIGNUP_PARAMETER;
+		String value = (mUri.getQueryParameterNames() != null &&
+		                mUri.getQueryParameter(parameter) != null)
+		         ? mUri.getQueryParameter(parameter)
+		         : "";
+		return Intent.ACTION_VIEW.equals(mAction) &&
+		       value.equalsIgnoreCase(SignupEpilogueActivity.MAGIC_SIGNUP_VALUE);
+	} else {
+		return false;
+	}
+}
 
-  private boolean isJetpackConnectFlow() {
-    if (mUri != null) {
-      String value = (mUri.getQueryParameterNames() != null &&
-                      mUri.getQueryParameter(PARAMETER_FLOW) != null)
-                         ? mUri.getQueryParameter(PARAMETER_FLOW)
-                         : "";
-      return Intent.ACTION_VIEW.equals(mAction) &&
-          value.equalsIgnoreCase(PARAMETER_FLOW_JETPACK);
-    } else {
-      return false;
-    }
-  }
+private boolean isJetpackConnectFlow() {
+	if (mUri != null) {
+		String value = (mUri.getQueryParameterNames() != null &&
+		                mUri.getQueryParameter(PARAMETER_FLOW) != null)
+		         ? mUri.getQueryParameter(PARAMETER_FLOW)
+		         : "";
+		return Intent.ACTION_VIEW.equals(mAction) &&
+		       value.equalsIgnoreCase(PARAMETER_FLOW_JETPACK);
+	} else {
+		return false;
+	}
+}
 
-  private JetpackConnectionSource getJetpackConnectSource() {
-    String value = (mUri != null && mUri.getQueryParameterNames() != null &&
-                    mUri.getQueryParameter(PARAMETER_SOURCE) != null)
-                       ? mUri.getQueryParameter(PARAMETER_SOURCE)
-                       : "";
+private JetpackConnectionSource getJetpackConnectSource() {
+	String value = (mUri != null && mUri.getQueryParameterNames() != null &&
+	                mUri.getQueryParameter(PARAMETER_SOURCE) != null)
+	               ? mUri.getQueryParameter(PARAMETER_SOURCE)
+	               : "";
 
-    return JetpackConnectionSource.fromString(value);
-  }
+	return JetpackConnectionSource.fromString(value);
+}
 }

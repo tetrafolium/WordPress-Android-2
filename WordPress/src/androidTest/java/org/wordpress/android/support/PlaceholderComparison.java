@@ -18,83 +18,83 @@ import org.wordpress.android.util.image.ImagePlaceholderManager;
 import org.wordpress.android.util.image.ImageType;
 
 public class PlaceholderComparison {
-  private Context mContext;
-  private ImagePlaceholderManager mPlaceholderManager =
-      new ImagePlaceholderManager();
-  private ImageType mImageType;
+private Context mContext;
+private ImagePlaceholderManager mPlaceholderManager =
+	new ImagePlaceholderManager();
+private ImageType mImageType;
 
-  public PlaceholderComparison(ImageType imageType) {
-    mContext = ApplicationProvider.getApplicationContext();
-    mImageType = imageType;
-  }
+public PlaceholderComparison(ImageType imageType) {
+	mContext = ApplicationProvider.getApplicationContext();
+	mImageType = imageType;
+}
 
-  public boolean matches(ImageView view) {
-    Drawable drawable = view.getDrawable();
-    Size size = new Size(view.getWidth(), view.getHeight());
+public boolean matches(ImageView view) {
+	Drawable drawable = view.getDrawable();
+	Size size = new Size(view.getWidth(), view.getHeight());
 
-    return matches(drawable, size);
-  }
+	return matches(drawable, size);
+}
 
-  private boolean matches(Drawable drawable, Size size) {
-    switch (mImageType) {
-    case PHOTO:
-    case VIDEO:
-      return colorComparePlaceholder(drawable);
+private boolean matches(Drawable drawable, Size size) {
+	switch (mImageType) {
+	case PHOTO:
+	case VIDEO:
+		return colorComparePlaceholder(drawable);
 
-    case AVATAR:
-      return bitmapComparePlaceholder(drawable, size);
-    case BLAVATAR:
-      return bitmapComparePlaceholder(drawable, size);
+	case AVATAR:
+		return bitmapComparePlaceholder(drawable, size);
+	case BLAVATAR:
+		return bitmapComparePlaceholder(drawable, size);
 
-    default:
-      fail();
-    }
+	default:
+		fail();
+	}
 
-    return false;
-  }
+	return false;
+}
 
-  private boolean colorComparePlaceholder(Drawable drawable) {
-    if (!(drawable instanceof ColorDrawable)) {
-      return false;
-    }
+private boolean colorComparePlaceholder(Drawable drawable) {
+	if (!(drawable instanceof ColorDrawable)) {
+		return false;
+	}
 
-    int placeholderResource =
-        mPlaceholderManager.getPlaceholderResource(mImageType);
-    ColorDrawable template = new ColorDrawable(placeholderResource);
-    int templateColor = template.getColor();
+	int placeholderResource =
+		mPlaceholderManager.getPlaceholderResource(mImageType);
+	ColorDrawable template = new ColorDrawable(placeholderResource);
+	int templateColor = template.getColor();
 
-    return placeholderResource == templateColor;
-  }
+	return placeholderResource == templateColor;
+}
 
-  private boolean bitmapComparePlaceholder(Drawable drawable, Size size) {
-    if (!(drawable instanceof BitmapDrawable)) {
-      return false;
-    }
+private boolean bitmapComparePlaceholder(Drawable drawable, Size size) {
+	if (!(drawable instanceof BitmapDrawable)) {
+		return false;
+	}
 
-    int placeholderResource =
-        mPlaceholderManager.getPlaceholderResource(mImageType);
-    Bitmap placeholder = ((BitmapDrawable)drawable).getBitmap();
+	int placeholderResource =
+		mPlaceholderManager.getPlaceholderResource(mImageType);
+	Bitmap placeholder = ((BitmapDrawable)drawable).getBitmap();
 
-    Bitmap template = resourceToBitmap(placeholderResource, size);
+	Bitmap template = resourceToBitmap(placeholderResource, size);
 
-    if (mImageType == ImageType.AVATAR) {
-      BitmapPool pool = Glide.get(mContext).getBitmapPool();
-      template = TransformationUtils.circleCrop(pool, template, size.getWidth(),
-                                                size.getHeight());
-    }
+	if (mImageType == ImageType.AVATAR) {
+		BitmapPool pool = Glide.get(mContext).getBitmapPool();
+		template = TransformationUtils.circleCrop(pool, template, size.getWidth(),
+		                                          size.getHeight());
+	}
 
-    return placeholder.sameAs(template);
-  }
+	return placeholder.sameAs(template);
+}
 
-  private Bitmap resourceToBitmap(int resourceId, Size size) {
-    Bitmap bitmap = Bitmap.createBitmap(size.getWidth(), size.getHeight(),
-                                        Bitmap.Config.ARGB_8888);
-    Canvas canvas = new Canvas(bitmap);
+private Bitmap resourceToBitmap(int resourceId, Size size) {
+	Bitmap bitmap = Bitmap.createBitmap(size.getWidth(), size.getHeight(),
+	                                    Bitmap.Config.ARGB_8888);
+	Canvas canvas = new Canvas(bitmap);
 
-    Drawable d = mContext.getResources().getDrawable(resourceId);
-    d.setBounds(0, 0, size.getWidth(), size.getHeight());
-    d.draw(canvas);
+	Drawable d = mContext.getResources().getDrawable(resourceId);
+	d.setBounds(0, 0, size.getWidth(), size.getHeight());
+	d.draw(canvas);
 
-    return bitmap;
-  }
+	return bitmap;
+}
 }

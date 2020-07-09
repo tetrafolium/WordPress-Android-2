@@ -43,350 +43,354 @@ import org.wordpress.android.util.NetworkUtils;
 import org.wordpress.android.util.ToastUtils;
 
 public class EditCommentActivity extends AppCompatActivity {
-  static final String KEY_COMMENT = "KEY_COMMENT";
-  static final String KEY_NOTE_ID = "KEY_NOTE_ID";
+static final String KEY_COMMENT = "KEY_COMMENT";
+static final String KEY_NOTE_ID = "KEY_NOTE_ID";
 
-  private static final int ID_DIALOG_SAVING = 0;
-  private static final String ARG_CANCEL_EDITING_COMMENT_DIALOG_VISIBLE =
-      "cancel_editing_comment_dialog_visible";
+private static final int ID_DIALOG_SAVING = 0;
+private static final String ARG_CANCEL_EDITING_COMMENT_DIALOG_VISIBLE =
+	"cancel_editing_comment_dialog_visible";
 
-  private SiteModel mSite;
-  private CommentModel mComment;
-  private Note mNote;
-  private boolean mFetchingComment;
+private SiteModel mSite;
+private CommentModel mComment;
+private Note mNote;
+private boolean mFetchingComment;
 
-  private AlertDialog mCancelEditCommentDialog;
+private AlertDialog mCancelEditCommentDialog;
 
-  @Inject Dispatcher mDispatcher;
-  @Inject SiteStore mSiteStore;
-  @Inject CommentStore mCommentStore;
+@Inject Dispatcher mDispatcher;
+@Inject SiteStore mSiteStore;
+@Inject CommentStore mCommentStore;
 
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(LocaleManager.setLocale(newBase));
-  }
+@Override
+protected void attachBaseContext(Context newBase) {
+	super.attachBaseContext(LocaleManager.setLocale(newBase));
+}
 
-  @Override
-  public void onCreate(Bundle icicle) {
-    super.onCreate(icicle);
-    ((WordPress)getApplication()).component().inject(this);
+@Override
+public void onCreate(Bundle icicle) {
+	super.onCreate(icicle);
+	((WordPress)getApplication()).component().inject(this);
 
-    setContentView(R.layout.comment_edit_activity);
+	setContentView(R.layout.comment_edit_activity);
 
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayShowTitleEnabled(true);
-      actionBar.setDisplayHomeAsUpEnabled(true);
-    }
+	ActionBar actionBar = getSupportActionBar();
+	if (actionBar != null) {
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+	}
 
-    loadComment(getIntent());
+	loadComment(getIntent());
 
-    if ((icicle != null) && (icicle.getBoolean(ARG_CANCEL_EDITING_COMMENT_DIALOG_VISIBLE, false))) {
-      cancelEditCommentConfirmation();
-    }
+	if ((icicle != null) && (icicle.getBoolean(ARG_CANCEL_EDITING_COMMENT_DIALOG_VISIBLE, false))) {
+		cancelEditCommentConfirmation();
+	}
 
-    ActivityId.trackLastActivity(ActivityId.COMMENT_EDITOR);
-  }
+	ActivityId.trackLastActivity(ActivityId.COMMENT_EDITOR);
+}
 
-  @Override
-  public void onStart() {
-    super.onStart();
-    mDispatcher.register(this);
-  }
+@Override
+public void onStart() {
+	super.onStart();
+	mDispatcher.register(this);
+}
 
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
+@Override
+protected void onSaveInstanceState(Bundle outState) {
+	super.onSaveInstanceState(outState);
 
-    if (mCancelEditCommentDialog != null) {
-      outState.putBoolean(ARG_CANCEL_EDITING_COMMENT_DIALOG_VISIBLE,
-                          mCancelEditCommentDialog.isShowing());
-    }
-  }
+	if (mCancelEditCommentDialog != null) {
+		outState.putBoolean(ARG_CANCEL_EDITING_COMMENT_DIALOG_VISIBLE,
+		                    mCancelEditCommentDialog.isShowing());
+	}
+}
 
-  @Override
-  public void onStop() {
-    mDispatcher.unregister(this);
-    super.onStop();
-  }
+@Override
+public void onStop() {
+	mDispatcher.unregister(this);
+	super.onStop();
+}
 
-  private void loadComment(Intent intent) {
-    if (intent == null) {
-      showErrorAndFinish();
-      return;
-    }
+private void loadComment(Intent intent) {
+	if (intent == null) {
+		showErrorAndFinish();
+		return;
+	}
 
-    mSite = (SiteModel)intent.getSerializableExtra(WordPress.SITE);
-    mComment = (CommentModel)intent.getSerializableExtra(KEY_COMMENT);
-    final String noteId = intent.getStringExtra(KEY_NOTE_ID);
+	mSite = (SiteModel)intent.getSerializableExtra(WordPress.SITE);
+	mComment = (CommentModel)intent.getSerializableExtra(KEY_COMMENT);
+	final String noteId = intent.getStringExtra(KEY_NOTE_ID);
 
-    // If the noteId is passed, load the comment from the note
-    if (noteId != null) {
-      loadCommentFromNote(noteId);
-      return;
-    }
+	// If the noteId is passed, load the comment from the note
+	if (noteId != null) {
+		loadCommentFromNote(noteId);
+		return;
+	}
 
-    // Else make sure the comment has been passed
-    if (mComment == null) {
-      showErrorAndFinish();
-      return;
-    }
-    configureViews();
-  }
+	// Else make sure the comment has been passed
+	if (mComment == null) {
+		showErrorAndFinish();
+		return;
+	}
+	configureViews();
+}
 
-  private void loadCommentFromNote(String noteId) {
-    mNote = NotificationsTable.getNoteById(noteId);
-    if (mNote != null) {
-      setFetchProgressVisible(true);
-      mSite = mSiteStore.getSiteBySiteId(mNote.getSiteId());
-      RemoteCommentPayload payload =
-          new RemoteCommentPayload(mSite, mNote.getCommentId());
-      mFetchingComment = true;
-      mDispatcher.dispatch(CommentActionBuilder.newFetchCommentAction(payload));
-    } else {
-      showErrorAndFinish();
-    }
-  }
+private void loadCommentFromNote(String noteId) {
+	mNote = NotificationsTable.getNoteById(noteId);
+	if (mNote != null) {
+		setFetchProgressVisible(true);
+		mSite = mSiteStore.getSiteBySiteId(mNote.getSiteId());
+		RemoteCommentPayload payload =
+			new RemoteCommentPayload(mSite, mNote.getCommentId());
+		mFetchingComment = true;
+		mDispatcher.dispatch(CommentActionBuilder.newFetchCommentAction(payload));
+	} else {
+		showErrorAndFinish();
+	}
+}
 
-  private void showErrorAndFinish() {
-    ToastUtils.showToast(this, R.string.error_load_comment);
-    finish();
-  }
+private void showErrorAndFinish() {
+	ToastUtils.showToast(this, R.string.error_load_comment);
+	finish();
+}
 
-  private void configureViews() {
-    final EditText editContent =
-        (EditText)this.findViewById(R.id.edit_comment_content);
-    editContent.setText(mComment.getContent());
+private void configureViews() {
+	final EditText editContent =
+		(EditText)this.findViewById(R.id.edit_comment_content);
+	editContent.setText(mComment.getContent());
 
-    // show error when comment content is empty
-    editContent.addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count,
-                                    int after) {}
+	// show error when comment content is empty
+	editContent.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+			                              int after) {
+			}
 
-      @Override
-      public void onTextChanged(CharSequence s, int start, int before,
-                                int count) {}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+			                          int count) {
+			}
 
-      @Override
-      public void afterTextChanged(Editable s) {
-        boolean hasError = (editContent.getError() != null);
-        boolean hasText = (s != null && s.length() > 0);
-        if (!hasText && !hasError) {
-          editContent.setError(getString(R.string.content_required));
-        } else if (hasText && hasError) {
-          editContent.setError(null);
-        }
-      }
-    });
-  }
+			@Override
+			public void afterTextChanged(Editable s) {
+			        boolean hasError = (editContent.getError() != null);
+			        boolean hasText = (s != null && s.length() > 0);
+			        if (!hasText && !hasError) {
+			                editContent.setError(getString(R.string.content_required));
+				} else if (hasText && hasError) {
+			                editContent.setError(null);
+				}
+			}
+		});
+}
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    super.onCreateOptionsMenu(menu);
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.edit_comment, menu);
-    return true;
-  }
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+	super.onCreateOptionsMenu(menu);
+	MenuInflater inflater = getMenuInflater();
+	inflater.inflate(R.menu.edit_comment, menu);
+	return true;
+}
 
-  @Override
-  public boolean onOptionsItemSelected(final MenuItem item) {
-    int i = item.getItemId();
-    if (i == android.R.id.home) {
-      onBackPressed();
-      return true;
-    } else if (i == R.id.menu_save_comment) {
-      saveComment();
-      return true;
-    } else {
-      return super.onOptionsItemSelected(item);
-    }
-  }
+@Override
+public boolean onOptionsItemSelected(final MenuItem item) {
+	int i = item.getItemId();
+	if (i == android.R.id.home) {
+		onBackPressed();
+		return true;
+	} else if (i == R.id.menu_save_comment) {
+		saveComment();
+		return true;
+	} else {
+		return super.onOptionsItemSelected(item);
+	}
+}
 
-  private String getEditTextStr(int resId) {
-    final EditText edit = (EditText)findViewById(resId);
-    return EditTextUtils.getText(edit);
-  }
+private String getEditTextStr(int resId) {
+	final EditText edit = (EditText)findViewById(resId);
+	return EditTextUtils.getText(edit);
+}
 
-  private void saveComment() {
-    // make sure comment content was entered
-    final EditText editContent =
-        (EditText)findViewById(R.id.edit_comment_content);
-    if (EditTextUtils.isEmpty(editContent)) {
-      editContent.setError(getString(R.string.content_required));
-      return;
-    }
+private void saveComment() {
+	// make sure comment content was entered
+	final EditText editContent =
+		(EditText)findViewById(R.id.edit_comment_content);
+	if (EditTextUtils.isEmpty(editContent)) {
+		editContent.setError(getString(R.string.content_required));
+		return;
+	}
 
-    // return immediately if comment hasn't changed
-    if (!isCommentEdited()) {
-      ToastUtils.showToast(this, R.string.toast_comment_unedited);
-      return;
-    }
+	// return immediately if comment hasn't changed
+	if (!isCommentEdited()) {
+		ToastUtils.showToast(this, R.string.toast_comment_unedited);
+		return;
+	}
 
-    // make sure we have an active connection
-    if (!NetworkUtils.checkConnection(this)) {
-      return;
-    }
+	// make sure we have an active connection
+	if (!NetworkUtils.checkConnection(this)) {
+		return;
+	}
 
-    showSaveDialog();
-    mComment.setContent(getEditTextStr(R.id.edit_comment_content));
-    mDispatcher.dispatch(CommentActionBuilder.newPushCommentAction(
-        new RemoteCommentPayload(mSite, mComment)));
-  }
+	showSaveDialog();
+	mComment.setContent(getEditTextStr(R.id.edit_comment_content));
+	mDispatcher.dispatch(CommentActionBuilder.newPushCommentAction(
+				     new RemoteCommentPayload(mSite, mComment)));
+}
 
-  /*
-   * returns true if user made any changes to the comment
-   */
-  private boolean isCommentEdited() {
-    if (mComment == null) {
-      return false;
-    }
-    final String content = getEditTextStr(R.id.edit_comment_content);
-    return !content.equals(mComment.getContent());
-  }
+/*
+ * returns true if user made any changes to the comment
+ */
+private boolean isCommentEdited() {
+	if (mComment == null) {
+		return false;
+	}
+	final String content = getEditTextStr(R.id.edit_comment_content);
+	return !content.equals(mComment.getContent());
+}
 
-  @Override
-  protected Dialog onCreateDialog(int id) {
-    if (id == ID_DIALOG_SAVING) {
-      ProgressDialog savingDialog = new ProgressDialog(this);
-      savingDialog.setMessage(getResources().getText(R.string.saving_changes));
-      savingDialog.setIndeterminate(true);
-      savingDialog.setCancelable(true);
-      return savingDialog;
-    }
-    return super.onCreateDialog(id);
-  }
+@Override
+protected Dialog onCreateDialog(int id) {
+	if (id == ID_DIALOG_SAVING) {
+		ProgressDialog savingDialog = new ProgressDialog(this);
+		savingDialog.setMessage(getResources().getText(R.string.saving_changes));
+		savingDialog.setIndeterminate(true);
+		savingDialog.setCancelable(true);
+		return savingDialog;
+	}
+	return super.onCreateDialog(id);
+}
 
-  private void showSaveDialog() { showDialog(ID_DIALOG_SAVING); }
+private void showSaveDialog() {
+	showDialog(ID_DIALOG_SAVING);
+}
 
-  private void dismissSaveDialog() {
-    try {
-      dismissDialog(ID_DIALOG_SAVING);
-    } catch (IllegalArgumentException e) {
-      // dialog doesn't exist
-    }
-  }
+private void dismissSaveDialog() {
+	try {
+		dismissDialog(ID_DIALOG_SAVING);
+	} catch (IllegalArgumentException e) {
+		// dialog doesn't exist
+	}
+}
 
-  private void showEditErrorAlert() {
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-        new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
-    dialogBuilder.setTitle(getResources().getText(R.string.error));
-    dialogBuilder.setMessage(R.string.error_edit_comment);
-    dialogBuilder.setPositiveButton(
-        android.R.string.ok, new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            // just close the dialog
-          }
-        });
-    dialogBuilder.setCancelable(true);
-    dialogBuilder.create().show();
-  }
+private void showEditErrorAlert() {
+	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+		new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+	dialogBuilder.setTitle(getResources().getText(R.string.error));
+	dialogBuilder.setMessage(R.string.error_edit_comment);
+	dialogBuilder.setPositiveButton(
+		android.R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			        // just close the dialog
+			}
+		});
+	dialogBuilder.setCancelable(true);
+	dialogBuilder.create().show();
+}
 
-  private void setFetchProgressVisible(boolean progressVisible) {
-    final ProgressBar progress =
-        (ProgressBar)findViewById(R.id.edit_comment_progress);
-    final View editContainer = findViewById(R.id.edit_comment_container);
+private void setFetchProgressVisible(boolean progressVisible) {
+	final ProgressBar progress =
+		(ProgressBar)findViewById(R.id.edit_comment_progress);
+	final View editContainer = findViewById(R.id.edit_comment_container);
 
-    if (progress == null || editContainer == null) {
-      return;
-    }
+	if (progress == null || editContainer == null) {
+		return;
+	}
 
-    progress.setVisibility(progressVisible ? View.VISIBLE : View.GONE);
-    editContainer.setVisibility(progressVisible ? View.GONE : View.VISIBLE);
-  }
+	progress.setVisibility(progressVisible ? View.VISIBLE : View.GONE);
+	editContainer.setVisibility(progressVisible ? View.GONE : View.VISIBLE);
+}
 
-  @Override
-  public void onBackPressed() {
-    if (isCommentEdited()) {
-      cancelEditCommentConfirmation();
-    } else {
-      super.onBackPressed();
-    }
-  }
+@Override
+public void onBackPressed() {
+	if (isCommentEdited()) {
+		cancelEditCommentConfirmation();
+	} else {
+		super.onBackPressed();
+	}
+}
 
-  private void cancelEditCommentConfirmation() {
-    if (mCancelEditCommentDialog != null) {
-      mCancelEditCommentDialog.show();
-      return;
-    }
+private void cancelEditCommentConfirmation() {
+	if (mCancelEditCommentDialog != null) {
+		mCancelEditCommentDialog.show();
+		return;
+	}
 
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-        new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
-    dialogBuilder.setTitle(getResources().getText(R.string.cancel_edit));
-    dialogBuilder.setMessage(
-        getResources().getText(R.string.sure_to_cancel_edit_comment));
-    dialogBuilder.setPositiveButton(
-        getResources().getText(R.string.yes),
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            finish();
-          }
-        });
-    dialogBuilder.setNegativeButton(
-        getResources().getText(R.string.no),
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            // just close the dialog
-          }
-        });
-    dialogBuilder.setCancelable(true);
+	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+		new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+	dialogBuilder.setTitle(getResources().getText(R.string.cancel_edit));
+	dialogBuilder.setMessage(
+		getResources().getText(R.string.sure_to_cancel_edit_comment));
+	dialogBuilder.setPositiveButton(
+		getResources().getText(R.string.yes),
+		new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			        finish();
+			}
+		});
+	dialogBuilder.setNegativeButton(
+		getResources().getText(R.string.no),
+		new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			        // just close the dialog
+			}
+		});
+	dialogBuilder.setCancelable(true);
 
-    mCancelEditCommentDialog = dialogBuilder.create();
-    mCancelEditCommentDialog.show();
-  }
+	mCancelEditCommentDialog = dialogBuilder.create();
+	mCancelEditCommentDialog.show();
+}
 
-  private void onCommentPushed(OnCommentChanged event) {
-    if (isFinishing()) {
-      return;
-    }
+private void onCommentPushed(OnCommentChanged event) {
+	if (isFinishing()) {
+		return;
+	}
 
-    dismissSaveDialog();
+	dismissSaveDialog();
 
-    if (event.isError()) {
-      AppLog.i(T.TESTS, "event error type: " + event.error.type +
-                            " - message: " + event.error.message);
-      showEditErrorAlert();
-      return;
-    }
+	if (event.isError()) {
+		AppLog.i(T.TESTS, "event error type: " + event.error.type +
+		         " - message: " + event.error.message);
+		showEditErrorAlert();
+		return;
+	}
 
-    setResult(RESULT_OK);
-    finish();
-  }
+	setResult(RESULT_OK);
+	finish();
+}
 
-  private void onCommentFetched(OnCommentChanged event) {
-    if (isFinishing() || !mFetchingComment) {
-      return;
-    }
-    mFetchingComment = false;
-    setFetchProgressVisible(false);
+private void onCommentFetched(OnCommentChanged event) {
+	if (isFinishing() || !mFetchingComment) {
+		return;
+	}
+	mFetchingComment = false;
+	setFetchProgressVisible(false);
 
-    if (event.isError()) {
-      AppLog.i(T.TESTS, "event error type: " + event.error.type +
-                            " - message: " + event.error.message);
-      showErrorAndFinish();
-      return;
-    }
+	if (event.isError()) {
+		AppLog.i(T.TESTS, "event error type: " + event.error.type +
+		         " - message: " + event.error.message);
+		showErrorAndFinish();
+		return;
+	}
 
-    if (mNote != null) {
-      mComment = mCommentStore.getCommentBySiteAndRemoteId(
-          mSite, mNote.getCommentId());
-    } else if (mComment != null) {
-      // Reload the comment
-      mComment = mCommentStore.getCommentByLocalId(mComment.getId());
-    }
-    configureViews();
-  }
+	if (mNote != null) {
+		mComment = mCommentStore.getCommentBySiteAndRemoteId(
+			mSite, mNote.getCommentId());
+	} else if (mComment != null) {
+		// Reload the comment
+		mComment = mCommentStore.getCommentByLocalId(mComment.getId());
+	}
+	configureViews();
+}
 
-  // OnChanged events
+// OnChanged events
 
-  @SuppressWarnings("unused")
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onCommentChanged(OnCommentChanged event) {
-    if (event.causeOfChange == CommentAction.FETCH_COMMENT) {
-      onCommentFetched(event);
-    }
-    if (event.causeOfChange == CommentAction.PUSH_COMMENT) {
-      onCommentPushed(event);
-    }
-  }
+@SuppressWarnings("unused")
+@Subscribe(threadMode = ThreadMode.MAIN)
+public void onCommentChanged(OnCommentChanged event) {
+	if (event.causeOfChange == CommentAction.FETCH_COMMENT) {
+		onCommentFetched(event);
+	}
+	if (event.causeOfChange == CommentAction.PUSH_COMMENT) {
+		onCommentPushed(event);
+	}
+}
 }

@@ -103,867 +103,867 @@ import org.wordpress.android.viewmodel.wpwebview.WPWebViewViewModel.WebPreviewUi
  * for non-authed reader posts
  */
 public class WPWebViewActivity
-    extends WebViewActivity implements ErrorManagedWebViewClientListener {
-  public static final String AUTHENTICATION_URL = "authenticated_url";
-  public static final String AUTHENTICATION_USER = "authenticated_user";
-  public static final String AUTHENTICATION_PASSWD = "authenticated_passwd";
-  public static final String USE_GLOBAL_WPCOM_USER = "USE_GLOBAL_WPCOM_USER";
-  public static final String URL_TO_LOAD = "url_to_load";
-  public static final String WPCOM_LOGIN_URL =
-      "https://wordpress.com/wp-login.php";
-  public static final String LOCAL_BLOG_ID = "local_blog_id";
-  public static final String SHAREABLE_URL = "shareable_url";
-  public static final String SHARE_SUBJECT = "share_subject";
-  public static final String REFERRER_URL = "referrer_url";
-  public static final String DISABLE_LINKS_ON_PAGE = "DISABLE_LINKS_ON_PAGE";
-  public static final String ALLOWED_URLS = "allowed_urls";
-  public static final String ENCODING_UTF8 = "UTF-8";
-  public static final String WEBVIEW_USAGE_TYPE = "webview_usage_type";
-  public static final String ACTION_BAR_TITLE = "action_bar_title";
-  public static final String SHOW_PREVIEW_MODE_TOGGLE =
-      "SHOW_PREVIEW_MODE_TOGGLE";
-
-  @Inject AccountStore mAccountStore;
-  @Inject SiteStore mSiteStore;
-  @Inject ViewModelProvider.Factory mViewModelFactory;
-  @Inject UiHelpers mUiHelpers;
-
-  private ActionableEmptyView mActionableEmptyView;
-  private ViewGroup mFullScreenProgressLayout;
-  private WPWebViewViewModel mViewModel;
-  private ListPopupWindow mPreviewModeSelector;
-  private View mNavBarContainer;
-  private LinearLayout mNavBar;
-  private View mNavigateForwardButton;
-  private View mNavigateBackButton;
-  private View mShareButton;
-  private View mExternalBrowserButton;
-  private View mPreviewModeButton;
-  private View mDesktopPreviewHint;
-
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    ((WordPress)getApplication()).component().inject(this);
-    setLightStatusBar();
-    super.onCreate(savedInstanceState);
-  }
-
-  private void setLightStatusBar() {
-    if (VERSION.SDK_INT >= VERSION_CODES.M) {
-      Window window = getWindow();
-      window.setStatusBarColor(getColor(R.color.white));
-      window.getDecorView().setSystemUiVisibility(
-          View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-    }
-  }
-
-  @Override
-  public final void configureView() {
-    setContentView(R.layout.wpwebview_activity);
-
-    mActionableEmptyView = findViewById(R.id.actionable_empty_view);
-    mFullScreenProgressLayout = findViewById(R.id.progress_layout);
-    mWebView = findViewById(R.id.webView);
-
-    WPWebViewUsageCategory webViewUsageCategory =
-        WPWebViewUsageCategory.fromInt(
-            getIntent().getIntExtra(WEBVIEW_USAGE_TYPE, 0));
-
-    initRetryButton();
-    initViewModel(webViewUsageCategory);
-
-    mNavBarContainer = findViewById(R.id.navbar_container);
-    mNavBar = findViewById(R.id.navbar);
-
-    mNavigateBackButton = findViewById(R.id.back_button);
-    mNavigateForwardButton = findViewById(R.id.forward_button);
-    mShareButton = findViewById(R.id.share_button);
-    mExternalBrowserButton = findViewById(R.id.external_browser_button);
-    mPreviewModeButton = findViewById(R.id.preview_type_selector_button);
-    mDesktopPreviewHint = findViewById(R.id.desktop_preview_hint);
-
-    TooltipCompat.setTooltipText(mNavigateBackButton,
-                                 mNavigateBackButton.getContentDescription());
-    TooltipCompat.setTooltipText(
-        mNavigateForwardButton, mNavigateForwardButton.getContentDescription());
-    TooltipCompat.setTooltipText(mShareButton,
-                                 mShareButton.getContentDescription());
-    TooltipCompat.setTooltipText(
-        mExternalBrowserButton, mExternalBrowserButton.getContentDescription());
-    TooltipCompat.setTooltipText(mPreviewModeButton,
-                                 mPreviewModeButton.getContentDescription());
-
-    mNavigateBackButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        mViewModel.navigateBack();
-      }
-    });
-
-    mNavigateForwardButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        mViewModel.navigateForward();
-      }
-    });
-
-    mShareButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        mViewModel.share();
-      }
-    });
-
-    mExternalBrowserButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        mViewModel.openPageInExternalBrowser();
-      }
-    });
-
-    mPreviewModeButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        mViewModel.togglePreviewModeSelectorVisibility(true);
-      }
-    });
-
-    final Bundle extras = getIntent().getExtras();
-
-    if (extras != null) {
-      boolean isPreviewModeChangeAllowed =
-          extras.getBoolean(SHOW_PREVIEW_MODE_TOGGLE, false);
-      if (!isPreviewModeChangeAllowed) {
-        mNavBar.setWeightSum(80);
-        mPreviewModeButton.setVisibility(View.GONE);
-      }
-    }
-
-    setupToolbar();
-  }
-
-  private void setupToolbar() {
-    Toolbar toolbar = findViewById(R.id.toolbar);
-    if (toolbar != null) {
-      setSupportActionBar(toolbar);
-
-      ActionBar actionBar = getSupportActionBar();
-      if (actionBar != null) {
-        showSubtitle(actionBar);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        Drawable upIcon = toolbar.getNavigationIcon();
-        if (upIcon != null) {
-          upIcon.setColorFilter(getResources().getColor(R.color.gray_60),
-                                PorterDuff.Mode.SRC_ATOP);
-        }
-
-        if (isActionableDirectUsage()) {
-          String title = getIntent().getStringExtra(ACTION_BAR_TITLE);
-          if (title != null) {
-            actionBar.setTitle(title);
-          }
-        }
-      }
-    }
-  }
-
-  private void showSubtitle(ActionBar actionBar) {
-    Bundle extras = getIntent().getExtras();
-
-    if (extras == null) {
-      return;
-    }
-
-    String originalUrl = extras.getString(URL_TO_LOAD);
-    if (originalUrl != null) {
-      Uri uri = Uri.parse(originalUrl);
-      actionBar.setSubtitle(uri.getHost());
-    }
-  }
-
-  private void initRetryButton() {
-    mActionableEmptyView.button.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        mViewModel.loadIfNecessary();
-      }
-    });
-  }
-
-  private void initViewModel(WPWebViewUsageCategory webViewUsageCategory) {
-    mViewModel = ViewModelProviders.of(this, mViewModelFactory)
-                     .get(WPWebViewViewModel.class);
-    mViewModel.getUiState().observe(this, new Observer<WebPreviewUiState>() {
-      @Override
-      public void onChanged(@Nullable WebPreviewUiState webPreviewUiState) {
-        if (webPreviewUiState != null) {
-          mUiHelpers.updateVisibility(
-              mActionableEmptyView, webPreviewUiState.getActionableEmptyView());
-          mUiHelpers.updateVisibility(
-              mFullScreenProgressLayout,
-              webPreviewUiState.getFullscreenProgressLayoutVisibility());
-
-          if (webPreviewUiState instanceof WebPreviewFullscreenUiState) {
-            WebPreviewFullscreenUiState state =
-                (WebPreviewFullscreenUiState)webPreviewUiState;
-            mUiHelpers.setImageOrHide(mActionableEmptyView.image,
-                                      state.getImageRes());
-            mUiHelpers.setTextOrHide(mActionableEmptyView.title,
-                                     state.getTitleText());
-            mUiHelpers.setTextOrHide(mActionableEmptyView.subtitle,
-                                     state.getSubtitleText());
-            mUiHelpers.updateVisibility(mActionableEmptyView.button,
-                                        state.getButtonVisibility());
-          }
-
-          invalidateOptionsMenu();
-        }
-      }
-    });
-
-    mViewModel.getLoadNeeded().observe(this, new Observer<Boolean>() {
-      @Override
-      public void onChanged(@Nullable Boolean loadNeeded) {
-        if (!isActionableDirectUsage() && loadNeeded != null && loadNeeded) {
-          loadContent();
-        }
-      }
-    });
-
-    mViewModel.getNavbarUiState().observe(this, new Observer<NavBarUiState>() {
-      @Override
-      public void onChanged(@Nullable NavBarUiState navBarUiState) {
-        if (navBarUiState != null) {
-          mNavigateBackButton.setEnabled(
-              navBarUiState.getBackNavigationEnabled());
-          mNavigateForwardButton.setEnabled(
-              navBarUiState.getForwardNavigationEnabled());
-          AniUtils.animateBottomBar(
-              mDesktopPreviewHint,
-              navBarUiState.getDesktopPreviewHintVisible());
-        }
-      }
-    });
-
-    mViewModel.getNavigateBack().observe(this, new Observer<Unit>() {
-      @Override
-      public void onChanged(@Nullable Unit unit) {
-        if (mWebView.canGoBack()) {
-          mWebView.goBack();
-          refreshBackForwardNavButtons();
-        }
-      }
-    });
-
-    mViewModel.getNavigateForward().observe(this, new Observer<Unit>() {
-      @Override
-      public void onChanged(@Nullable Unit unit) {
-        if (mWebView.canGoForward()) {
-          mWebView.goForward();
-          refreshBackForwardNavButtons();
-        }
-      }
-    });
-
-    mViewModel.getShare().observe(this, new Observer<Unit>() {
-      @Override
-      public void onChanged(@Nullable Unit unit) {
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("text/plain");
-        // Use the preferred shareable URL or the default webview URL
-        Bundle extras = getIntent().getExtras();
-        String shareableUrl = extras.getString(SHAREABLE_URL, null);
-        if (TextUtils.isEmpty(shareableUrl)) {
-          shareableUrl = mWebView.getUrl();
-        }
-        share.putExtra(Intent.EXTRA_TEXT, shareableUrl);
-        String shareSubject = extras.getString(SHARE_SUBJECT, null);
-        if (!TextUtils.isEmpty(shareSubject)) {
-          share.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
-        }
-        startActivity(
-            Intent.createChooser(share, getText(R.string.share_link)));
-      }
-    });
-
-    mViewModel.getOpenExternalBrowser().observe(this, new Observer<Unit>() {
-      @Override
-      public void onChanged(@Nullable Unit unit) {
-        ReaderActivityLauncher.openUrl(
-            WPWebViewActivity.this, mWebView.getUrl(),
-            ReaderActivityLauncher.OpenUrlType.EXTERNAL);
-      }
-    });
-
-    mViewModel.getPreviewModeSelector().observe(
-        this, new Observer<PreviewModeSelectorStatus>() {
-          @Override
-          public void onChanged(
-              final
-              @Nullable PreviewModeSelectorStatus previewModelSelectorStatus) {
-            if (previewModelSelectorStatus != null) {
-              mPreviewModeButton.setEnabled(
-                  previewModelSelectorStatus.isEnabled());
-
-              if (!previewModelSelectorStatus.isVisible()) {
-                return;
-              }
-
-              mPreviewModeButton.post(new Runnable() {
-                @Override
-                public void run() {
-                  int popupWidth = getResources().getDimensionPixelSize(
-                      R.dimen.web_preview_mode_popup_width);
-                  int popupOffset = getResources().getDimensionPixelSize(
-                      R.dimen.margin_extra_large);
-
-                  mPreviewModeSelector =
-                      new ListPopupWindow(WPWebViewActivity.this);
-                  mPreviewModeSelector.setWidth(popupWidth);
-                  mPreviewModeSelector.setAdapter(new PreviewModeMenuAdapter(
-                      WPWebViewActivity.this,
-                      previewModelSelectorStatus.getSelectedPreviewMode()));
-                  mPreviewModeSelector.setDropDownGravity(Gravity.END);
-                  mPreviewModeSelector.setAnchorView(mPreviewModeButton);
-                  mPreviewModeSelector.setHorizontalOffset(-popupOffset);
-                  mPreviewModeSelector.setVerticalOffset(popupOffset);
-                  mPreviewModeSelector.setModal(true);
-                  mPreviewModeSelector.setOnDismissListener(
-                      new OnDismissListener() {
-                        @Override
-                        public void onDismiss() {
-                          mViewModel.togglePreviewModeSelectorVisibility(false);
-                        }
-                      });
-                  mPreviewModeSelector.setOnItemClickListener(
-                      new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent,
-                                                View view, int position,
-                                                long id) {
-                          mPreviewModeSelector.dismiss();
-                          PreviewModeMenuAdapter adapter =
-                              (PreviewModeMenuAdapter)parent.getAdapter();
-                          PreviewMode selectedMode = adapter.getItem(position);
-                          mViewModel.selectPreviewMode(selectedMode);
-                        }
-                      });
-                  mPreviewModeSelector.show();
-                }
-              });
-            }
-          }
-        });
-
-    mViewModel.getPreviewMode().observe(this, new Observer<PreviewMode>() {
-      @Override
-      public void onChanged(@Nullable PreviewMode previewMode) {
-        mWebView.getSettings().setLoadWithOverviewMode(previewMode ==
-                                                       PreviewMode.DESKTOP);
-        mWebView.getSettings().setUseWideViewPort(previewMode !=
-                                                  PreviewMode.DESKTOP);
-        mWebView.setInitialScale(100);
-        mWebView.reload();
-      }
-    });
-    mViewModel.start(webViewUsageCategory);
-  }
-
-  public static void openUrlByUsingGlobalWPCOMCredentials(Context context,
-                                                          String url) {
-    openWPCOMURL(context, url, null, null, false, false);
-  }
-
-  public static void
-  openUrlByUsingGlobalWPCOMCredentials(Context context, String url,
-                                       boolean allowPreviewModeSelection) {
-    openWPCOMURL(context, url, null, null, allowPreviewModeSelection, false);
-  }
-
-  public static void openPostUrlByUsingGlobalWPCOMCredentials(
-      Context context, String url, String shareableUrl, String shareSubject,
-      boolean allowPreviewModeSelection, boolean startPreviewForResult) {
-    openWPCOMURL(context, url, shareableUrl, shareSubject,
-                 allowPreviewModeSelection, startPreviewForResult);
-  }
-
-  // frameNonce is used to show drafts, without it "no page found" error would
-  // be thrown
-  public static void
-  openJetpackBlogPostPreview(Context context, String url, String shareableUrl,
-                             String shareSubject, String frameNonce,
-                             boolean allowPreviewModeSelection,
-                             boolean startPreviewForResult) {
-    if (!TextUtils.isEmpty(frameNonce)) {
-      url += "&frame-nonce=" + UrlUtils.urlEncode(frameNonce);
-    }
-    Intent intent = new Intent(context, WPWebViewActivity.class);
-    intent.putExtra(WPWebViewActivity.URL_TO_LOAD, url);
-    intent.putExtra(WPWebViewActivity.DISABLE_LINKS_ON_PAGE, false);
-    intent.putExtra(WPWebViewActivity.SHOW_PREVIEW_MODE_TOGGLE,
-                    allowPreviewModeSelection);
-    if (!TextUtils.isEmpty(shareableUrl)) {
-      intent.putExtra(WPWebViewActivity.SHAREABLE_URL, shareableUrl);
-    }
-    if (!TextUtils.isEmpty(shareSubject)) {
-      intent.putExtra(WPWebViewActivity.SHARE_SUBJECT, shareSubject);
-    }
-    if (startPreviewForResult) {
-      intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
-                      WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
-      ((Activity)context)
-          .startActivityForResult(intent, RequestCodes.REMOTE_PREVIEW_POST);
-    } else {
-      context.startActivity(intent);
-    }
-  }
-
-  public static void openUrlByUsingBlogCredentials(
-      Context context, SiteModel site, PostModel post, String url,
-      String[] listOfAllowedURLs, boolean disableLinks,
-      boolean allowPreviewModeSelection, boolean startPreviewForResult) {
-    if (context == null) {
-      AppLog.e(AppLog.T.UTILS, "Context is null");
-      return;
-    }
-
-    if (site == null) {
-      AppLog.e(AppLog.T.UTILS, "Site is null");
-      return;
-    }
-
-    if (TextUtils.isEmpty(url)) {
-      AppLog.e(AppLog.T.UTILS, "Empty or null URL");
-      ToastUtils.showToast(context, R.string.invalid_site_url_message,
-                           ToastUtils.Duration.SHORT);
-      return;
-    }
-
-    String authURL = WPWebViewActivity.getSiteLoginUrl(site);
-    Intent intent = new Intent(context, WPWebViewActivity.class);
-    intent.putExtra(WPWebViewActivity.AUTHENTICATION_USER, site.getUsername());
-    intent.putExtra(WPWebViewActivity.AUTHENTICATION_PASSWD,
-                    site.getPassword());
-    intent.putExtra(WPWebViewActivity.URL_TO_LOAD, url);
-    intent.putExtra(WPWebViewActivity.AUTHENTICATION_URL, authURL);
-    intent.putExtra(WPWebViewActivity.LOCAL_BLOG_ID, site.getId());
-    intent.putExtra(WPWebViewActivity.DISABLE_LINKS_ON_PAGE, disableLinks);
-    intent.putExtra(WPWebViewActivity.SHOW_PREVIEW_MODE_TOGGLE,
-                    allowPreviewModeSelection);
-    intent.putExtra(ALLOWED_URLS, listOfAllowedURLs);
-    if (post != null) {
-      intent.putExtra(WPWebViewActivity.SHAREABLE_URL, post.getLink());
-      if (!TextUtils.isEmpty(post.getTitle())) {
-        intent.putExtra(WPWebViewActivity.SHARE_SUBJECT, post.getTitle());
-      }
-    }
-
-    if (startPreviewForResult) {
-      intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
-                      WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
-      ((Activity)context)
-          .startActivityForResult(intent, RequestCodes.REMOTE_PREVIEW_POST);
-    } else {
-      context.startActivity(intent);
-    }
-  }
-
-  public static void
-  openActionableEmptyViewDirectly(Context context,
-                                  WPWebViewUsageCategory directUsageCategory,
-                                  String postTitle) {
-    Intent intent = new Intent(context, WPWebViewActivity.class);
-    intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
-                    directUsageCategory.getValue());
-    intent.putExtra(WPWebViewActivity.ACTION_BAR_TITLE, postTitle);
-    context.startActivity(intent);
-  }
-
-  protected void toggleNavbarVisibility(boolean isVisible) {
-    if (mNavBarContainer != null) {
-      if (isVisible) {
-        mNavBarContainer.setVisibility(View.VISIBLE);
-      } else {
-        mNavBarContainer.setVisibility(View.GONE);
-      }
-    }
-  }
-
-  public static void openURL(Context context, String url) {
-    openURL(context, url, false);
-  }
-
-  public static void openURL(Context context, String url, String referrer) {
-    openURL(context, url, referrer, false);
-  }
-
-  public static void openURL(Context context, String url,
-                             boolean allowPreviewModeSelection) {
-    openURL(context, url, null, allowPreviewModeSelection);
-  }
-
-  public static void openURL(Context context, String url, String referrer,
-                             boolean allowPreviewModeSelection) {
-    if (context == null) {
-      AppLog.e(AppLog.T.UTILS, "Context is null");
-      return;
-    }
-
-    if (TextUtils.isEmpty(url)) {
-      AppLog.e(AppLog.T.UTILS, "Empty or null URL");
-      ToastUtils.showToast(context, R.string.invalid_site_url_message,
-                           ToastUtils.Duration.SHORT);
-      return;
-    }
-
-    Intent intent = new Intent(context, WPWebViewActivity.class);
-    intent.putExtra(WPWebViewActivity.URL_TO_LOAD, url);
-    intent.putExtra(WPWebViewActivity.SHOW_PREVIEW_MODE_TOGGLE,
-                    allowPreviewModeSelection);
-    if (!TextUtils.isEmpty(referrer)) {
-      intent.putExtra(REFERRER_URL, referrer);
-    }
-    context.startActivity(intent);
-  }
-
-  protected static boolean checkContextAndUrl(Context context, String url) {
-    if (context == null) {
-      AppLog.e(AppLog.T.UTILS, "Context is null");
-      return false;
-    }
-
-    if (TextUtils.isEmpty(url)) {
-      AppLog.e(
-          AppLog.T.UTILS,
-          "Empty or null URL passed to openUrlByUsingMainWPCOMCredentials");
-      ToastUtils.showToast(context, R.string.invalid_site_url_message,
-                           ToastUtils.Duration.SHORT);
-      return false;
-    }
-    return true;
-  }
-
-  private static void openWPCOMURL(Context context, String url,
-                                   String shareableUrl, String shareSubject) {
-    openWPCOMURL(context, url, shareableUrl, shareSubject, false, false);
-  }
-
-  private static void openWPCOMURL(Context context, String url,
-                                   String shareableUrl, String shareSubject,
-                                   boolean allowPreviewModeSelection,
-                                   boolean startPreviewForResult) {
-    if (!checkContextAndUrl(context, url)) {
-      return;
-    }
-
-    Intent intent = new Intent(context, WPWebViewActivity.class);
-    intent.putExtra(WPWebViewActivity.USE_GLOBAL_WPCOM_USER, true);
-    intent.putExtra(WPWebViewActivity.URL_TO_LOAD, url);
-    intent.putExtra(WPWebViewActivity.AUTHENTICATION_URL, WPCOM_LOGIN_URL);
-    intent.putExtra(WPWebViewActivity.SHOW_PREVIEW_MODE_TOGGLE,
-                    allowPreviewModeSelection);
-    if (!TextUtils.isEmpty(shareableUrl)) {
-      intent.putExtra(WPWebViewActivity.SHAREABLE_URL, shareableUrl);
-    }
-    if (!TextUtils.isEmpty(shareSubject)) {
-      intent.putExtra(WPWebViewActivity.SHARE_SUBJECT, shareSubject);
-    }
-
-    if (startPreviewForResult) {
-      intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
-                      WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
-      ((Activity)context)
-          .startActivityForResult(intent, RequestCodes.REMOTE_PREVIEW_POST);
-    } else {
-      context.startActivity(intent);
-    }
-  }
-
-  @SuppressLint("SetJavaScriptEnabled")
-  @Override
-  protected void configureWebView() {
-    if (isActionableDirectUsage()) {
-      return;
-    }
-
-    mWebView.getSettings().setJavaScriptEnabled(true);
-    mWebView.getSettings().setDomStorageEnabled(true);
-    CookieManager cookieManager = CookieManager.getInstance();
-    cookieManager.setAcceptThirdPartyCookies(mWebView, true);
-
-    final Bundle extras = getIntent().getExtras();
-
-    // Configure the allowed URLs if available
-    ArrayList<String> allowedURL = null;
-    if (extras != null && extras.getBoolean(DISABLE_LINKS_ON_PAGE, false)) {
-      String addressToLoad = extras.getString(URL_TO_LOAD);
-      String authURL = extras.getString(AUTHENTICATION_URL);
-      allowedURL = new ArrayList<>();
-      if (!TextUtils.isEmpty(addressToLoad)) {
-        allowedURL.add(addressToLoad);
-      }
-      if (!TextUtils.isEmpty(authURL)) {
-        allowedURL.add(authURL);
-      }
-
-      if (extras.getStringArray(ALLOWED_URLS) != null) {
-        String[] urls = extras.getStringArray(ALLOWED_URLS);
-        for (String currentURL : urls) {
-          allowedURL.add(currentURL);
-        }
-      }
-    }
-
-    WebViewClient webViewClient = createWebViewClient(allowedURL);
-
-    mWebView.setWebViewClient(webViewClient);
-    mWebView.setWebChromeClient(new WPWebChromeClient(
-        this, (ProgressBar)findViewById(R.id.progress_bar)));
-  }
-
-  protected WebViewClient createWebViewClient(List<String> allowedURL) {
-    URLFilteredWebViewClient webViewClient;
-    if (getIntent().hasExtra(LOCAL_BLOG_ID)) {
-      SiteModel site = mSiteStore.getSiteByLocalId(
-          getIntent().getIntExtra(LOCAL_BLOG_ID, -1));
-      if (site == null) {
-        AppLog.e(AppLog.T.UTILS, "No valid blog passed to WPWebViewActivity");
-        setResultIfNeededAndFinish();
-      }
-      webViewClient = new WPWebViewClient(site, mAccountStore.getAccessToken(),
-                                          allowedURL, this);
-    } else {
-      webViewClient = new URLFilteredWebViewClient(allowedURL, this);
-    }
-    return webViewClient;
-  }
-
-  @Override
-  public void onWebViewPageLoaded() {
-    mViewModel.onUrlLoaded();
-    refreshBackForwardNavButtons();
-  }
-
-  private void refreshBackForwardNavButtons() {
-    mViewModel.toggleBackNavigation(mWebView.canGoBack());
-    mViewModel.toggleForwardNavigation(mWebView.canGoForward());
-  }
-
-  @Override
-  public void onWebViewReceivedError() {
-    mViewModel.onReceivedError();
-  }
-
-  @Override
-  protected void loadContent() {
-    if (isActionableDirectUsage()) {
-      return;
-    }
-
-    Bundle extras = getIntent().getExtras();
-
-    if (extras == null) {
-      AppLog.e(AppLog.T.UTILS,
-               "No valid parameters passed to WPWebViewActivity");
-      setResultIfNeededAndFinish();
-      return;
-    }
-
-    String addressToLoad = extras.getString(URL_TO_LOAD);
-    String username = extras.getString(AUTHENTICATION_USER, "");
-    String password = extras.getString(AUTHENTICATION_PASSWD, "");
-    String authURL = extras.getString(AUTHENTICATION_URL);
-
-    if (TextUtils.isEmpty(addressToLoad) ||
-        !UrlUtils.isValidUrlAndHostNotNull(addressToLoad)) {
-      AppLog.e(AppLog.T.UTILS,
-               "Empty or null or invalid URL passed to WPWebViewActivity");
-      ToastUtils.showToast(this, R.string.invalid_site_url_message,
-                           ToastUtils.Duration.SHORT);
-      setResultIfNeededAndFinish();
-      return;
-    }
-
-    if (extras.getBoolean(USE_GLOBAL_WPCOM_USER, false)) {
-      username = mAccountStore.getAccount().getUserName();
-
-      // Custom domains are not properly authenticated due to a server side(?)
-      // issue, so this gets around that
-      if (!addressToLoad.contains(".wordpress.com")) {
-        List<SiteModel> wpComSites = mSiteStore.getWPComSites();
-        for (SiteModel siteModel : wpComSites) {
-          // Only replace the url if we know the unmapped url and if it's a
-          // custom domain
-          if (!TextUtils.isEmpty(siteModel.getUnmappedUrl()) &&
-              !siteModel.getUrl().contains(".wordpress.com")) {
-            addressToLoad = addressToLoad.replace(siteModel.getUrl(),
-                                                  siteModel.getUnmappedUrl());
-          }
-        }
-      }
-    }
-
-    if (TextUtils.isEmpty(authURL) && TextUtils.isEmpty(username) &&
-        TextUtils.isEmpty(password)) {
-      // Only the URL to load is passed to this activity. Use the normal
-      // un-authenticated loader, optionally with our referrer header
-      String referrerUrl = extras.getString(REFERRER_URL);
-      if (!TextUtils.isEmpty(referrerUrl)) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Referer", referrerUrl);
-        loadUrl(addressToLoad, headers);
-      } else {
-        loadUrl(addressToLoad);
-      }
-    } else {
-      if (TextUtils.isEmpty(authURL) ||
-          !UrlUtils.isValidUrlAndHostNotNull(authURL)) {
-        AppLog.e(
-            AppLog.T.UTILS,
-            "Empty or null or invalid auth URL passed to WPWebViewActivity");
-        ToastUtils.showToast(this, R.string.invalid_site_url_message,
-                             ToastUtils.Duration.SHORT);
-        setResultIfNeededAndFinish();
-      }
-
-      if (TextUtils.isEmpty(username)) {
-        AppLog.e(AppLog.T.UTILS, "Username empty/null");
-        ToastUtils.showToast(this, R.string.incorrect_credentials,
-                             ToastUtils.Duration.SHORT);
-        setResultIfNeededAndFinish();
-      }
-
-      loadAuthenticatedUrl(authURL, addressToLoad, username, password);
-    }
-  }
-
-  /**
-   * Login to the WordPress.com and load the specified URL.
-   */
-  protected void loadAuthenticatedUrl(String authenticationURL,
-                                      String urlToLoad, String username,
-                                      String password) {
-    String postData =
-        getAuthenticationPostData(authenticationURL, urlToLoad, username,
-                                  password, mAccountStore.getAccessToken());
-
-    mWebView.postUrl(authenticationURL, postData.getBytes());
-  }
-
-  public static String
-  getAuthenticationPostData(String authenticationUrl, String urlToLoad,
-                            String username, String password, String token) {
-    if (TextUtils.isEmpty(authenticationUrl)) {
-      return "";
-    }
-
-    try {
-      String postData = String.format(
-          "log=%s&pwd=%s&redirect_to=%s",
-          URLEncoder.encode(StringUtils.notNullStr(username), ENCODING_UTF8),
-          URLEncoder.encode(StringUtils.notNullStr(password), ENCODING_UTF8),
-          URLEncoder.encode(StringUtils.notNullStr(urlToLoad), ENCODING_UTF8));
-
-      // Add token authorization when signing in to WP.com
-      if (WPUrlUtils.safeToAddWordPressComAuthToken(authenticationUrl) &&
-          authenticationUrl.contains("wordpress.com/wp-login.php") &&
-          !TextUtils.isEmpty(token)) {
-        postData +=
-            "&authorization=Bearer " + URLEncoder.encode(token, ENCODING_UTF8);
-      }
-
-      return postData;
-    } catch (UnsupportedEncodingException e) {
-      AppLog.e(AppLog.T.UTILS, e);
-    }
-
-    return "";
-  }
-
-  /**
-   * Get the URL of the WordPress login page.
-   *
-   * @return URL of the login page.
-   */
-  public static String getSiteLoginUrl(SiteModel site) {
-    String loginURL = site.getLoginUrl();
-
-    // Try to guess the login URL if blogOptions is null (blog not added to the
-    // app), or WP version is < 3.6
-    if (loginURL == null) {
-      if (site.getUrl() != null) {
-        return site.getUrl() + "/wp-login.php";
-      } else {
-        return site.getXmlRpcUrl().replace("xmlrpc.php", "wp-login.php");
-      }
-    }
-
-    return loginURL;
-  }
-
-  private boolean isActionableDirectUsage() {
-    return mViewModel.isActionableDirectUsage();
-  }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    super.onCreateOptionsMenu(menu);
-
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.webview, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(final MenuItem item) {
-    if (mWebView == null) {
-      return false;
-    }
-
-    int itemID = item.getItemId();
-
-    if (itemID == android.R.id.home) {
-      setResultIfNeeded();
-    } else if (itemID == R.id.menu_refresh) {
-      mWebView.reload();
-      return true;
-    }
-
-    return super.onOptionsItemSelected(item);
-  }
-
-  // Since currently we are going to look at the request code and not at the
-  // result code in the onActivityResult callbacks, this method is actually
-  // redundant, but wanted to be explicit in case of future expansions on this.
-  private void setResultIfNeeded() {
-    if (getCallingActivity() != null) {
-      setResult(RESULT_OK);
-    }
-  }
-
-  private void setResultIfNeededAndFinish() {
-    setResultIfNeeded();
-    finish();
-  }
-
-  protected void onDestroy() {
-    super.onDestroy();
-    if (mPreviewModeSelector != null && mPreviewModeSelector.isShowing()) {
-      mPreviewModeSelector.setOnDismissListener(null);
-      mPreviewModeSelector.dismiss();
-    }
-  }
-
-  @Override
-  public void onBackPressed() {
-    if (mWebView.canGoBack()) {
-      mWebView.goBack();
-      refreshBackForwardNavButtons();
-    } else {
-      super.onBackPressed();
-      setResultIfNeeded();
-    }
-  }
+	extends WebViewActivity implements ErrorManagedWebViewClientListener {
+public static final String AUTHENTICATION_URL = "authenticated_url";
+public static final String AUTHENTICATION_USER = "authenticated_user";
+public static final String AUTHENTICATION_PASSWD = "authenticated_passwd";
+public static final String USE_GLOBAL_WPCOM_USER = "USE_GLOBAL_WPCOM_USER";
+public static final String URL_TO_LOAD = "url_to_load";
+public static final String WPCOM_LOGIN_URL =
+	"https://wordpress.com/wp-login.php";
+public static final String LOCAL_BLOG_ID = "local_blog_id";
+public static final String SHAREABLE_URL = "shareable_url";
+public static final String SHARE_SUBJECT = "share_subject";
+public static final String REFERRER_URL = "referrer_url";
+public static final String DISABLE_LINKS_ON_PAGE = "DISABLE_LINKS_ON_PAGE";
+public static final String ALLOWED_URLS = "allowed_urls";
+public static final String ENCODING_UTF8 = "UTF-8";
+public static final String WEBVIEW_USAGE_TYPE = "webview_usage_type";
+public static final String ACTION_BAR_TITLE = "action_bar_title";
+public static final String SHOW_PREVIEW_MODE_TOGGLE =
+	"SHOW_PREVIEW_MODE_TOGGLE";
+
+@Inject AccountStore mAccountStore;
+@Inject SiteStore mSiteStore;
+@Inject ViewModelProvider.Factory mViewModelFactory;
+@Inject UiHelpers mUiHelpers;
+
+private ActionableEmptyView mActionableEmptyView;
+private ViewGroup mFullScreenProgressLayout;
+private WPWebViewViewModel mViewModel;
+private ListPopupWindow mPreviewModeSelector;
+private View mNavBarContainer;
+private LinearLayout mNavBar;
+private View mNavigateForwardButton;
+private View mNavigateBackButton;
+private View mShareButton;
+private View mExternalBrowserButton;
+private View mPreviewModeButton;
+private View mDesktopPreviewHint;
+
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	((WordPress)getApplication()).component().inject(this);
+	setLightStatusBar();
+	super.onCreate(savedInstanceState);
+}
+
+private void setLightStatusBar() {
+	if (VERSION.SDK_INT >= VERSION_CODES.M) {
+		Window window = getWindow();
+		window.setStatusBarColor(getColor(R.color.white));
+		window.getDecorView().setSystemUiVisibility(
+			View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+	}
+}
+
+@Override
+public final void configureView() {
+	setContentView(R.layout.wpwebview_activity);
+
+	mActionableEmptyView = findViewById(R.id.actionable_empty_view);
+	mFullScreenProgressLayout = findViewById(R.id.progress_layout);
+	mWebView = findViewById(R.id.webView);
+
+	WPWebViewUsageCategory webViewUsageCategory =
+		WPWebViewUsageCategory.fromInt(
+			getIntent().getIntExtra(WEBVIEW_USAGE_TYPE, 0));
+
+	initRetryButton();
+	initViewModel(webViewUsageCategory);
+
+	mNavBarContainer = findViewById(R.id.navbar_container);
+	mNavBar = findViewById(R.id.navbar);
+
+	mNavigateBackButton = findViewById(R.id.back_button);
+	mNavigateForwardButton = findViewById(R.id.forward_button);
+	mShareButton = findViewById(R.id.share_button);
+	mExternalBrowserButton = findViewById(R.id.external_browser_button);
+	mPreviewModeButton = findViewById(R.id.preview_type_selector_button);
+	mDesktopPreviewHint = findViewById(R.id.desktop_preview_hint);
+
+	TooltipCompat.setTooltipText(mNavigateBackButton,
+	                             mNavigateBackButton.getContentDescription());
+	TooltipCompat.setTooltipText(
+		mNavigateForwardButton, mNavigateForwardButton.getContentDescription());
+	TooltipCompat.setTooltipText(mShareButton,
+	                             mShareButton.getContentDescription());
+	TooltipCompat.setTooltipText(
+		mExternalBrowserButton, mExternalBrowserButton.getContentDescription());
+	TooltipCompat.setTooltipText(mPreviewModeButton,
+	                             mPreviewModeButton.getContentDescription());
+
+	mNavigateBackButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        mViewModel.navigateBack();
+			}
+		});
+
+	mNavigateForwardButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        mViewModel.navigateForward();
+			}
+		});
+
+	mShareButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        mViewModel.share();
+			}
+		});
+
+	mExternalBrowserButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        mViewModel.openPageInExternalBrowser();
+			}
+		});
+
+	mPreviewModeButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        mViewModel.togglePreviewModeSelectorVisibility(true);
+			}
+		});
+
+	final Bundle extras = getIntent().getExtras();
+
+	if (extras != null) {
+		boolean isPreviewModeChangeAllowed =
+			extras.getBoolean(SHOW_PREVIEW_MODE_TOGGLE, false);
+		if (!isPreviewModeChangeAllowed) {
+			mNavBar.setWeightSum(80);
+			mPreviewModeButton.setVisibility(View.GONE);
+		}
+	}
+
+	setupToolbar();
+}
+
+private void setupToolbar() {
+	Toolbar toolbar = findViewById(R.id.toolbar);
+	if (toolbar != null) {
+		setSupportActionBar(toolbar);
+
+		ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null) {
+			showSubtitle(actionBar);
+			actionBar.setDisplayShowTitleEnabled(true);
+			actionBar.setDisplayHomeAsUpEnabled(true);
+
+			Drawable upIcon = toolbar.getNavigationIcon();
+			if (upIcon != null) {
+				upIcon.setColorFilter(getResources().getColor(R.color.gray_60),
+				                      PorterDuff.Mode.SRC_ATOP);
+			}
+
+			if (isActionableDirectUsage()) {
+				String title = getIntent().getStringExtra(ACTION_BAR_TITLE);
+				if (title != null) {
+					actionBar.setTitle(title);
+				}
+			}
+		}
+	}
+}
+
+private void showSubtitle(ActionBar actionBar) {
+	Bundle extras = getIntent().getExtras();
+
+	if (extras == null) {
+		return;
+	}
+
+	String originalUrl = extras.getString(URL_TO_LOAD);
+	if (originalUrl != null) {
+		Uri uri = Uri.parse(originalUrl);
+		actionBar.setSubtitle(uri.getHost());
+	}
+}
+
+private void initRetryButton() {
+	mActionableEmptyView.button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        mViewModel.loadIfNecessary();
+			}
+		});
+}
+
+private void initViewModel(WPWebViewUsageCategory webViewUsageCategory) {
+	mViewModel = ViewModelProviders.of(this, mViewModelFactory)
+	             .get(WPWebViewViewModel.class);
+	mViewModel.getUiState().observe(this, new Observer<WebPreviewUiState>() {
+			@Override
+			public void onChanged(@Nullable WebPreviewUiState webPreviewUiState) {
+			        if (webPreviewUiState != null) {
+			                mUiHelpers.updateVisibility(
+						mActionableEmptyView, webPreviewUiState.getActionableEmptyView());
+			                mUiHelpers.updateVisibility(
+						mFullScreenProgressLayout,
+						webPreviewUiState.getFullscreenProgressLayoutVisibility());
+
+			                if (webPreviewUiState instanceof WebPreviewFullscreenUiState) {
+			                        WebPreviewFullscreenUiState state =
+							(WebPreviewFullscreenUiState)webPreviewUiState;
+			                        mUiHelpers.setImageOrHide(mActionableEmptyView.image,
+			                                                  state.getImageRes());
+			                        mUiHelpers.setTextOrHide(mActionableEmptyView.title,
+			                                                 state.getTitleText());
+			                        mUiHelpers.setTextOrHide(mActionableEmptyView.subtitle,
+			                                                 state.getSubtitleText());
+			                        mUiHelpers.updateVisibility(mActionableEmptyView.button,
+			                                                    state.getButtonVisibility());
+					}
+
+			                invalidateOptionsMenu();
+				}
+			}
+		});
+
+	mViewModel.getLoadNeeded().observe(this, new Observer<Boolean>() {
+			@Override
+			public void onChanged(@Nullable Boolean loadNeeded) {
+			        if (!isActionableDirectUsage() && loadNeeded != null && loadNeeded) {
+			                loadContent();
+				}
+			}
+		});
+
+	mViewModel.getNavbarUiState().observe(this, new Observer<NavBarUiState>() {
+			@Override
+			public void onChanged(@Nullable NavBarUiState navBarUiState) {
+			        if (navBarUiState != null) {
+			                mNavigateBackButton.setEnabled(
+						navBarUiState.getBackNavigationEnabled());
+			                mNavigateForwardButton.setEnabled(
+						navBarUiState.getForwardNavigationEnabled());
+			                AniUtils.animateBottomBar(
+						mDesktopPreviewHint,
+						navBarUiState.getDesktopPreviewHintVisible());
+				}
+			}
+		});
+
+	mViewModel.getNavigateBack().observe(this, new Observer<Unit>() {
+			@Override
+			public void onChanged(@Nullable Unit unit) {
+			        if (mWebView.canGoBack()) {
+			                mWebView.goBack();
+			                refreshBackForwardNavButtons();
+				}
+			}
+		});
+
+	mViewModel.getNavigateForward().observe(this, new Observer<Unit>() {
+			@Override
+			public void onChanged(@Nullable Unit unit) {
+			        if (mWebView.canGoForward()) {
+			                mWebView.goForward();
+			                refreshBackForwardNavButtons();
+				}
+			}
+		});
+
+	mViewModel.getShare().observe(this, new Observer<Unit>() {
+			@Override
+			public void onChanged(@Nullable Unit unit) {
+			        Intent share = new Intent(Intent.ACTION_SEND);
+			        share.setType("text/plain");
+			        // Use the preferred shareable URL or the default webview URL
+			        Bundle extras = getIntent().getExtras();
+			        String shareableUrl = extras.getString(SHAREABLE_URL, null);
+			        if (TextUtils.isEmpty(shareableUrl)) {
+			                shareableUrl = mWebView.getUrl();
+				}
+			        share.putExtra(Intent.EXTRA_TEXT, shareableUrl);
+			        String shareSubject = extras.getString(SHARE_SUBJECT, null);
+			        if (!TextUtils.isEmpty(shareSubject)) {
+			                share.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
+				}
+			        startActivity(
+					Intent.createChooser(share, getText(R.string.share_link)));
+			}
+		});
+
+	mViewModel.getOpenExternalBrowser().observe(this, new Observer<Unit>() {
+			@Override
+			public void onChanged(@Nullable Unit unit) {
+			        ReaderActivityLauncher.openUrl(
+					WPWebViewActivity.this, mWebView.getUrl(),
+					ReaderActivityLauncher.OpenUrlType.EXTERNAL);
+			}
+		});
+
+	mViewModel.getPreviewModeSelector().observe(
+		this, new Observer<PreviewModeSelectorStatus>() {
+			@Override
+			public void onChanged(
+				final
+				@Nullable PreviewModeSelectorStatus previewModelSelectorStatus) {
+			        if (previewModelSelectorStatus != null) {
+			                mPreviewModeButton.setEnabled(
+						previewModelSelectorStatus.isEnabled());
+
+			                if (!previewModelSelectorStatus.isVisible()) {
+			                        return;
+					}
+
+			                mPreviewModeButton.post(new Runnable() {
+						@Override
+						public void run() {
+						        int popupWidth = getResources().getDimensionPixelSize(
+								R.dimen.web_preview_mode_popup_width);
+						        int popupOffset = getResources().getDimensionPixelSize(
+								R.dimen.margin_extra_large);
+
+						        mPreviewModeSelector =
+								new ListPopupWindow(WPWebViewActivity.this);
+						        mPreviewModeSelector.setWidth(popupWidth);
+						        mPreviewModeSelector.setAdapter(new PreviewModeMenuAdapter(
+												WPWebViewActivity.this,
+												previewModelSelectorStatus.getSelectedPreviewMode()));
+						        mPreviewModeSelector.setDropDownGravity(Gravity.END);
+						        mPreviewModeSelector.setAnchorView(mPreviewModeButton);
+						        mPreviewModeSelector.setHorizontalOffset(-popupOffset);
+						        mPreviewModeSelector.setVerticalOffset(popupOffset);
+						        mPreviewModeSelector.setModal(true);
+						        mPreviewModeSelector.setOnDismissListener(
+								new OnDismissListener() {
+								@Override
+								public void onDismiss() {
+								        mViewModel.togglePreviewModeSelectorVisibility(false);
+								}
+							});
+						        mPreviewModeSelector.setOnItemClickListener(
+								new AdapterView.OnItemClickListener() {
+								@Override
+								public void onItemClick(AdapterView<?> parent,
+								                        View view, int position,
+								                        long id) {
+								        mPreviewModeSelector.dismiss();
+								        PreviewModeMenuAdapter adapter =
+										(PreviewModeMenuAdapter)parent.getAdapter();
+								        PreviewMode selectedMode = adapter.getItem(position);
+								        mViewModel.selectPreviewMode(selectedMode);
+								}
+							});
+						        mPreviewModeSelector.show();
+						}
+					});
+				}
+			}
+		});
+
+	mViewModel.getPreviewMode().observe(this, new Observer<PreviewMode>() {
+			@Override
+			public void onChanged(@Nullable PreviewMode previewMode) {
+			        mWebView.getSettings().setLoadWithOverviewMode(previewMode ==
+			                                                       PreviewMode.DESKTOP);
+			        mWebView.getSettings().setUseWideViewPort(previewMode !=
+			                                                  PreviewMode.DESKTOP);
+			        mWebView.setInitialScale(100);
+			        mWebView.reload();
+			}
+		});
+	mViewModel.start(webViewUsageCategory);
+}
+
+public static void openUrlByUsingGlobalWPCOMCredentials(Context context,
+                                                        String url) {
+	openWPCOMURL(context, url, null, null, false, false);
+}
+
+public static void
+openUrlByUsingGlobalWPCOMCredentials(Context context, String url,
+                                     boolean allowPreviewModeSelection) {
+	openWPCOMURL(context, url, null, null, allowPreviewModeSelection, false);
+}
+
+public static void openPostUrlByUsingGlobalWPCOMCredentials(
+	Context context, String url, String shareableUrl, String shareSubject,
+	boolean allowPreviewModeSelection, boolean startPreviewForResult) {
+	openWPCOMURL(context, url, shareableUrl, shareSubject,
+	             allowPreviewModeSelection, startPreviewForResult);
+}
+
+// frameNonce is used to show drafts, without it "no page found" error would
+// be thrown
+public static void
+openJetpackBlogPostPreview(Context context, String url, String shareableUrl,
+                           String shareSubject, String frameNonce,
+                           boolean allowPreviewModeSelection,
+                           boolean startPreviewForResult) {
+	if (!TextUtils.isEmpty(frameNonce)) {
+		url += "&frame-nonce=" + UrlUtils.urlEncode(frameNonce);
+	}
+	Intent intent = new Intent(context, WPWebViewActivity.class);
+	intent.putExtra(WPWebViewActivity.URL_TO_LOAD, url);
+	intent.putExtra(WPWebViewActivity.DISABLE_LINKS_ON_PAGE, false);
+	intent.putExtra(WPWebViewActivity.SHOW_PREVIEW_MODE_TOGGLE,
+	                allowPreviewModeSelection);
+	if (!TextUtils.isEmpty(shareableUrl)) {
+		intent.putExtra(WPWebViewActivity.SHAREABLE_URL, shareableUrl);
+	}
+	if (!TextUtils.isEmpty(shareSubject)) {
+		intent.putExtra(WPWebViewActivity.SHARE_SUBJECT, shareSubject);
+	}
+	if (startPreviewForResult) {
+		intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
+		                WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
+		((Activity)context)
+		.startActivityForResult(intent, RequestCodes.REMOTE_PREVIEW_POST);
+	} else {
+		context.startActivity(intent);
+	}
+}
+
+public static void openUrlByUsingBlogCredentials(
+	Context context, SiteModel site, PostModel post, String url,
+	String[] listOfAllowedURLs, boolean disableLinks,
+	boolean allowPreviewModeSelection, boolean startPreviewForResult) {
+	if (context == null) {
+		AppLog.e(AppLog.T.UTILS, "Context is null");
+		return;
+	}
+
+	if (site == null) {
+		AppLog.e(AppLog.T.UTILS, "Site is null");
+		return;
+	}
+
+	if (TextUtils.isEmpty(url)) {
+		AppLog.e(AppLog.T.UTILS, "Empty or null URL");
+		ToastUtils.showToast(context, R.string.invalid_site_url_message,
+		                     ToastUtils.Duration.SHORT);
+		return;
+	}
+
+	String authURL = WPWebViewActivity.getSiteLoginUrl(site);
+	Intent intent = new Intent(context, WPWebViewActivity.class);
+	intent.putExtra(WPWebViewActivity.AUTHENTICATION_USER, site.getUsername());
+	intent.putExtra(WPWebViewActivity.AUTHENTICATION_PASSWD,
+	                site.getPassword());
+	intent.putExtra(WPWebViewActivity.URL_TO_LOAD, url);
+	intent.putExtra(WPWebViewActivity.AUTHENTICATION_URL, authURL);
+	intent.putExtra(WPWebViewActivity.LOCAL_BLOG_ID, site.getId());
+	intent.putExtra(WPWebViewActivity.DISABLE_LINKS_ON_PAGE, disableLinks);
+	intent.putExtra(WPWebViewActivity.SHOW_PREVIEW_MODE_TOGGLE,
+	                allowPreviewModeSelection);
+	intent.putExtra(ALLOWED_URLS, listOfAllowedURLs);
+	if (post != null) {
+		intent.putExtra(WPWebViewActivity.SHAREABLE_URL, post.getLink());
+		if (!TextUtils.isEmpty(post.getTitle())) {
+			intent.putExtra(WPWebViewActivity.SHARE_SUBJECT, post.getTitle());
+		}
+	}
+
+	if (startPreviewForResult) {
+		intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
+		                WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
+		((Activity)context)
+		.startActivityForResult(intent, RequestCodes.REMOTE_PREVIEW_POST);
+	} else {
+		context.startActivity(intent);
+	}
+}
+
+public static void
+openActionableEmptyViewDirectly(Context context,
+                                WPWebViewUsageCategory directUsageCategory,
+                                String postTitle) {
+	Intent intent = new Intent(context, WPWebViewActivity.class);
+	intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
+	                directUsageCategory.getValue());
+	intent.putExtra(WPWebViewActivity.ACTION_BAR_TITLE, postTitle);
+	context.startActivity(intent);
+}
+
+protected void toggleNavbarVisibility(boolean isVisible) {
+	if (mNavBarContainer != null) {
+		if (isVisible) {
+			mNavBarContainer.setVisibility(View.VISIBLE);
+		} else {
+			mNavBarContainer.setVisibility(View.GONE);
+		}
+	}
+}
+
+public static void openURL(Context context, String url) {
+	openURL(context, url, false);
+}
+
+public static void openURL(Context context, String url, String referrer) {
+	openURL(context, url, referrer, false);
+}
+
+public static void openURL(Context context, String url,
+                           boolean allowPreviewModeSelection) {
+	openURL(context, url, null, allowPreviewModeSelection);
+}
+
+public static void openURL(Context context, String url, String referrer,
+                           boolean allowPreviewModeSelection) {
+	if (context == null) {
+		AppLog.e(AppLog.T.UTILS, "Context is null");
+		return;
+	}
+
+	if (TextUtils.isEmpty(url)) {
+		AppLog.e(AppLog.T.UTILS, "Empty or null URL");
+		ToastUtils.showToast(context, R.string.invalid_site_url_message,
+		                     ToastUtils.Duration.SHORT);
+		return;
+	}
+
+	Intent intent = new Intent(context, WPWebViewActivity.class);
+	intent.putExtra(WPWebViewActivity.URL_TO_LOAD, url);
+	intent.putExtra(WPWebViewActivity.SHOW_PREVIEW_MODE_TOGGLE,
+	                allowPreviewModeSelection);
+	if (!TextUtils.isEmpty(referrer)) {
+		intent.putExtra(REFERRER_URL, referrer);
+	}
+	context.startActivity(intent);
+}
+
+protected static boolean checkContextAndUrl(Context context, String url) {
+	if (context == null) {
+		AppLog.e(AppLog.T.UTILS, "Context is null");
+		return false;
+	}
+
+	if (TextUtils.isEmpty(url)) {
+		AppLog.e(
+			AppLog.T.UTILS,
+			"Empty or null URL passed to openUrlByUsingMainWPCOMCredentials");
+		ToastUtils.showToast(context, R.string.invalid_site_url_message,
+		                     ToastUtils.Duration.SHORT);
+		return false;
+	}
+	return true;
+}
+
+private static void openWPCOMURL(Context context, String url,
+                                 String shareableUrl, String shareSubject) {
+	openWPCOMURL(context, url, shareableUrl, shareSubject, false, false);
+}
+
+private static void openWPCOMURL(Context context, String url,
+                                 String shareableUrl, String shareSubject,
+                                 boolean allowPreviewModeSelection,
+                                 boolean startPreviewForResult) {
+	if (!checkContextAndUrl(context, url)) {
+		return;
+	}
+
+	Intent intent = new Intent(context, WPWebViewActivity.class);
+	intent.putExtra(WPWebViewActivity.USE_GLOBAL_WPCOM_USER, true);
+	intent.putExtra(WPWebViewActivity.URL_TO_LOAD, url);
+	intent.putExtra(WPWebViewActivity.AUTHENTICATION_URL, WPCOM_LOGIN_URL);
+	intent.putExtra(WPWebViewActivity.SHOW_PREVIEW_MODE_TOGGLE,
+	                allowPreviewModeSelection);
+	if (!TextUtils.isEmpty(shareableUrl)) {
+		intent.putExtra(WPWebViewActivity.SHAREABLE_URL, shareableUrl);
+	}
+	if (!TextUtils.isEmpty(shareSubject)) {
+		intent.putExtra(WPWebViewActivity.SHARE_SUBJECT, shareSubject);
+	}
+
+	if (startPreviewForResult) {
+		intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
+		                WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
+		((Activity)context)
+		.startActivityForResult(intent, RequestCodes.REMOTE_PREVIEW_POST);
+	} else {
+		context.startActivity(intent);
+	}
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@Override
+protected void configureWebView() {
+	if (isActionableDirectUsage()) {
+		return;
+	}
+
+	mWebView.getSettings().setJavaScriptEnabled(true);
+	mWebView.getSettings().setDomStorageEnabled(true);
+	CookieManager cookieManager = CookieManager.getInstance();
+	cookieManager.setAcceptThirdPartyCookies(mWebView, true);
+
+	final Bundle extras = getIntent().getExtras();
+
+	// Configure the allowed URLs if available
+	ArrayList<String> allowedURL = null;
+	if (extras != null && extras.getBoolean(DISABLE_LINKS_ON_PAGE, false)) {
+		String addressToLoad = extras.getString(URL_TO_LOAD);
+		String authURL = extras.getString(AUTHENTICATION_URL);
+		allowedURL = new ArrayList<>();
+		if (!TextUtils.isEmpty(addressToLoad)) {
+			allowedURL.add(addressToLoad);
+		}
+		if (!TextUtils.isEmpty(authURL)) {
+			allowedURL.add(authURL);
+		}
+
+		if (extras.getStringArray(ALLOWED_URLS) != null) {
+			String[] urls = extras.getStringArray(ALLOWED_URLS);
+			for (String currentURL : urls) {
+				allowedURL.add(currentURL);
+			}
+		}
+	}
+
+	WebViewClient webViewClient = createWebViewClient(allowedURL);
+
+	mWebView.setWebViewClient(webViewClient);
+	mWebView.setWebChromeClient(new WPWebChromeClient(
+					    this, (ProgressBar)findViewById(R.id.progress_bar)));
+}
+
+protected WebViewClient createWebViewClient(List<String> allowedURL) {
+	URLFilteredWebViewClient webViewClient;
+	if (getIntent().hasExtra(LOCAL_BLOG_ID)) {
+		SiteModel site = mSiteStore.getSiteByLocalId(
+			getIntent().getIntExtra(LOCAL_BLOG_ID, -1));
+		if (site == null) {
+			AppLog.e(AppLog.T.UTILS, "No valid blog passed to WPWebViewActivity");
+			setResultIfNeededAndFinish();
+		}
+		webViewClient = new WPWebViewClient(site, mAccountStore.getAccessToken(),
+		                                    allowedURL, this);
+	} else {
+		webViewClient = new URLFilteredWebViewClient(allowedURL, this);
+	}
+	return webViewClient;
+}
+
+@Override
+public void onWebViewPageLoaded() {
+	mViewModel.onUrlLoaded();
+	refreshBackForwardNavButtons();
+}
+
+private void refreshBackForwardNavButtons() {
+	mViewModel.toggleBackNavigation(mWebView.canGoBack());
+	mViewModel.toggleForwardNavigation(mWebView.canGoForward());
+}
+
+@Override
+public void onWebViewReceivedError() {
+	mViewModel.onReceivedError();
+}
+
+@Override
+protected void loadContent() {
+	if (isActionableDirectUsage()) {
+		return;
+	}
+
+	Bundle extras = getIntent().getExtras();
+
+	if (extras == null) {
+		AppLog.e(AppLog.T.UTILS,
+		         "No valid parameters passed to WPWebViewActivity");
+		setResultIfNeededAndFinish();
+		return;
+	}
+
+	String addressToLoad = extras.getString(URL_TO_LOAD);
+	String username = extras.getString(AUTHENTICATION_USER, "");
+	String password = extras.getString(AUTHENTICATION_PASSWD, "");
+	String authURL = extras.getString(AUTHENTICATION_URL);
+
+	if (TextUtils.isEmpty(addressToLoad) ||
+	    !UrlUtils.isValidUrlAndHostNotNull(addressToLoad)) {
+		AppLog.e(AppLog.T.UTILS,
+		         "Empty or null or invalid URL passed to WPWebViewActivity");
+		ToastUtils.showToast(this, R.string.invalid_site_url_message,
+		                     ToastUtils.Duration.SHORT);
+		setResultIfNeededAndFinish();
+		return;
+	}
+
+	if (extras.getBoolean(USE_GLOBAL_WPCOM_USER, false)) {
+		username = mAccountStore.getAccount().getUserName();
+
+		// Custom domains are not properly authenticated due to a server side(?)
+		// issue, so this gets around that
+		if (!addressToLoad.contains(".wordpress.com")) {
+			List<SiteModel> wpComSites = mSiteStore.getWPComSites();
+			for (SiteModel siteModel : wpComSites) {
+				// Only replace the url if we know the unmapped url and if it's a
+				// custom domain
+				if (!TextUtils.isEmpty(siteModel.getUnmappedUrl()) &&
+				    !siteModel.getUrl().contains(".wordpress.com")) {
+					addressToLoad = addressToLoad.replace(siteModel.getUrl(),
+					                                      siteModel.getUnmappedUrl());
+				}
+			}
+		}
+	}
+
+	if (TextUtils.isEmpty(authURL) && TextUtils.isEmpty(username) &&
+	    TextUtils.isEmpty(password)) {
+		// Only the URL to load is passed to this activity. Use the normal
+		// un-authenticated loader, optionally with our referrer header
+		String referrerUrl = extras.getString(REFERRER_URL);
+		if (!TextUtils.isEmpty(referrerUrl)) {
+			Map<String, String> headers = new HashMap<>();
+			headers.put("Referer", referrerUrl);
+			loadUrl(addressToLoad, headers);
+		} else {
+			loadUrl(addressToLoad);
+		}
+	} else {
+		if (TextUtils.isEmpty(authURL) ||
+		    !UrlUtils.isValidUrlAndHostNotNull(authURL)) {
+			AppLog.e(
+				AppLog.T.UTILS,
+				"Empty or null or invalid auth URL passed to WPWebViewActivity");
+			ToastUtils.showToast(this, R.string.invalid_site_url_message,
+			                     ToastUtils.Duration.SHORT);
+			setResultIfNeededAndFinish();
+		}
+
+		if (TextUtils.isEmpty(username)) {
+			AppLog.e(AppLog.T.UTILS, "Username empty/null");
+			ToastUtils.showToast(this, R.string.incorrect_credentials,
+			                     ToastUtils.Duration.SHORT);
+			setResultIfNeededAndFinish();
+		}
+
+		loadAuthenticatedUrl(authURL, addressToLoad, username, password);
+	}
+}
+
+/**
+ * Login to the WordPress.com and load the specified URL.
+ */
+protected void loadAuthenticatedUrl(String authenticationURL,
+                                    String urlToLoad, String username,
+                                    String password) {
+	String postData =
+		getAuthenticationPostData(authenticationURL, urlToLoad, username,
+		                          password, mAccountStore.getAccessToken());
+
+	mWebView.postUrl(authenticationURL, postData.getBytes());
+}
+
+public static String
+getAuthenticationPostData(String authenticationUrl, String urlToLoad,
+                          String username, String password, String token) {
+	if (TextUtils.isEmpty(authenticationUrl)) {
+		return "";
+	}
+
+	try {
+		String postData = String.format(
+			"log=%s&pwd=%s&redirect_to=%s",
+			URLEncoder.encode(StringUtils.notNullStr(username), ENCODING_UTF8),
+			URLEncoder.encode(StringUtils.notNullStr(password), ENCODING_UTF8),
+			URLEncoder.encode(StringUtils.notNullStr(urlToLoad), ENCODING_UTF8));
+
+		// Add token authorization when signing in to WP.com
+		if (WPUrlUtils.safeToAddWordPressComAuthToken(authenticationUrl) &&
+		    authenticationUrl.contains("wordpress.com/wp-login.php") &&
+		    !TextUtils.isEmpty(token)) {
+			postData +=
+				"&authorization=Bearer " + URLEncoder.encode(token, ENCODING_UTF8);
+		}
+
+		return postData;
+	} catch (UnsupportedEncodingException e) {
+		AppLog.e(AppLog.T.UTILS, e);
+	}
+
+	return "";
+}
+
+/**
+ * Get the URL of the WordPress login page.
+ *
+ * @return URL of the login page.
+ */
+public static String getSiteLoginUrl(SiteModel site) {
+	String loginURL = site.getLoginUrl();
+
+	// Try to guess the login URL if blogOptions is null (blog not added to the
+	// app), or WP version is < 3.6
+	if (loginURL == null) {
+		if (site.getUrl() != null) {
+			return site.getUrl() + "/wp-login.php";
+		} else {
+			return site.getXmlRpcUrl().replace("xmlrpc.php", "wp-login.php");
+		}
+	}
+
+	return loginURL;
+}
+
+private boolean isActionableDirectUsage() {
+	return mViewModel.isActionableDirectUsage();
+}
+
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+	super.onCreateOptionsMenu(menu);
+
+	MenuInflater inflater = getMenuInflater();
+	inflater.inflate(R.menu.webview, menu);
+	return true;
+}
+
+@Override
+public boolean onOptionsItemSelected(final MenuItem item) {
+	if (mWebView == null) {
+		return false;
+	}
+
+	int itemID = item.getItemId();
+
+	if (itemID == android.R.id.home) {
+		setResultIfNeeded();
+	} else if (itemID == R.id.menu_refresh) {
+		mWebView.reload();
+		return true;
+	}
+
+	return super.onOptionsItemSelected(item);
+}
+
+// Since currently we are going to look at the request code and not at the
+// result code in the onActivityResult callbacks, this method is actually
+// redundant, but wanted to be explicit in case of future expansions on this.
+private void setResultIfNeeded() {
+	if (getCallingActivity() != null) {
+		setResult(RESULT_OK);
+	}
+}
+
+private void setResultIfNeededAndFinish() {
+	setResultIfNeeded();
+	finish();
+}
+
+protected void onDestroy() {
+	super.onDestroy();
+	if (mPreviewModeSelector != null && mPreviewModeSelector.isShowing()) {
+		mPreviewModeSelector.setOnDismissListener(null);
+		mPreviewModeSelector.dismiss();
+	}
+}
+
+@Override
+public void onBackPressed() {
+	if (mWebView.canGoBack()) {
+		mWebView.goBack();
+		refreshBackForwardNavButtons();
+	} else {
+		super.onBackPressed();
+		setResultIfNeeded();
+	}
+}
 }

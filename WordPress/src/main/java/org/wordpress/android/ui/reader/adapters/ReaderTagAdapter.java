@@ -24,147 +24,153 @@ import org.wordpress.android.util.NetworkUtils;
 import org.wordpress.android.util.ToastUtils;
 
 public class ReaderTagAdapter
-    extends RecyclerView.Adapter<ReaderTagAdapter.TagViewHolder> {
-  public interface TagDeletedListener { void onTagDeleted(ReaderTag tag); }
+	extends RecyclerView.Adapter<ReaderTagAdapter.TagViewHolder> {
+public interface TagDeletedListener { void onTagDeleted(ReaderTag tag); }
 
-  private final WeakReference<Context> mWeakContext;
-  private final ReaderTagList mTags = new ReaderTagList();
-  private TagDeletedListener mTagDeletedListener;
-  private ReaderInterfaces.DataLoadedListener mDataLoadedListener;
+private final WeakReference<Context> mWeakContext;
+private final ReaderTagList mTags = new ReaderTagList();
+private TagDeletedListener mTagDeletedListener;
+private ReaderInterfaces.DataLoadedListener mDataLoadedListener;
 
-  public ReaderTagAdapter(Context context) {
-    super();
-    setHasStableIds(true);
-    mWeakContext = new WeakReference<>(context);
-  }
+public ReaderTagAdapter(Context context) {
+	super();
+	setHasStableIds(true);
+	mWeakContext = new WeakReference<>(context);
+}
 
-  public void setTagDeletedListener(TagDeletedListener listener) {
-    mTagDeletedListener = listener;
-  }
+public void setTagDeletedListener(TagDeletedListener listener) {
+	mTagDeletedListener = listener;
+}
 
-  public void
-  setDataLoadedListener(ReaderInterfaces.DataLoadedListener listener) {
-    mDataLoadedListener = listener;
-  }
+public void
+setDataLoadedListener(ReaderInterfaces.DataLoadedListener listener) {
+	mDataLoadedListener = listener;
+}
 
-  private boolean hasContext() { return (getContext() != null); }
+private boolean hasContext() {
+	return (getContext() != null);
+}
 
-  private Context getContext() { return mWeakContext.get(); }
+private Context getContext() {
+	return mWeakContext.get();
+}
 
-  public void refresh() {
-    if (mIsTaskRunning) {
-      AppLog.w(T.READER, "tag task is already running");
-      return;
-    }
-    new LoadTagsTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-  }
+public void refresh() {
+	if (mIsTaskRunning) {
+		AppLog.w(T.READER, "tag task is already running");
+		return;
+	}
+	new LoadTagsTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+}
 
-  @Override
-  public int getItemCount() {
-    return mTags.size();
-  }
+@Override
+public int getItemCount() {
+	return mTags.size();
+}
 
-  public boolean isEmpty() { return (getItemCount() == 0); }
+public boolean isEmpty() {
+	return (getItemCount() == 0);
+}
 
-  @Override
-  public long getItemId(int position) {
-    return mTags.get(position).getTagSlug().hashCode();
-  }
+@Override
+public long getItemId(int position) {
+	return mTags.get(position).getTagSlug().hashCode();
+}
 
-  @Override
-  public TagViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.reader_listitem_tag, parent, false);
-    return new TagViewHolder(view);
-  }
+@Override
+public TagViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	View view = LayoutInflater.from(parent.getContext())
+	            .inflate(R.layout.reader_listitem_tag, parent, false);
+	return new TagViewHolder(view);
+}
 
-  @Override
-  public void onBindViewHolder(TagViewHolder holder, int position) {
-    final ReaderTag tag = mTags.get(position);
-    holder.mTxtTagName.setText(tag.getLabel());
-    holder.mBtnRemove.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        performDeleteTag(tag);
-      }
-    });
-  }
+@Override
+public void onBindViewHolder(TagViewHolder holder, int position) {
+	final ReaderTag tag = mTags.get(position);
+	holder.mTxtTagName.setText(tag.getLabel());
+	holder.mBtnRemove.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			        performDeleteTag(tag);
+			}
+		});
+}
 
-  private void performDeleteTag(@NonNull ReaderTag tag) {
-    if (!NetworkUtils.checkConnection(getContext())) {
-      return;
-    }
+private void performDeleteTag(@NonNull ReaderTag tag) {
+	if (!NetworkUtils.checkConnection(getContext())) {
+		return;
+	}
 
-    ReaderActions.ActionListener actionListener =
-        new ReaderActions.ActionListener() {
-          @Override
-          public void onActionResult(boolean succeeded) {
-            if (!succeeded && hasContext()) {
-              ToastUtils.showToast(getContext(),
-                                   R.string.reader_toast_err_remove_tag);
-              refresh();
-            }
-          }
-        };
+	ReaderActions.ActionListener actionListener =
+		new ReaderActions.ActionListener() {
+		@Override
+		public void onActionResult(boolean succeeded) {
+			if (!succeeded && hasContext()) {
+				ToastUtils.showToast(getContext(),
+				                     R.string.reader_toast_err_remove_tag);
+				refresh();
+			}
+		}
+	};
 
-    boolean success = ReaderTagActions.deleteTag(tag, actionListener);
+	boolean success = ReaderTagActions.deleteTag(tag, actionListener);
 
-    if (success) {
-      int index = mTags.indexOfTagName(tag.getTagSlug());
-      if (index > -1) {
-        mTags.remove(index);
-        notifyItemRemoved(index);
-      }
-      if (mTagDeletedListener != null) {
-        mTagDeletedListener.onTagDeleted(tag);
-      }
-    }
-  }
+	if (success) {
+		int index = mTags.indexOfTagName(tag.getTagSlug());
+		if (index > -1) {
+			mTags.remove(index);
+			notifyItemRemoved(index);
+		}
+		if (mTagDeletedListener != null) {
+			mTagDeletedListener.onTagDeleted(tag);
+		}
+	}
+}
 
-  class TagViewHolder extends RecyclerView.ViewHolder {
-    private final TextView mTxtTagName;
-    private final ImageButton mBtnRemove;
+class TagViewHolder extends RecyclerView.ViewHolder {
+private final TextView mTxtTagName;
+private final ImageButton mBtnRemove;
 
-    TagViewHolder(View view) {
-      super(view);
-      mTxtTagName = (TextView)view.findViewById(R.id.text_topic);
-      mBtnRemove = (ImageButton)view.findViewById(R.id.btn_remove);
-      ReaderUtils.setBackgroundToRoundRipple(mBtnRemove);
-    }
-  }
+TagViewHolder(View view) {
+	super(view);
+	mTxtTagName = (TextView)view.findViewById(R.id.text_topic);
+	mBtnRemove = (ImageButton)view.findViewById(R.id.btn_remove);
+	ReaderUtils.setBackgroundToRoundRipple(mBtnRemove);
+}
+}
 
-  /*
-   * AsyncTask to load tags
-   */
-  private boolean mIsTaskRunning = false;
+/*
+ * AsyncTask to load tags
+ */
+private boolean mIsTaskRunning = false;
 
-  private class LoadTagsTask extends AsyncTask<Void, Void, ReaderTagList> {
-    @Override
-    protected void onPreExecute() {
-      mIsTaskRunning = true;
-    }
+private class LoadTagsTask extends AsyncTask<Void, Void, ReaderTagList> {
+@Override
+protected void onPreExecute() {
+	mIsTaskRunning = true;
+}
 
-    @Override
-    protected void onCancelled() {
-      mIsTaskRunning = false;
-    }
+@Override
+protected void onCancelled() {
+	mIsTaskRunning = false;
+}
 
-    @Override
-    protected ReaderTagList doInBackground(Void... params) {
-      return ReaderTagTable.getFollowedTags();
-    }
+@Override
+protected ReaderTagList doInBackground(Void... params) {
+	return ReaderTagTable.getFollowedTags();
+}
 
-    @Override
-    protected void onPostExecute(ReaderTagList tagList) {
-      if (tagList != null && !tagList.isSameList(mTags)) {
-        mTags.clear();
-        mTags.addAll(tagList);
-        notifyDataSetChanged();
-      }
-      mIsTaskRunning = false;
-      if (mDataLoadedListener != null) {
-        mDataLoadedListener.onDataLoaded(isEmpty());
-      }
-    }
-  }
+@Override
+protected void onPostExecute(ReaderTagList tagList) {
+	if (tagList != null && !tagList.isSameList(mTags)) {
+		mTags.clear();
+		mTags.addAll(tagList);
+		notifyDataSetChanged();
+	}
+	mIsTaskRunning = false;
+	if (mDataLoadedListener != null) {
+		mDataLoadedListener.onDataLoaded(isEmpty());
+	}
+}
+}
 }

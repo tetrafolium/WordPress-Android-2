@@ -18,74 +18,74 @@ import androidx.fragment.app.Fragment;
 import org.wordpress.android.R;
 
 public abstract class SiteCreationBaseFormFragment extends Fragment {
-  public static final String EXTRA_SCREEN_TITLE = "extra_screen_title";
+public static final String EXTRA_SCREEN_TITLE = "extra_screen_title";
 
-  protected abstract @LayoutRes int getContentLayout();
+protected abstract @LayoutRes int getContentLayout();
 
-  protected abstract void setupContent(ViewGroup rootView);
+protected abstract void setupContent(ViewGroup rootView);
 
-  protected abstract void onHelp();
+protected abstract void onHelp();
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
 
-    setHasOptionsMenu(true);
-  }
+	setHasOptionsMenu(true);
+}
 
-  protected ViewGroup createMainView(LayoutInflater inflater,
-                                     ViewGroup container,
-                                     Bundle savedInstanceState) {
-    ViewGroup rootView = (ViewGroup)inflater.inflate(
-        R.layout.site_creation_form_screen, container, false);
-    ViewStub formContainer =
-        (rootView.findViewById(R.id.site_creation_form_content_stub));
-    formContainer.setLayoutResource(getContentLayout());
-    formContainer.inflate();
-    return rootView;
-  }
+protected ViewGroup createMainView(LayoutInflater inflater,
+                                   ViewGroup container,
+                                   Bundle savedInstanceState) {
+	ViewGroup rootView = (ViewGroup)inflater.inflate(
+		R.layout.site_creation_form_screen, container, false);
+	ViewStub formContainer =
+		(rootView.findViewById(R.id.site_creation_form_content_stub));
+	formContainer.setLayoutResource(getContentLayout());
+	formContainer.inflate();
+	return rootView;
+}
 
-  @Override
-  public View onCreateView(@NonNull LayoutInflater inflater,
-                           ViewGroup container, Bundle savedInstanceState) {
-    ViewGroup rootView =
-        createMainView(inflater, container, savedInstanceState);
-    setupContent(rootView);
-    return rootView;
-  }
+@Override
+public View onCreateView(@NonNull LayoutInflater inflater,
+                         ViewGroup container, Bundle savedInstanceState) {
+	ViewGroup rootView =
+		createMainView(inflater, container, savedInstanceState);
+	setupContent(rootView);
+	return rootView;
+}
 
-  @Override
-  public void onViewCreated(@NonNull View view,
-                            @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
+@Override
+public void onViewCreated(@NonNull View view,
+                          @Nullable Bundle savedInstanceState) {
+	super.onViewCreated(view, savedInstanceState);
 
-    Toolbar toolbar = view.findViewById(R.id.toolbar);
-    ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+	Toolbar toolbar = view.findViewById(R.id.toolbar);
+	((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
-    ActionBar actionBar =
-        ((AppCompatActivity)getActivity()).getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setTitle(getScreenTitle());
-      // important for accessibility
-      getActivity().setTitle(getScreenTitle());
-    }
-  }
+	ActionBar actionBar =
+		((AppCompatActivity)getActivity()).getSupportActionBar();
+	if (actionBar != null) {
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(getScreenTitle());
+		// important for accessibility
+		getActivity().setTitle(getScreenTitle());
+	}
+}
 
-  protected abstract String getScreenTitle();
+protected abstract String getScreenTitle();
 
-  @Override
-  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    inflater.inflate(R.menu.menu_site_creation, menu);
-  }
+@Override
+public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	inflater.inflate(R.menu.menu_site_creation, menu);
+}
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == R.id.help) {
-      onHelp();
-      return true;
-    }
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+	if (item.getItemId() == R.id.help) {
+		onHelp();
+		return true;
+	}
 
-    return false;
-  }
+	return false;
+}
 }

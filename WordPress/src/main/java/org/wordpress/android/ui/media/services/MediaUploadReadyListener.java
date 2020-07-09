@@ -9,10 +9,10 @@ import org.wordpress.android.util.helpers.MediaFile;
  * finished uploading and mark media failed if could not be uploaded
  */
 public interface MediaUploadReadyListener {
-  PostModel replaceMediaFileWithUrlInPost(@Nullable PostModel post,
-                                          String localMediaId,
-                                          MediaFile mediaFile);
-  PostModel markMediaUploadFailedInPost(@Nullable PostModel post,
+PostModel replaceMediaFileWithUrlInPost(@Nullable PostModel post,
                                         String localMediaId,
                                         MediaFile mediaFile);
+PostModel markMediaUploadFailedInPost(@Nullable PostModel post,
+                                      String localMediaId,
+                                      MediaFile mediaFile);
 }

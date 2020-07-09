@@ -9,10 +9,10 @@ import okhttp3.Interceptor;
 
 @Module
 public class InterceptorModule {
-  @Provides
-  @IntoSet
-  @Named("network-interceptors")
-  public Interceptor provideStethoInterceptor() {
-    return new StethoInterceptor();
-  }
+@Provides
+@IntoSet
+@Named("network-interceptors")
+public Interceptor provideStethoInterceptor() {
+	return new StethoInterceptor();
+}
 }

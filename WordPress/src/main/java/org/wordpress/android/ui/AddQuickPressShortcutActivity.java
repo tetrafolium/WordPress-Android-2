@@ -40,191 +40,199 @@ import org.wordpress.android.util.SiteUtils;
 import org.wordpress.android.util.ToastUtils;
 
 public class AddQuickPressShortcutActivity extends ListActivity {
-  public String[] blogNames;
-  public int[] siteIds;
-  public String[] accountUsers;
-  public String[] blavatars;
-  public List<String> accountNames = new ArrayList<>();
+public String[] blogNames;
+public int[] siteIds;
+public String[] accountUsers;
+public String[] blavatars;
+public List<String> accountNames = new ArrayList<>();
 
-  @Inject SiteStore mSiteStore;
-  @Inject FluxCImageLoader mImageLoader;
+@Inject SiteStore mSiteStore;
+@Inject FluxCImageLoader mImageLoader;
 
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(LocaleManager.setLocale(newBase));
-  }
+@Override
+protected void attachBaseContext(Context newBase) {
+	super.attachBaseContext(LocaleManager.setLocale(newBase));
+}
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ((WordPress)getApplication()).component().inject(this);
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	((WordPress)getApplication()).component().inject(this);
 
-    setContentView(R.layout.add_quickpress_shortcut);
-    setTitle(getResources().getText(R.string.quickpress_window_title));
+	setContentView(R.layout.add_quickpress_shortcut);
+	setTitle(getResources().getText(R.string.quickpress_window_title));
 
-    displayAccounts();
-  }
+	displayAccounts();
+}
 
-  private void displayAccounts() {
-    List<SiteModel> sites = mSiteStore.getVisibleSites();
+private void displayAccounts() {
+	List<SiteModel> sites = mSiteStore.getVisibleSites();
 
-    ListView listView = (ListView)findViewById(android.R.id.list);
+	ListView listView = (ListView)findViewById(android.R.id.list);
 
-    View iv = new View(this);
-    iv.setBackgroundResource(R.drawable.list_divider);
-    listView.addFooterView(iv);
-    listView.setVerticalFadingEdgeEnabled(false);
-    listView.setVerticalScrollBarEnabled(true);
+	View iv = new View(this);
+	iv.setBackgroundResource(R.drawable.list_divider);
+	listView.addFooterView(iv);
+	listView.setVerticalFadingEdgeEnabled(false);
+	listView.setVerticalScrollBarEnabled(true);
 
-    if (sites.size() > 0) {
-      ScrollView sv = new ScrollView(this);
-      sv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                                          LayoutParams.WRAP_CONTENT));
-      LinearLayout layout = new LinearLayout(this);
-      layout.setPadding(10, 10, 10, 0);
-      layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                                              LayoutParams.WRAP_CONTENT));
+	if (sites.size() > 0) {
+		ScrollView sv = new ScrollView(this);
+		sv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+		                                    LayoutParams.WRAP_CONTENT));
+		LinearLayout layout = new LinearLayout(this);
+		layout.setPadding(10, 10, 10, 0);
+		layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+		                                        LayoutParams.WRAP_CONTENT));
 
-      layout.setOrientation(LinearLayout.VERTICAL);
+		layout.setOrientation(LinearLayout.VERTICAL);
 
-      blogNames = new String[sites.size()];
-      siteIds = new int[sites.size()];
-      accountUsers = new String[sites.size()];
-      blavatars = new String[sites.size()];
-      for (int i = 0; i < sites.size(); i++) {
-        SiteModel site = sites.get(i);
-        blogNames[i] = SiteUtils.getSiteNameOrHomeURL(site);
-        accountUsers[i] = site.getUsername();
-        siteIds[i] = site.getId();
-        blavatars[i] = SiteUtils.getSiteIconUrl(site, 60);
-        accountNames.add(i, blogNames[i]);
-      }
+		blogNames = new String[sites.size()];
+		siteIds = new int[sites.size()];
+		accountUsers = new String[sites.size()];
+		blavatars = new String[sites.size()];
+		for (int i = 0; i < sites.size(); i++) {
+			SiteModel site = sites.get(i);
+			blogNames[i] = SiteUtils.getSiteNameOrHomeURL(site);
+			accountUsers[i] = site.getUsername();
+			siteIds[i] = site.getId();
+			blavatars[i] = SiteUtils.getSiteIconUrl(site, 60);
+			accountNames.add(i, blogNames[i]);
+		}
 
-      setListAdapter(new HomeListAdapter());
+		setListAdapter(new HomeListAdapter());
 
-      listView.setOnItemClickListener(new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> arg0, View row, int position,
-                                long id) {
-          AddQuickPressShortcutActivity.this.buildDialog(position);
-        }
-      });
+		listView.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> arg0, View row, int position,
+				                        long id) {
+				        AddQuickPressShortcutActivity.this.buildDialog(position);
+				}
+			});
 
-      if (sites.size() == 1) {
-        AddQuickPressShortcutActivity.this.buildDialog(0);
-      }
-    } else {
-      // no account, load new account view
-      ActivityLauncher.showSignInForResult(AddQuickPressShortcutActivity.this);
-    }
-  }
+		if (sites.size() == 1) {
+			AddQuickPressShortcutActivity.this.buildDialog(0);
+		}
+	} else {
+		// no account, load new account view
+		ActivityLauncher.showSignInForResult(AddQuickPressShortcutActivity.this);
+	}
+}
 
-  private void buildDialog(final int position) {
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-        new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
-    dialogBuilder.setTitle(R.string.quickpress_add_alert_title);
+private void buildDialog(final int position) {
+	AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
+		new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+	dialogBuilder.setTitle(R.string.quickpress_add_alert_title);
 
-    final EditText quickPressShortcutName =
-        new EditText(AddQuickPressShortcutActivity.this);
-    quickPressShortcutName.setText(
-        getString(R.string.quickpress_shortcut_with_account_param,
-                  StringEscapeUtils.unescapeHtml4(accountNames.get(position))));
-    dialogBuilder.setView(quickPressShortcutName);
+	final EditText quickPressShortcutName =
+		new EditText(AddQuickPressShortcutActivity.this);
+	quickPressShortcutName.setText(
+		getString(R.string.quickpress_shortcut_with_account_param,
+		          StringEscapeUtils.unescapeHtml4(accountNames.get(position))));
+	dialogBuilder.setView(quickPressShortcutName);
 
-    dialogBuilder.setPositiveButton(
-        R.string.add, new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int which) {
-            if (TextUtils.isEmpty(quickPressShortcutName.getText())) {
-              ToastUtils.showToast(AddQuickPressShortcutActivity.this,
-                                   R.string.quickpress_add_error,
-                                   ToastUtils.Duration.LONG);
-            } else {
-              Intent shortcutIntent =
-                  new Intent(getApplicationContext(), EditPostActivity.class);
-              shortcutIntent.setAction(Intent.ACTION_MAIN);
-              shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-              shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-              shortcutIntent.putExtra(EditPostActivity.EXTRA_QUICKPRESS_BLOG_ID,
-                                      siteIds[position]);
-              shortcutIntent.putExtra(EditPostActivity.EXTRA_IS_QUICKPRESS,
-                                      true);
+	dialogBuilder.setPositiveButton(
+		R.string.add, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+			        if (TextUtils.isEmpty(quickPressShortcutName.getText())) {
+			                ToastUtils.showToast(AddQuickPressShortcutActivity.this,
+			                                     R.string.quickpress_add_error,
+			                                     ToastUtils.Duration.LONG);
+				} else {
+			                Intent shortcutIntent =
+						new Intent(getApplicationContext(), EditPostActivity.class);
+			                shortcutIntent.setAction(Intent.ACTION_MAIN);
+			                shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			                shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			                shortcutIntent.putExtra(EditPostActivity.EXTRA_QUICKPRESS_BLOG_ID,
+			                                        siteIds[position]);
+			                shortcutIntent.putExtra(EditPostActivity.EXTRA_IS_QUICKPRESS,
+			                                        true);
 
-              String shortcutName = quickPressShortcutName.getText().toString();
+			                String shortcutName = quickPressShortcutName.getText().toString();
 
-              WordPress.wpDB.addQuickPressShortcut(siteIds[position],
-                                                   shortcutName);
+			                WordPress.wpDB.addQuickPressShortcut(siteIds[position],
+			                                                     shortcutName);
 
-              ShortcutInfoCompat pinShortcutInfo =
-                  new ShortcutInfoCompat
-                      .Builder(getApplicationContext(), shortcutName)
-                      .setIcon(IconCompat.createWithResource(
-                          getApplicationContext(), R.mipmap.app_icon))
-                      .setShortLabel(shortcutName)
-                      .setIntent(shortcutIntent)
-                      .build();
+			                ShortcutInfoCompat pinShortcutInfo =
+						new ShortcutInfoCompat
+						.Builder(getApplicationContext(), shortcutName)
+						.setIcon(IconCompat.createWithResource(
+								 getApplicationContext(), R.mipmap.app_icon))
+						.setShortLabel(shortcutName)
+						.setIntent(shortcutIntent)
+						.build();
 
-              ShortcutManagerCompat.requestPinShortcut(getApplicationContext(),
-                                                       pinShortcutInfo, null);
+			                ShortcutManagerCompat.requestPinShortcut(getApplicationContext(),
+			                                                         pinShortcutInfo, null);
 
-              AddQuickPressShortcutActivity.this.finish();
-            }
-          }
-        });
-    dialogBuilder.setNegativeButton(
-        R.string.cancel, new DialogInterface.OnClickListener() {
-          // just let the dialog close
-          public void onClick(DialogInterface dialog, int which) {}
-        });
+			                AddQuickPressShortcutActivity.this.finish();
+				}
+			}
+		});
+	dialogBuilder.setNegativeButton(
+		R.string.cancel, new DialogInterface.OnClickListener() {
+			// just let the dialog close
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
 
-    dialogBuilder.setCancelable(false);
-    dialogBuilder.create().show();
-  }
+	dialogBuilder.setCancelable(false);
+	dialogBuilder.create().show();
+}
 
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode,
-                                  Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    switch (requestCode) {
-    case RequestCodes.ADD_ACCOUNT:
-      if ((resultCode == RESULT_OK) && (mSiteStore.getVisibleSitesCount() > 0)) {
-        displayAccounts();
-        break;
-      }
-      finish();
-      break;
-    }
-  }
+@Override
+protected void onActivityResult(int requestCode, int resultCode,
+                                Intent data) {
+	super.onActivityResult(requestCode, resultCode, data);
+	switch (requestCode) {
+	case RequestCodes.ADD_ACCOUNT:
+		if ((resultCode == RESULT_OK) && (mSiteStore.getVisibleSitesCount() > 0)) {
+			displayAccounts();
+			break;
+		}
+		finish();
+		break;
+	}
+}
 
-  protected class HomeListAdapter extends BaseAdapter {
-    public HomeListAdapter() {}
+protected class HomeListAdapter extends BaseAdapter {
+public HomeListAdapter() {
+}
 
-    public int getCount() { return mSiteStore.getVisibleSitesCount(); }
+public int getCount() {
+	return mSiteStore.getVisibleSitesCount();
+}
 
-    public Object getItem(int position) { return position; }
+public Object getItem(int position) {
+	return position;
+}
 
-    public long getItemId(int position) { return position; }
+public long getItemId(int position) {
+	return position;
+}
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-      RelativeLayout view = (RelativeLayout)convertView;
-      if (view == null) {
-        LayoutInflater inflater = getLayoutInflater();
-        view =
-            (RelativeLayout)inflater.inflate(R.layout.home_row, parent, false);
-      }
-      String username = accountUsers[position];
-      view.setId(Integer.valueOf(siteIds[position]));
+public View getView(int position, View convertView, ViewGroup parent) {
+	RelativeLayout view = (RelativeLayout)convertView;
+	if (view == null) {
+		LayoutInflater inflater = getLayoutInflater();
+		view =
+			(RelativeLayout)inflater.inflate(R.layout.home_row, parent, false);
+	}
+	String username = accountUsers[position];
+	view.setId(Integer.valueOf(siteIds[position]));
 
-      TextView blogName = (TextView)view.findViewById(R.id.blogName);
-      TextView blogUsername = (TextView)view.findViewById(R.id.blogUser);
-      NetworkImageView blavatar =
-          (NetworkImageView)view.findViewById(R.id.blavatar);
+	TextView blogName = (TextView)view.findViewById(R.id.blogName);
+	TextView blogUsername = (TextView)view.findViewById(R.id.blogUser);
+	NetworkImageView blavatar =
+		(NetworkImageView)view.findViewById(R.id.blavatar);
 
-      blogName.setText(StringEscapeUtils.unescapeHtml4(blogNames[position]));
-      blogUsername.setText(StringEscapeUtils.unescapeHtml4(username));
-      blavatar.setErrorImageResId(
-          R.drawable.bg_rectangle_neutral_10_globe_32dp);
-      blavatar.setImageUrl(blavatars[position], mImageLoader);
+	blogName.setText(StringEscapeUtils.unescapeHtml4(blogNames[position]));
+	blogUsername.setText(StringEscapeUtils.unescapeHtml4(username));
+	blavatar.setErrorImageResId(
+		R.drawable.bg_rectangle_neutral_10_globe_32dp);
+	blavatar.setImageUrl(blavatars[position], mImageLoader);
 
-      return view;
-    }
-  }
+	return view;
+}
+}
 }

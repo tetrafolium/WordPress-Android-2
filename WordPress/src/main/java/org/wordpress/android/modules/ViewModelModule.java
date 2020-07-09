@@ -50,223 +50,223 @@ import org.wordpress.android.viewmodel.wpwebview.WPWebViewViewModel;
 
 @Module
 abstract class ViewModelModule {
-  @Binds
-  @IntoMap
-  @ViewModelKey(PluginBrowserViewModel.class)
-  abstract ViewModel pluginBrowserViewModel(PluginBrowserViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(PluginBrowserViewModel.class)
+abstract ViewModel pluginBrowserViewModel(PluginBrowserViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(ActivityLogViewModel.class)
-  abstract ViewModel activityLogViewModel(ActivityLogViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(ActivityLogViewModel.class)
+abstract ViewModel activityLogViewModel(ActivityLogViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(ActivityLogDetailViewModel.class)
-  abstract ViewModel
-  activityLogDetailViewModel(ActivityLogDetailViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(ActivityLogDetailViewModel.class)
+abstract ViewModel
+activityLogDetailViewModel(ActivityLogDetailViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(PagesViewModel.class)
-  abstract ViewModel pagesViewModel(PagesViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(PagesViewModel.class)
+abstract ViewModel pagesViewModel(PagesViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(SearchListViewModel.class)
-  abstract ViewModel searchListViewModel(SearchListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(SearchListViewModel.class)
+abstract ViewModel searchListViewModel(SearchListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(PageListViewModel.class)
-  abstract ViewModel pageListViewModel(PageListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(PageListViewModel.class)
+abstract ViewModel pageListViewModel(PageListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(PageParentViewModel.class)
-  abstract ViewModel pageParentViewModel(PageParentViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(PageParentViewModel.class)
+abstract ViewModel pageParentViewModel(PageParentViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(ReaderPostListViewModel.class)
-  abstract ViewModel readerPostListViewModel(ReaderPostListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(ReaderPostListViewModel.class)
+abstract ViewModel readerPostListViewModel(ReaderPostListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(JetpackRemoteInstallViewModel.class)
-  abstract ViewModel
-  jetpackRemoteInstallViewModel(JetpackRemoteInstallViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(JetpackRemoteInstallViewModel.class)
+abstract ViewModel
+jetpackRemoteInstallViewModel(JetpackRemoteInstallViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(QuickStartViewModel.class)
-  abstract ViewModel quickStartViewModel(QuickStartViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(QuickStartViewModel.class)
+abstract ViewModel quickStartViewModel(QuickStartViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(InsightsListViewModel.class)
-  abstract ViewModel insightsTabViewModel(InsightsListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(InsightsListViewModel.class)
+abstract ViewModel insightsTabViewModel(InsightsListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(DaysListViewModel.class)
-  abstract ViewModel daysTabViewModel(DaysListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(DaysListViewModel.class)
+abstract ViewModel daysTabViewModel(DaysListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(WeeksListViewModel.class)
-  abstract ViewModel weeksTabViewModel(WeeksListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(WeeksListViewModel.class)
+abstract ViewModel weeksTabViewModel(WeeksListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(MonthsListViewModel.class)
-  abstract ViewModel monthsTabViewModel(MonthsListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(MonthsListViewModel.class)
+abstract ViewModel monthsTabViewModel(MonthsListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(YearsListViewModel.class)
-  abstract ViewModel yearsTabViewModel(YearsListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(YearsListViewModel.class)
+abstract ViewModel yearsTabViewModel(YearsListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(StatsDetailViewModel.class)
-  abstract ViewModel statsDetailViewModel(StatsDetailViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(StatsDetailViewModel.class)
+abstract ViewModel statsDetailViewModel(StatsDetailViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(DetailListViewModel.class)
-  abstract ViewModel detailListViewModel(DetailListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(DetailListViewModel.class)
+abstract ViewModel detailListViewModel(DetailListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(StatsViewModel.class)
-  abstract ViewModel statsViewModel(StatsViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(StatsViewModel.class)
+abstract ViewModel statsViewModel(StatsViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(StatsWidgetConfigureViewModel.class)
-  abstract ViewModel
-  statsViewsWidgetViewModel(StatsWidgetConfigureViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(StatsWidgetConfigureViewModel.class)
+abstract ViewModel
+statsViewsWidgetViewModel(StatsWidgetConfigureViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(StatsSiteSelectionViewModel.class)
-  abstract ViewModel
-  statsSiteSelectionViewModel(StatsSiteSelectionViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(StatsSiteSelectionViewModel.class)
+abstract ViewModel
+statsSiteSelectionViewModel(StatsSiteSelectionViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(StatsDataTypeSelectionViewModel.class)
-  abstract ViewModel
-  statsDataTypeSelectionViewModel(StatsDataTypeSelectionViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(StatsDataTypeSelectionViewModel.class)
+abstract ViewModel
+statsDataTypeSelectionViewModel(StatsDataTypeSelectionViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(StatsMinifiedWidgetConfigureViewModel.class)
-  abstract ViewModel
-  statsMinifiedWidgetViewModel(StatsMinifiedWidgetConfigureViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(StatsMinifiedWidgetConfigureViewModel.class)
+abstract ViewModel
+statsMinifiedWidgetViewModel(StatsMinifiedWidgetConfigureViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(StatsColorSelectionViewModel.class)
-  abstract ViewModel
-  statsColorSelectionViewModel(StatsColorSelectionViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(StatsColorSelectionViewModel.class)
+abstract ViewModel
+statsColorSelectionViewModel(StatsColorSelectionViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(InsightsManagementViewModel.class)
-  abstract ViewModel
-  insightsManagementViewModel(InsightsManagementViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(InsightsManagementViewModel.class)
+abstract ViewModel
+insightsManagementViewModel(InsightsManagementViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(HistoryViewModel.class)
-  abstract ViewModel historyViewModel(HistoryViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(HistoryViewModel.class)
+abstract ViewModel historyViewModel(HistoryViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(SiteCreationSegmentsViewModel.class)
-  abstract ViewModel
-  siteCreationSegmentsViewModel(SiteCreationSegmentsViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(SiteCreationSegmentsViewModel.class)
+abstract ViewModel
+siteCreationSegmentsViewModel(SiteCreationSegmentsViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(SiteCreationVerticalsViewModel.class)
-  abstract ViewModel
-  siteCreationVerticalsViewModel(SiteCreationVerticalsViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(SiteCreationVerticalsViewModel.class)
+abstract ViewModel
+siteCreationVerticalsViewModel(SiteCreationVerticalsViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(SiteCreationDomainsViewModel.class)
-  abstract ViewModel
-  siteCreationDomainsViewModel(SiteCreationDomainsViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(SiteCreationDomainsViewModel.class)
+abstract ViewModel
+siteCreationDomainsViewModel(SiteCreationDomainsViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(SiteCreationSiteInfoViewModel.class)
-  abstract ViewModel
-  siteCreationSiteInfoViewModel(SiteCreationSiteInfoViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(SiteCreationSiteInfoViewModel.class)
+abstract ViewModel
+siteCreationSiteInfoViewModel(SiteCreationSiteInfoViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(SiteCreationMainVM.class)
-  abstract ViewModel siteCreationMainVM(SiteCreationMainVM viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(SiteCreationMainVM.class)
+abstract ViewModel siteCreationMainVM(SiteCreationMainVM viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(SitePreviewViewModel.class)
-  abstract ViewModel newSitePreviewViewModel(SitePreviewViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(SitePreviewViewModel.class)
+abstract ViewModel newSitePreviewViewModel(SitePreviewViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(PostListViewModel.class)
-  abstract ViewModel postListViewModel(PostListViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(PostListViewModel.class)
+abstract ViewModel postListViewModel(PostListViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(PostListMainViewModel.class)
-  abstract ViewModel postListMainViewModel(PostListMainViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(PostListMainViewModel.class)
+abstract ViewModel postListMainViewModel(PostListMainViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(GiphyPickerViewModel.class)
-  abstract ViewModel giphyPickerViewModel(GiphyPickerViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(GiphyPickerViewModel.class)
+abstract ViewModel giphyPickerViewModel(GiphyPickerViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(PlansViewModel.class)
-  abstract ViewModel plansViewModel(PlansViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(PlansViewModel.class)
+abstract ViewModel plansViewModel(PlansViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(DomainSuggestionsViewModel.class)
-  abstract ViewModel
-  domainSuggestionsViewModel(DomainSuggestionsViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(DomainSuggestionsViewModel.class)
+abstract ViewModel
+domainSuggestionsViewModel(DomainSuggestionsViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(WPWebViewViewModel.class)
-  abstract ViewModel wpWebViewViewModel(WPWebViewViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(WPWebViewViewModel.class)
+abstract ViewModel wpWebViewViewModel(WPWebViewViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(DomainRegistrationDetailsViewModel.class)
-  abstract ViewModel domainRegistrationDetailsViewModel(
-      DomainRegistrationDetailsViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(DomainRegistrationDetailsViewModel.class)
+abstract ViewModel domainRegistrationDetailsViewModel(
+	DomainRegistrationDetailsViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(DomainRegistrationMainViewModel.class)
-  abstract ViewModel
-  domainRegistrationMainViewModel(DomainRegistrationMainViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(DomainRegistrationMainViewModel.class)
+abstract ViewModel
+domainRegistrationMainViewModel(DomainRegistrationMainViewModel viewModel);
 
-  @Binds
-  @IntoMap
-  @ViewModelKey(EditPostPublishSettingsViewModel.class)
-  abstract ViewModel editPostPublishedSettingsViewModel(
-      EditPostPublishSettingsViewModel viewModel);
+@Binds
+@IntoMap
+@ViewModelKey(EditPostPublishSettingsViewModel.class)
+abstract ViewModel editPostPublishedSettingsViewModel(
+	EditPostPublishSettingsViewModel viewModel);
 
-  @Binds
-  abstract ViewModelProvider.Factory
-  provideViewModelFactory(ViewModelFactory viewModelFactory);
+@Binds
+abstract ViewModelProvider.Factory
+provideViewModelFactory(ViewModelFactory viewModelFactory);
 }

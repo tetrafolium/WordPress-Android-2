@@ -27,160 +27,162 @@ import org.wordpress.android.util.image.ImageType;
  * follow button
  */
 public class ReaderTagHeaderView extends RelativeLayout {
-  private ImageView mImageView;
-  private TextView mTxtAttribution;
-  private ReaderTag mCurrentTag;
+private ImageView mImageView;
+private TextView mTxtAttribution;
+private ReaderTag mCurrentTag;
 
-  private static final ReaderTagHeaderInfoList TAG_INFO_CACHE =
-      new ReaderTagHeaderInfoList();
+private static final ReaderTagHeaderInfoList TAG_INFO_CACHE =
+	new ReaderTagHeaderInfoList();
 
-  public ReaderTagHeaderView(Context context) {
-    super(context);
-    initView(context);
-  }
+public ReaderTagHeaderView(Context context) {
+	super(context);
+	initView(context);
+}
 
-  public ReaderTagHeaderView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    initView(context);
-  }
+public ReaderTagHeaderView(Context context, AttributeSet attrs) {
+	super(context, attrs);
+	initView(context);
+}
 
-  public ReaderTagHeaderView(Context context, AttributeSet attrs,
-                             int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    initView(context);
-  }
+public ReaderTagHeaderView(Context context, AttributeSet attrs,
+                           int defStyleAttr) {
+	super(context, attrs, defStyleAttr);
+	initView(context);
+}
 
-  private void initView(Context context) {
-    View view = inflate(context, R.layout.reader_tag_header_view, this);
-    mImageView = view.findViewById(R.id.image_tag_header);
-    mTxtAttribution = view.findViewById(R.id.text_attribution);
-  }
+private void initView(Context context) {
+	View view = inflate(context, R.layout.reader_tag_header_view, this);
+	mImageView = view.findViewById(R.id.image_tag_header);
+	mTxtAttribution = view.findViewById(R.id.text_attribution);
+}
 
-  public void setCurrentTag(final ReaderTag tag) {
-    if (tag == null) {
-      return;
-    }
+public void setCurrentTag(final ReaderTag tag) {
+	if (tag == null) {
+		return;
+	}
 
-    boolean isTagChanged = !ReaderTag.isSameTag(tag, mCurrentTag);
+	boolean isTagChanged = !ReaderTag.isSameTag(tag, mCurrentTag);
 
-    if (isTagChanged) {
-      mTxtAttribution.setText(null);
-      ImageManager.getInstance().cancelRequestAndClearImageView(mImageView);
-      mCurrentTag = tag;
-    }
+	if (isTagChanged) {
+		mTxtAttribution.setText(null);
+		ImageManager.getInstance().cancelRequestAndClearImageView(mImageView);
+		mCurrentTag = tag;
+	}
 
-    TextView txtTagName = findViewById(R.id.text_tag);
-    txtTagName.setText(tag.getLabel());
+	TextView txtTagName = findViewById(R.id.text_tag);
+	txtTagName.setText(tag.getLabel());
 
-    // use cached info if it's available, otherwise request it if the tag has
-    // changed
-    if (TAG_INFO_CACHE.hasInfoForTag(tag)) {
-      setTagHeaderInfo(TAG_INFO_CACHE.getInfoForTag(tag));
-    } else if (isTagChanged) {
-      getTagHeaderInfo();
-    }
-  }
+	// use cached info if it's available, otherwise request it if the tag has
+	// changed
+	if (TAG_INFO_CACHE.hasInfoForTag(tag)) {
+		setTagHeaderInfo(TAG_INFO_CACHE.getInfoForTag(tag));
+	} else if (isTagChanged) {
+		getTagHeaderInfo();
+	}
+}
 
-  private void setTagHeaderInfo(final ReaderTagHeaderInfo info) {
-    int imageWidth = mImageView.getWidth();
-    int imageHeight = getContext().getResources().getDimensionPixelSize(
-        R.dimen.reader_tag_header_image_height);
-    String photonUrl = PhotonUtils.getPhotonImageUrl(info.getImageUrl(),
-                                                     imageWidth, imageHeight);
-    ImageManager.getInstance().load(mImageView, ImageType.PHOTO, photonUrl,
-                                    ScaleType.CENTER_CROP);
+private void setTagHeaderInfo(final ReaderTagHeaderInfo info) {
+	int imageWidth = mImageView.getWidth();
+	int imageHeight = getContext().getResources().getDimensionPixelSize(
+		R.dimen.reader_tag_header_image_height);
+	String photonUrl = PhotonUtils.getPhotonImageUrl(info.getImageUrl(),
+	                                                 imageWidth, imageHeight);
+	ImageManager.getInstance().load(mImageView, ImageType.PHOTO, photonUrl,
+	                                ScaleType.CENTER_CROP);
 
-    // show attribution line - author name when available, otherwise blog name
-    // or nothing
-    if (info.hasAuthorName()) {
-      mTxtAttribution.setText(getContext().getString(R.string.reader_photo_by,
-                                                     info.getAuthorName()));
-    } else if (info.hasBlogName()) {
-      mTxtAttribution.setText(
-          getContext().getString(R.string.reader_photo_by, info.getBlogName()));
-    }
+	// show attribution line - author name when available, otherwise blog name
+	// or nothing
+	if (info.hasAuthorName()) {
+		mTxtAttribution.setText(getContext().getString(R.string.reader_photo_by,
+		                                               info.getAuthorName()));
+	} else if (info.hasBlogName()) {
+		mTxtAttribution.setText(
+			getContext().getString(R.string.reader_photo_by, info.getBlogName()));
+	}
 
-    // show the source post when the attribution line is clicked
-    if (info.hasSourcePost()) {
-      mTxtAttribution.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          ReaderActivityLauncher.showReaderPostDetail(view.getContext(),
-                                                      info.getSourceBlogId(),
-                                                      info.getSourcePostId());
-        }
-      });
-    } else {
-      mTxtAttribution.setOnClickListener(null);
-    }
-  }
+	// show the source post when the attribution line is clicked
+	if (info.hasSourcePost()) {
+		mTxtAttribution.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+				        ReaderActivityLauncher.showReaderPostDetail(view.getContext(),
+				                                                    info.getSourceBlogId(),
+				                                                    info.getSourcePostId());
+				}
+			});
+	} else {
+		mTxtAttribution.setOnClickListener(null);
+	}
+}
 
-  /*
-   * performs a GET request for the info we display here
-   */
-  private void getTagHeaderInfo() {
-    if (mCurrentTag == null) {
-      return;
-    }
+/*
+ * performs a GET request for the info we display here
+ */
+private void getTagHeaderInfo() {
+	if (mCurrentTag == null) {
+		return;
+	}
 
-    String tagNameForApi =
-        ReaderUtils.sanitizeWithDashes(mCurrentTag.getTagSlug());
-    String path = "read/tags/" + tagNameForApi + "/images?number=1";
+	String tagNameForApi =
+		ReaderUtils.sanitizeWithDashes(mCurrentTag.getTagSlug());
+	String path = "read/tags/" + tagNameForApi + "/images?number=1";
 
-    WordPress.getRestClientUtilsV1_2().get(path, new RestRequest.Listener() {
-      @Override
-      public void onResponse(JSONObject jsonObject) {
-        if (jsonObject == null) {
-          return;
-        }
+	WordPress.getRestClientUtilsV1_2().get(path, new RestRequest.Listener() {
+			@Override
+			public void onResponse(JSONObject jsonObject) {
+			        if (jsonObject == null) {
+			                return;
+				}
 
-        JSONArray jsonArray = jsonObject.optJSONArray("images");
-        if (jsonArray == null) {
-          return;
-        }
+			        JSONArray jsonArray = jsonObject.optJSONArray("images");
+			        if (jsonArray == null) {
+			                return;
+				}
 
-        JSONObject jsonImage = jsonArray.optJSONObject(0);
-        if (jsonImage == null) {
-          return;
-        }
+			        JSONObject jsonImage = jsonArray.optJSONObject(0);
+			        if (jsonImage == null) {
+			                return;
+				}
 
-        // current endpoint doesn't include the protocol
-        String url = JSONUtils.getString(jsonImage, "url");
-        if (!url.startsWith("http")) {
-          url = "https://" + url;
-        }
+			        // current endpoint doesn't include the protocol
+			        String url = JSONUtils.getString(jsonImage, "url");
+			        if (!url.startsWith("http")) {
+			                url = "https://" + url;
+				}
 
-        ReaderTagHeaderInfo info = new ReaderTagHeaderInfo();
-        info.setImageUrl(url);
-        info.setAuthorName(JSONUtils.getString(jsonImage, "author"));
-        info.setBlogName(JSONUtils.getString(jsonImage, "blog_title"));
-        info.setSourceBlogId(jsonImage.optLong("blog_id"));
-        info.setSourcePostId(jsonImage.optLong("post_id"));
+			        ReaderTagHeaderInfo info = new ReaderTagHeaderInfo();
+			        info.setImageUrl(url);
+			        info.setAuthorName(JSONUtils.getString(jsonImage, "author"));
+			        info.setBlogName(JSONUtils.getString(jsonImage, "blog_title"));
+			        info.setSourceBlogId(jsonImage.optLong("blog_id"));
+			        info.setSourcePostId(jsonImage.optLong("post_id"));
 
-        // add to cached list then display it
-        TAG_INFO_CACHE.setInfoForTag(mCurrentTag, info);
-        setTagHeaderInfo(info);
-      }
-    }, null);
-  }
+			        // add to cached list then display it
+			        TAG_INFO_CACHE.setInfoForTag(mCurrentTag, info);
+			        setTagHeaderInfo(info);
+			}
+		}, null);
+}
 
-  /*
-   * cache of tag header info
-   */
-  private static class ReaderTagHeaderInfoList
-      extends HashMap<String, ReaderTagHeaderInfo> {
-    public ReaderTagHeaderInfo getInfoForTag(ReaderTag tag) {
-      return this.get(getKeyForTag(tag));
-    }
+/*
+ * cache of tag header info
+ */
+private static class ReaderTagHeaderInfoList
+	extends HashMap<String, ReaderTagHeaderInfo> {
+public ReaderTagHeaderInfo getInfoForTag(ReaderTag tag) {
+	return this.get(getKeyForTag(tag));
+}
 
-    public boolean hasInfoForTag(ReaderTag tag) {
-      return this.containsKey(getKeyForTag(tag));
-    }
+public boolean hasInfoForTag(ReaderTag tag) {
+	return this.containsKey(getKeyForTag(tag));
+}
 
-    public void setInfoForTag(ReaderTag tag, ReaderTagHeaderInfo info) {
-      this.put(getKeyForTag(tag), info);
-    }
+public void setInfoForTag(ReaderTag tag, ReaderTagHeaderInfo info) {
+	this.put(getKeyForTag(tag), info);
+}
 
-    private String getKeyForTag(ReaderTag tag) { return tag.getTagSlug(); }
-  }
+private String getKeyForTag(ReaderTag tag) {
+	return tag.getTagSlug();
+}
+}
 }

@@ -22,68 +22,70 @@ import org.wordpress.android.models.ReaderComment;
  * thread
  */
 public class ReaderActions {
-  private ReaderActions() { throw new AssertionError(); }
+private ReaderActions() {
+	throw new AssertionError();
+}
 
-  /*
-   * listener when a specific action is performed (liking a post, etc.)
-   */
-  public interface ActionListener { void onActionResult(boolean succeeded); }
+/*
+ * listener when a specific action is performed (liking a post, etc.)
+ */
+public interface ActionListener { void onActionResult(boolean succeeded); }
 
-  /*
-   * helper routine for telling an action listener the call succeeded or failed
-   * w/o having to null check
-   */
-  public static void callActionListener(ActionListener actionListener,
-                                        boolean succeeded) {
-    if (actionListener != null) {
-      actionListener.onActionResult(succeeded);
-    }
-  }
+/*
+ * helper routine for telling an action listener the call succeeded or failed
+ * w/o having to null check
+ */
+public static void callActionListener(ActionListener actionListener,
+                                      boolean succeeded) {
+	if (actionListener != null) {
+		actionListener.onActionResult(succeeded);
+	}
+}
 
-  /*
-   * listener when the failure status code is required
-   */
-  public interface OnRequestListener {
-    void onSuccess();
+/*
+ * listener when the failure status code is required
+ */
+public interface OnRequestListener {
+void onSuccess();
 
-    void onFailure(int statusCode);
-  }
+void onFailure(int statusCode);
+}
 
-  /*
-   * listener when submitting a comment
-   */
-  public interface CommentActionListener {
-    void onActionResult(boolean succeeded, ReaderComment newComment);
-  }
+/*
+ * listener when submitting a comment
+ */
+public interface CommentActionListener {
+void onActionResult(boolean succeeded, ReaderComment newComment);
+}
 
-  /*
-   * result when updating data (getting latest posts or comments for a post,
-   * etc.)
-   */
-  public enum UpdateResult {
-    HAS_NEW,   // new posts/comments/etc. have been retrieved
-    CHANGED,   // no new posts/comments, but existing ones have changed
-    UNCHANGED, // no new or changed posts/comments
-    FAILED;    // request failed
+/*
+ * result when updating data (getting latest posts or comments for a post,
+ * etc.)
+ */
+public enum UpdateResult {
+	HAS_NEW, // new posts/comments/etc. have been retrieved
+	CHANGED, // no new posts/comments, but existing ones have changed
+	UNCHANGED, // no new or changed posts/comments
+	FAILED; // request failed
 
-    public boolean isNewOrChanged() {
-      return (this == HAS_NEW || this == CHANGED);
-    }
-  }
+	public boolean isNewOrChanged() {
+		return (this == HAS_NEW || this == CHANGED);
+	}
+}
 
-  public interface UpdateResultListener {
-    void onUpdateResult(UpdateResult result);
-  }
+public interface UpdateResultListener {
+void onUpdateResult(UpdateResult result);
+}
 
-  /*
-   * used by adapters to notify when more data should be loaded
-   */
-  public interface DataRequestedListener { void onRequestData(); }
+/*
+ * used by adapters to notify when more data should be loaded
+ */
+public interface DataRequestedListener { void onRequestData(); }
 
-  /*
-   * used by blog preview when requesting latest info about a blog
-   */
-  public interface UpdateBlogInfoListener {
-    void onResult(ReaderBlog blogInfo);
-  }
+/*
+ * used by blog preview when requesting latest info about a blog
+ */
+public interface UpdateBlogInfoListener {
+void onResult(ReaderBlog blogInfo);
+}
 }

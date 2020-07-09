@@ -16,41 +16,43 @@ import org.wordpress.android.util.AppLog.T;
  * https://github.com/chrisbanes/PhotoView/issues/31
  */
 public class WPViewPager extends ViewPager {
-  private boolean mPagingEnabled = true;
+private boolean mPagingEnabled = true;
 
-  public WPViewPager(Context context) { super(context); }
+public WPViewPager(Context context) {
+	super(context);
+}
 
-  public WPViewPager(Context context, AttributeSet attrs) {
-    super(context, attrs);
-  }
+public WPViewPager(Context context, AttributeSet attrs) {
+	super(context, attrs);
+}
 
-  @Override
-  public boolean onInterceptTouchEvent(MotionEvent ev) {
-    if (mPagingEnabled) {
-      try {
-        return super.onInterceptTouchEvent(ev);
-      } catch (IllegalArgumentException e) {
-        AppLog.e(T.UTILS, e);
-      }
-    }
-    return false;
-  }
+@Override
+public boolean onInterceptTouchEvent(MotionEvent ev) {
+	if (mPagingEnabled) {
+		try {
+			return super.onInterceptTouchEvent(ev);
+		} catch (IllegalArgumentException e) {
+			AppLog.e(T.UTILS, e);
+		}
+	}
+	return false;
+}
 
-  @SuppressLint("ClickableViewAccessibility")
-  // we are not detecting tap events, so can ignore this one
-  @Override
-  public boolean onTouchEvent(MotionEvent ev) {
-    if (mPagingEnabled) {
-      try {
-        return super.onTouchEvent(ev);
-      } catch (IllegalArgumentException e) {
-        AppLog.e(AppLog.T.UTILS, e);
-      }
-    }
-    return false;
-  }
+@SuppressLint("ClickableViewAccessibility")
+// we are not detecting tap events, so can ignore this one
+@Override
+public boolean onTouchEvent(MotionEvent ev) {
+	if (mPagingEnabled) {
+		try {
+			return super.onTouchEvent(ev);
+		} catch (IllegalArgumentException e) {
+			AppLog.e(AppLog.T.UTILS, e);
+		}
+	}
+	return false;
+}
 
-  public void setPagingEnabled(boolean pagingEnabled) {
-    mPagingEnabled = pagingEnabled;
-  }
+public void setPagingEnabled(boolean pagingEnabled) {
+	mPagingEnabled = pagingEnabled;
+}
 }

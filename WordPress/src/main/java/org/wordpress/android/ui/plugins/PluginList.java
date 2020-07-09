@@ -6,20 +6,20 @@ import java.util.ArrayList;
 import org.wordpress.android.fluxc.model.plugin.ImmutablePluginModel;
 
 class PluginList extends ArrayList<ImmutablePluginModel> {
-  long getItemId(int position) {
-    ImmutablePluginModel plugin = (ImmutablePluginModel)getItem(position);
-    if (plugin == null || TextUtils.isEmpty(plugin.getSlug())) {
-      // This should never happen
-      return -1;
-    }
-    return plugin.getSlug().hashCode();
-  }
+long getItemId(int position) {
+	ImmutablePluginModel plugin = (ImmutablePluginModel)getItem(position);
+	if (plugin == null || TextUtils.isEmpty(plugin.getSlug())) {
+		// This should never happen
+		return -1;
+	}
+	return plugin.getSlug().hashCode();
+}
 
-  @Nullable
-  Object getItem(int position) {
-    if (position >= 0 && position < size()) {
-      return get(position);
-    }
-    return null;
-  }
+@Nullable
+Object getItem(int position) {
+	if (position >= 0 && position < size()) {
+		return get(position);
+	}
+	return null;
+}
 }

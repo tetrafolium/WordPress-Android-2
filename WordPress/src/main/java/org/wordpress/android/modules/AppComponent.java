@@ -170,302 +170,302 @@ import org.wordpress.android.util.image.getters.WPCustomImageGetter;
                       LoginAnalyticsModule.class, LoginFragmentModule.class,
                       LoginServiceModule.class})
 public interface AppComponent extends AndroidInjector<WordPress> {
-  @Override void inject(WordPress instance);
+@Override void inject(WordPress instance);
 
-  void inject(WPMainActivity object);
+void inject(WPMainActivity object);
 
-  void inject(SiteCreationService object);
+void inject(SiteCreationService object);
 
-  void inject(UploadService object);
+void inject(UploadService object);
 
-  void inject(MediaUploadHandler object);
+void inject(MediaUploadHandler object);
 
-  void inject(PostUploadHandler object);
+void inject(PostUploadHandler object);
 
-  void inject(LoginActivity object);
+void inject(LoginActivity object);
 
-  void inject(LoginEpilogueActivity object);
+void inject(LoginEpilogueActivity object);
 
-  void inject(LoginEpilogueFragment object);
+void inject(LoginEpilogueFragment object);
 
-  void inject(LoginMagicLinkInterceptActivity object);
+void inject(LoginMagicLinkInterceptActivity object);
 
-  void inject(SignupEpilogueFragment object);
+void inject(SignupEpilogueFragment object);
 
-  void inject(SiteCreationActivity object);
+void inject(SiteCreationActivity object);
 
-  void inject(SiteCreationSegmentsFragment object);
+void inject(SiteCreationSegmentsFragment object);
 
-  void inject(SiteCreationSiteInfoFragment object);
+void inject(SiteCreationSiteInfoFragment object);
 
-  void inject(SiteCreationDomainsFragment object);
+void inject(SiteCreationDomainsFragment object);
 
-  void inject(SiteCreationVerticalsFragment object);
+void inject(SiteCreationVerticalsFragment object);
 
-  void inject(SiteCreationPreviewFragment object);
+void inject(SiteCreationPreviewFragment object);
 
-  void inject(JetpackConnectionResultActivity object);
+void inject(JetpackConnectionResultActivity object);
 
-  void inject(StatsConnectJetpackActivity object);
+void inject(StatsConnectJetpackActivity object);
 
-  void inject(GCMMessageService object);
+void inject(GCMMessageService object);
 
-  void inject(GCMRegistrationIntentService object);
+void inject(GCMRegistrationIntentService object);
 
-  void inject(DeepLinkingIntentReceiverActivity object);
+void inject(DeepLinkingIntentReceiverActivity object);
 
-  void inject(ShareIntentReceiverActivity object);
+void inject(ShareIntentReceiverActivity object);
 
-  void inject(ShareIntentReceiverFragment object);
+void inject(ShareIntentReceiverFragment object);
 
-  void inject(AddQuickPressShortcutActivity object);
+void inject(AddQuickPressShortcutActivity object);
 
-  void inject(HelpActivity object);
+void inject(HelpActivity object);
 
-  void inject(CommentDetailFragment object);
+void inject(CommentDetailFragment object);
 
-  void inject(EditCommentActivity object);
+void inject(EditCommentActivity object);
 
-  void inject(CommentAdapter object);
+void inject(CommentAdapter object);
 
-  void inject(CommentsListFragment object);
+void inject(CommentsListFragment object);
 
-  void inject(CommentsActivity object);
+void inject(CommentsActivity object);
 
-  void inject(CommentsDetailActivity object);
+void inject(CommentsDetailActivity object);
 
-  void inject(MeFragment object);
+void inject(MeFragment object);
 
-  void inject(MyProfileActivity object);
+void inject(MyProfileActivity object);
 
-  void inject(MyProfileFragment object);
+void inject(MyProfileFragment object);
 
-  void inject(AccountSettingsFragment object);
+void inject(AccountSettingsFragment object);
 
-  void inject(MySiteFragment object);
+void inject(MySiteFragment object);
 
-  void inject(SitePickerActivity object);
+void inject(SitePickerActivity object);
 
-  void inject(SitePickerAdapter object);
+void inject(SitePickerAdapter object);
 
-  void inject(SiteSettingsFragment object);
+void inject(SiteSettingsFragment object);
 
-  void inject(SiteSettingsInterface object);
+void inject(SiteSettingsInterface object);
 
-  void inject(BlogPreferencesActivity object);
+void inject(BlogPreferencesActivity object);
 
-  void inject(AppSettingsFragment object);
+void inject(AppSettingsFragment object);
 
-  void inject(PeopleManagementActivity object);
+void inject(PeopleManagementActivity object);
 
-  void inject(PeopleListFragment object);
+void inject(PeopleListFragment object);
 
-  void inject(PersonDetailFragment object);
+void inject(PersonDetailFragment object);
 
-  void inject(RoleChangeDialogFragment object);
+void inject(RoleChangeDialogFragment object);
 
-  void inject(PeopleInviteFragment object);
+void inject(PeopleInviteFragment object);
 
-  void inject(RoleSelectDialogFragment object);
+void inject(RoleSelectDialogFragment object);
 
-  void inject(PlansActivity object);
+void inject(PlansActivity object);
 
-  void inject(MediaBrowserActivity object);
+void inject(MediaBrowserActivity object);
 
-  void inject(MediaGridFragment object);
+void inject(MediaGridFragment object);
 
-  void inject(MediaPreviewActivity object);
+void inject(MediaPreviewActivity object);
 
-  void inject(MediaPreviewFragment object);
+void inject(MediaPreviewFragment object);
 
-  void inject(MediaSettingsActivity object);
+void inject(MediaSettingsActivity object);
 
-  void inject(PhotoPickerActivity object);
+void inject(PhotoPickerActivity object);
 
-  void inject(StockMediaPickerActivity object);
+void inject(StockMediaPickerActivity object);
 
-  void inject(SiteSettingsTagListActivity object);
+void inject(SiteSettingsTagListActivity object);
 
-  void inject(SiteSettingsTagDetailFragment object);
+void inject(SiteSettingsTagDetailFragment object);
 
-  void inject(PublicizeListActivity object);
+void inject(PublicizeListActivity object);
 
-  void inject(PublicizeWebViewFragment object);
+void inject(PublicizeWebViewFragment object);
 
-  void inject(PublicizeDetailFragment object);
+void inject(PublicizeDetailFragment object);
 
-  void inject(PublicizeListFragment object);
+void inject(PublicizeListFragment object);
 
-  void inject(PublicizeButtonPrefsFragment object);
+void inject(PublicizeButtonPrefsFragment object);
 
-  void inject(EditPostActivity object);
+void inject(EditPostActivity object);
 
-  void inject(EditPostSettingsFragment object);
+void inject(EditPostSettingsFragment object);
 
-  void inject(PostSettingsTagsActivity object);
+void inject(PostSettingsTagsActivity object);
 
-  void inject(PostsListActivity object);
+void inject(PostsListActivity object);
 
-  void inject(AuthorSelectionAdapter object);
+void inject(AuthorSelectionAdapter object);
 
-  void inject(PostListFragment object);
+void inject(PostListFragment object);
 
-  void inject(HistoryListFragment object);
+void inject(HistoryListFragment object);
 
-  void inject(HistoryAdapter object);
+void inject(HistoryAdapter object);
 
-  void inject(HistoryDetailContainerFragment object);
+void inject(HistoryDetailContainerFragment object);
 
-  void inject(NotificationsListFragment object);
+void inject(NotificationsListFragment object);
 
-  void inject(NotificationsListFragmentPage object);
+void inject(NotificationsListFragmentPage object);
 
-  void inject(NotificationsSettingsFragment object);
+void inject(NotificationsSettingsFragment object);
 
-  void inject(NotificationsDetailActivity object);
+void inject(NotificationsDetailActivity object);
 
-  void inject(NotificationsProcessingService object);
+void inject(NotificationsProcessingService object);
 
-  void inject(NotificationsPendingDraftsReceiver object);
+void inject(NotificationsPendingDraftsReceiver object);
 
-  void inject(NotificationsDetailListFragment notificationsDetailListFragment);
+void inject(NotificationsDetailListFragment notificationsDetailListFragment);
 
-  void inject(ReaderCommentListActivity object);
+void inject(ReaderCommentListActivity object);
 
-  void inject(ReaderUpdateLogic object);
+void inject(ReaderUpdateLogic object);
 
-  void inject(ReaderPostDetailFragment object);
+void inject(ReaderPostDetailFragment object);
 
-  void inject(ReaderPostListFragment object);
+void inject(ReaderPostListFragment object);
 
-  void inject(ReaderCommentAdapter object);
+void inject(ReaderCommentAdapter object);
 
-  void inject(ReaderPostAdapter object);
+void inject(ReaderPostAdapter object);
 
-  void inject(PlansListFragment object);
+void inject(PlansListFragment object);
 
-  void inject(ReaderSiteHeaderView object);
+void inject(ReaderSiteHeaderView object);
 
-  void inject(ReaderTagHeaderView object);
+void inject(ReaderTagHeaderView object);
 
-  void inject(ReaderLikingUsersView object);
+void inject(ReaderLikingUsersView object);
 
-  void inject(ReaderWebView object);
+void inject(ReaderWebView object);
 
-  void inject(ReaderPostPagerActivity object);
+void inject(ReaderPostPagerActivity object);
 
-  void inject(ReaderBlogAdapter object);
+void inject(ReaderBlogAdapter object);
 
-  void inject(ReleaseNotesActivity object);
+void inject(ReleaseNotesActivity object);
 
-  void inject(WPWebViewActivity object);
+void inject(WPWebViewActivity object);
 
-  void inject(WPWebViewClient object);
+void inject(WPWebViewClient object);
 
-  void inject(ThemeBrowserActivity object);
+void inject(ThemeBrowserActivity object);
 
-  void inject(NotesAdapter object);
+void inject(NotesAdapter object);
 
-  void inject(ThemeBrowserFragment object);
+void inject(ThemeBrowserFragment object);
 
-  void inject(MediaDeleteService object);
+void inject(MediaDeleteService object);
 
-  void inject(SelectCategoriesActivity object);
+void inject(SelectCategoriesActivity object);
 
-  void inject(ReaderUserAdapter object);
+void inject(ReaderUserAdapter object);
 
-  void inject(AddCategoryFragment object);
+void inject(AddCategoryFragment object);
 
-  void inject(HtmlToSpannedConverter object);
+void inject(HtmlToSpannedConverter object);
 
-  void inject(PluginBrowserActivity object);
+void inject(PluginBrowserActivity object);
 
-  void inject(ActivityLogListActivity object);
+void inject(ActivityLogListActivity object);
 
-  void inject(ActivityLogListFragment object);
+void inject(ActivityLogListFragment object);
 
-  void inject(ActivityLogDetailFragment object);
+void inject(ActivityLogDetailFragment object);
 
-  void inject(PluginListFragment object);
+void inject(PluginListFragment object);
 
-  void inject(PluginDetailActivity object);
+void inject(PluginDetailActivity object);
 
-  void inject(SuggestionAdapter object);
+void inject(SuggestionAdapter object);
 
-  void inject(WordPressGlideModule object);
+void inject(WordPressGlideModule object);
 
-  void inject(QuickStartFullScreenDialogFragment object);
+void inject(QuickStartFullScreenDialogFragment object);
 
-  void inject(QuickStartReminderReceiver object);
+void inject(QuickStartReminderReceiver object);
 
-  void inject(MediaGridAdapter object);
+void inject(MediaGridAdapter object);
 
-  void inject(PagesFragment object);
+void inject(PagesFragment object);
 
-  void inject(PageListFragment object);
+void inject(PageListFragment object);
 
-  void inject(SearchListFragment object);
+void inject(SearchListFragment object);
 
-  void inject(PageParentFragment object);
+void inject(PageParentFragment object);
 
-  void inject(WPCustomImageGetter object);
+void inject(WPCustomImageGetter object);
 
-  void inject(PublicizeAccountChooserListAdapter object);
+void inject(PublicizeAccountChooserListAdapter object);
 
-  void inject(PublicizeConnectionAdapter object);
+void inject(PublicizeConnectionAdapter object);
 
-  void inject(PublicizeServiceAdapter object);
+void inject(PublicizeServiceAdapter object);
 
-  void inject(JetpackRemoteInstallFragment jetpackRemoteInstallFragment);
+void inject(JetpackRemoteInstallFragment jetpackRemoteInstallFragment);
 
-  void inject(GiphyPickerActivity object);
+void inject(GiphyPickerActivity object);
 
-  void inject(PlansListAdapter object);
+void inject(PlansListAdapter object);
 
-  void inject(PlanDetailsFragment object);
+void inject(PlanDetailsFragment object);
 
-  void inject(DomainSuggestionsFragment object);
+void inject(DomainSuggestionsFragment object);
 
-  void inject(DomainRegistrationDetailsFragment object);
+void inject(DomainRegistrationDetailsFragment object);
 
-  void inject(StatsViewsWidget object);
+void inject(StatsViewsWidget object);
 
-  void inject(StatsAllTimeWidget object);
+void inject(StatsAllTimeWidget object);
 
-  void inject(StatsTodayWidget object);
+void inject(StatsTodayWidget object);
 
-  void inject(StatsMinifiedWidget object);
+void inject(StatsMinifiedWidget object);
 
-  void inject(ViewsWidgetListProvider object);
+void inject(ViewsWidgetListProvider object);
 
-  void inject(AllTimeWidgetListProvider object);
+void inject(AllTimeWidgetListProvider object);
 
-  void inject(AllTimeWidgetBlockListProviderFactory object);
+void inject(AllTimeWidgetBlockListProviderFactory object);
 
-  void inject(TodayWidgetListProvider object);
+void inject(TodayWidgetListProvider object);
 
-  void inject(TodayWidgetBlockListProviderFactory object);
+void inject(TodayWidgetBlockListProviderFactory object);
 
-  void inject(StatsActivity object);
+void inject(StatsActivity object);
 
-  void inject(DomainRegistrationActivity object);
+void inject(DomainRegistrationActivity object);
 
-  void inject(EditPostPublishSettingsFragment object);
+void inject(EditPostPublishSettingsFragment object);
 
-  void inject(PostDatePickerDialogFragment object);
+void inject(PostDatePickerDialogFragment object);
 
-  void inject(PostTimePickerDialogFragment object);
+void inject(PostTimePickerDialogFragment object);
 
-  void inject(PostNotificationScheduleTimeDialogFragment object);
+void inject(PostNotificationScheduleTimeDialogFragment object);
 
-  void inject(PublishNotificationReceiver object);
+void inject(PublishNotificationReceiver object);
 
-  // Allows us to inject the application without having to instantiate any
-  // modules, and provides the Application in the app graph
-  @Component.Builder
-  interface Builder {
-    @BindsInstance AppComponent.Builder application(Application application);
+// Allows us to inject the application without having to instantiate any
+// modules, and provides the Application in the app graph
+@Component.Builder
+interface Builder {
+@BindsInstance AppComponent.Builder application(Application application);
 
-    AppComponent build();
-  }
+AppComponent build();
+}
 }

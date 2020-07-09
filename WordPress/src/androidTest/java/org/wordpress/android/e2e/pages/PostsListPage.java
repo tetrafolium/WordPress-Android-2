@@ -8,15 +8,16 @@ import androidx.viewpager.widget.ViewPager;
 import org.wordpress.android.R;
 
 public class PostsListPage {
-  public PostsListPage() {}
+public PostsListPage() {
+}
 
-  public static void tapPostWithName(String name) {
-    scrollToAndClickOnTextInRecyclerView(name, getRecyclerView());
-  }
+public static void tapPostWithName(String name) {
+	scrollToAndClickOnTextInRecyclerView(name, getRecyclerView());
+}
 
-  private static RecyclerView getRecyclerView() {
-    ViewPager pager = getCurrentActivity().findViewById(R.id.postPager);
-    return (RecyclerView)pager.getChildAt(pager.getCurrentItem())
-        .findViewById(R.id.recycler_view);
-  }
+private static RecyclerView getRecyclerView() {
+	ViewPager pager = getCurrentActivity().findViewById(R.id.postPager);
+	return (RecyclerView)pager.getChildAt(pager.getCurrentItem())
+	       .findViewById(R.id.recycler_view);
+}
 }

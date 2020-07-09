@@ -18,48 +18,48 @@ import org.wordpress.android.util.AppLog.T;
  * https://developer.android.com/guide/components/broadcasts#effects-on-process-state
  */
 public class InstallationReferrerService extends Service
-    implements InstallationReferrerServiceLogic.ServiceCompletionListener {
-  private InstallationReferrerServiceLogic mInstallationReferrerServiceLogic;
+	implements InstallationReferrerServiceLogic.ServiceCompletionListener {
+private InstallationReferrerServiceLogic mInstallationReferrerServiceLogic;
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    AppLog.i(T.UTILS, "installation referrer service created");
-    mInstallationReferrerServiceLogic =
-        new InstallationReferrerServiceLogic(this, this);
-  }
+@Override
+public void onCreate() {
+	super.onCreate();
+	AppLog.i(T.UTILS, "installation referrer service created");
+	mInstallationReferrerServiceLogic =
+		new InstallationReferrerServiceLogic(this, this);
+}
 
-  @Override
-  public void onDestroy() {
-    AppLog.i(T.UTILS, "installation referrer service destroyed");
-    mInstallationReferrerServiceLogic.onDestroy();
-    super.onDestroy();
-  }
+@Override
+public void onDestroy() {
+	AppLog.i(T.UTILS, "installation referrer service destroyed");
+	mInstallationReferrerServiceLogic.onDestroy();
+	super.onDestroy();
+}
 
-  @Override
-  public IBinder onBind(Intent intent) {
-    return null;
-  }
+@Override
+public IBinder onBind(Intent intent) {
+	return null;
+}
 
-  @Override
-  public int onStartCommand(Intent intent, int flags, int startId) {
-    AppLog.i(T.UTILS,
-             "installation referrer service > task: " + startId + " started");
-    mInstallationReferrerServiceLogic.performTask(intent.getExtras(), startId);
-    return START_NOT_STICKY;
-  }
+@Override
+public int onStartCommand(Intent intent, int flags, int startId) {
+	AppLog.i(T.UTILS,
+	         "installation referrer service > task: " + startId + " started");
+	mInstallationReferrerServiceLogic.performTask(intent.getExtras(), startId);
+	return START_NOT_STICKY;
+}
 
-  @Override
-  public void onCompleted(Object companion) {
-    if (companion instanceof Integer) {
-      AppLog.i(T.UTILS, "installation referrer service > task: " + companion +
-                            " completed");
-      stopSelf((Integer)companion);
-    } else {
-      AppLog.i(
-          T.UTILS,
-          "installation referrer service > task: <not identified> completed");
-      stopSelf();
-    }
-  }
+@Override
+public void onCompleted(Object companion) {
+	if (companion instanceof Integer) {
+		AppLog.i(T.UTILS, "installation referrer service > task: " + companion +
+		         " completed");
+		stopSelf((Integer)companion);
+	} else {
+		AppLog.i(
+			T.UTILS,
+			"installation referrer service > task: <not identified> completed");
+		stopSelf();
+	}
+}
 }

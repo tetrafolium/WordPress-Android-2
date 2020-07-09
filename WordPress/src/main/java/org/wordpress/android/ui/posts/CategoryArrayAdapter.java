@@ -16,45 +16,45 @@ import org.wordpress.android.models.CategoryNode;
 import org.wordpress.android.util.DisplayUtils;
 
 public class CategoryArrayAdapter extends ArrayAdapter<CategoryNode> {
-  private int mResourceId;
+private int mResourceId;
 
-  CategoryArrayAdapter(Context context, int resource,
-                       List<CategoryNode> objects) {
-    super(context, resource, objects);
-    mResourceId = resource;
-  }
+CategoryArrayAdapter(Context context, int resource,
+                     List<CategoryNode> objects) {
+	super(context, resource, objects);
+	mResourceId = resource;
+}
 
-  @NonNull
-  @Override
-  public View getView(int position, @Nullable View convertView,
-                      @NonNull ViewGroup parent) {
-    LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(
-        Context.LAYOUT_INFLATER_SERVICE);
-    View rowView = convertView;
-    if (rowView == null) {
-      rowView = inflater.inflate(mResourceId, parent, false);
-      ViewHolder viewHolder = new ViewHolder(rowView);
-      rowView.setTag(viewHolder);
-    }
+@NonNull
+@Override
+public View getView(int position, @Nullable View convertView,
+                    @NonNull ViewGroup parent) {
+	LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(
+		Context.LAYOUT_INFLATER_SERVICE);
+	View rowView = convertView;
+	if (rowView == null) {
+		rowView = inflater.inflate(mResourceId, parent, false);
+		ViewHolder viewHolder = new ViewHolder(rowView);
+		rowView.setTag(viewHolder);
+	}
 
-    ViewHolder viewHolder = (ViewHolder)rowView.getTag();
-    CategoryNode node = getItem(position);
-    if (node != null) {
-      viewHolder.mCategoryRowText.setText(
-          StringEscapeUtils.unescapeHtml4(node.getName()));
-      ViewCompat.setPaddingRelative(
-          viewHolder.mCategoryRowText,
-          DisplayUtils.dpToPx(getContext(), 16) * node.getLevel(), 0,
-          DisplayUtils.dpToPx(getContext(), 16), 0);
-    }
-    return rowView;
-  }
+	ViewHolder viewHolder = (ViewHolder)rowView.getTag();
+	CategoryNode node = getItem(position);
+	if (node != null) {
+		viewHolder.mCategoryRowText.setText(
+			StringEscapeUtils.unescapeHtml4(node.getName()));
+		ViewCompat.setPaddingRelative(
+			viewHolder.mCategoryRowText,
+			DisplayUtils.dpToPx(getContext(), 16) * node.getLevel(), 0,
+			DisplayUtils.dpToPx(getContext(), 16), 0);
+	}
+	return rowView;
+}
 
-  private static class ViewHolder {
-    private final TextView mCategoryRowText;
+private static class ViewHolder {
+private final TextView mCategoryRowText;
 
-    private ViewHolder(View view) {
-      this.mCategoryRowText = view.findViewById(R.id.categoryRowText);
-    }
-  }
+private ViewHolder(View view) {
+	this.mCategoryRowText = view.findViewById(R.id.categoryRowText);
+}
+}
 }

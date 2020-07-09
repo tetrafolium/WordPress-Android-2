@@ -16,101 +16,110 @@ import org.wordpress.android.util.helpers.MediaGallery;
 @Config(sdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class EditorFragmentAbstractTest {
-  @Test
-  public void testActivityMustImplementEditorFragmentListener() {
-    // Host Activity must implement EditorFragmentListener, exception expected
-    // if not
-    boolean didPassTest = false;
-    Activity hostActivity =
-        Robolectric.buildActivity(Activity.class).create().get();
-    EditorFragmentAbstract testFragment = new DefaultEditorFragment();
+@Test
+public void testActivityMustImplementEditorFragmentListener() {
+	// Host Activity must implement EditorFragmentListener, exception expected
+	// if not
+	boolean didPassTest = false;
+	Activity hostActivity =
+		Robolectric.buildActivity(Activity.class).create().get();
+	EditorFragmentAbstract testFragment = new DefaultEditorFragment();
 
-    try {
-      testFragment.onAttach(hostActivity);
-    } catch (ClassCastException classCastException) {
-      didPassTest = true;
-    }
+	try {
+		testFragment.onAttach(hostActivity);
+	} catch (ClassCastException classCastException) {
+		didPassTest = true;
+	}
 
-    Assert.assertTrue(didPassTest);
-  }
+	Assert.assertTrue(didPassTest);
+}
 
-  @Test
-  public void testOnBackPressReturnsFalseByDefault() {
-    // The default behavior of onBackPressed should return false
-    Assert.assertFalse(new DefaultEditorFragment().onBackPressed());
-  }
+@Test
+public void testOnBackPressReturnsFalseByDefault() {
+	// The default behavior of onBackPressed should return false
+	Assert.assertFalse(new DefaultEditorFragment().onBackPressed());
+}
 
-  /**
-   * Used to test default behavior of non-abstract methods.
-   */
-  public static class DefaultEditorFragment extends EditorFragmentAbstract {
-    @Override
-    public void setTitle(CharSequence text) {}
+/**
+ * Used to test default behavior of non-abstract methods.
+ */
+public static class DefaultEditorFragment extends EditorFragmentAbstract {
+@Override
+public void setTitle(CharSequence text) {
+}
 
-    @Override
-    public void setContent(CharSequence text) {}
+@Override
+public void setContent(CharSequence text) {
+}
 
-    @Override
-    public CharSequence getTitle() {
-      return null;
-    }
+@Override
+public CharSequence getTitle() {
+	return null;
+}
 
-    @Override
-    public CharSequence getContent(CharSequence originalContent) {
-      return null;
-    }
+@Override
+public CharSequence getContent(CharSequence originalContent) {
+	return null;
+}
 
-    @Override
-    public void appendMediaFile(MediaFile mediaFile, String imageUrl,
-                                ImageLoader imageLoader) {}
+@Override
+public void appendMediaFile(MediaFile mediaFile, String imageUrl,
+                            ImageLoader imageLoader) {
+}
 
-    @Override
-    public void appendGallery(MediaGallery mediaGallery) {}
+@Override
+public void appendGallery(MediaGallery mediaGallery) {
+}
 
-    @Override
-    public void setUrlForVideoPressId(String videoPressId, String url,
-                                      String posterUrl) {}
+@Override
+public void setUrlForVideoPressId(String videoPressId, String url,
+                                  String posterUrl) {
+}
 
-    @Override
-    public boolean isUploadingMedia() {
-      return false;
-    }
+@Override
+public boolean isUploadingMedia() {
+	return false;
+}
 
-    @Override
-    public boolean isActionInProgress() {
-      return false;
-    }
+@Override
+public boolean isActionInProgress() {
+	return false;
+}
 
-    @Override
-    public boolean hasFailedMediaUploads() {
-      return false;
-    }
+@Override
+public boolean hasFailedMediaUploads() {
+	return false;
+}
 
-    @Override
-    public void removeAllFailedMediaUploads() {}
+@Override
+public void removeAllFailedMediaUploads() {
+}
 
-    @Override
-    public void removeMedia(String mediaId) {}
+@Override
+public void removeMedia(String mediaId) {
+}
 
-    @Override
-    public void setTitlePlaceholder(CharSequence text) {}
+@Override
+public void setTitlePlaceholder(CharSequence text) {
+}
 
-    @Override
-    public LiveData<Editable> getTitleOrContentChanged() {
-      return null;
-    }
+@Override
+public LiveData<Editable> getTitleOrContentChanged() {
+	return null;
+}
 
-    @Override
-    public boolean showSavingProgressDialogIfNeeded() {
-      return false;
-    }
+@Override
+public boolean showSavingProgressDialogIfNeeded() {
+	return false;
+}
 
-    @Override
-    public boolean hideSavingProgressDialog() {
-      return false;
-    }
+@Override
+public boolean hideSavingProgressDialog() {
+	return false;
+}
 
-    @Override
-    public void setContentPlaceholder(CharSequence text) {}
-  }
+@Override
+public void setContentPlaceholder(CharSequence text) {
+}
+}
 }

@@ -32,124 +32,124 @@ import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class WPScreenshotTest extends BaseTest {
-  @ClassRule
-  public static final WPLocaleTestRule LOCALE_TEST_RULE =
-      new WPLocaleTestRule();
+@ClassRule
+public static final WPLocaleTestRule LOCALE_TEST_RULE =
+	new WPLocaleTestRule();
 
-  @Rule
-  public ActivityTestRule<WPLaunchActivity> mActivityTestRule =
-      new ActivityTestRule<>(WPLaunchActivity.class, false, false);
+@Rule
+public ActivityTestRule<WPLaunchActivity> mActivityTestRule =
+	new ActivityTestRule<>(WPLaunchActivity.class, false, false);
 
-  private DemoModeEnabler mDemoModeEnabler = new DemoModeEnabler();
+private DemoModeEnabler mDemoModeEnabler = new DemoModeEnabler();
 
-  @Test
-  public void wPScreenshotTest() {
-    mActivityTestRule.launchActivity(null);
-    Screengrab.setDefaultScreenshotStrategy(
-        new UiAutomatorScreenshotStrategy());
+@Test
+public void wPScreenshotTest() {
+	mActivityTestRule.launchActivity(null);
+	Screengrab.setDefaultScreenshotStrategy(
+		new UiAutomatorScreenshotStrategy());
 
-    // Enable Demo Mode
-    mDemoModeEnabler.enable();
+	// Enable Demo Mode
+	mDemoModeEnabler.enable();
 
-    wpLogin();
+	wpLogin();
 
-    editBlogPost();
-    manageMedia();
-    navigateStats();
-    navigateNotifications();
+	editBlogPost();
+	manageMedia();
+	navigateStats();
+	navigateNotifications();
 
-    // Turn Demo Mode off on the emulator when we're done
-    mDemoModeEnabler.disable();
-  }
+	// Turn Demo Mode off on the emulator when we're done
+	mDemoModeEnabler.disable();
+}
 
-  private void editBlogPost() {
-    // Get a screenshot of the post editor
-    screenshotPostWithName("Summer Band Jam", "1-PostEditor", true);
+private void editBlogPost() {
+	// Get a screenshot of the post editor
+	screenshotPostWithName("Summer Band Jam", "1-PostEditor", true);
 
-    // Get a screenshot of the drafts feature
-    screenshotPostWithName("Ideas", "5-DraftEditor", false);
+	// Get a screenshot of the drafts feature
+	screenshotPostWithName("Ideas", "5-DraftEditor", false);
 
-    // Get a screenshot of the writing feature (without image)
-    screenshotPostWithName("Time to Book Summer Sessions", "6-Writing", true);
+	// Get a screenshot of the writing feature (without image)
+	screenshotPostWithName("Time to Book Summer Sessions", "6-Writing", true);
 
-    // Exit back to the main activity
-    pressBackUntilElementIsDisplayed(R.id.nav_sites);
-  }
+	// Exit back to the main activity
+	pressBackUntilElementIsDisplayed(R.id.nav_sites);
+}
 
-  private void screenshotPostWithName(String name, String screenshotName,
-                                      boolean hideKeyboard) {
-    // Click on the "Blog Posts" row
-    scrollToThenClickOn(R.id.row_blog_posts);
+private void screenshotPostWithName(String name, String screenshotName,
+                                    boolean hideKeyboard) {
+	// Click on the "Blog Posts" row
+	scrollToThenClickOn(R.id.row_blog_posts);
 
-    // Wait for the blog posts to load, then edit the first post
-    selectItemWithTitleInTabLayout("Drafts", R.id.tabLayout);
+	// Wait for the blog posts to load, then edit the first post
+	selectItemWithTitleInTabLayout("Drafts", R.id.tabLayout);
 
-    idleFor(2000);
+	idleFor(2000);
 
-    PostsListPage.tapPostWithName(name);
+	PostsListPage.tapPostWithName(name);
 
-    waitForElementToBeDisplayed(R.id.editor_activity);
+	waitForElementToBeDisplayed(R.id.editor_activity);
 
-    // Wait for the editor to load all images
-    idleFor(5000);
+	// Wait for the editor to load all images
+	idleFor(5000);
 
-    if (hideKeyboard) {
-      Espresso.closeSoftKeyboard();
-    }
+	if (hideKeyboard) {
+		Espresso.closeSoftKeyboard();
+	}
 
-    takeScreenshot(screenshotName);
-    pressBackUntilElementIsDisplayed(R.id.row_blog_posts);
-  }
+	takeScreenshot(screenshotName);
+	pressBackUntilElementIsDisplayed(R.id.row_blog_posts);
+}
 
-  private void manageMedia() {
-    // Click on the "Sites" tab in the nav, then choose "Media"
-    clickOn(R.id.nav_sites);
-    clickOn(R.id.row_media);
+private void manageMedia() {
+	// Click on the "Sites" tab in the nav, then choose "Media"
+	clickOn(R.id.nav_sites);
+	clickOn(R.id.row_media);
 
-    waitForElementToBeDisplayedWithoutFailure(R.id.media_grid_item_image);
+	waitForElementToBeDisplayedWithoutFailure(R.id.media_grid_item_image);
 
-    takeScreenshot("4-media");
-    pressBackUntilElementIsDisplayed(R.id.row_media);
-  }
+	takeScreenshot("4-media");
+	pressBackUntilElementIsDisplayed(R.id.row_media);
+}
 
-  private void navigateNotifications() {
-    // Click on the "Notifications" tab in the nav
-    clickOn(R.id.nav_notifications);
+private void navigateNotifications() {
+	// Click on the "Notifications" tab in the nav
+	clickOn(R.id.nav_notifications);
 
-    waitForAtLeastOneElementWithIdToBeDisplayed(R.id.note_content_container);
-    waitForImagesOfTypeWithPlaceholder(R.id.note_avatar, ImageType.AVATAR);
+	waitForAtLeastOneElementWithIdToBeDisplayed(R.id.note_content_container);
+	waitForImagesOfTypeWithPlaceholder(R.id.note_avatar, ImageType.AVATAR);
 
-    takeScreenshot("3-notifications");
+	takeScreenshot("3-notifications");
 
-    // Exit the notifications activity
-    pressBackUntilElementIsDisplayed(R.id.nav_sites);
-  }
+	// Exit the notifications activity
+	pressBackUntilElementIsDisplayed(R.id.nav_sites);
+}
 
-  private void navigateStats() {
-    // Click on the "Sites" tab in the nav, then choose "Stats"
-    clickOn(R.id.nav_sites);
-    clickOn(R.id.row_stats);
+private void navigateStats() {
+	// Click on the "Sites" tab in the nav, then choose "Stats"
+	clickOn(R.id.nav_sites);
+	clickOn(R.id.row_stats);
 
-    // Wait for the stats to load
-    waitForAtLeastOneElementWithIdToBeDisplayed(R.id.stats_block_list);
-    takeScreenshot("2-stats");
+	// Wait for the stats to load
+	waitForAtLeastOneElementWithIdToBeDisplayed(R.id.stats_block_list);
+	takeScreenshot("2-stats");
 
-    // Exit the Stats Activity
-    pressBackUntilElementIsDisplayed(R.id.nav_sites);
-  }
+	// Exit the Stats Activity
+	pressBackUntilElementIsDisplayed(R.id.nav_sites);
+}
 
-  private void takeScreenshot(String screenshotName) {
-    try {
-      Screengrab.screenshot(screenshotName);
-    } catch (RuntimeException r) {
-      // Screenshots will fail when running outside of Fastlane, so this is safe
-      // to ignore.
-    }
-  }
+private void takeScreenshot(String screenshotName) {
+	try {
+		Screengrab.screenshot(screenshotName);
+	} catch (RuntimeException r) {
+		// Screenshots will fail when running outside of Fastlane, so this is safe
+		// to ignore.
+	}
+}
 
-  private boolean editPostActivityIsNoLongerLoadingImages() {
-    EditPostActivity editPostActivity = (EditPostActivity)getCurrentActivity();
-    return editPostActivity.getAztecImageLoader()
-               .getNumberOfImagesBeingDownloaded() == 0;
-  }
+private boolean editPostActivityIsNoLongerLoadingImages() {
+	EditPostActivity editPostActivity = (EditPostActivity)getCurrentActivity();
+	return editPostActivity.getAztecImageLoader()
+	       .getNumberOfImagesBeingDownloaded() == 0;
+}
 }

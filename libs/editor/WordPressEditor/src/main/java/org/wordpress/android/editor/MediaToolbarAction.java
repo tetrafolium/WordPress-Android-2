@@ -10,50 +10,50 @@ import org.wordpress.aztec.toolbar.IToolbarAction;
 import org.wordpress.aztec.toolbar.ToolbarActionType;
 
 public enum MediaToolbarAction implements IToolbarAction {
-  GALLERY(R.id.media_bar_button_gallery, ToolbarActionType.OTHER,
-          new HashSet<ITextFormat>(
-              Collections.singletonList(AztecTextFormat.FORMAT_NONE))),
-  CAMERA(R.id.media_bar_button_camera, ToolbarActionType.OTHER,
-         new HashSet<ITextFormat>(
-             Collections.singletonList(AztecTextFormat.FORMAT_NONE))),
-  LIBRARY(R.id.media_bar_button_library, ToolbarActionType.OTHER,
-          new HashSet<ITextFormat>(
-              Collections.singletonList(AztecTextFormat.FORMAT_NONE)));
+	GALLERY(R.id.media_bar_button_gallery, ToolbarActionType.OTHER,
+	        new HashSet<ITextFormat>(
+			Collections.singletonList(AztecTextFormat.FORMAT_NONE))),
+	CAMERA(R.id.media_bar_button_camera, ToolbarActionType.OTHER,
+	       new HashSet<ITextFormat>(
+		       Collections.singletonList(AztecTextFormat.FORMAT_NONE))),
+	LIBRARY(R.id.media_bar_button_library, ToolbarActionType.OTHER,
+	        new HashSet<ITextFormat>(
+			Collections.singletonList(AztecTextFormat.FORMAT_NONE)));
 
-  private final int mButtonId;
-  private final ToolbarActionType mActionType;
-  private final Set<ITextFormat> mTextFormats;
+	private final int mButtonId;
+	private final ToolbarActionType mActionType;
+	private final Set<ITextFormat> mTextFormats;
 
-  MediaToolbarAction(int buttonId, ToolbarActionType actionType,
-                     Set<ITextFormat> textFormats) {
-    this.mButtonId = buttonId;
-    this.mActionType = actionType;
-    this.mTextFormats = textFormats;
-  }
+	MediaToolbarAction(int buttonId, ToolbarActionType actionType,
+	                   Set<ITextFormat> textFormats) {
+		this.mButtonId = buttonId;
+		this.mActionType = actionType;
+		this.mTextFormats = textFormats;
+	}
 
-  @Override
-  public int getButtonId() {
-    return mButtonId;
-  }
+	@Override
+	public int getButtonId() {
+		return mButtonId;
+	}
 
-  @NotNull
-  @Override
-  public ToolbarActionType getActionType() {
-    return mActionType;
-  }
+	@NotNull
+	@Override
+	public ToolbarActionType getActionType() {
+		return mActionType;
+	}
 
-  @NotNull
-  @Override
-  public Set<ITextFormat> getTextFormats() {
-    return mTextFormats;
-  }
+	@NotNull
+	@Override
+	public Set<ITextFormat> getTextFormats() {
+		return mTextFormats;
+	}
 
-  @Override
-  public boolean isStylingAction() {
-    return false;
-  }
+	@Override
+	public boolean isStylingAction() {
+		return false;
+	}
 
-  public interface MediaToolbarButtonClickListener {
-    void onMediaToolbarButtonClicked(MediaToolbarAction button);
-  }
+	public interface MediaToolbarButtonClickListener {
+	void onMediaToolbarButtonClicked(MediaToolbarAction button);
+	}
 }

@@ -11,35 +11,37 @@ import org.wordpress.android.fluxc.model.SiteModel;
 import org.wordpress.android.fluxc.persistence.WellSqlConfig;
 
 public class TestWellSqlConfig extends WellSqlConfig {
-  private static final Class[] TABLES = {
-      AccountModel.class,
-      SiteModel.class,
-      PostModel.class,
-  };
+private static final Class[] TABLES = {
+	AccountModel.class,
+	SiteModel.class,
+	PostModel.class,
+};
 
-  public TestWellSqlConfig(Context context) { super(context); }
+public TestWellSqlConfig(Context context) {
+	super(context);
+}
 
-  @Override
-  public String getDbName() {
-    return "test-wp-fluxc";
-  }
+@Override
+public String getDbName() {
+	return "test-wp-fluxc";
+}
 
-  @Override
-  public void onCreate(SQLiteDatabase db, WellTableManager helper) {
-    for (Class table : TABLES) {
-      helper.createTable(table);
-    }
-  }
+@Override
+public void onCreate(SQLiteDatabase db, WellTableManager helper) {
+	for (Class table : TABLES) {
+		helper.createTable(table);
+	}
+}
 
-  /**
-   * Drop and create all tables
-   */
-  public void reset() {
-    SQLiteDatabase db = WellSql.giveMeWritableDb();
-    for (Class clazz : TABLES) {
-      TableClass table = getTable(clazz);
-      db.execSQL("DROP TABLE IF EXISTS " + table.getTableName());
-      db.execSQL(table.createStatement());
-    }
-  }
+/**
+ * Drop and create all tables
+ */
+public void reset() {
+	SQLiteDatabase db = WellSql.giveMeWritableDb();
+	for (Class clazz : TABLES) {
+		TableClass table = getTable(clazz);
+		db.execSQL("DROP TABLE IF EXISTS " + table.getTableName());
+		db.execSQL(table.createStatement());
+	}
+}
 }

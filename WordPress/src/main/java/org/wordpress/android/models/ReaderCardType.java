@@ -11,81 +11,81 @@ import org.wordpress.android.util.HtmlUtils;
  */
 
 public enum ReaderCardType {
-  DEFAULT,
-  PHOTO,
-  GALLERY,
-  VIDEO;
+	DEFAULT,
+	PHOTO,
+	GALLERY,
+	VIDEO;
 
-  private static final int MIN_CONTENT_CHARS = 100;
+	private static final int MIN_CONTENT_CHARS = 100;
 
-  public static ReaderCardType fromReaderPost(ReaderPost post) {
-    if (post == null) {
-      return DEFAULT;
-    }
+	public static ReaderCardType fromReaderPost(ReaderPost post) {
+		if (post == null) {
+			return DEFAULT;
+		}
 
-    // posts with a featured image and little or no text get the photo card
-    // treatment
-    if (post.hasFeaturedImage() && hasMinContent(post)) {
-      return PHOTO;
-    }
+		// posts with a featured image and little or no text get the photo card
+		// treatment
+		if (post.hasFeaturedImage() && hasMinContent(post)) {
+			return PHOTO;
+		}
 
-    // posts that have a featured video show an embedded video card
-    if (post.hasFeaturedVideo()) {
-      return VIDEO;
-    }
+		// posts that have a featured video show an embedded video card
+		if (post.hasFeaturedVideo()) {
+			return VIDEO;
+		}
 
-    // if this post doesn't have a featured image but has enough usable images
-    // to fill the stream's thumbnail strip, treat it as a gallery
-    if (!post.hasFeaturedImage() && post.hasImages() &&
-        new ReaderImageScanner(post.getText(), post.isPrivate)
-            .hasUsableImageCount(ReaderThumbnailStrip.IMAGE_COUNT,
-                                 ReaderConstants.MIN_GALLERY_IMAGE_WIDTH)) {
-      return GALLERY;
-    }
+		// if this post doesn't have a featured image but has enough usable images
+		// to fill the stream's thumbnail strip, treat it as a gallery
+		if (!post.hasFeaturedImage() && post.hasImages() &&
+		    new ReaderImageScanner(post.getText(), post.isPrivate)
+		    .hasUsableImageCount(ReaderThumbnailStrip.IMAGE_COUNT,
+		                         ReaderConstants.MIN_GALLERY_IMAGE_WIDTH)) {
+			return GALLERY;
+		}
 
-    return DEFAULT;
-  }
+		return DEFAULT;
+	}
 
-  /*
-   * returns true if the post's content is 100 characters or less
-   */
-  private static boolean hasMinContent(@NonNull ReaderPost post) {
-    if (post.getExcerpt().length() > MIN_CONTENT_CHARS) {
-      return false;
-    }
-    if (post.getText().length() <= MIN_CONTENT_CHARS) {
-      return true;
-    }
-    return (HtmlUtils.fastStripHtml(post.getText()).length() <=
-            MIN_CONTENT_CHARS);
-  }
+	/*
+	 * returns true if the post's content is 100 characters or less
+	 */
+	private static boolean hasMinContent(@NonNull ReaderPost post) {
+		if (post.getExcerpt().length() > MIN_CONTENT_CHARS) {
+			return false;
+		}
+		if (post.getText().length() <= MIN_CONTENT_CHARS) {
+			return true;
+		}
+		return (HtmlUtils.fastStripHtml(post.getText()).length() <=
+		        MIN_CONTENT_CHARS);
+	}
 
-  public static String toString(ReaderCardType cardType) {
-    if (cardType == null) {
-      return "DEFAULT";
-    }
-    switch (cardType) {
-    case PHOTO:
-      return "PHOTO";
-    case GALLERY:
-      return "GALLERY";
-    case VIDEO:
-      return "VIDEO";
-    default:
-      return "DEFAULT";
-    }
-  }
+	public static String toString(ReaderCardType cardType) {
+		if (cardType == null) {
+			return "DEFAULT";
+		}
+		switch (cardType) {
+		case PHOTO:
+			return "PHOTO";
+		case GALLERY:
+			return "GALLERY";
+		case VIDEO:
+			return "VIDEO";
+		default:
+			return "DEFAULT";
+		}
+	}
 
-  public static ReaderCardType fromString(String s) {
-    if ("PHOTO".equals(s)) {
-      return PHOTO;
-    }
-    if ("GALLERY".equals(s)) {
-      return GALLERY;
-    }
-    if ("VIDEO".equals(s)) {
-      return VIDEO;
-    }
-    return DEFAULT;
-  }
+	public static ReaderCardType fromString(String s) {
+		if ("PHOTO".equals(s)) {
+			return PHOTO;
+		}
+		if ("GALLERY".equals(s)) {
+			return GALLERY;
+		}
+		if ("VIDEO".equals(s)) {
+			return VIDEO;
+		}
+		return DEFAULT;
+	}
 }

@@ -14,52 +14,52 @@ import org.wordpress.android.fluxc.store.AccountStore;
 import org.wordpress.android.util.LocaleManager;
 
 public class MyProfileActivity extends AppCompatActivity {
-  private static final String KEY_MY_PROFILE_FRAGMENT = "my-profile-fragment";
+private static final String KEY_MY_PROFILE_FRAGMENT = "my-profile-fragment";
 
-  @Inject Dispatcher mDispatcher;
-  @Inject AccountStore mAccountStore;
+@Inject Dispatcher mDispatcher;
+@Inject AccountStore mAccountStore;
 
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(LocaleManager.setLocale(newBase));
-  }
+@Override
+protected void attachBaseContext(Context newBase) {
+	super.attachBaseContext(LocaleManager.setLocale(newBase));
+}
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    ((WordPress)getApplication()).component().inject(this);
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	((WordPress)getApplication()).component().inject(this);
 
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setHomeButtonEnabled(true);
-      actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setTitle(R.string.my_profile);
-    }
-  }
+	ActionBar actionBar = getSupportActionBar();
+	if (actionBar != null) {
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(R.string.my_profile);
+	}
+}
 
-  @Override
-  protected void onResume() {
-    super.onResume();
+@Override
+protected void onResume() {
+	super.onResume();
 
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    MyProfileFragment myProfileFragment =
-        (MyProfileFragment)fragmentManager.findFragmentByTag(
-            KEY_MY_PROFILE_FRAGMENT);
-    if (myProfileFragment == null) {
-      myProfileFragment = MyProfileFragment.newInstance();
+	FragmentManager fragmentManager = getSupportFragmentManager();
+	MyProfileFragment myProfileFragment =
+		(MyProfileFragment)fragmentManager.findFragmentByTag(
+			KEY_MY_PROFILE_FRAGMENT);
+	if (myProfileFragment == null) {
+		myProfileFragment = MyProfileFragment.newInstance();
 
-      fragmentManager.beginTransaction()
-          .add(android.R.id.content, myProfileFragment, KEY_MY_PROFILE_FRAGMENT)
-          .commit();
-    }
-  }
+		fragmentManager.beginTransaction()
+		.add(android.R.id.content, myProfileFragment, KEY_MY_PROFILE_FRAGMENT)
+		.commit();
+	}
+}
 
-  @Override
-  public boolean onOptionsItemSelected(final MenuItem item) {
-    if (item.getItemId() == android.R.id.home) {
-      onBackPressed();
-      return true;
-    }
-    return super.onOptionsItemSelected(item);
-  }
+@Override
+public boolean onOptionsItemSelected(final MenuItem item) {
+	if (item.getItemId() == android.R.id.home) {
+		onBackPressed();
+		return true;
+	}
+	return super.onOptionsItemSelected(item);
+}
 }

@@ -11,50 +11,50 @@ import org.wordpress.android.util.AppLog;
 import org.wordpress.android.util.LocaleManager;
 
 public class NotificationsUpdateService extends Service
-    implements NotificationsUpdateLogic.ServiceCompletionListener {
-  private NotificationsUpdateLogic mNotificationsUpdateLogic;
+	implements NotificationsUpdateLogic.ServiceCompletionListener {
+private NotificationsUpdateLogic mNotificationsUpdateLogic;
 
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(LocaleManager.setLocale(newBase));
-  }
+@Override
+protected void attachBaseContext(Context newBase) {
+	super.attachBaseContext(LocaleManager.setLocale(newBase));
+}
 
-  @Override
-  public IBinder onBind(Intent intent) {
-    return null;
-  }
+@Override
+public IBinder onBind(Intent intent) {
+	return null;
+}
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    AppLog.i(AppLog.T.NOTIFS, "notifications update service > created");
-    mNotificationsUpdateLogic =
-        new NotificationsUpdateLogic(LocaleManager.getLanguage(this), this);
-  }
+@Override
+public void onCreate() {
+	super.onCreate();
+	AppLog.i(AppLog.T.NOTIFS, "notifications update service > created");
+	mNotificationsUpdateLogic =
+		new NotificationsUpdateLogic(LocaleManager.getLanguage(this), this);
+}
 
-  @Override
-  public void onDestroy() {
-    AppLog.i(AppLog.T.NOTIFS, "notifications update service > destroyed");
-    super.onDestroy();
-  }
+@Override
+public void onDestroy() {
+	AppLog.i(AppLog.T.NOTIFS, "notifications update service > destroyed");
+	super.onDestroy();
+}
 
-  @Override
-  public int onStartCommand(Intent intent, int flags, int startId) {
-    if (intent != null) {
-      String noteId =
-          intent.getStringExtra(NotificationsListFragment.NOTE_ID_EXTRA);
-      boolean isStartedByTappingOnNotification =
-          intent.getBooleanExtra(IS_TAPPED_ON_NOTIFICATION, false);
-      mNotificationsUpdateLogic.performRefresh(
-          noteId, isStartedByTappingOnNotification, null);
-    }
-    return START_NOT_STICKY;
-  }
+@Override
+public int onStartCommand(Intent intent, int flags, int startId) {
+	if (intent != null) {
+		String noteId =
+			intent.getStringExtra(NotificationsListFragment.NOTE_ID_EXTRA);
+		boolean isStartedByTappingOnNotification =
+			intent.getBooleanExtra(IS_TAPPED_ON_NOTIFICATION, false);
+		mNotificationsUpdateLogic.performRefresh(
+			noteId, isStartedByTappingOnNotification, null);
+	}
+	return START_NOT_STICKY;
+}
 
-  @Override
-  public void onCompleted(Object companion) {
-    AppLog.i(AppLog.T.NOTIFS,
-             "notifications update service > all tasks completed");
-    stopSelf();
-  }
+@Override
+public void onCompleted(Object companion) {
+	AppLog.i(AppLog.T.NOTIFS,
+	         "notifications update service > all tasks completed");
+	stopSelf();
+}
 }

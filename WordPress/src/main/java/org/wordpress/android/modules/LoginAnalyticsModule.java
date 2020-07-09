@@ -9,9 +9,9 @@ import org.wordpress.android.ui.accounts.login.LoginAnalyticsTracker;
 
 @Module
 public class LoginAnalyticsModule {
-  @Provides
-  public LoginAnalyticsListener
-  provideAnalyticsListener(AccountStore accountStore, SiteStore siteStore) {
-    return new LoginAnalyticsTracker(accountStore, siteStore);
-  }
+@Provides
+public LoginAnalyticsListener
+provideAnalyticsListener(AccountStore accountStore, SiteStore siteStore) {
+	return new LoginAnalyticsTracker(accountStore, siteStore);
+}
 }

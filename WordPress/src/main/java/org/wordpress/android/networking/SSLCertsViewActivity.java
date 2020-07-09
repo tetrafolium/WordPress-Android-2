@@ -9,34 +9,34 @@ import org.wordpress.android.ui.WebViewActivity;
  * Display details of a SSL cert
  */
 public class SSLCertsViewActivity extends WebViewActivity {
-  public static final String CERT_DETAILS_KEYS = "CertDetails";
+public static final String CERT_DETAILS_KEYS = "CertDetails";
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setTitle(getResources().getText(R.string.ssl_certificate_details));
+@Override
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setTitle(getResources().getText(R.string.ssl_certificate_details));
 
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(false);
-    }
-  }
+	ActionBar actionBar = getSupportActionBar();
+	if (actionBar != null) {
+		actionBar.setDisplayHomeAsUpEnabled(false);
+	}
+}
 
-  @Override
-  protected void loadContent() {
-    Bundle extras = getIntent().getExtras();
-    if (extras != null && extras.containsKey(CERT_DETAILS_KEYS)) {
-      String certDetails = extras.getString(CERT_DETAILS_KEYS);
-      StringBuilder sb = new StringBuilder("<html><body>");
-      sb.append(certDetails);
-      sb.append("</body></html>");
-      mWebView.loadDataWithBaseURL(null, sb.toString(), "text/html", "utf-8",
-                                   null);
-    }
-  }
+@Override
+protected void loadContent() {
+	Bundle extras = getIntent().getExtras();
+	if (extras != null && extras.containsKey(CERT_DETAILS_KEYS)) {
+		String certDetails = extras.getString(CERT_DETAILS_KEYS);
+		StringBuilder sb = new StringBuilder("<html><body>");
+		sb.append(certDetails);
+		sb.append("</body></html>");
+		mWebView.loadDataWithBaseURL(null, sb.toString(), "text/html", "utf-8",
+		                             null);
+	}
+}
 
-  @Override
-  protected void configureWebView() {
-    mWebView.getSettings().setDefaultTextEncodingName("utf-8");
-  }
+@Override
+protected void configureWebView() {
+	mWebView.getSettings().setDefaultTextEncodingName("utf-8");
+}
 }

@@ -3,12 +3,12 @@ package org.wordpress.android.ui.accounts.login;
 import java.util.ArrayList;
 
 public interface LoginPrologueListener {
-  // Login Prologue callbacks
-  void showEmailLoginScreen();
+// Login Prologue callbacks
+void showEmailLoginScreen();
 
-  void doStartSignup();
+void doStartSignup();
 
-  void loggedInViaSignup(ArrayList<Integer> oldSitesIds);
+void loggedInViaSignup(ArrayList<Integer> oldSitesIds);
 
-  void newUserCreatedButErrored(String email, String password);
+void newUserCreatedButErrored(String email, String password);
 }

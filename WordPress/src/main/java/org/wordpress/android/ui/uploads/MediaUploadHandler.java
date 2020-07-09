@@ -30,488 +30,488 @@ import org.wordpress.android.util.WPMediaUtils;
 import org.wordpress.android.util.analytics.AnalyticsUtils;
 
 public class MediaUploadHandler
-    implements UploadHandler<MediaModel>,
-               VideoOptimizer.VideoOptimizationListener {
-  private static List<MediaModel> sPendingUploads = new ArrayList<>();
-  private static List<MediaModel> sInProgressUploads = new ArrayList<>();
-  private static ConcurrentHashMap<Integer, Float>
-      sOptimizationProgressByMediaId = new ConcurrentHashMap<>();
+	implements UploadHandler<MediaModel>,
+	           VideoOptimizer.VideoOptimizationListener {
+private static List<MediaModel> sPendingUploads = new ArrayList<>();
+private static List<MediaModel> sInProgressUploads = new ArrayList<>();
+private static ConcurrentHashMap<Integer, Float>
+sOptimizationProgressByMediaId = new ConcurrentHashMap<>();
 
-  @Inject Dispatcher mDispatcher;
-  @Inject SiteStore mSiteStore;
+@Inject Dispatcher mDispatcher;
+@Inject SiteStore mSiteStore;
 
-  MediaUploadHandler() {
-    ((WordPress)WordPress.getContext().getApplicationContext())
-        .component()
-        .inject(this);
-    AppLog.i(T.MEDIA, "MediaUploadHandler > Created");
-    mDispatcher.register(this);
-    EventBus.getDefault().register(this);
-  }
+MediaUploadHandler() {
+	((WordPress)WordPress.getContext().getApplicationContext())
+	.component()
+	.inject(this);
+	AppLog.i(T.MEDIA, "MediaUploadHandler > Created");
+	mDispatcher.register(this);
+	EventBus.getDefault().register(this);
+}
 
-  void unregister() {
-    sOptimizationProgressByMediaId.clear();
-    mDispatcher.unregister(this);
-    EventBus.getDefault().unregister(this);
-  }
+void unregister() {
+	sOptimizationProgressByMediaId.clear();
+	mDispatcher.unregister(this);
+	EventBus.getDefault().unregister(this);
+}
 
-  @Override
-  public boolean hasInProgressUploads() {
-    return !sInProgressUploads.isEmpty() || !sPendingUploads.isEmpty();
-  }
+@Override
+public boolean hasInProgressUploads() {
+	return !sInProgressUploads.isEmpty() || !sPendingUploads.isEmpty();
+}
 
-  @Override
-  public void cancelInProgressUploads() {
-    for (MediaModel oneUpload : sInProgressUploads) {
-      cancelUpload(oneUpload, false);
-    }
-  }
+@Override
+public void cancelInProgressUploads() {
+	for (MediaModel oneUpload : sInProgressUploads) {
+		cancelUpload(oneUpload, false);
+	}
+}
 
-  @Override
-  public void upload(@NonNull MediaModel media) {
-    addUniqueMediaToQueue(media);
-    uploadNextInQueue();
-  }
+@Override
+public void upload(@NonNull MediaModel media) {
+	addUniqueMediaToQueue(media);
+	uploadNextInQueue();
+}
 
-  static boolean hasInProgressMediaUploadsForPost(PostModel postModel) {
-    if (postModel == null) {
-      return false;
-    }
+static boolean hasInProgressMediaUploadsForPost(PostModel postModel) {
+	if (postModel == null) {
+		return false;
+	}
 
-    synchronized (sInProgressUploads) {
-      for (MediaModel queuedMedia : sInProgressUploads) {
-        if (queuedMedia.getLocalPostId() == postModel.getId()) {
-          return true;
-        }
-      }
-    }
+	synchronized (sInProgressUploads) {
+		for (MediaModel queuedMedia : sInProgressUploads) {
+			if (queuedMedia.getLocalPostId() == postModel.getId()) {
+				return true;
+			}
+		}
+	}
 
-    return false;
-  }
+	return false;
+}
 
-  static boolean hasPendingMediaUploadsForPost(PostModel postModel) {
-    if (postModel == null) {
-      return false;
-    }
+static boolean hasPendingMediaUploadsForPost(PostModel postModel) {
+	if (postModel == null) {
+		return false;
+	}
 
-    synchronized (sPendingUploads) {
-      for (MediaModel queuedMedia : sPendingUploads) {
-        if (queuedMedia.getLocalPostId() == postModel.getId()) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+	synchronized (sPendingUploads) {
+		for (MediaModel queuedMedia : sPendingUploads) {
+			if (queuedMedia.getLocalPostId() == postModel.getId()) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
-  static boolean
-  hasPendingOrInProgressMediaUploadsForPost(PostModel postModel) {
-    if (postModel == null) {
-      return false;
-    }
+static boolean
+hasPendingOrInProgressMediaUploadsForPost(PostModel postModel) {
+	if (postModel == null) {
+		return false;
+	}
 
-    // Check if there are media in the in-progress or the pending queue attached
-    // to the given post
-    return hasInProgressMediaUploadsForPost(postModel) ||
-        hasPendingMediaUploadsForPost(postModel);
-  }
+	// Check if there are media in the in-progress or the pending queue attached
+	// to the given post
+	return hasInProgressMediaUploadsForPost(postModel) ||
+	       hasPendingMediaUploadsForPost(postModel);
+}
 
-  static MediaModel
-  getPendingOrInProgressFeaturedImageUploadForPost(PostModel postModel) {
-    if (postModel == null) {
-      return null;
-    }
-    List<MediaModel> uploads =
-        getPendingOrInProgressMediaUploadsForPost(postModel);
-    for (MediaModel model : uploads) {
-      if (model.getMarkedLocallyAsFeatured()) {
-        return model;
-      }
-    }
+static MediaModel
+getPendingOrInProgressFeaturedImageUploadForPost(PostModel postModel) {
+	if (postModel == null) {
+		return null;
+	}
+	List<MediaModel> uploads =
+		getPendingOrInProgressMediaUploadsForPost(postModel);
+	for (MediaModel model : uploads) {
+		if (model.getMarkedLocallyAsFeatured()) {
+			return model;
+		}
+	}
 
-    return null;
-  }
+	return null;
+}
 
-  public static List<MediaModel>
-  getPendingOrInProgressMediaUploadsForPost(PostModel postModel) {
-    if (postModel == null) {
-      return Collections.emptyList();
-    }
+public static List<MediaModel>
+getPendingOrInProgressMediaUploadsForPost(PostModel postModel) {
+	if (postModel == null) {
+		return Collections.emptyList();
+	}
 
-    List<MediaModel> mediaList = new ArrayList<>();
-    synchronized (sInProgressUploads) {
-      for (MediaModel queuedMedia : sInProgressUploads) {
-        if (queuedMedia.getLocalPostId() == postModel.getId()) {
-          mediaList.add(queuedMedia);
-        }
-      }
-    }
+	List<MediaModel> mediaList = new ArrayList<>();
+	synchronized (sInProgressUploads) {
+		for (MediaModel queuedMedia : sInProgressUploads) {
+			if (queuedMedia.getLocalPostId() == postModel.getId()) {
+				mediaList.add(queuedMedia);
+			}
+		}
+	}
 
-    synchronized (sPendingUploads) {
-      for (MediaModel queuedMedia : sPendingUploads) {
-        if (queuedMedia.getLocalPostId() == postModel.getId()) {
-          mediaList.add(queuedMedia);
-        }
-      }
-    }
-    return mediaList;
-  }
+	synchronized (sPendingUploads) {
+		for (MediaModel queuedMedia : sPendingUploads) {
+			if (queuedMedia.getLocalPostId() == postModel.getId()) {
+				mediaList.add(queuedMedia);
+			}
+		}
+	}
+	return mediaList;
+}
 
-  static boolean isPendingOrInProgressMediaUpload(@NonNull MediaModel media) {
-    synchronized (sInProgressUploads) {
-      for (MediaModel uploadingMedia : sInProgressUploads) {
-        if (uploadingMedia.getId() == media.getId()) {
-          return true;
-        }
-      }
-    }
+static boolean isPendingOrInProgressMediaUpload(@NonNull MediaModel media) {
+	synchronized (sInProgressUploads) {
+		for (MediaModel uploadingMedia : sInProgressUploads) {
+			if (uploadingMedia.getId() == media.getId()) {
+				return true;
+			}
+		}
+	}
 
-    synchronized (sPendingUploads) {
-      for (MediaModel queuedMedia : sPendingUploads) {
-        if (queuedMedia.getId() == media.getId()) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+	synchronized (sPendingUploads) {
+		for (MediaModel queuedMedia : sPendingUploads) {
+			if (queuedMedia.getId() == media.getId()) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
-  /**
-   * Returns an overall progress for the given {@param video}, including the
-   * video optimization progress. If there is no record for that video, it's
-   * assumed to be a completed upload.
-   */
-  static float getOverallProgressForVideo(MediaModel video,
-                                          float uploadProgress) {
-    if (sOptimizationProgressByMediaId.containsKey(video.getId())) {
-      float optimizationProgress =
-          sOptimizationProgressByMediaId.get(video.getId());
-      return optimizationProgress * 0.5F;
-    }
-    return 0.5F + (uploadProgress * 0.5F);
-  }
+/**
+ * Returns an overall progress for the given {@param video}, including the
+ * video optimization progress. If there is no record for that video, it's
+ * assumed to be a completed upload.
+ */
+static float getOverallProgressForVideo(MediaModel video,
+                                        float uploadProgress) {
+	if (sOptimizationProgressByMediaId.containsKey(video.getId())) {
+		float optimizationProgress =
+			sOptimizationProgressByMediaId.get(video.getId());
+		return optimizationProgress * 0.5F;
+	}
+	return 0.5F + (uploadProgress * 0.5F);
+}
 
-  private void handleOnMediaUploadedSuccess(@NonNull OnMediaUploaded event) {
-    if (event.canceled) {
-      AppLog.i(T.MEDIA, "MediaUploadHandler > Upload successfully canceled");
-      trackUploadMediaEvents(
-          AnalyticsTracker.Stat.MEDIA_UPLOAD_CANCELED,
-          getMediaFromInProgressQueueById(event.media.getId()), null);
-      completeUploadWithId(event.media.getId());
-      uploadNextInQueue();
-    } else if (event.completed) {
-      AppLog.i(T.MEDIA, "MediaUploadHandler > Upload completed - localId=" +
-                            event.media.getId() +
-                            " title=" + event.media.getTitle());
-      trackUploadMediaEvents(
-          AnalyticsTracker.Stat.MEDIA_UPLOAD_SUCCESS,
-          getMediaFromInProgressQueueById(event.media.getId()), null);
-      completeUploadWithId(event.media.getId());
-      uploadNextInQueue();
-    } else {
-      AppLog.i(T.MEDIA, "MediaUploadHandler > " + event.media.getId() +
-                            " - progress: " + event.progress);
-    }
-  }
+private void handleOnMediaUploadedSuccess(@NonNull OnMediaUploaded event) {
+	if (event.canceled) {
+		AppLog.i(T.MEDIA, "MediaUploadHandler > Upload successfully canceled");
+		trackUploadMediaEvents(
+			AnalyticsTracker.Stat.MEDIA_UPLOAD_CANCELED,
+			getMediaFromInProgressQueueById(event.media.getId()), null);
+		completeUploadWithId(event.media.getId());
+		uploadNextInQueue();
+	} else if (event.completed) {
+		AppLog.i(T.MEDIA, "MediaUploadHandler > Upload completed - localId=" +
+		         event.media.getId() +
+		         " title=" + event.media.getTitle());
+		trackUploadMediaEvents(
+			AnalyticsTracker.Stat.MEDIA_UPLOAD_SUCCESS,
+			getMediaFromInProgressQueueById(event.media.getId()), null);
+		completeUploadWithId(event.media.getId());
+		uploadNextInQueue();
+	} else {
+		AppLog.i(T.MEDIA, "MediaUploadHandler > " + event.media.getId() +
+		         " - progress: " + event.progress);
+	}
+}
 
-  private void handleOnMediaUploadedError(@NonNull OnMediaUploaded event) {
-    AppLog.w(T.MEDIA, "MediaUploadHandler > Error uploading media: " +
-                          event.error.message);
-    MediaModel media = getMediaFromInProgressQueueById(event.media.getId());
-    if (media != null) {
-      mDispatcher.dispatch(MediaActionBuilder.newUpdateMediaAction(media));
-    }
+private void handleOnMediaUploadedError(@NonNull OnMediaUploaded event) {
+	AppLog.w(T.MEDIA, "MediaUploadHandler > Error uploading media: " +
+	         event.error.message);
+	MediaModel media = getMediaFromInProgressQueueById(event.media.getId());
+	if (media != null) {
+		mDispatcher.dispatch(MediaActionBuilder.newUpdateMediaAction(media));
+	}
 
-    Map<String, Object> properties = new HashMap<>();
-    properties.put("error_type", event.error.type.name());
-    trackUploadMediaEvents(AnalyticsTracker.Stat.MEDIA_UPLOAD_ERROR, media,
-                           properties);
+	Map<String, Object> properties = new HashMap<>();
+	properties.put("error_type", event.error.type.name());
+	trackUploadMediaEvents(AnalyticsTracker.Stat.MEDIA_UPLOAD_ERROR, media,
+	                       properties);
 
-    completeUploadWithId(event.media.getId());
-    uploadNextInQueue();
-  }
+	completeUploadWithId(event.media.getId());
+	uploadNextInQueue();
+}
 
-  private synchronized void uploadNextInQueue() {
-    MediaModel next = getNextMediaToUpload();
+private synchronized void uploadNextInQueue() {
+	MediaModel next = getNextMediaToUpload();
 
-    if (next == null) {
-      AppLog.w(
-          T.MEDIA,
-          "MediaUploadHandler > No more media items to upload. Skipping this request.");
-      checkIfUploadsComplete();
-      return;
-    }
+	if (next == null) {
+		AppLog.w(
+			T.MEDIA,
+			"MediaUploadHandler > No more media items to upload. Skipping this request.");
+		checkIfUploadsComplete();
+		return;
+	}
 
-    prepareForUpload(next);
-  }
+	prepareForUpload(next);
+}
 
-  private synchronized void completeUploadWithId(int id) {
-    MediaModel media = getMediaFromInProgressQueueById(id);
-    if (media != null) {
-      sInProgressUploads.remove(media);
-      trackUploadMediaEvents(AnalyticsTracker.Stat.MEDIA_UPLOAD_STARTED, media,
-                             null);
-    }
-  }
+private synchronized void completeUploadWithId(int id) {
+	MediaModel media = getMediaFromInProgressQueueById(id);
+	if (media != null) {
+		sInProgressUploads.remove(media);
+		trackUploadMediaEvents(AnalyticsTracker.Stat.MEDIA_UPLOAD_STARTED, media,
+		                       null);
+	}
+}
 
-  private MediaModel getMediaFromInProgressQueueById(int id) {
-    for (MediaModel media : sInProgressUploads) {
-      if (media.getId() == id) {
-        return media;
-      }
-    }
-    return null;
-  }
+private MediaModel getMediaFromInProgressQueueById(int id) {
+	for (MediaModel media : sInProgressUploads) {
+		if (media.getId() == id) {
+			return media;
+		}
+	}
+	return null;
+}
 
-  private MediaModel getNextMediaToUpload() {
-    if (!sPendingUploads.isEmpty()) {
-      return sPendingUploads.remove(0);
-    }
-    return null;
-  }
+private MediaModel getNextMediaToUpload() {
+	if (!sPendingUploads.isEmpty()) {
+		return sPendingUploads.remove(0);
+	}
+	return null;
+}
 
-  private void addUniqueMediaToQueue(MediaModel media) {
-    if (media != null) {
-      if (mediaAlreadyQueuedOrUploading(media)) {
-        return;
-      }
+private void addUniqueMediaToQueue(MediaModel media) {
+	if (media != null) {
+		if (mediaAlreadyQueuedOrUploading(media)) {
+			return;
+		}
 
-      // no match found in queue
-      sPendingUploads.add(media);
-    }
-  }
+		// no match found in queue
+		sPendingUploads.add(media);
+	}
+}
 
-  private void
-  addUniqueMediaToInProgressUploads(@NonNull MediaModel mediaToAdd) {
-    synchronized (sInProgressUploads) {
-      for (MediaModel media : sInProgressUploads) {
-        if (media.getId() == mediaToAdd.getId()) {
-          return;
-        }
-      }
-      sInProgressUploads.add(mediaToAdd);
-    }
-  }
+private void
+addUniqueMediaToInProgressUploads(@NonNull MediaModel mediaToAdd) {
+	synchronized (sInProgressUploads) {
+		for (MediaModel media : sInProgressUploads) {
+			if (media.getId() == mediaToAdd.getId()) {
+				return;
+			}
+		}
+		sInProgressUploads.add(mediaToAdd);
+	}
+}
 
-  private void cancelUpload(MediaModel oneUpload, boolean delete) {
-    if (oneUpload != null) {
-      SiteModel site = mSiteStore.getSiteByLocalId(oneUpload.getLocalSiteId());
-      if (site != null) {
-        dispatchCancelAction(oneUpload, site, delete);
-      } else {
-        AppLog.w(T.MEDIA,
-                 "MediaUploadHandler > Unexpected state, site is null. "
-                     + "Skipping cancellation of this request.");
-      }
-    }
-  }
+private void cancelUpload(MediaModel oneUpload, boolean delete) {
+	if (oneUpload != null) {
+		SiteModel site = mSiteStore.getSiteByLocalId(oneUpload.getLocalSiteId());
+		if (site != null) {
+			dispatchCancelAction(oneUpload, site, delete);
+		} else {
+			AppLog.w(T.MEDIA,
+			         "MediaUploadHandler > Unexpected state, site is null. "
+			         + "Skipping cancellation of this request.");
+		}
+	}
+}
 
-  private void prepareForUpload(@NonNull MediaModel media) {
-    if (media.isVideo() && WPMediaUtils.isVideoOptimizationEnabled()) {
-      addUniqueMediaToInProgressUploads(media);
-      new VideoOptimizer(media, this).start();
-    } else {
-      dispatchUploadAction(media);
-    }
-  }
+private void prepareForUpload(@NonNull MediaModel media) {
+	if (media.isVideo() && WPMediaUtils.isVideoOptimizationEnabled()) {
+		addUniqueMediaToInProgressUploads(media);
+		new VideoOptimizer(media, this).start();
+	} else {
+		dispatchUploadAction(media);
+	}
+}
 
-  private void dispatchUploadAction(@NonNull final MediaModel media) {
-    SiteModel site = mSiteStore.getSiteByLocalId(media.getLocalSiteId());
+private void dispatchUploadAction(@NonNull final MediaModel media) {
+	SiteModel site = mSiteStore.getSiteByLocalId(media.getLocalSiteId());
 
-    // somehow lost our reference to the site, complete this action
-    if (site == null) {
-      AppLog.w(
-          T.MEDIA,
-          "MediaUploadHandler > Unexpected state, site is null. Skipping this request.");
-      checkIfUploadsComplete();
-      return;
-    }
+	// somehow lost our reference to the site, complete this action
+	if (site == null) {
+		AppLog.w(
+			T.MEDIA,
+			"MediaUploadHandler > Unexpected state, site is null. Skipping this request.");
+		checkIfUploadsComplete();
+		return;
+	}
 
-    AppLog.i(
-        T.MEDIA,
-        "MediaUploadHandler > Dispatching upload action for media with local id: " +
-            media.getId() + " and path: " + media.getFilePath());
-    addUniqueMediaToInProgressUploads(media);
+	AppLog.i(
+		T.MEDIA,
+		"MediaUploadHandler > Dispatching upload action for media with local id: " +
+		media.getId() + " and path: " + media.getFilePath());
+	addUniqueMediaToInProgressUploads(media);
 
-    mDispatcher.dispatch(MediaActionBuilder.newUpdateMediaAction(media));
-    UploadMediaPayload payload =
-        new UploadMediaPayload(site, media, AppPrefs.isStripImageLocation());
-    mDispatcher.dispatch(MediaActionBuilder.newUploadMediaAction(payload));
-  }
+	mDispatcher.dispatch(MediaActionBuilder.newUpdateMediaAction(media));
+	UploadMediaPayload payload =
+		new UploadMediaPayload(site, media, AppPrefs.isStripImageLocation());
+	mDispatcher.dispatch(MediaActionBuilder.newUploadMediaAction(payload));
+}
 
-  private void dispatchCancelAction(@NonNull final MediaModel media,
-                                    @NonNull final SiteModel site,
-                                    boolean delete) {
-    AppLog.i(
-        T.MEDIA,
-        "MediaUploadHandler > Dispatching cancel upload action for media with local id: " +
-            media.getId() + " and path: " + media.getFilePath());
-    CancelMediaPayload payload = new CancelMediaPayload(site, media, delete);
-    mDispatcher.dispatch(
-        MediaActionBuilder.newCancelMediaUploadAction(payload));
-  }
+private void dispatchCancelAction(@NonNull final MediaModel media,
+                                  @NonNull final SiteModel site,
+                                  boolean delete) {
+	AppLog.i(
+		T.MEDIA,
+		"MediaUploadHandler > Dispatching cancel upload action for media with local id: " +
+		media.getId() + " and path: " + media.getFilePath());
+	CancelMediaPayload payload = new CancelMediaPayload(site, media, delete);
+	mDispatcher.dispatch(
+		MediaActionBuilder.newCancelMediaUploadAction(payload));
+}
 
-  private boolean checkIfUploadsComplete() {
-    if (sPendingUploads.isEmpty() && sInProgressUploads.isEmpty()) {
-      AppLog.i(T.MEDIA, "MediaUploadHandler > Completed");
-      return true;
-    }
-    return false;
-  }
+private boolean checkIfUploadsComplete() {
+	if (sPendingUploads.isEmpty() && sInProgressUploads.isEmpty()) {
+		AppLog.i(T.MEDIA, "MediaUploadHandler > Completed");
+		return true;
+	}
+	return false;
+}
 
-  // App events
+// App events
 
-  @SuppressWarnings("unused")
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onEventMainThread(PostEvents.PostMediaCanceled event) {
-    if (event.post == null) {
-      return;
-    }
-    synchronized (sInProgressUploads) {
-      for (MediaModel inProgressUpload : sInProgressUploads) {
-        if (inProgressUpload.getLocalPostId() == event.post.getId()) {
-          cancelUpload(inProgressUpload, true);
-        }
-      }
-    }
-    synchronized (sPendingUploads) {
-      for (MediaModel pendingUpload : sPendingUploads) {
-        if (pendingUpload.getLocalPostId() == event.post.getId()) {
-          cancelUpload(pendingUpload, true);
-        }
-      }
-    }
-  }
+@SuppressWarnings("unused")
+@Subscribe(threadMode = ThreadMode.MAIN)
+public void onEventMainThread(PostEvents.PostMediaCanceled event) {
+	if (event.post == null) {
+		return;
+	}
+	synchronized (sInProgressUploads) {
+		for (MediaModel inProgressUpload : sInProgressUploads) {
+			if (inProgressUpload.getLocalPostId() == event.post.getId()) {
+				cancelUpload(inProgressUpload, true);
+			}
+		}
+	}
+	synchronized (sPendingUploads) {
+		for (MediaModel pendingUpload : sPendingUploads) {
+			if (pendingUpload.getLocalPostId() == event.post.getId()) {
+				cancelUpload(pendingUpload, true);
+			}
+		}
+	}
+}
 
-  // FluxC events
+// FluxC events
 
-  /**
-   * Has priority 9 on OnMediaUploaded events, which ensures that
-   * MediaUploadHandler is the first to receive and process OnMediaUploaded
-   * events, before they trickle down to other subscribers.
-   */
-  @SuppressWarnings("unused")
-  @Subscribe(threadMode = ThreadMode.MAIN, priority = 9)
-  public void onMediaUploaded(OnMediaUploaded event) {
-    if (event.media == null) {
-      AppLog.w(
-          T.MEDIA,
-          "MediaUploadHandler > Received media event for null media, ignoring");
-      return;
-    }
+/**
+ * Has priority 9 on OnMediaUploaded events, which ensures that
+ * MediaUploadHandler is the first to receive and process OnMediaUploaded
+ * events, before they trickle down to other subscribers.
+ */
+@SuppressWarnings("unused")
+@Subscribe(threadMode = ThreadMode.MAIN, priority = 9)
+public void onMediaUploaded(OnMediaUploaded event) {
+	if (event.media == null) {
+		AppLog.w(
+			T.MEDIA,
+			"MediaUploadHandler > Received media event for null media, ignoring");
+		return;
+	}
 
-    if (event.isError()) {
-      handleOnMediaUploadedError(event);
-    } else {
-      handleOnMediaUploadedSuccess(event);
-    }
-  }
+	if (event.isError()) {
+		handleOnMediaUploadedError(event);
+	} else {
+		handleOnMediaUploadedSuccess(event);
+	}
+}
 
-  /**
-   * Analytics about media being uploaded
-   *
-   * @param media The media being uploaded
-   */
-  private void trackUploadMediaEvents(AnalyticsTracker.Stat stat,
-                                      MediaModel media,
-                                      Map<String, Object> properties) {
-    if (media == null) {
-      AppLog.e(
-          T.MEDIA,
-          "MediaUploadHandler > Cannot track media upload handler events if the original media"
-              + "is null");
-      return;
-    }
-    Map<String, Object> mediaProperties = AnalyticsUtils.getMediaProperties(
-        WordPress.getContext(), media.isVideo(), null, media.getFilePath());
-    if (properties != null) {
-      mediaProperties.putAll(properties);
-    }
-    AnalyticsTracker.track(stat, mediaProperties);
-  }
+/**
+ * Analytics about media being uploaded
+ *
+ * @param media The media being uploaded
+ */
+private void trackUploadMediaEvents(AnalyticsTracker.Stat stat,
+                                    MediaModel media,
+                                    Map<String, Object> properties) {
+	if (media == null) {
+		AppLog.e(
+			T.MEDIA,
+			"MediaUploadHandler > Cannot track media upload handler events if the original media"
+			+ "is null");
+		return;
+	}
+	Map<String, Object> mediaProperties = AnalyticsUtils.getMediaProperties(
+		WordPress.getContext(), media.isVideo(), null, media.getFilePath());
+	if (properties != null) {
+		mediaProperties.putAll(properties);
+	}
+	AnalyticsTracker.track(stat, mediaProperties);
+}
 
-  private boolean mediaAlreadyQueuedOrUploading(MediaModel mediaModel) {
-    for (MediaModel queuedMedia : sInProgressUploads) {
-      AppLog.i(T.MEDIA,
-               "MediaUploadHandler > Attempting to add media with path " +
-                   mediaModel.getFilePath() + " and site id " +
-                   mediaModel.getLocalSiteId() + ". Comparing with " +
-                   queuedMedia.getFilePath() + ", " +
-                   queuedMedia.getLocalSiteId());
-      if (isSameMediaFileQueuedForThisPost(queuedMedia, mediaModel)) {
-        return true;
-      }
-    }
+private boolean mediaAlreadyQueuedOrUploading(MediaModel mediaModel) {
+	for (MediaModel queuedMedia : sInProgressUploads) {
+		AppLog.i(T.MEDIA,
+		         "MediaUploadHandler > Attempting to add media with path " +
+		         mediaModel.getFilePath() + " and site id " +
+		         mediaModel.getLocalSiteId() + ". Comparing with " +
+		         queuedMedia.getFilePath() + ", " +
+		         queuedMedia.getLocalSiteId());
+		if (isSameMediaFileQueuedForThisPost(queuedMedia, mediaModel)) {
+			return true;
+		}
+	}
 
-    for (MediaModel queuedMedia : sPendingUploads) {
-      AppLog.i(T.MEDIA,
-               "MediaUploadHandler > Attempting to add media with path " +
-                   mediaModel.getFilePath() + " and site id " +
-                   mediaModel.getLocalSiteId() + ". Comparing with " +
-                   queuedMedia.getFilePath() + ", " +
-                   queuedMedia.getLocalSiteId());
-      if (isSameMediaFileQueuedForThisPost(queuedMedia, mediaModel)) {
-        return true;
-      }
-    }
-    return false;
-  }
+	for (MediaModel queuedMedia : sPendingUploads) {
+		AppLog.i(T.MEDIA,
+		         "MediaUploadHandler > Attempting to add media with path " +
+		         mediaModel.getFilePath() + " and site id " +
+		         mediaModel.getLocalSiteId() + ". Comparing with " +
+		         queuedMedia.getFilePath() + ", " +
+		         queuedMedia.getLocalSiteId());
+		if (isSameMediaFileQueuedForThisPost(queuedMedia, mediaModel)) {
+			return true;
+		}
+	}
+	return false;
+}
 
-  private boolean isSameMediaFileQueuedForThisPost(MediaModel media1,
-                                                   MediaModel media2) {
-    /*
-        This method used to be called "compareBySiteAndFilePath" and compared
-       just siteId and filePath. It made sense since a media file is tied to a
-       site and can be referenced from multiple posts on that site. This
-        approach tried to prevent wasting users' data.
+private boolean isSameMediaFileQueuedForThisPost(MediaModel media1,
+                                                 MediaModel media2) {
+	/*
+	    This method used to be called "compareBySiteAndFilePath" and compared
+	   just siteId and filePath. It made sense since a media file is tied to a
+	   site and can be referenced from multiple posts on that site. This
+	    approach tried to prevent wasting users' data.
 
-        The issue was that when a same image was added to content of two posts
-       only a single MediaModel was enqueued. However, MediaModel references
-       only a single post (`localPostId`). When the upload finished only the
-       first post got updated with the url. The second post got uploaded to the
-       server with a path to local image. We decided to check whether the image
-       belongs to the same post so we can be sure the local path gets replaced
-       with the url.
+	    The issue was that when a same image was added to content of two posts
+	   only a single MediaModel was enqueued. However, MediaModel references
+	   only a single post (`localPostId`). When the upload finished only the
+	   first post got updated with the url. The second post got uploaded to the
+	   server with a path to local image. We decided to check whether the image
+	   belongs to the same post so we can be sure the local path gets replaced
+	   with the url.
 
-        More info can be found here -
-       https://github.com/wordpress-mobile/WordPress-Android/pull/10204.
+	    More info can be found here -
+	   https://github.com/wordpress-mobile/WordPress-Android/pull/10204.
 
-        We also need to check the `markedLocallyAsFeatured` flag is equal as we
-       might lose it otherwise. If the user adds an image into the post content
-       and they set the same image as featured image, we need to enqueue both
-       uploads. Otherwise, we could lose the information what we need to update
-       - the featured image or post content.
+	    We also need to check the `markedLocallyAsFeatured` flag is equal as we
+	   might lose it otherwise. If the user adds an image into the post content
+	   and they set the same image as featured image, we need to enqueue both
+	   uploads. Otherwise, we could lose the information what we need to update
+	   - the featured image or post content.
 
-        Issue with a proper fix -
-       https://github.com/wordpress-mobile/WordPress-Android/issues/10210
-     */
-    return (media1.getLocalSiteId() == media2.getLocalSiteId() &&
-            media1.getLocalPostId() == media2.getLocalPostId() &&
-            StringUtils.equals(media1.getFilePath(), media2.getFilePath())) &&
-        media1.getMarkedLocallyAsFeatured() ==
-            media2.getMarkedLocallyAsFeatured();
-  }
+	    Issue with a proper fix -
+	   https://github.com/wordpress-mobile/WordPress-Android/issues/10210
+	 */
+	return (media1.getLocalSiteId() == media2.getLocalSiteId() &&
+	        media1.getLocalPostId() == media2.getLocalPostId() &&
+	        StringUtils.equals(media1.getFilePath(), media2.getFilePath())) &&
+	       media1.getMarkedLocallyAsFeatured() ==
+	       media2.getMarkedLocallyAsFeatured();
+}
 
-  @Override
-  public void onVideoOptimizationProgress(@NonNull MediaModel media,
-                                          float progress) {
-    sOptimizationProgressByMediaId.put(media.getId(), progress);
-    // fire an event so EditPostActivity and PostsListFragment can show progress
-    VideoOptimizer.ProgressEvent event =
-        new VideoOptimizer.ProgressEvent(media, progress);
-    EventBus.getDefault().post(event);
-  }
+@Override
+public void onVideoOptimizationProgress(@NonNull MediaModel media,
+                                        float progress) {
+	sOptimizationProgressByMediaId.put(media.getId(), progress);
+	// fire an event so EditPostActivity and PostsListFragment can show progress
+	VideoOptimizer.ProgressEvent event =
+		new VideoOptimizer.ProgressEvent(media, progress);
+	EventBus.getDefault().post(event);
+}
 
-  @Override
-  public void onVideoOptimizationCompleted(@NonNull MediaModel media) {
-    sOptimizationProgressByMediaId.remove(media.getId());
-    // make sure this media should still be uploaded (may have been cancelled
-    // during optimization)
-    if (sInProgressUploads.contains(media)) {
-      dispatchUploadAction(media);
-    } else {
-      AppLog.d(T.MEDIA,
-               "MediaUploadHandler > skipping upload of optimized media");
-    }
-  }
+@Override
+public void onVideoOptimizationCompleted(@NonNull MediaModel media) {
+	sOptimizationProgressByMediaId.remove(media.getId());
+	// make sure this media should still be uploaded (may have been cancelled
+	// during optimization)
+	if (sInProgressUploads.contains(media)) {
+		dispatchUploadAction(media);
+	} else {
+		AppLog.d(T.MEDIA,
+		         "MediaUploadHandler > skipping upload of optimized media");
+	}
+}
 }

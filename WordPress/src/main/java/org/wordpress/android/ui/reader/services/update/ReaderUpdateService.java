@@ -13,54 +13,54 @@ import org.wordpress.android.util.AppLog;
 import org.wordpress.android.util.LocaleManager;
 
 public class ReaderUpdateService
-    extends Service implements ServiceCompletionListener {
-  /***
-   * service which updates followed/recommended tags and blogs for the Reader,
-   * relies on EventBus to notify of changes
-   */
+	extends Service implements ServiceCompletionListener {
+/***
+ * service which updates followed/recommended tags and blogs for the Reader,
+ * relies on EventBus to notify of changes
+ */
 
-  private ReaderUpdateLogic mReaderUpdateLogic;
+private ReaderUpdateLogic mReaderUpdateLogic;
 
-  @Override
-  public IBinder onBind(Intent intent) {
-    return null;
-  }
+@Override
+public IBinder onBind(Intent intent) {
+	return null;
+}
 
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(LocaleManager.setLocale(newBase));
-  }
+@Override
+protected void attachBaseContext(Context newBase) {
+	super.attachBaseContext(LocaleManager.setLocale(newBase));
+}
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    mReaderUpdateLogic =
-        new ReaderUpdateLogic(this, (WordPress)getApplication(), this);
-    AppLog.i(AppLog.T.READER, "reader service > created");
-  }
+@Override
+public void onCreate() {
+	super.onCreate();
+	mReaderUpdateLogic =
+		new ReaderUpdateLogic(this, (WordPress)getApplication(), this);
+	AppLog.i(AppLog.T.READER, "reader service > created");
+}
 
-  @Override
-  public void onDestroy() {
-    AppLog.i(AppLog.T.READER, "reader service > destroyed");
-    super.onDestroy();
-  }
+@Override
+public void onDestroy() {
+	AppLog.i(AppLog.T.READER, "reader service > destroyed");
+	super.onDestroy();
+}
 
-  @Override
-  public int onStartCommand(Intent intent, int flags, int startId) {
-    if (intent != null && intent.hasExtra(ARG_UPDATE_TASKS)) {
-      // noinspection unchecked
-      EnumSet<ReaderUpdateLogic.UpdateTask> tasks =
-          (EnumSet<ReaderUpdateLogic.UpdateTask>)intent.getSerializableExtra(
-              ARG_UPDATE_TASKS);
-      mReaderUpdateLogic.performTasks(tasks, null);
-    }
+@Override
+public int onStartCommand(Intent intent, int flags, int startId) {
+	if (intent != null && intent.hasExtra(ARG_UPDATE_TASKS)) {
+		// noinspection unchecked
+		EnumSet<ReaderUpdateLogic.UpdateTask> tasks =
+			(EnumSet<ReaderUpdateLogic.UpdateTask>)intent.getSerializableExtra(
+				ARG_UPDATE_TASKS);
+		mReaderUpdateLogic.performTasks(tasks, null);
+	}
 
-    return START_NOT_STICKY;
-  }
+	return START_NOT_STICKY;
+}
 
-  @Override
-  public void onCompleted(Object companion) {
-    AppLog.i(AppLog.T.READER, "reader service > all tasks completed");
-    stopSelf();
-  }
+@Override
+public void onCompleted(Object companion) {
+	AppLog.i(AppLog.T.READER, "reader service > all tasks completed");
+	stopSelf();
+}
 }
