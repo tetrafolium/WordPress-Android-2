@@ -269,7 +269,7 @@ public class ReaderCommentTable {
         }
 
         String[] args =
-        {   Long.toString(comment.blogId),
+        {Long.toString(comment.blogId),
             Long.toString(comment.postId),
             Long.toString(comment.commentId)
         };

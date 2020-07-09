@@ -655,7 +655,7 @@ public class SitePickerActivity extends AppCompatActivity
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             CharSequence[] items =
-            {   getString(R.string.site_picker_create_wpcom),
+            {getString(R.string.site_picker_create_wpcom),
                 getString(R.string.site_picker_add_self_hosted)
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(
