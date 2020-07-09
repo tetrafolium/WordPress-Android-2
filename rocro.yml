@@ -34,7 +34,7 @@ inspecode:
   jscpd:
     thresholds: { num-issues: 999 }
 
-  kotlin:
+  ktlint:
     auto-fix: true
     thresholds: { num-issues: 999 }
 
