@@ -61,7 +61,7 @@ import static org.wordpress.android.util.WPSwipeToRefreshHelper.buildSwipeToRefr
  * A fragment display the themes on a grid view.
  */
 public class ThemeBrowserFragment extends Fragment
-        implements RecyclerListener, SearchView.OnQueryTextListener {
+    implements RecyclerListener, SearchView.OnQueryTextListener {
     public static final String TAG = ThemeBrowserFragment.class.getName();
     private static final String KEY_LAST_SEARCH = "last_search";
 
@@ -182,7 +182,7 @@ public class ThemeBrowserFragment extends Fragment
             @Override public void run() {
                 int focusPointSize = getResources().getDimensionPixelOffset(R.dimen.quick_start_focus_point_size);
                 int horizontalOffset = (mHeaderCustomizeButton.getWidth() / 2) - focusPointSize + getResources()
-                        .getDimensionPixelOffset(R.dimen.quick_start_focus_point_bottom_nav_offset);
+                                       .getDimensionPixelOffset(R.dimen.quick_start_focus_point_bottom_nav_offset);
 
                 QuickStartUtils.addQuickStartFocusPointAboveTheView((ViewGroup) getView(), mHeaderCustomizeButton,
                         horizontalOffset, 0);
@@ -208,11 +208,11 @@ public class ThemeBrowserFragment extends Fragment
                     showQuickStartFocusPoint();
 
                     Spannable title = QuickStartUtils.stylizeQuickStartPrompt(getActivity(),
-                            R.string.quick_start_dialog_customize_site_message_short_customize,
-                            R.drawable.ic_customize_white_24dp);
+                                      R.string.quick_start_dialog_customize_site_message_short_customize,
+                                      R.drawable.ic_customize_white_24dp);
 
                     WPDialogSnackbar.make(getView(), title,
-                            getResources().getInteger(R.integer.quick_start_snackbar_duration_ms)).show();
+                                          getResources().getInteger(R.integer.quick_start_snackbar_duration_ms)).show();
                 }
             });
         }
@@ -298,22 +298,22 @@ public class ThemeBrowserFragment extends Fragment
 
     private void configureSwipeToRefresh(View view) {
         mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-                (CustomSwipeRefreshLayout) view.findViewById(R.id.ptr_layout),
-                new RefreshListener() {
-                    @Override
-                    public void onRefreshStarted() {
-                        if (!isAdded()) {
-                            return;
-                        }
-                        if (!NetworkUtils.checkConnection(getActivity())) {
-                            mSwipeToRefreshHelper.setRefreshing(false);
-                            mEmptyTextView.setText(R.string.no_network_title);
-                            return;
-                        }
-                        setRefreshing(true);
-                        mCallback.onSwipeToRefresh();
-                    }
-                });
+                                    (CustomSwipeRefreshLayout) view.findViewById(R.id.ptr_layout),
+        new RefreshListener() {
+            @Override
+            public void onRefreshStarted() {
+                if (!isAdded()) {
+                    return;
+                }
+                if (!NetworkUtils.checkConnection(getActivity())) {
+                    mSwipeToRefreshHelper.setRefreshing(false);
+                    mEmptyTextView.setText(R.string.no_network_title);
+                    return;
+                }
+                setRefreshing(true);
+                mCallback.onSwipeToRefresh();
+            }
+        });
         mSwipeToRefreshHelper.setRefreshing(mShouldRefreshOnStart);
     }
 

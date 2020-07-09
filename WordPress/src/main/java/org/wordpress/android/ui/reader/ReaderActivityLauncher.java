@@ -57,10 +57,10 @@ public class ReaderActivityLauncher {
      * to select after the pager is populated
      */
     public static void showReaderPostPagerForTag(Context context,
-                                                 ReaderTag tag,
-                                                 ReaderPostListType postListType,
-                                                 long blogId,
-                                                 long postId) {
+            ReaderTag tag,
+            ReaderPostListType postListType,
+            long blogId,
+            long postId) {
         if (tag == null) {
             return;
         }
@@ -77,8 +77,8 @@ public class ReaderActivityLauncher {
      * show pager view of posts in a specific blog
      */
     public static void showReaderPostPagerForBlog(Context context,
-                                                  long blogId,
-                                                  long postId) {
+            long blogId,
+            long postId) {
         Intent intent = new Intent(context, ReaderPostPagerActivity.class);
         intent.putExtra(ReaderConstants.ARG_POST_LIST_TYPE, ReaderPostListType.BLOG_PREVIEW);
         intent.putExtra(ReaderConstants.ARG_BLOG_ID, blogId);
@@ -161,7 +161,7 @@ public class ReaderActivityLauncher {
      * @param interceptedUri URI to fall back into (i.e. to be able to open in external browser)
      */
     public static void showReaderComments(Context context, long blogId, long postId, DirectOperation
-            directOperation, long commentId, String interceptedUri) {
+                                          directOperation, long commentId, String interceptedUri) {
         Intent intent = new Intent(context, ReaderCommentListActivity.class);
         intent.putExtra(ReaderConstants.ARG_BLOG_ID, blogId);
         intent.putExtra(ReaderConstants.ARG_POST_ID, postId);
@@ -212,12 +212,12 @@ public class ReaderActivityLauncher {
     }
 
     public static void showReaderPhotoViewer(Context context,
-                                             String imageUrl,
-                                             String content,
-                                             View sourceView,
-                                             EnumSet<PhotoViewerOption> imageOptions,
-                                             int startX,
-                                             int startY) {
+            String imageUrl,
+            String content,
+            View sourceView,
+            EnumSet<PhotoViewerOption> imageOptions,
+            int startX,
+            int startY) {
         if (context == null || TextUtils.isEmpty(imageUrl)) {
             return;
         }
@@ -236,7 +236,7 @@ public class ReaderActivityLauncher {
         if (context instanceof Activity && sourceView != null) {
             Activity activity = (Activity) context;
             ActivityOptionsCompat options =
-                    ActivityOptionsCompat.makeScaleUpAnimation(sourceView, startX, startY, 0, 0);
+                ActivityOptionsCompat.makeScaleUpAnimation(sourceView, startX, startY, 0, 0);
             ActivityCompat.startActivity(activity, intent, options.toBundle());
         } else {
             context.startActivity(intent);
@@ -244,8 +244,8 @@ public class ReaderActivityLauncher {
     }
 
     public static void showReaderPhotoViewer(Context context,
-                                             String imageUrl,
-                                             EnumSet<PhotoViewerOption> imageOptions) {
+            String imageUrl,
+            EnumSet<PhotoViewerOption> imageOptions) {
         showReaderPhotoViewer(context, imageUrl, null, null, imageOptions, 0, 0);
     }
 

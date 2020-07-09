@@ -122,12 +122,12 @@ public class AddQuickPressShortcutActivity extends ListActivity {
 
     private void buildDialog(final int position) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
         dialogBuilder.setTitle(R.string.quickpress_add_alert_title);
 
         final EditText quickPressShortcutName = new EditText(AddQuickPressShortcutActivity.this);
         quickPressShortcutName.setText(getString(R.string.quickpress_shortcut_with_account_param,
-                StringEscapeUtils.unescapeHtml4(accountNames.get(position))));
+                                       StringEscapeUtils.unescapeHtml4(accountNames.get(position))));
         dialogBuilder.setView(quickPressShortcutName);
 
         dialogBuilder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
@@ -148,11 +148,11 @@ public class AddQuickPressShortcutActivity extends ListActivity {
                     WordPress.wpDB.addQuickPressShortcut(siteIds[position], shortcutName);
 
                     ShortcutInfoCompat pinShortcutInfo =
-                            new ShortcutInfoCompat.Builder(getApplicationContext(), shortcutName)
-                                    .setIcon(IconCompat.createWithResource(getApplicationContext(), R.mipmap.app_icon))
-                                    .setShortLabel(shortcutName)
-                                    .setIntent(shortcutIntent)
-                                    .build();
+                        new ShortcutInfoCompat.Builder(getApplicationContext(), shortcutName)
+                    .setIcon(IconCompat.createWithResource(getApplicationContext(), R.mipmap.app_icon))
+                    .setShortLabel(shortcutName)
+                    .setIntent(shortcutIntent)
+                    .build();
 
                     ShortcutManagerCompat.requestPinShortcut(getApplicationContext(), pinShortcutInfo, null);
 
@@ -174,15 +174,15 @@ public class AddQuickPressShortcutActivity extends ListActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case RequestCodes.ADD_ACCOUNT:
-                if (resultCode == RESULT_OK) {
-                    if (mSiteStore.getVisibleSitesCount() > 0) {
-                        displayAccounts();
-                        break;
-                    }
+        case RequestCodes.ADD_ACCOUNT:
+            if (resultCode == RESULT_OK) {
+                if (mSiteStore.getVisibleSitesCount() > 0) {
+                    displayAccounts();
+                    break;
                 }
-                finish();
-                break;
+            }
+            finish();
+            break;
         }
     }
 
@@ -216,9 +216,9 @@ public class AddQuickPressShortcutActivity extends ListActivity {
             NetworkImageView blavatar = (NetworkImageView) view.findViewById(R.id.blavatar);
 
             blogName.setText(
-                    StringEscapeUtils.unescapeHtml4(blogNames[position]));
+                StringEscapeUtils.unescapeHtml4(blogNames[position]));
             blogUsername.setText(
-                    StringEscapeUtils.unescapeHtml4(username));
+                StringEscapeUtils.unescapeHtml4(username));
             blavatar.setErrorImageResId(R.drawable.bg_rectangle_neutral_10_globe_32dp);
             blavatar.setImageUrl(blavatars[position], mImageLoader);
 

@@ -12,14 +12,14 @@ import java.util.List;
 
 public class SuggestionUtils {
     public static SuggestionAdapter setupSuggestions(SiteModel site, Context context,
-                                                     SuggestionServiceConnectionManager serviceConnectionManager) {
+            SuggestionServiceConnectionManager serviceConnectionManager) {
         return SuggestionUtils.setupSuggestions(site.getSiteId(), context, serviceConnectionManager,
                                                 SiteUtils.isAccessedViaWPComRest(site));
     }
 
     public static SuggestionAdapter setupSuggestions(final long siteId, Context context,
-                                                     SuggestionServiceConnectionManager serviceConnectionManager,
-                                                     boolean isWPComFlag) {
+            SuggestionServiceConnectionManager serviceConnectionManager,
+            boolean isWPComFlag) {
         if (!isWPComFlag) {
             return null;
         }

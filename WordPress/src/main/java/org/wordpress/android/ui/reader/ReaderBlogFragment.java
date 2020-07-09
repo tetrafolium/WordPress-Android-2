@@ -31,7 +31,7 @@ import org.wordpress.android.util.AppLog;
  * fragment hosted by ReaderSubsActivity which shows either recommended blogs and followed blogs
  */
 public class ReaderBlogFragment extends Fragment
-        implements ReaderBlogAdapter.BlogClickListener {
+    implements ReaderBlogAdapter.BlogClickListener {
     private ReaderRecyclerView mRecyclerView;
     private ReaderBlogAdapter mAdapter;
     private ReaderBlogType mBlogType;
@@ -110,24 +110,24 @@ public class ReaderBlogFragment extends Fragment
             });
 
             switch (getBlogType()) {
-                case RECOMMENDED:
-                    actionableEmptyView.title.setText(R.string.reader_empty_recommended_blogs);
-                    break;
-                case FOLLOWED:
-                    if (getBlogAdapter().hasSearchFilter()) {
-                        actionableEmptyView.updateLayoutForSearch(true, 0);
-                        actionableEmptyView.title.setText(R.string.reader_empty_followed_blogs_search_title);
-                        actionableEmptyView.subtitle.setVisibility(View.GONE);
-                        actionableEmptyView.button.setVisibility(View.GONE);
-                        actionableEmptyView.image.setVisibility(View.GONE);
-                    } else {
-                        actionableEmptyView.updateLayoutForSearch(false, 0);
-                        actionableEmptyView.title.setText(R.string.reader_empty_followed_blogs_title);
-                        actionableEmptyView.subtitle.setVisibility(View.VISIBLE);
-                        actionableEmptyView.button.setVisibility(View.VISIBLE);
-                        actionableEmptyView.image.setVisibility(View.VISIBLE);
-                    }
-                    break;
+            case RECOMMENDED:
+                actionableEmptyView.title.setText(R.string.reader_empty_recommended_blogs);
+                break;
+            case FOLLOWED:
+                if (getBlogAdapter().hasSearchFilter()) {
+                    actionableEmptyView.updateLayoutForSearch(true, 0);
+                    actionableEmptyView.title.setText(R.string.reader_empty_followed_blogs_search_title);
+                    actionableEmptyView.subtitle.setVisibility(View.GONE);
+                    actionableEmptyView.button.setVisibility(View.GONE);
+                    actionableEmptyView.image.setVisibility(View.GONE);
+                } else {
+                    actionableEmptyView.updateLayoutForSearch(false, 0);
+                    actionableEmptyView.title.setText(R.string.reader_empty_followed_blogs_title);
+                    actionableEmptyView.subtitle.setVisibility(View.VISIBLE);
+                    actionableEmptyView.button.setVisibility(View.VISIBLE);
+                    actionableEmptyView.image.setVisibility(View.VISIBLE);
+                }
+                break;
             }
         } else {
             actionableEmptyView.setVisibility(View.GONE);

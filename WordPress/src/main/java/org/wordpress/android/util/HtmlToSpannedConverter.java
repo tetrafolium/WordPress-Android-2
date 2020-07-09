@@ -96,7 +96,7 @@ public class HtmlToSpannedConverter implements ContentHandler {
 
         // Fix flags and range for paragraph-type markup.
         Object[] obj = mSpannableStringBuilder.getSpans(0,
-                                                        mSpannableStringBuilder.length(), ParagraphStyle.class);
+                       mSpannableStringBuilder.length(), ParagraphStyle.class);
         for (int i = 0; i < obj.length; i++) {
             int start = mSpannableStringBuilder.getSpanStart(obj[i]);
             int end = mSpannableStringBuilder.getSpanEnd(obj[i]);
@@ -104,7 +104,7 @@ public class HtmlToSpannedConverter implements ContentHandler {
             // If the last line of the range is blank, back off by one.
             if (end - 2 >= 0) {
                 if (mSpannableStringBuilder.charAt(end - 1) == '\n'
-                    && mSpannableStringBuilder.charAt(end - 2) == '\n') {
+                        && mSpannableStringBuilder.charAt(end - 2) == '\n') {
                     end--;
                 }
             }
@@ -349,10 +349,10 @@ public class HtmlToSpannedConverter implements ContentHandler {
             if (resizedBitmap == null && src != null) {
                 if (src.contains("video")) {
                     resizedBitmap = BitmapFactory.decodeResource(
-                            mContext.getResources(), org.wordpress.android.editor.R.drawable.media_movieclip);
+                                        mContext.getResources(), org.wordpress.android.editor.R.drawable.media_movieclip);
                 } else {
                     resizedBitmap = BitmapFactory.decodeResource(
-                            mContext.getResources(), org.wordpress.android.R.drawable.media_image_placeholder);
+                                        mContext.getResources(), org.wordpress.android.R.drawable.media_image_placeholder);
                 }
             }
         } catch (OutOfMemoryError e) {
@@ -381,7 +381,7 @@ public class HtmlToSpannedConverter implements ContentHandler {
                 text.setSpan(is, len, text.length(),
                              Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 AlignmentSpan.Standard as = new AlignmentSpan.Standard(
-                        Layout.Alignment.ALIGN_CENTER);
+                    Layout.Alignment.ALIGN_CENTER);
                 text.setSpan(as, text.getSpanStart(is), text.getSpanEnd(is),
                              Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
@@ -527,7 +527,7 @@ public class HtmlToSpannedConverter implements ContentHandler {
     }
 
     public void startPrefixMapping(String prefix, String uri)
-            throws SAXException {
+    throws SAXException {
     }
 
     public void endPrefixMapping(String prefix) throws SAXException {
@@ -561,7 +561,7 @@ public class HtmlToSpannedConverter implements ContentHandler {
     }
 
     public void endElement(String uri, String localName, String qName)
-            throws SAXException {
+    throws SAXException {
         if (mysteryTagFound) {
             mysteryTagContent += "</" + localName + ">" + "\n";
         }
@@ -569,7 +569,7 @@ public class HtmlToSpannedConverter implements ContentHandler {
     }
 
     public void characters(char[] ch, int start, int length)
-            throws SAXException {
+    throws SAXException {
         StringBuilder sb = new StringBuilder();
 
         /*
@@ -608,7 +608,7 @@ public class HtmlToSpannedConverter implements ContentHandler {
             if (mysteryTagFound) {
                 if (sb.length() < length) {
                     mysteryTagContent += sb.toString().substring(start,
-                                                                 length - 1);
+                                         length - 1);
                 } else {
                     mysteryTagContent += sb.toString().substring(start, length);
                 }
@@ -621,11 +621,11 @@ public class HtmlToSpannedConverter implements ContentHandler {
     }
 
     public void ignorableWhitespace(char[] ch, int start, int length)
-            throws SAXException {
+    throws SAXException {
     }
 
     public void processingInstruction(String target, String data)
-            throws SAXException {
+    throws SAXException {
     }
 
     public void skippedEntity(String name) throws SAXException {
@@ -731,7 +731,7 @@ public class HtmlToSpannedConverter implements ContentHandler {
     }
 
     public static final int convertValueToInt(CharSequence charSeq,
-                                              int defaultValue) {
+            int defaultValue) {
         if (null == charSeq) {
             return defaultValue;
         }

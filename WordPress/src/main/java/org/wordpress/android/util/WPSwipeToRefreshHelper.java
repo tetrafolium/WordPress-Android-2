@@ -16,7 +16,7 @@ public class WPSwipeToRefreshHelper {
      * via the swipe gesture.
      */
     public static SwipeToRefreshHelper buildSwipeToRefreshHelper(CustomSwipeRefreshLayout swipeRefreshLayout,
-                                                                 RefreshListener listener) {
+            RefreshListener listener) {
         return new SwipeToRefreshHelper(swipeRefreshLayout, listener, R.color.primary, R.color.accent);
     }
 }

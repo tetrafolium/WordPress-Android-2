@@ -23,7 +23,7 @@ public class RippleToggleButton extends ToggleButton {
 
     public RippleToggleButton(Context context) {
         this(context, null);
-   }
+    }
 
     public RippleToggleButton(Context context, AttributeSet attrs) {
         this(context, attrs, 0);

@@ -294,7 +294,7 @@ public class EditorImageMetaData implements Parcelable {
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<EditorImageMetaData> CREATOR =
-            new Parcelable.Creator<EditorImageMetaData>() {
+    new Parcelable.Creator<EditorImageMetaData>() {
         @Override
         public EditorImageMetaData createFromParcel(Parcel in) {
             return new EditorImageMetaData(in);

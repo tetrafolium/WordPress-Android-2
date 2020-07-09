@@ -37,14 +37,14 @@ public class NotificationsSettings {
 
         public String toString() {
             switch (this) {
-                case TIMELINE:
-                    return "timeline";
-                case EMAIL:
-                    return "email";
-                case DEVICE:
-                    return "device";
-                default:
-                    return "";
+            case TIMELINE:
+                return "timeline";
+            case EMAIL:
+                return "email";
+            case DEVICE:
+                return "device";
+            default:
+                return "";
             }
         }
     }
@@ -73,27 +73,27 @@ public class NotificationsSettings {
 
     // Updates a specific notification setting after a user makes a change
     public void updateSettingForChannelAndType(Channel channel, Type type, String settingName, boolean newValue,
-                                               long blogId) {
+            long blogId) {
         String typeName = type.toString();
         try {
             switch (channel) {
-                case BLOGS:
-                    JSONObject blogJson = getBlogSettings().get(blogId);
-                    if (blogJson != null) {
-                        JSONObject blogSetting = JSONUtils.queryJSON(blogJson, typeName, new JSONObject());
-                        blogSetting.put(settingName, newValue);
-                        blogJson.put(typeName, blogSetting);
+            case BLOGS:
+                JSONObject blogJson = getBlogSettings().get(blogId);
+                if (blogJson != null) {
+                    JSONObject blogSetting = JSONUtils.queryJSON(blogJson, typeName, new JSONObject());
+                    blogSetting.put(settingName, newValue);
+                    blogJson.put(typeName, blogSetting);
 
-                        getBlogSettings().put(blogId, blogJson);
-                    }
-                    break;
-                case OTHER:
-                    JSONObject otherSetting = JSONUtils.queryJSON(getOtherSettings(), typeName, new JSONObject());
-                    otherSetting.put(settingName, newValue);
-                    getOtherSettings().put(typeName, otherSetting);
-                    break;
-                case WPCOM:
-                    getWPComSettings().put(settingName, newValue);
+                    getBlogSettings().put(blogId, blogJson);
+                }
+                break;
+            case OTHER:
+                JSONObject otherSetting = JSONUtils.queryJSON(getOtherSettings(), typeName, new JSONObject());
+                otherSetting.put(settingName, newValue);
+                getOtherSettings().put(typeName, otherSetting);
+                break;
+            case WPCOM:
+                getWPComSettings().put(settingName, newValue);
             }
         } catch (JSONException e) {
             AppLog.e(AppLog.T.NOTIFS, "Could not update notifications settings JSON");

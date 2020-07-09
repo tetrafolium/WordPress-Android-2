@@ -59,7 +59,7 @@ public class ReaderLikeTable {
 
         String[] args = {Long.toString(post.blogId), Long.toString(post.postId)};
         Cursor c = ReaderDatabase.getReadableDb()
-                                 .rawQuery("SELECT user_id FROM tbl_post_likes WHERE blog_id=? AND post_id=?", args);
+                   .rawQuery("SELECT user_id FROM tbl_post_likes WHERE blog_id=? AND post_id=?", args);
         try {
             if (c.moveToFirst()) {
                 do {
@@ -106,7 +106,7 @@ public class ReaderLikeTable {
         SQLiteDatabase db = ReaderDatabase.getWritableDb();
         db.beginTransaction();
         SQLiteStatement stmt =
-                db.compileStatement("INSERT INTO tbl_post_likes (blog_id, post_id, user_id) VALUES (?1,?2,?3)");
+            db.compileStatement("INSERT INTO tbl_post_likes (blog_id, post_id, user_id) VALUES (?1,?2,?3)");
         try {
             // first delete all likes for this post
             String[] args = {Long.toString(post.blogId), Long.toString(post.postId)};
@@ -141,9 +141,10 @@ public class ReaderLikeTable {
         }
 
         String[] args = {Long.toString(comment.blogId),
-                Long.toString(comment.commentId)};
+                         Long.toString(comment.commentId)
+                        };
         Cursor c = ReaderDatabase.getReadableDb().rawQuery(
-                "SELECT user_id FROM tbl_comment_likes WHERE blog_id=? AND comment_id=?", args);
+                       "SELECT user_id FROM tbl_comment_likes WHERE blog_id=? AND comment_id=?", args);
         try {
             if (c.moveToFirst()) {
                 do {
@@ -162,7 +163,8 @@ public class ReaderLikeTable {
             return 0;
         }
         String[] args = {Long.toString(comment.blogId),
-                Long.toString(comment.commentId)};
+                         Long.toString(comment.commentId)
+                        };
         return SqlUtils.intForQuery(ReaderDatabase.getReadableDb(),
                                     "SELECT count(*) FROM tbl_comment_likes WHERE blog_id=? AND comment_id=?", args);
     }
@@ -180,8 +182,9 @@ public class ReaderLikeTable {
             ReaderDatabase.getWritableDb().insert("tbl_comment_likes", null, values);
         } else {
             String[] args = {Long.toString(comment.blogId),
-                    Long.toString(comment.commentId),
-                    Long.toString(wpComUserId)};
+                             Long.toString(comment.commentId),
+                             Long.toString(wpComUserId)
+                            };
             ReaderDatabase.getWritableDb().delete("tbl_comment_likes",
                                                   "blog_id=? AND comment_id=? AND user_id=?", args);
         }
@@ -195,10 +198,11 @@ public class ReaderLikeTable {
         SQLiteDatabase db = ReaderDatabase.getWritableDb();
         db.beginTransaction();
         SQLiteStatement stmt = db.compileStatement(
-                "INSERT INTO tbl_comment_likes (blog_id, comment_id, user_id) VALUES (?1,?2,?3)");
+                                   "INSERT INTO tbl_comment_likes (blog_id, comment_id, user_id) VALUES (?1,?2,?3)");
         try {
             String[] args = {Long.toString(comment.blogId),
-                    Long.toString(comment.commentId)};
+                             Long.toString(comment.commentId)
+                            };
             db.delete("tbl_comment_likes", "blog_id=? AND comment_id=?", args);
 
             if (userIds != null) {

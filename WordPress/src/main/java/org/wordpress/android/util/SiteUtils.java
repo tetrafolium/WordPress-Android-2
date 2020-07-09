@@ -36,7 +36,7 @@ public class SiteUtils {
      *
      */
     public static void migrateAppWideMobileEditorPreferenceToRemote(final Context context,
-                                                                    final Dispatcher dispatcher) {
+            final Dispatcher dispatcher) {
         if (!AppPrefs.isDefaultAppWideEditorPreferenceSet()) {
             return;
         }
@@ -44,33 +44,33 @@ public class SiteUtils {
 
         if (oldAppWidePreferenceValue) {
             dispatcher.dispatch(SiteActionBuilder.newDesignateMobileEditorForAllSitesAction(
-                    new DesignateMobileEditorForAllSitesPayload(SiteUtils.GB_EDITOR_NAME)));
+                                    new DesignateMobileEditorForAllSitesPayload(SiteUtils.GB_EDITOR_NAME)));
         } else {
             dispatcher.dispatch(SiteActionBuilder.newDesignateMobileEditorForAllSitesAction(
-                    new DesignateMobileEditorForAllSitesPayload(SiteUtils.AZTEC_EDITOR_NAME)));
+                                    new DesignateMobileEditorForAllSitesPayload(SiteUtils.AZTEC_EDITOR_NAME)));
         }
     }
 
     public static boolean enableBlockEditorOnSiteCreation(Dispatcher dispatcher, SiteStore siteStore,
-                                                          int siteLocalSiteID) {
+            int siteLocalSiteID) {
         SiteModel newSiteModel = siteStore.getSiteByLocalId(siteLocalSiteID);
         if (newSiteModel != null) {
             enableBlockEditor(dispatcher, newSiteModel);
             AnalyticsUtils.trackWithSiteDetails(Stat.EDITOR_GUTENBERG_ENABLED, newSiteModel,
-                    BlockEditorEnabledSource.ON_SITE_CREATION.asPropertyMap());
+                                                BlockEditorEnabledSource.ON_SITE_CREATION.asPropertyMap());
             return true;
         }
         return false;
     }
 
     public static void enableBlockEditor(Dispatcher dispatcher, SiteModel siteModel) {
-            dispatcher.dispatch(SiteActionBuilder.newDesignateMobileEditorAction(
-                    new DesignateMobileEditorPayload(siteModel, SiteUtils.GB_EDITOR_NAME)));
+        dispatcher.dispatch(SiteActionBuilder.newDesignateMobileEditorAction(
+                                new DesignateMobileEditorPayload(siteModel, SiteUtils.GB_EDITOR_NAME)));
     }
 
     public static void disableBlockEditor(Dispatcher dispatcher, SiteModel siteModel) {
         dispatcher.dispatch(SiteActionBuilder.newDesignateMobileEditorAction(
-                new DesignateMobileEditorPayload(siteModel, SiteUtils.AZTEC_EDITOR_NAME)));
+                                new DesignateMobileEditorPayload(siteModel, SiteUtils.AZTEC_EDITOR_NAME)));
     }
 
     public static boolean isBlockEditorDefaultForNewPost(SiteModel site) {

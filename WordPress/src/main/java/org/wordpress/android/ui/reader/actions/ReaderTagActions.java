@@ -79,11 +79,11 @@ public class ReaderTagActions {
         String endpoint = "/read/tags/" + tagNameForApi + "/posts";
 
         ReaderTag newTag = new ReaderTag(
-                tag.getTagSlug(),
-                tag.getTagDisplayName(),
-                tag.getTagTitle(),
-                endpoint,
-                ReaderTagType.FOLLOWED);
+            tag.getTagSlug(),
+            tag.getTagDisplayName(),
+            tag.getTagTitle(),
+            endpoint,
+            ReaderTagType.FOLLOWED);
 
         com.wordpress.rest.RestRequest.Listener listener = new RestRequest.Listener() {
             @Override

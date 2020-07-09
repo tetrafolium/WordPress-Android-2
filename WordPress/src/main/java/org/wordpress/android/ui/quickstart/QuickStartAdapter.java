@@ -65,14 +65,14 @@ public class QuickStartAdapter extends RecyclerView.Adapter<ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         switch (viewType) {
-            case VIEW_TYPE_TASK:
-                return new TaskViewHolder(
-                        inflater.inflate(R.layout.quick_start_list_item, viewGroup, false));
-            case VIEW_TYPE_COMPLETED_TASKS_HEADER:
-                return new CompletedHeaderViewHolder(
-                        inflater.inflate(R.layout.quick_start_completed_tasks_list_header, viewGroup, false));
-            default:
-                throw new IllegalArgumentException("Unexpected view type");
+        case VIEW_TYPE_TASK:
+            return new TaskViewHolder(
+                       inflater.inflate(R.layout.quick_start_list_item, viewGroup, false));
+        case VIEW_TYPE_COMPLETED_TASKS_HEADER:
+            return new CompletedHeaderViewHolder(
+                       inflater.inflate(R.layout.quick_start_completed_tasks_list_header, viewGroup, false));
+        default:
+            throw new IllegalArgumentException("Unexpected view type");
         }
     }
 
@@ -83,23 +83,23 @@ public class QuickStartAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (viewType == VIEW_TYPE_COMPLETED_TASKS_HEADER) {
             CompletedHeaderViewHolder headerViewHolder = (CompletedHeaderViewHolder) viewHolder;
             headerViewHolder.mTitle.setText(mContext.getString(R.string.quick_start_complete_tasks_header,
-                    mTaskCompleted.size()));
+                                            mTaskCompleted.size()));
 
             if (mIsCompletedTaskListExpanded) {
                 headerViewHolder.itemView.setBackgroundResource(R.drawable.bg_rectangle_white_radius_top_card);
                 headerViewHolder.mChevron.setRotation(EXPANDED_CHEVRON_ROTATION);
                 headerViewHolder.mChevron.setContentDescription(
-                        mContext.getString(R.string.quick_start_completed_tasks_header_chevron_collapse_desc));
+                    mContext.getString(R.string.quick_start_completed_tasks_header_chevron_collapse_desc));
             } else {
                 headerViewHolder.itemView.setBackgroundResource(R.drawable.bg_rectangle_white_radius_card);
                 headerViewHolder.mChevron.setRotation(COLLAPSED_CHEVRON_ROTATION);
                 headerViewHolder.mChevron.setContentDescription(
-                        mContext.getString(R.string.quick_start_completed_tasks_header_chevron_expand_desc));
+                    mContext.getString(R.string.quick_start_completed_tasks_header_chevron_expand_desc));
             }
 
             int topMargin = mTasksUncompleted.size() > 0
-                    ? mContext.getResources().getDimensionPixelSize(R.dimen.margin_extra_large)
-                    : 0;
+                            ? mContext.getResources().getDimensionPixelSize(R.dimen.margin_extra_large)
+                            : 0;
             LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             params.setMargins(0, topMargin, 0, 0);
             headerViewHolder.itemView.setLayoutParams(params);
@@ -113,14 +113,14 @@ public class QuickStartAdapter extends RecyclerView.Adapter<ViewHolder> {
             // Use rounded background when next item is header.
             if (getItemViewType(position + 1) == VIEW_TYPE_COMPLETED_TASKS_HEADER) {
                 taskViewHolder.itemView.setBackgroundResource(R.drawable.bg_rectangle_white_radius_card);
-            // Use top rounded background when next item is not header (i.e. middle or bottom).
+                // Use top rounded background when next item is not header (i.e. middle or bottom).
             } else {
                 taskViewHolder.itemView.setBackgroundResource(R.drawable.bg_rectangle_white_radius_top_card);
             }
-        // When last list item or next item is header, use bottom rounded background.
+            // When last list item or next item is header, use bottom rounded background.
         } else if (position == mTasks.size() - 1 || getItemViewType(position + 1) == VIEW_TYPE_COMPLETED_TASKS_HEADER) {
             taskViewHolder.itemView.setBackgroundResource(R.drawable.bg_rectangle_white_radius_bottom_card);
-        // Otherwise, use middle unrounded background.
+            // Otherwise, use middle unrounded background.
         } else {
             taskViewHolder.itemView.setBackgroundResource(R.drawable.bg_rectangle_white);
         }
@@ -168,7 +168,7 @@ public class QuickStartAdapter extends RecyclerView.Adapter<ViewHolder> {
         mTasksUncompleted.addAll(tasksUncompleted);
 
         DiffUtil.DiffResult diffResult =
-                DiffUtil.calculateDiff(new QuickStartTasksDiffCallback(mTasks, newList));
+            DiffUtil.calculateDiff(new QuickStartTasksDiffCallback(mTasks, newList));
 
         mTasks.clear();
         mTasks.addAll(newList);

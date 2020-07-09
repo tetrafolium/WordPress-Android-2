@@ -17,7 +17,7 @@ public class ActivityUtils {
     public static void hideKeyboard(Activity activity) {
         if (activity != null && activity.getCurrentFocus() != null) {
             InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
+                                                  Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
                                                  InputMethodManager.HIDE_NOT_ALWAYS);
         }
@@ -32,7 +32,7 @@ public class ActivityUtils {
             return;
         }
         InputMethodManager inputMethodManager =
-                (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
@@ -45,7 +45,7 @@ public class ActivityUtils {
             return;
         }
         InputMethodManager inputMethodManager =
-                (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 

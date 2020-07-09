@@ -25,14 +25,14 @@ public enum StatsTimeframe {
 
     public String getLabelForRestCall() {
         switch (this) {
-            case WEEK:
-                return "week";
-            case MONTH:
-                return "month";
-            case YEAR:
-                return "year";
-            default:
-                return "day";
+        case WEEK:
+            return "week";
+        case MONTH:
+            return "month";
+        case YEAR:
+            return "year";
+        default:
+            return "day";
         }
     }
 }

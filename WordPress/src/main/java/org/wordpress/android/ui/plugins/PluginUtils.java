@@ -35,8 +35,8 @@ public class PluginUtils {
 
     static boolean isUpdateAvailable(@Nullable ImmutablePluginModel immutablePlugin) {
         if (immutablePlugin == null
-            || TextUtils.isEmpty(immutablePlugin.getInstalledVersion())
-            || TextUtils.isEmpty(immutablePlugin.getWPOrgPluginVersion())) {
+                || TextUtils.isEmpty(immutablePlugin.getInstalledVersion())
+                || TextUtils.isEmpty(immutablePlugin.getWPOrgPluginVersion())) {
             return false;
         }
         String installedVersionStr = immutablePlugin.getInstalledVersion();
@@ -47,8 +47,8 @@ public class PluginUtils {
             return currentVersion.compareTo(availableVersion) < 0;
         } catch (IllegalArgumentException e) {
             String errorStr =
-                    String.format("An IllegalArgumentException occurred while trying to compare site plugin version: %s"
-                                  + " with wporg plugin version: %s", installedVersionStr, availableVersionStr);
+                String.format("An IllegalArgumentException occurred while trying to compare site plugin version: %s"
+                              + " with wporg plugin version: %s", installedVersionStr, availableVersionStr);
             AppLog.e(AppLog.T.PLUGINS, errorStr, e);
             CrashLoggingUtils.logException(e, AppLog.T.PLUGINS, errorStr);
             // If the versions are not in the expected format, we can assume that an update is available if the version

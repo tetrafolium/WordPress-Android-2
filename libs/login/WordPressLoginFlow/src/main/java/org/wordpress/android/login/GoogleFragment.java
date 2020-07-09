@@ -83,18 +83,18 @@ public class GoogleFragment extends Fragment implements ConnectionCallbacks, OnC
         // Configure sign-in to request user's ID, basic profile, email address, and ID token.
         // ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestServerAuthCode(getString(R.string.default_web_client_id))
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestProfile()
-                .requestEmail()
-                .build();
+        .requestServerAuthCode(getString(R.string.default_web_client_id))
+        .requestIdToken(getString(R.string.default_web_client_id))
+        .requestProfile()
+        .requestEmail()
+        .build();
 
         // Build Google API client with access to sign-in API and options specified above.
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity().getApplicationContext())
-                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+        .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+        .addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this)
+        .build();
 
         if (!mIsResolvingError) {
             connectGoogleClient();
@@ -176,7 +176,7 @@ public class GoogleFragment extends Fragment implements ConnectionCallbacks, OnC
             } else {
                 mIsResolvingError = false;
                 AppLog.e(AppLog.T.NUX, GoogleApiAvailability.getInstance().getErrorString(
-                        connectionResult.getErrorCode()));
+                             connectionResult.getErrorCode()));
                 showError(getString(R.string.login_error_generic));
             }
         }
@@ -231,19 +231,19 @@ public class GoogleFragment extends Fragment implements ConnectionCallbacks, OnC
         super.onActivityResult(request, result, data);
 
         switch (request) {
-            case REQUEST_CONNECT:
-                if (result != RESULT_OK) {
-                    mShouldResolveError = false;
-                }
+        case REQUEST_CONNECT:
+            if (result != RESULT_OK) {
+                mShouldResolveError = false;
+            }
 
-                if (!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()) {
-                    mGoogleApiClient.connect();
-                } else {
-                    startFlow();
-                }
+            if (!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.connect();
+            } else {
+                startFlow();
+            }
 
-                mIsResolvingError = false;
-                break;
+            mIsResolvingError = false;
+            break;
         }
     }
 }

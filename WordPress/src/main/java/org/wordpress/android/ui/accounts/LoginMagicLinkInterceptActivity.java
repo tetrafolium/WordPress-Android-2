@@ -69,7 +69,7 @@ public class LoginMagicLinkInterceptActivity extends Activity {
         if (mUri != null) {
             String parameter = SignupEpilogueActivity.MAGIC_SIGNUP_PARAMETER;
             String value = (mUri.getQueryParameterNames() != null && mUri.getQueryParameter(parameter) != null)
-                    ? mUri.getQueryParameter(parameter) : "";
+                           ? mUri.getQueryParameter(parameter) : "";
             return Intent.ACTION_VIEW.equals(mAction)
                    && value.equalsIgnoreCase(SignupEpilogueActivity.MAGIC_SIGNUP_VALUE);
         } else {
@@ -80,7 +80,7 @@ public class LoginMagicLinkInterceptActivity extends Activity {
     private boolean isJetpackConnectFlow() {
         if (mUri != null) {
             String value = (mUri.getQueryParameterNames() != null && mUri.getQueryParameter(PARAMETER_FLOW) != null)
-                    ? mUri.getQueryParameter(PARAMETER_FLOW) : "";
+                           ? mUri.getQueryParameter(PARAMETER_FLOW) : "";
             return Intent.ACTION_VIEW.equals(mAction) && value.equalsIgnoreCase(PARAMETER_FLOW_JETPACK);
         } else {
             return false;
@@ -90,7 +90,7 @@ public class LoginMagicLinkInterceptActivity extends Activity {
     private JetpackConnectionSource getJetpackConnectSource() {
         String value = (mUri != null && mUri.getQueryParameterNames() != null
                         && mUri.getQueryParameter(PARAMETER_SOURCE) != null)
-                ? mUri.getQueryParameter(PARAMETER_SOURCE) : "";
+                       ? mUri.getQueryParameter(PARAMETER_SOURCE) : "";
 
         return JetpackConnectionSource.fromString(value);
     }

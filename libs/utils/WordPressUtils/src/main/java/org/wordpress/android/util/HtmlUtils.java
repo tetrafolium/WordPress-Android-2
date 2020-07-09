@@ -141,11 +141,11 @@ public class HtmlUtils {
 
     private static String replaceListTagsWithCustomTags(String source) {
         return source.replace("<ul", "<WPUL")
-                     .replace("</ul>", "</WPUL>")
-                     .replace("<ol", "<WPOL")
-                     .replace("</ol>", "</WPOL>")
-                     .replace("<li", "<WPLI")
-                     .replace("</li>", "</WPLI>");
+               .replace("</ul>", "</WPUL>")
+               .replace("<ol", "<WPOL")
+               .replace("</ol>", "</WPOL>")
+               .replace("<li", "<WPLI")
+               .replace("</li>", "</WPLI>");
     }
 
     public static Spanned fromHtml(String source) {

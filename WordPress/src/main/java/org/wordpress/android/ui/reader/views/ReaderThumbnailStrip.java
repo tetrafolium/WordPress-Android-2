@@ -71,8 +71,8 @@ public class ReaderThumbnailStrip extends LinearLayout {
         // get this post's content and scan it for images suitable in a gallery
         final String content = ReaderPostTable.getPostText(blogId, postId);
         final ReaderImageList imageList =
-                new ReaderImageScanner(content, isPrivate)
-                        .getImageList(IMAGE_COUNT, ReaderConstants.MIN_GALLERY_IMAGE_WIDTH);
+            new ReaderImageScanner(content, isPrivate)
+        .getImageList(IMAGE_COUNT, ReaderConstants.MIN_GALLERY_IMAGE_WIDTH);
         if (imageList.size() < IMAGE_COUNT) {
             mView.setVisibility(View.GONE);
             return;
@@ -99,13 +99,13 @@ public class ReaderThumbnailStrip extends LinearLayout {
                 @Override
                 public void onClick(View view) {
                     ReaderActivityLauncher.showReaderPhotoViewer(
-                            view.getContext(),
-                            imageUrl,
-                            content,
-                            view,
-                            photoViewerOptions,
-                            0,
-                            0);
+                        view.getContext(),
+                        imageUrl,
+                        content,
+                        view,
+                        photoViewerOptions,
+                        0,
+                        0);
                 }
             });
 

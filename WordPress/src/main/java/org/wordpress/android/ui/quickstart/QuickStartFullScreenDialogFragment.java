@@ -37,7 +37,7 @@ import static org.wordpress.android.fluxc.store.QuickStartStore.QuickStartTaskTy
 import static org.wordpress.android.fluxc.store.QuickStartStore.QuickStartTaskType.GROW;
 
 public class QuickStartFullScreenDialogFragment extends Fragment implements FullScreenDialogContent,
-        OnQuickStartAdapterActionListener {
+    OnQuickStartAdapterActionListener {
     private FullScreenDialogController mDialogController;
     private QuickStartAdapter mQuickStartAdapter;
     private ActionableEmptyView mQuickStartCompleteView;
@@ -80,33 +80,33 @@ public class QuickStartFullScreenDialogFragment extends Fragment implements Full
         mQuickStartCompleteView = rootView.findViewById(R.id.quick_start_complete_view);
 
         switch (mTasksType) {
-            case CUSTOMIZE:
-                tasksUncompleted.addAll(mQuickStartStore.getUncompletedTasksByType(site, CUSTOMIZE));
-                tasksCompleted.addAll(mQuickStartStore.getCompletedTasksByType(site, CUSTOMIZE));
-                setCompleteViewImage(R.drawable.img_illustration_site_brush_191dp);
-                AnalyticsTracker.track(Stat.QUICK_START_TYPE_CUSTOMIZE_VIEWED);
-                break;
-            case GROW:
-                tasksUncompleted.addAll(mQuickStartStore.getUncompletedTasksByType(site, GROW));
-                tasksCompleted.addAll(mQuickStartStore.getCompletedTasksByType(site, GROW));
-                setCompleteViewImage(R.drawable.img_illustration_site_about_182dp);
-                AnalyticsTracker.track(Stat.QUICK_START_TYPE_GROW_VIEWED);
-                break;
-            case UNKNOWN:
-                tasksUncompleted.addAll(mQuickStartStore.getUncompletedTasksByType(site, CUSTOMIZE));
-                tasksCompleted.addAll(mQuickStartStore.getCompletedTasksByType(site, CUSTOMIZE));
-                setCompleteViewImage(R.drawable.img_illustration_site_brush_191dp);
-                break;
+        case CUSTOMIZE:
+            tasksUncompleted.addAll(mQuickStartStore.getUncompletedTasksByType(site, CUSTOMIZE));
+            tasksCompleted.addAll(mQuickStartStore.getCompletedTasksByType(site, CUSTOMIZE));
+            setCompleteViewImage(R.drawable.img_illustration_site_brush_191dp);
+            AnalyticsTracker.track(Stat.QUICK_START_TYPE_CUSTOMIZE_VIEWED);
+            break;
+        case GROW:
+            tasksUncompleted.addAll(mQuickStartStore.getUncompletedTasksByType(site, GROW));
+            tasksCompleted.addAll(mQuickStartStore.getCompletedTasksByType(site, GROW));
+            setCompleteViewImage(R.drawable.img_illustration_site_about_182dp);
+            AnalyticsTracker.track(Stat.QUICK_START_TYPE_GROW_VIEWED);
+            break;
+        case UNKNOWN:
+            tasksUncompleted.addAll(mQuickStartStore.getUncompletedTasksByType(site, CUSTOMIZE));
+            tasksCompleted.addAll(mQuickStartStore.getCompletedTasksByType(site, CUSTOMIZE));
+            setCompleteViewImage(R.drawable.img_illustration_site_brush_191dp);
+            break;
         }
 
         boolean isCompletedTasksListExpanded = savedInstanceState != null
                                                && savedInstanceState.getBoolean(KEY_COMPLETED_TASKS_LIST_EXPANDED);
 
         mQuickStartAdapter = new QuickStartAdapter(
-                requireContext(),
-                tasksUncompleted,
-                tasksCompleted,
-                isCompletedTasksListExpanded);
+            requireContext(),
+            tasksUncompleted,
+            tasksCompleted,
+            isCompletedTasksListExpanded);
 
         if (tasksUncompleted.isEmpty()) {
             mQuickStartCompleteView.setVisibility(!isCompletedTasksListExpanded ? View.VISIBLE : View.GONE);
@@ -134,15 +134,15 @@ public class QuickStartFullScreenDialogFragment extends Fragment implements Full
     @Override
     public boolean onDismissClicked(FullScreenDialogController controller) {
         switch (mTasksType) {
-            case CUSTOMIZE:
-                AnalyticsTracker.track(Stat.QUICK_START_TYPE_CUSTOMIZE_DISMISSED);
-                break;
-            case GROW:
-                AnalyticsTracker.track(Stat.QUICK_START_TYPE_GROW_DISMISSED);
-                break;
-            case UNKNOWN:
-                // Do not track unknown.
-                break;
+        case CUSTOMIZE:
+            AnalyticsTracker.track(Stat.QUICK_START_TYPE_CUSTOMIZE_DISMISSED);
+            break;
+        case GROW:
+            AnalyticsTracker.track(Stat.QUICK_START_TYPE_GROW_DISMISSED);
+            break;
+        case UNKNOWN:
+            // Do not track unknown.
+            break;
         }
 
         controller.dismiss();
@@ -176,8 +176,8 @@ public class QuickStartFullScreenDialogFragment extends Fragment implements Full
             List<QuickStartTask> uncompletedTasks = mQuickStartStore.getUncompletedTasksByType(site, mTasksType);
 
             mQuickStartAdapter.updateContent(
-                    uncompletedTasks,
-                    mQuickStartStore.getCompletedTasksByType(site, mTasksType));
+                uncompletedTasks,
+                mQuickStartStore.getCompletedTasksByType(site, mTasksType));
 
             if (uncompletedTasks.isEmpty() && !mQuickStartAdapter.isCompletedTasksListExpanded()) {
                 toggleCompletedView(true);
@@ -188,17 +188,17 @@ public class QuickStartFullScreenDialogFragment extends Fragment implements Full
     @Override
     public void onCompletedTasksListToggled(boolean isExpanded) {
         switch (mTasksType) {
-            case CUSTOMIZE:
-                AnalyticsTracker.track(isExpanded ? Stat.QUICK_START_LIST_CUSTOMIZE_EXPANDED
-                        : Stat.QUICK_START_LIST_CUSTOMIZE_COLLAPSED);
-                break;
-            case GROW:
-                AnalyticsTracker.track(isExpanded ? Stat.QUICK_START_LIST_GROW_EXPANDED
-                        : Stat.QUICK_START_LIST_GROW_COLLAPSED);
-                break;
-            case UNKNOWN:
-                // Do not track unknown.
-                break;
+        case CUSTOMIZE:
+            AnalyticsTracker.track(isExpanded ? Stat.QUICK_START_LIST_CUSTOMIZE_EXPANDED
+                                   : Stat.QUICK_START_LIST_CUSTOMIZE_COLLAPSED);
+            break;
+        case GROW:
+            AnalyticsTracker.track(isExpanded ? Stat.QUICK_START_LIST_GROW_EXPANDED
+                                   : Stat.QUICK_START_LIST_GROW_COLLAPSED);
+            break;
+        case UNKNOWN:
+            // Do not track unknown.
+            break;
         }
 
         if (mQuickStartStore.getUncompletedTasksByType(AppPrefs.getSelectedSite(), mTasksType).isEmpty()) {

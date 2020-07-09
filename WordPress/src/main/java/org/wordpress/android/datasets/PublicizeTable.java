@@ -99,17 +99,17 @@ public class PublicizeTable {
             db.delete(SERVICES_TABLE, null, null);
 
             stmt = db.compileStatement(
-                    "INSERT INTO " + SERVICES_TABLE
-                    + " (id," // 1
-                    + " label," // 2
-                    + " description," // 3
-                    + " genericon," // 4
-                    + " icon_url," // 5
-                    + " connect_url," // 6
-                    + " is_jetpack_supported," // 7
-                    + " is_multi_user_id_supported," // 8
-                    + " is_external_users_only)" // 9
-                    + " VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)");
+                       "INSERT INTO " + SERVICES_TABLE
+                       + " (id," // 1
+                       + " label," // 2
+                       + " description," // 3
+                       + " genericon," // 4
+                       + " icon_url," // 5
+                       + " connect_url," // 6
+                       + " is_jetpack_supported," // 7
+                       + " is_multi_user_id_supported," // 8
+                       + " is_external_users_only)" // 9
+                       + " VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)");
             for (PublicizeService service : serviceList) {
                 stmt.bindString(1, service.getId());
                 stmt.bindString(2, service.getLabel());
@@ -245,25 +245,25 @@ public class PublicizeTable {
         SQLiteDatabase db = getWritableDb();
         db.beginTransaction();
         try {
-            db.delete(CONNECTIONS_TABLE, "site_id=?", new String[]{Long.toString(siteId)});
+            db.delete(CONNECTIONS_TABLE, "site_id=?", new String[] {Long.toString(siteId)});
 
             stmt = db.compileStatement(
-                    "INSERT INTO " + CONNECTIONS_TABLE
-                    + " (id," // 1
-                    + " site_id," // 2
-                    + " user_id," // 3
-                    + " keyring_connection_id," // 4
-                    + " keyring_connection_user_id," // 5
-                    + " is_shared," // 6
-                    + " service," // 7
-                    + " label," // 8
-                    + " external_id," // 9
-                    + " external_name," // 10
-                    + " external_display," // 11
-                    + " external_profile_picture," // 12
-                    + " refresh_url," // 13
-                    + " status)" // 14
-                    + " VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)");
+                       "INSERT INTO " + CONNECTIONS_TABLE
+                       + " (id," // 1
+                       + " site_id," // 2
+                       + " user_id," // 3
+                       + " keyring_connection_id," // 4
+                       + " keyring_connection_user_id," // 5
+                       + " is_shared," // 6
+                       + " service," // 7
+                       + " label," // 8
+                       + " external_id," // 9
+                       + " external_name," // 10
+                       + " external_display," // 11
+                       + " external_profile_picture," // 12
+                       + " refresh_url," // 13
+                       + " status)" // 14
+                       + " VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)");
             for (PublicizeConnection connection : connectionList) {
                 stmt.bindLong(1, connection.connectionId);
                 stmt.bindLong(2, connection.siteId);

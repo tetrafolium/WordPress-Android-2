@@ -141,8 +141,8 @@ public class ReaderPostActions {
     }
 
     private static void handleUpdatePostResponse(final ReaderPost localPost,
-                                                 final JSONObject jsonObject,
-                                                 final UpdateResultListener resultListener) {
+            final JSONObject jsonObject,
+            final UpdateResultListener resultListener) {
         if (jsonObject == null) {
             if (resultListener != null) {
                 resultListener.onUpdateResult(UpdateResult.FAILED);
@@ -204,7 +204,7 @@ public class ReaderPostActions {
                     });
                 }
             }
-        }.start();
+        } .start();
     }
 
     /*
@@ -264,7 +264,7 @@ public class ReaderPostActions {
     }
 
     private static void requestPost(RestClientUtils restClientUtils, String path, final ReaderActions
-            .OnRequestListener requestListener) {
+                                    .OnRequestListener requestListener) {
         com.wordpress.rest.RestRequest.Listener listener = new RestRequest.Listener() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -343,10 +343,10 @@ public class ReaderPostActions {
         };
 
         Request request = new StringRequest(
-                Request.Method.GET,
-                getTrackingPixelForPost(post),
-                listener,
-                errorListener) {
+            Request.Method.GET,
+            getTrackingPixelForPost(post),
+            listener,
+        errorListener) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 // call will fail without correct refer(r) er
@@ -392,7 +392,7 @@ public class ReaderPostActions {
     }
 
     private static void handleRelatedPostsResponse(final ReaderPost sourcePost,
-                                                   final JSONObject jsonObject) {
+            final JSONObject jsonObject) {
         if (jsonObject == null) {
             return;
         }
@@ -414,10 +414,10 @@ public class ReaderPostActions {
                         }
                     }
                     EventBus.getDefault().post(new ReaderEvents.RelatedPostsUpdated(sourcePost, localRelatedPosts,
-                                                                                    globalRelatedPosts));
+                                               globalRelatedPosts));
                 }
             }
-        }.start();
+        } .start();
     }
 
     public static void addToBookmarked(@NonNull final ReaderPost post) {

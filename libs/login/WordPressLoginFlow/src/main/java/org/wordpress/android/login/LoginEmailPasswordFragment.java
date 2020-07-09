@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import dagger.android.support.AndroidSupportInjection;
 
 public class LoginEmailPasswordFragment extends LoginBaseFormFragment<LoginListener> implements TextWatcher,
-        OnEditorCommitListener {
+    OnEditorCommitListener {
     private static final String KEY_REQUESTED_PASSWORD = "KEY_REQUESTED_PASSWORD";
     private static final String KEY_OLD_SITES_IDS = "KEY_OLD_SITES_IDS";
 
@@ -63,8 +63,8 @@ public class LoginEmailPasswordFragment extends LoginBaseFormFragment<LoginListe
     private AutoForeground.ServiceEventConnection mServiceEventConnection;
 
     public static LoginEmailPasswordFragment newInstance(String emailAddress, String password,
-                                                         String idToken, String service,
-                                                         boolean isSocialLogin) {
+            String idToken, String service,
+            boolean isSocialLogin) {
         LoginEmailPasswordFragment fragment = new LoginEmailPasswordFragment();
         Bundle args = new Bundle();
         args.putString(ARG_EMAIL_ADDRESS, emailAddress);
@@ -106,7 +106,7 @@ public class LoginEmailPasswordFragment extends LoginBaseFormFragment<LoginListe
 
         // connect to the Service. We'll receive updates via EventBus.
         mServiceEventConnection = new AutoForeground.ServiceEventConnection(getContext(),
-                                                                            LoginWpcomService.class, this);
+                LoginWpcomService.class, this);
 
         // install the change listener as late as possible so the UI can be setup (updated from the Service state)
         //  before triggering the state cleanup happening in the change listener.
@@ -218,7 +218,7 @@ public class LoginEmailPasswordFragment extends LoginBaseFormFragment<LoginListe
         mRequestedPassword = mPasswordInput.getEditText().getText().toString();
 
         LoginWpcomService.loginWithEmailAndPassword(getContext(), mEmailAddress, mRequestedPassword, mIdToken, mService,
-                                                    mIsSocialLogin);
+                mIsSocialLogin);
         mOldSitesIDs = SiteUtils.getCurrentSiteIds(mSiteStore, false);
     }
 
@@ -275,59 +275,59 @@ public class LoginEmailPasswordFragment extends LoginBaseFormFragment<LoginListe
         AppLog.i(T.NUX, "Received state: " + loginState.getStepName());
 
         switch (loginState.getStep()) {
-            case IDLE:
-                // nothing special to do, we'll start the service on next()
-                break;
-            case AUTHENTICATING:
-            case SOCIAL_LOGIN:
-            case FETCHING_ACCOUNT:
-            case FETCHING_SETTINGS:
-            case FETCHING_SITES:
-                if (!isInProgress()) {
-                    startProgress();
-                }
-                break;
-            case FAILURE_EMAIL_WRONG_PASSWORD:
-                onLoginFinished(false);
-                showPasswordError();
-                break;
-            case FAILURE_2FA:
-                onLoginFinished(false);
-                mLoginListener.needs2fa(mEmailAddress, mRequestedPassword);
+        case IDLE:
+            // nothing special to do, we'll start the service on next()
+            break;
+        case AUTHENTICATING:
+        case SOCIAL_LOGIN:
+        case FETCHING_ACCOUNT:
+        case FETCHING_SETTINGS:
+        case FETCHING_SITES:
+            if (!isInProgress()) {
+                startProgress();
+            }
+            break;
+        case FAILURE_EMAIL_WRONG_PASSWORD:
+            onLoginFinished(false);
+            showPasswordError();
+            break;
+        case FAILURE_2FA:
+            onLoginFinished(false);
+            mLoginListener.needs2fa(mEmailAddress, mRequestedPassword);
 
-                // consume the state so we don't relauch the 2FA dialog if user backs up
-                LoginWpcomService.clearLoginServiceState();
-                break;
-            case FAILURE_SOCIAL_2FA:
-                onLoginFinished(false);
-                mLoginListener.needs2faSocialConnect(mEmailAddress, mRequestedPassword, mIdToken, mService);
+            // consume the state so we don't relauch the 2FA dialog if user backs up
+            LoginWpcomService.clearLoginServiceState();
+            break;
+        case FAILURE_SOCIAL_2FA:
+            onLoginFinished(false);
+            mLoginListener.needs2faSocialConnect(mEmailAddress, mRequestedPassword, mIdToken, mService);
 
-                // consume the state so we don't relauch the 2FA dialog if user backs up
-                LoginWpcomService.clearLoginServiceState();
-                break;
-            case FAILURE_FETCHING_ACCOUNT:
-                onLoginFinished(false);
-                showError(getString(R.string.error_fetch_my_profile));
-                break;
-            case FAILURE_CANNOT_ADD_DUPLICATE_SITE:
-                onLoginFinished(false);
-                showError(getString(R.string.cannot_add_duplicate_site));
-                break;
-            case FAILURE_USE_WPCOM_USERNAME_INSTEAD_OF_EMAIL:
-                onLoginFinished(false);
-                mLoginListener.loginViaWpcomUsernameInstead();
-                ToastUtils.showToast(getContext(), R.string.error_user_username_instead_of_email, Duration.LONG);
+            // consume the state so we don't relauch the 2FA dialog if user backs up
+            LoginWpcomService.clearLoginServiceState();
+            break;
+        case FAILURE_FETCHING_ACCOUNT:
+            onLoginFinished(false);
+            showError(getString(R.string.error_fetch_my_profile));
+            break;
+        case FAILURE_CANNOT_ADD_DUPLICATE_SITE:
+            onLoginFinished(false);
+            showError(getString(R.string.cannot_add_duplicate_site));
+            break;
+        case FAILURE_USE_WPCOM_USERNAME_INSTEAD_OF_EMAIL:
+            onLoginFinished(false);
+            mLoginListener.loginViaWpcomUsernameInstead();
+            ToastUtils.showToast(getContext(), R.string.error_user_username_instead_of_email, Duration.LONG);
 
-                // consume the state so we don't re-redirect to username login if user backs up
-                LoginWpcomService.clearLoginServiceState();
-                break;
-            case FAILURE:
-                onLoginFinished(false);
-                showError(getString(R.string.error_generic));
-                break;
-            case SUCCESS:
-                onLoginFinished(true);
-                break;
+            // consume the state so we don't re-redirect to username login if user backs up
+            LoginWpcomService.clearLoginServiceState();
+            break;
+        case FAILURE:
+            onLoginFinished(false);
+            showError(getString(R.string.error_generic));
+            break;
+        case SUCCESS:
+            onLoginFinished(true);
+            break;
         }
     }
 }

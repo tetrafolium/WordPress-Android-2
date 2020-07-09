@@ -167,11 +167,11 @@ public class EditPostSettingsFragment extends Fragment {
         // Early load the default lists for post format keys and names.
         // Will use it later without needing to have access to the Resources.
         mDefaultPostFormatKeys =
-                new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.post_format_keys)));
+            new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.post_format_keys)));
         mDefaultPostFormatNames = new ArrayList<>(Arrays.asList(getResources()
                 .getStringArray(R.array.post_format_display_names)));
         mPublishedViewModel =
-                ViewModelProviders.of(getActivity(), mViewModelFactory).get(EditPostPublishSettingsViewModel.class);
+            ViewModelProviders.of(getActivity(), mViewModelFactory).get(EditPostPublishSettingsViewModel.class);
     }
 
     @Override
@@ -198,36 +198,36 @@ public class EditPostSettingsFragment extends Fragment {
         }
         // we need to fetch site settings in order to get the latest default post format
         mSiteSettings = SiteSettingsInterface.getInterface(
-                getActivity(), getSite(), new SiteSettingsListener() {
-                    @Override
-                    public void onSaveError(Exception error) {
-                        // no-op
-                    }
+        getActivity(), getSite(), new SiteSettingsListener() {
+            @Override
+            public void onSaveError(Exception error) {
+                // no-op
+            }
 
-                    @Override
-                    public void onFetchError(Exception error) {
-                        // no-op
-                    }
+            @Override
+            public void onFetchError(Exception error) {
+                // no-op
+            }
 
-                    @Override
-                    public void onSettingsUpdated() {
-                        // mEditPostActivityHook will be null if the fragment is detached
-                        if (getEditPostActivityHook() != null) {
-                            updatePostFormat(
-                                    mSiteSettings.getDefaultPostFormat());
-                        }
-                    }
+            @Override
+            public void onSettingsUpdated() {
+                // mEditPostActivityHook will be null if the fragment is detached
+                if (getEditPostActivityHook() != null) {
+                    updatePostFormat(
+                        mSiteSettings.getDefaultPostFormat());
+                }
+            }
 
-                    @Override
-                    public void onSettingsSaved() {
-                        // no-op
-                    }
+            @Override
+            public void onSettingsSaved() {
+                // no-op
+            }
 
-                    @Override
-                    public void onCredentialsValidated(Exception error) {
-                        // no-op
-                    }
-                });
+            @Override
+            public void onCredentialsValidated(Exception error) {
+                // no-op
+            }
+        });
         if (mSiteSettings != null) {
             // init will fetch remote settings for us
             mSiteSettings.init(true);
@@ -393,9 +393,9 @@ public class EditPostSettingsFragment extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (mFeaturedImageRetryOverlay.getVisibility() == View.VISIBLE) {
             menu.add(0, RETRY_FEATURED_IMAGE_UPLOAD_MENU_ID, 0,
-                    getString(R.string.post_settings_retry_featured_image));
+                     getString(R.string.post_settings_retry_featured_image));
             menu.add(0, REMOVE_FEATURED_IMAGE_UPLOAD_MENU_ID, 0,
-                    getString(R.string.post_settings_remove_featured_image));
+                     getString(R.string.post_settings_remove_featured_image));
         } else {
             menu.add(0, CHOOSE_FEATURED_IMAGE_MENU_ID, 0, getString(R.string.post_settings_choose_featured_image));
             menu.add(0, REMOVE_FEATURED_IMAGE_MENU_ID, 0, getString(R.string.post_settings_remove_featured_image));
@@ -405,26 +405,26 @@ public class EditPostSettingsFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case CHOOSE_FEATURED_IMAGE_MENU_ID:
-                mFeaturedImageHelper.cancelFeaturedImageUpload(getContext(), getSite(), getPost(), false);
-                launchFeaturedMediaPicker();
-                return true;
-            case REMOVE_FEATURED_IMAGE_UPLOAD_MENU_ID:
-            case REMOVE_FEATURED_IMAGE_MENU_ID:
-                mFeaturedImageHelper.cancelFeaturedImageUpload(getContext(), getSite(), getPost(), false);
-                clearFeaturedImage();
-                return true;
-            case RETRY_FEATURED_IMAGE_UPLOAD_MENU_ID:
-                retryFeaturedImageUpload();
-                return true;
-            default:
-                return false;
+        case CHOOSE_FEATURED_IMAGE_MENU_ID:
+            mFeaturedImageHelper.cancelFeaturedImageUpload(getContext(), getSite(), getPost(), false);
+            launchFeaturedMediaPicker();
+            return true;
+        case REMOVE_FEATURED_IMAGE_UPLOAD_MENU_ID:
+        case REMOVE_FEATURED_IMAGE_MENU_ID:
+            mFeaturedImageHelper.cancelFeaturedImageUpload(getContext(), getSite(), getPost(), false);
+            clearFeaturedImage();
+            return true;
+        case RETRY_FEATURED_IMAGE_UPLOAD_MENU_ID:
+            retryFeaturedImageUpload();
+            return true;
+        default:
+            return false;
         }
     }
 
     private void retryFeaturedImageUpload() {
         MediaModel mediaModel =
-                mFeaturedImageHelper.retryFeaturedImageUpload(getContext(), getSite(), getPost());
+            mFeaturedImageHelper.retryFeaturedImageUpload(getContext(), getSite(), getPost());
         if (mediaModel == null) {
             clearFeaturedImage();
         }
@@ -465,27 +465,27 @@ public class EditPostSettingsFragment extends Fragment {
             Bundle extras;
 
             switch (requestCode) {
-                case ACTIVITY_REQUEST_CODE_PICK_LOCATION:
-                    if (isAdded() && resultCode == RESULT_OK) {
-                        Place place = PlacePicker.getPlace(getActivity(), data);
-                        setLocation(place);
-                    }
-                    break;
-                case ACTIVITY_REQUEST_CODE_SELECT_CATEGORIES:
-                    extras = data.getExtras();
-                    if (extras != null && extras.containsKey(KEY_SELECTED_CATEGORY_IDS)) {
-                        @SuppressWarnings("unchecked")
-                        List<Long> categoryList = (ArrayList<Long>) extras.getSerializable(KEY_SELECTED_CATEGORY_IDS);
-                        updateCategories(categoryList);
-                    }
-                    break;
-                case ACTIVITY_REQUEST_CODE_SELECT_TAGS:
-                    extras = data.getExtras();
-                    if (resultCode == RESULT_OK && extras != null) {
-                        String selectedTags = extras.getString(PostSettingsTagsActivity.KEY_SELECTED_TAGS);
-                        updateTags(selectedTags);
-                    }
-                    break;
+            case ACTIVITY_REQUEST_CODE_PICK_LOCATION:
+                if (isAdded() && resultCode == RESULT_OK) {
+                    Place place = PlacePicker.getPlace(getActivity(), data);
+                    setLocation(place);
+                }
+                break;
+            case ACTIVITY_REQUEST_CODE_SELECT_CATEGORIES:
+                extras = data.getExtras();
+                if (extras != null && extras.containsKey(KEY_SELECTED_CATEGORY_IDS)) {
+                    @SuppressWarnings("unchecked")
+                    List<Long> categoryList = (ArrayList<Long>) extras.getSerializable(KEY_SELECTED_CATEGORY_IDS);
+                    updateCategories(categoryList);
+                }
+                break;
+            case ACTIVITY_REQUEST_CODE_SELECT_TAGS:
+                extras = data.getExtras();
+                if (resultCode == RESULT_OK && extras != null) {
+                    String selectedTags = extras.getString(PostSettingsTagsActivity.KEY_SELECTED_TAGS);
+                    updateTags(selectedTags);
+                }
+                break;
             }
         }
     }
@@ -495,15 +495,15 @@ public class EditPostSettingsFragment extends Fragment {
             return;
         }
         PostSettingsInputDialogFragment dialog = PostSettingsInputDialogFragment.newInstance(
-                getPost().getExcerpt(), getString(R.string.post_settings_excerpt),
-                getString(R.string.post_settings_excerpt_dialog_hint), false);
+                    getPost().getExcerpt(), getString(R.string.post_settings_excerpt),
+                    getString(R.string.post_settings_excerpt_dialog_hint), false);
         dialog.setPostSettingsInputDialogListener(
-                new PostSettingsInputDialogFragment.PostSettingsInputDialogListener() {
-                    @Override
-                    public void onInputUpdated(String input) {
-                        updateExcerpt(input);
-                    }
-                });
+        new PostSettingsInputDialogFragment.PostSettingsInputDialogListener() {
+            @Override
+            public void onInputUpdated(String input) {
+                updateExcerpt(input);
+            }
+        });
         dialog.show(getChildFragmentManager(), null);
     }
 
@@ -512,15 +512,15 @@ public class EditPostSettingsFragment extends Fragment {
             return;
         }
         PostSettingsInputDialogFragment dialog = PostSettingsInputDialogFragment.newInstance(
-                getPost().getSlug(), getString(R.string.post_settings_slug),
-                getString(R.string.post_settings_slug_dialog_hint), true);
+                    getPost().getSlug(), getString(R.string.post_settings_slug),
+                    getString(R.string.post_settings_slug_dialog_hint), true);
         dialog.setPostSettingsInputDialogListener(
-                new PostSettingsInputDialogFragment.PostSettingsInputDialogListener() {
-                    @Override
-                    public void onInputUpdated(String input) {
-                        updateSlug(input);
-                    }
-                });
+        new PostSettingsInputDialogFragment.PostSettingsInputDialogListener() {
+            @Override
+            public void onInputUpdated(String input) {
+                updateSlug(input);
+            }
+        });
         dialog.show(getFragmentManager(), null);
     }
 
@@ -554,15 +554,15 @@ public class EditPostSettingsFragment extends Fragment {
      */
     public void onPostSettingsFragmentPositiveButtonClicked(@NonNull PostSettingsListDialogFragment fragment) {
         switch (fragment.getDialogType()) {
-            case POST_STATUS:
-                int index = fragment.getCheckedIndex();
-                String status = getPostStatusAtIndex(index).toString();
-                updatePostStatus(status);
-                break;
-            case POST_FORMAT:
-                String formatName = fragment.getSelectedItem();
-                updatePostFormat(getPostFormatKeyFromName(formatName));
-                break;
+        case POST_STATUS:
+            int index = fragment.getCheckedIndex();
+            String status = getPostStatusAtIndex(index).toString();
+            updatePostStatus(status);
+            break;
+        case POST_FORMAT:
+            String formatName = fragment.getSelectedItem();
+            updatePostFormat(getPostFormatKeyFromName(formatName));
+            break;
         }
     }
 
@@ -574,7 +574,7 @@ public class EditPostSettingsFragment extends Fragment {
         int index = getCurrentPostStatusIndex();
         FragmentManager fm = getActivity().getSupportFragmentManager();
         PostSettingsListDialogFragment fragment =
-                PostSettingsListDialogFragment.newInstance(DialogType.POST_STATUS, index);
+            PostSettingsListDialogFragment.newInstance(DialogType.POST_STATUS, index);
         fragment.show(fm, PostSettingsListDialogFragment.TAG);
     }
 
@@ -596,7 +596,7 @@ public class EditPostSettingsFragment extends Fragment {
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         PostSettingsListDialogFragment fragment =
-                PostSettingsListDialogFragment.newInstance(DialogType.POST_FORMAT, checkedIndex);
+            PostSettingsListDialogFragment.newInstance(DialogType.POST_FORMAT, checkedIndex);
         fragment.show(fm, PostSettingsListDialogFragment.TAG);
     }
 
@@ -605,15 +605,15 @@ public class EditPostSettingsFragment extends Fragment {
             return;
         }
         PostSettingsInputDialogFragment dialog = PostSettingsInputDialogFragment.newInstance(
-                getPost().getPassword(), getString(R.string.password),
-                getString(R.string.post_settings_password_dialog_hint), false);
+                    getPost().getPassword(), getString(R.string.password),
+                    getString(R.string.post_settings_password_dialog_hint), false);
         dialog.setPostSettingsInputDialogListener(
-                new PostSettingsInputDialogFragment.PostSettingsInputDialogListener() {
-                    @Override
-                    public void onInputUpdated(String input) {
-                        updatePassword(input);
-                    }
-                });
+        new PostSettingsInputDialogFragment.PostSettingsInputDialogListener() {
+            @Override
+            public void onInputUpdated(String input) {
+                updatePassword(input);
+            }
+        });
         dialog.show(getFragmentManager(), null);
     }
 
@@ -770,32 +770,32 @@ public class EditPostSettingsFragment extends Fragment {
 
     private PostStatus getPostStatusAtIndex(int index) {
         switch (index) {
-            case 0:
-                return PostStatus.PUBLISHED;
-            case 1:
-                return PostStatus.DRAFT;
-            case 2:
-                return PostStatus.PENDING;
-            case 3:
-                return PostStatus.PRIVATE;
-            default:
-                return PostStatus.UNKNOWN;
+        case 0:
+            return PostStatus.PUBLISHED;
+        case 1:
+            return PostStatus.DRAFT;
+        case 2:
+            return PostStatus.PENDING;
+        case 3:
+            return PostStatus.PRIVATE;
+        default:
+            return PostStatus.UNKNOWN;
         }
     }
 
     private int getCurrentPostStatusIndex() {
         switch (PostStatus.fromPost(getPost())) {
-            case DRAFT:
-                return 1;
-            case PENDING:
-                return 2;
-            case PRIVATE:
-                return 3;
-            case TRASHED:
-            case UNKNOWN:
-            case PUBLISHED:
-            case SCHEDULED:
-                return 0;
+        case DRAFT:
+            return 1;
+        case PENDING:
+            return 2;
+        case PRIVATE:
+            return 3;
+        case TRASHED:
+        case UNKNOWN:
+        case PUBLISHED:
+        case SCHEDULED:
+            return 0;
         }
         return 0;
     }
@@ -867,7 +867,7 @@ public class EditPostSettingsFragment extends Fragment {
             return;
         }
         final FeaturedImageData currentFeaturedImageState =
-                mFeaturedImageHelper.createCurrentFeaturedImageState(context, site, post);
+            mFeaturedImageHelper.createCurrentFeaturedImageState(context, site, post);
 
         FeaturedImageState uiState = currentFeaturedImageState.getUiState();
         updateFeaturedImageViews(currentFeaturedImageState.getUiState());
@@ -879,20 +879,20 @@ public class EditPostSettingsFragment extends Fragment {
                  *  with a remote image.
                  */
                 mImageManager.loadWithResultListener(mFeaturedImageView, ImageType.IMAGE,
-                        currentFeaturedImageState.getMediaUri(), ScaleType.FIT_CENTER,
-                        null, new RequestListener<Drawable>() {
-                            @Override public void onLoadFailed(@org.jetbrains.annotations.Nullable Exception e) {
-                            }
+                                                     currentFeaturedImageState.getMediaUri(), ScaleType.FIT_CENTER,
+                null, new RequestListener<Drawable>() {
+                    @Override public void onLoadFailed(@org.jetbrains.annotations.Nullable Exception e) {
+                    }
 
-                            @Override public void onResourceReady(Drawable resource) {
-                                if (currentFeaturedImageState.getUiState() == FeaturedImageState.REMOTE_IMAGE_LOADING) {
-                                    updateFeaturedImageViews(FeaturedImageState.REMOTE_IMAGE_SET);
-                                }
-                            }
-                        });
+                    @Override public void onResourceReady(Drawable resource) {
+                        if (currentFeaturedImageState.getUiState() == FeaturedImageState.REMOTE_IMAGE_LOADING) {
+                            updateFeaturedImageViews(FeaturedImageState.REMOTE_IMAGE_SET);
+                        }
+                    }
+                });
             } else {
                 mImageManager.load(mLocalFeaturedImageView, ImageType.IMAGE, currentFeaturedImageState.getMediaUri(),
-                        ScaleType.FIT_CENTER);
+                                   ScaleType.FIT_CENTER);
             }
         }
     }
@@ -1008,7 +1008,7 @@ public class EditPostSettingsFragment extends Fragment {
             ToastUtils.showToast(getActivity(), R.string.post_settings_error_placepicker_missing_play_services);
         } catch (GooglePlayServicesRepairableException re) {
             GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), re.getConnectionStatusCode(),
-                                                               ACTIVITY_REQUEST_PLAY_SERVICES_RESOLUTION);
+                    ACTIVITY_REQUEST_PLAY_SERVICES_RESOLUTION);
         }
     }
 
@@ -1036,7 +1036,7 @@ public class EditPostSettingsFragment extends Fragment {
         } else {
             mPostLocation = postModel.getLocation();
             mLocationTextView.setText(getString(
-                    R.string.latitude_longitude, mPostLocation.getLatitude(), mPostLocation.getLongitude()));
+                                          R.string.latitude_longitude, mPostLocation.getLatitude(), mPostLocation.getLongitude()));
             // Asynchronously get the address from the location coordinates
             new FetchAndSetAddressAsyncTask().execute(mPostLocation.getLatitude(), mPostLocation.getLongitude());
         }

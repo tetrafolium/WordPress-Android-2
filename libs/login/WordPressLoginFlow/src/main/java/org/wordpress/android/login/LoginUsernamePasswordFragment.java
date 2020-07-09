@@ -50,7 +50,7 @@ import java.util.List;
 import dagger.android.support.AndroidSupportInjection;
 
 public class LoginUsernamePasswordFragment extends LoginBaseFormFragment<LoginListener> implements TextWatcher,
-        OnEditorCommitListener {
+    OnEditorCommitListener {
     private static final String KEY_LOGIN_FINISHED = "KEY_LOGIN_FINISHED";
     private static final String KEY_REQUESTED_USERNAME = "KEY_REQUESTED_USERNAME";
     private static final String KEY_REQUESTED_PASSWORD = "KEY_REQUESTED_PASSWORD";
@@ -130,10 +130,10 @@ public class LoginUsernamePasswordFragment extends LoginBaseFormFragment<LoginLi
 
         if (mSiteIconUrl != null) {
             Glide.with(this)
-                .load(mSiteIconUrl)
-                .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_blavatar_grey_lighten_20_40dp))
-                .apply(RequestOptions.errorOf(R.drawable.ic_placeholder_blavatar_grey_lighten_20_40dp))
-                .into(((ImageView) rootView.findViewById(R.id.login_blavatar)));
+            .load(mSiteIconUrl)
+            .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_blavatar_grey_lighten_20_40dp))
+            .apply(RequestOptions.errorOf(R.drawable.ic_placeholder_blavatar_grey_lighten_20_40dp))
+            .into(((ImageView) rootView.findViewById(R.id.login_blavatar)));
         }
 
         TextView siteNameView = (rootView.findViewById(R.id.login_site_title));
@@ -380,28 +380,28 @@ public class LoginUsernamePasswordFragment extends LoginBaseFormFragment<LoginLi
 
     private void handleAuthError(AuthenticationErrorType error, String errorMessage) {
         switch (error) {
-            case INCORRECT_USERNAME_OR_PASSWORD:
-            case NOT_AUTHENTICATED: // NOT_AUTHENTICATED is the generic error from XMLRPC response on first call.
-                showError(getString(R.string.username_or_password_incorrect));
-                break;
-            case INVALID_OTP:
-            case INVALID_TOKEN:
-            case AUTHORIZATION_REQUIRED:
-            case NEEDS_2FA:
-                if (mIsWpcom) {
-                    if (mLoginListener != null) {
-                        mLoginListener.needs2fa(mRequestedUsername, mRequestedPassword);
-                    }
-                } else {
-                    showError("2FA not supported for self-hosted sites. Please use an app-password.");
+        case INCORRECT_USERNAME_OR_PASSWORD:
+        case NOT_AUTHENTICATED: // NOT_AUTHENTICATED is the generic error from XMLRPC response on first call.
+            showError(getString(R.string.username_or_password_incorrect));
+            break;
+        case INVALID_OTP:
+        case INVALID_TOKEN:
+        case AUTHORIZATION_REQUIRED:
+        case NEEDS_2FA:
+            if (mIsWpcom) {
+                if (mLoginListener != null) {
+                    mLoginListener.needs2fa(mRequestedUsername, mRequestedPassword);
                 }
-                break;
-            default:
-                AppLog.e(T.NUX, "Server response: " + errorMessage);
+            } else {
+                showError("2FA not supported for self-hosted sites. Please use an app-password.");
+            }
+            break;
+        default:
+            AppLog.e(T.NUX, "Server response: " + errorMessage);
 
-                ToastUtils.showToast(getActivity(),
-                        errorMessage == null ? getString(R.string.error_generic) : errorMessage);
-                break;
+            ToastUtils.showToast(getActivity(),
+                                 errorMessage == null ? getString(R.string.error_generic) : errorMessage);
+            break;
         }
     }
 
@@ -425,9 +425,9 @@ public class LoginUsernamePasswordFragment extends LoginBaseFormFragment<LoginLi
 
             mAuthFailed = true;
             AppLog.e(T.API, "Login with username/pass onAuthenticationChanged has error: " + event.error.type
-                    + " - " + event.error.message);
+                     + " - " + event.error.message);
             mAnalyticsListener.trackLoginFailed(event.getClass().getSimpleName(),
-                    event.error.type.toString(), event.error.message);
+                                                event.error.type.toString(), event.error.message);
 
             handleAuthError(event.error.type, event.error.message);
 
@@ -500,7 +500,7 @@ public class LoginUsernamePasswordFragment extends LoginBaseFormFragment<LoginLi
             }
 
             AppLog.e(T.API, "Login with username/pass onSiteChanged has error: " + event.error.type
-                    + " - " + errorMessage);
+                     + " - " + errorMessage);
 
             if (!mAuthFailed) {
                 // show the error if not already displayed in onAuthenticationChanged (like in username/pass error)
@@ -535,7 +535,7 @@ public class LoginUsernamePasswordFragment extends LoginBaseFormFragment<LoginLi
             endProgress();
 
             AppLog.e(T.API, "Fetching selfhosted site profile has error: " + event.error.type + " - "
-                    + event.error.message);
+                     + event.error.message);
 
             // continue with success, even if the operation was cancelled since the user got logged in regardless.
             // So, go on with finishing the login process

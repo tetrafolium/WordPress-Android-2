@@ -57,7 +57,7 @@ import static android.app.Activity.RESULT_OK;
 import dagger.android.support.AndroidSupportInjection;
 
 public class LoginEmailFragment extends LoginBaseFormFragment<LoginListener> implements TextWatcher,
-        OnEditorCommitListener, ConnectionCallbacks, OnConnectionFailedListener {
+    OnEditorCommitListener, ConnectionCallbacks, OnConnectionFailedListener {
     private static final String KEY_GOOGLE_EMAIL = "KEY_GOOGLE_EMAIL";
     private static final String KEY_HAS_DISMISSED_EMAIL_HINTS = "KEY_HAS_DISMISSED_EMAIL_HINTS";
     private static final String KEY_IS_DISPLAYING_EMAIL_HINTS = "KEY_IS_DISPLAYING_EMAIL_HINTS";
@@ -108,25 +108,25 @@ public class LoginEmailFragment extends LoginBaseFormFragment<LoginListener> imp
     @Override
     protected void setupLabel(@NonNull TextView label) {
         switch (mLoginListener.getLoginMode()) {
-            case WPCOM_LOGIN_DEEPLINK:
-                label.setText(R.string.login_log_in_for_deeplink);
-                break;
-            case SHARE_INTENT:
-                label.setText(R.string.login_log_in_for_share_intent);
-                break;
-            case FULL:
-            case WPCOM_LOGIN_ONLY:
-                label.setText(R.string.enter_email_wordpress_com);
-                break;
-            case WOO_LOGIN_MODE:
-                label.setText(getString(R.string.enter_email_for_site, mLoginSiteUrl));
-                break;
-            case JETPACK_STATS:
-                label.setText(R.string.login_to_to_connect_jetpack);
-                break;
-            case WPCOM_REAUTHENTICATE:
-                label.setText(R.string.auth_required);
-                break;
+        case WPCOM_LOGIN_DEEPLINK:
+            label.setText(R.string.login_log_in_for_deeplink);
+            break;
+        case SHARE_INTENT:
+            label.setText(R.string.login_log_in_for_share_intent);
+            break;
+        case FULL:
+        case WPCOM_LOGIN_ONLY:
+            label.setText(R.string.enter_email_wordpress_com);
+            break;
+        case WOO_LOGIN_MODE:
+            label.setText(getString(R.string.enter_email_for_site, mLoginSiteUrl));
+            break;
+        case JETPACK_STATS:
+            label.setText(R.string.login_to_to_connect_jetpack);
+            break;
+        case WPCOM_REAUTHENTICATE:
+            label.setText(R.string.auth_required);
+            break;
         }
     }
 
@@ -201,21 +201,21 @@ public class LoginEmailFragment extends LoginBaseFormFragment<LoginListener> imp
         TextView siteLoginButtonText = rootView.findViewById(R.id.login_site_button_text);
 
         switch (mLoginListener.getLoginMode()) {
-            case FULL:
-            case WPCOM_LOGIN_ONLY:
-            case WOO_LOGIN_MODE:
-            case SHARE_INTENT:
-                siteLoginButtonIcon.setImageResource(R.drawable.ic_domains_grey_24dp);
-                siteLoginButtonText.setText(R.string.enter_site_address_instead);
-                break;
-            case JETPACK_STATS:
-                siteLoginButtonIcon.setImageResource(R.drawable.ic_user_circle_grey_24dp);
-                siteLoginButtonText.setText(R.string.enter_username_instead);
-                break;
-            case WPCOM_LOGIN_DEEPLINK:
-            case WPCOM_REAUTHENTICATE:
-                siteLoginButton.setVisibility(View.GONE);
-                break;
+        case FULL:
+        case WPCOM_LOGIN_ONLY:
+        case WOO_LOGIN_MODE:
+        case SHARE_INTENT:
+            siteLoginButtonIcon.setImageResource(R.drawable.ic_domains_grey_24dp);
+            siteLoginButtonText.setText(R.string.enter_site_address_instead);
+            break;
+        case JETPACK_STATS:
+            siteLoginButtonIcon.setImageResource(R.drawable.ic_user_circle_grey_24dp);
+            siteLoginButtonText.setText(R.string.enter_username_instead);
+            break;
+        case WPCOM_LOGIN_DEEPLINK:
+        case WPCOM_REAUTHENTICATE:
+            siteLoginButton.setVisibility(View.GONE);
+            break;
         }
     }
 
@@ -286,10 +286,10 @@ public class LoginEmailFragment extends LoginBaseFormFragment<LoginListener> imp
     public void onStart() {
         super.onStart();
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(LoginEmailFragment.this)
-                .enableAutoManage(getActivity(), GOOGLE_API_CLIENT_ID, LoginEmailFragment.this)
-                .addApi(Auth.CREDENTIALS_API)
-                .build();
+        .addConnectionCallbacks(LoginEmailFragment.this)
+        .enableAutoManage(getActivity(), GOOGLE_API_CLIENT_ID, LoginEmailFragment.this)
+        .addApi(Auth.CREDENTIALS_API)
+        .build();
     }
 
     @Override
@@ -386,9 +386,9 @@ public class LoginEmailFragment extends LoginBaseFormFragment<LoginListener> imp
 
     private void showErrorDialog(String message) {
         AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginTheme))
-                .setMessage(message)
-                .setPositiveButton(R.string.login_error_button, null)
-                .create();
+        .setMessage(message)
+        .setPositiveButton(R.string.login_error_button, null)
+        .create();
         dialog.show();
     }
 
@@ -427,19 +427,19 @@ public class LoginEmailFragment extends LoginBaseFormFragment<LoginListener> imp
         }
 
         switch (event.type) {
-            case EMAIL:
-                if (event.isAvailable) {
-                    // email address is available on wpcom, so apparently the user can't login with that one.
-                    ActivityUtils.hideKeyboardForced(mEmailInput);
-                    showEmailError(R.string.email_not_registered_wpcom);
-                } else if (mLoginListener != null) {
-                    ActivityUtils.hideKeyboardForced(mEmailInput);
-                    mLoginListener.gotWpcomEmail(event.value);
-                }
-                break;
-            default:
-                AppLog.e(T.API, "OnAvailabilityChecked unhandled event type: " + event.error.type);
-                break;
+        case EMAIL:
+            if (event.isAvailable) {
+                // email address is available on wpcom, so apparently the user can't login with that one.
+                ActivityUtils.hideKeyboardForced(mEmailInput);
+                showEmailError(R.string.email_not_registered_wpcom);
+            } else if (mLoginListener != null) {
+                ActivityUtils.hideKeyboardForced(mEmailInput);
+                mLoginListener.gotWpcomEmail(event.value);
+            }
+            break;
+        default:
+            AppLog.e(T.API, "OnAvailabilityChecked unhandled event type: " + event.error.type);
+            break;
         }
     }
 
@@ -475,16 +475,16 @@ public class LoginEmailFragment extends LoginBaseFormFragment<LoginListener> imp
     public void getEmailHints() {
         GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
         if (getContext() == null
-            || googleApiAvailability.isGooglePlayServicesAvailable(getContext()) != ConnectionResult.SUCCESS) {
+                || googleApiAvailability.isGooglePlayServicesAvailable(getContext()) != ConnectionResult.SUCCESS) {
             AppLog.w(T.NUX, LOG_TAG + ": Couldn't start hint picker - Play Services unavailable");
             return;
         }
         HintRequest hintRequest = new HintRequest.Builder()
-                .setHintPickerConfig(new CredentialPickerConfig.Builder()
-                        .setShowCancelButton(true)
-                        .build())
-                .setEmailAddressIdentifierSupported(true)
-                .build();
+        .setHintPickerConfig(new CredentialPickerConfig.Builder()
+                             .setShowCancelButton(true)
+                             .build())
+        .setEmailAddressIdentifierSupported(true)
+        .build();
 
         PendingIntent intent = Auth.CredentialsApi.getHintPickerIntent(mGoogleApiClient, hintRequest);
 

@@ -30,9 +30,9 @@ public class FooterNoteBlock extends NoteBlock {
         }
 
         mClickableSpan = new NoteBlockClickableSpan(
-                rangeObject,
-                false,
-                true
+            rangeObject,
+            false,
+            true
         );
 
         mClickableSpan.setCustomType(noteType);

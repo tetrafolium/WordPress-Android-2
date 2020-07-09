@@ -40,14 +40,17 @@ public class PlaceholderComparison {
 
     private boolean matches(Drawable drawable, Size size) {
         switch (mImageType) {
-            case PHOTO:
-            case VIDEO:
-                return colorComparePlaceholder(drawable);
+        case PHOTO:
+        case VIDEO:
+            return colorComparePlaceholder(drawable);
 
-            case AVATAR: return bitmapComparePlaceholder(drawable, size);
-            case BLAVATAR: return bitmapComparePlaceholder(drawable, size);
+        case AVATAR:
+            return bitmapComparePlaceholder(drawable, size);
+        case BLAVATAR:
+            return bitmapComparePlaceholder(drawable, size);
 
-            default: fail();
+        default:
+            fail();
         }
 
         return false;

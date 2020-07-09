@@ -13,9 +13,9 @@ public class JavaScriptException extends Throwable {
 
     @Override
     public Throwable fillInStackTrace() {
-        setStackTrace(new StackTraceElement[]{
-                new StackTraceElement("JavaScriptException", "", mFile, mLine)
-        });
+        setStackTrace(new StackTraceElement[] {
+                          new StackTraceElement("JavaScriptException", "", mFile, mLine)
+                      });
         return this;
     }
 }

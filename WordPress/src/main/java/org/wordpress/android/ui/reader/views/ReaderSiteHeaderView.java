@@ -149,13 +149,13 @@ public class ReaderSiteHeaderView extends LinearLayout {
 
         if (blogInfo.hasImageUrl()) {
             mImageManager.load(blavatarImg, ImageType.BLAVATAR,
-                    PhotonUtils.getPhotonImageUrl(blogInfo.getImageUrl(), mBlavatarSz, mBlavatarSz, Quality.MEDIUM));
+                               PhotonUtils.getPhotonImageUrl(blogInfo.getImageUrl(), mBlavatarSz, mBlavatarSz, Quality.MEDIUM));
         }
 
         txtFollowCount.setText(String.format(
-                        LocaleManager.getSafeLocale(getContext()),
-                        getContext().getString(R.string.reader_label_follow_count),
-                        blogInfo.numSubscribers));
+                                   LocaleManager.getSafeLocale(getContext()),
+                                   getContext().getString(R.string.reader_label_follow_count),
+                                   blogInfo.numSubscribers));
 
         if (!mAccountStore.hasAccessToken()) {
             mFollowButton.setVisibility(View.GONE);
@@ -208,7 +208,7 @@ public class ReaderSiteHeaderView extends LinearLayout {
                 mFollowButton.setEnabled(true);
                 if (!succeeded) {
                     int errResId = isAskingToFollow ? R.string.reader_toast_err_follow_blog
-                            : R.string.reader_toast_err_unfollow_blog;
+                                   : R.string.reader_toast_err_unfollow_blog;
                     ToastUtils.showToast(getContext(), errResId);
                     mFollowButton.setIsFollowed(!isAskingToFollow);
                 }

@@ -105,25 +105,25 @@ public class ReaderPhotoView extends RelativeLayout {
         showProgress();
 
         mImageManager
-                .loadWithResultListener(mImageView, ImageType.IMAGE, mHiResImageUrl, ScaleType.CENTER, mLoResImageUrl,
-                new RequestListener<Drawable>() {
-                    @Override
-                    public void onLoadFailed(@Nullable Exception e) {
-                        if (e != null) {
-                            AppLog.e(AppLog.T.READER, e);
-                        }
-                        boolean lowResNotLoadedYet = isLoading();
-                        if (lowResNotLoadedYet) {
-                            hideProgress();
-                            showError();
-                        }
-                    }
+        .loadWithResultListener(mImageView, ImageType.IMAGE, mHiResImageUrl, ScaleType.CENTER, mLoResImageUrl,
+        new RequestListener<Drawable>() {
+            @Override
+            public void onLoadFailed(@Nullable Exception e) {
+                if (e != null) {
+                    AppLog.e(AppLog.T.READER, e);
+                }
+                boolean lowResNotLoadedYet = isLoading();
+                if (lowResNotLoadedYet) {
+                    hideProgress();
+                    showError();
+                }
+            }
 
-                    @Override
-                    public void onResourceReady(Drawable resource) {
-                        handleResponse();
-                    }
-                });
+            @Override
+            public void onResourceReady(Drawable resource) {
+                handleResponse();
+            }
+        });
     }
 
     private void handleResponse() {

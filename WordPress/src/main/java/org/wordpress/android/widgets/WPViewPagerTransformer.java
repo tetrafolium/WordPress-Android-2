@@ -38,64 +38,64 @@ public class WPViewPagerTransformer implements ViewPager.PageTransformer {
         final float translationX;
 
         switch (mTransformType) {
-            case FLOW:
-                page.setRotationY(position * -30f);
-                return;
+        case FLOW:
+            page.setRotationY(position * -30f);
+            return;
 
-            case SLIDE_OVER:
-                if (position < 0 && position > -1) {
-                    // this is the page to the left
-                    scale = Math.abs(Math.abs(position) - 1) * (1.0f - SCALE_FACTOR_SLIDE) + SCALE_FACTOR_SLIDE;
-                    alpha = Math.max(MIN_ALPHA_SLIDE, 1 - Math.abs(position));
-                    int pageWidth = page.getWidth();
-                    float translateValue = position * -pageWidth;
-                    if (translateValue > -pageWidth) {
-                        translationX = translateValue;
-                    } else {
-                        translationX = 0;
-                    }
+        case SLIDE_OVER:
+            if (position < 0 && position > -1) {
+                // this is the page to the left
+                scale = Math.abs(Math.abs(position) - 1) * (1.0f - SCALE_FACTOR_SLIDE) + SCALE_FACTOR_SLIDE;
+                alpha = Math.max(MIN_ALPHA_SLIDE, 1 - Math.abs(position));
+                int pageWidth = page.getWidth();
+                float translateValue = position * -pageWidth;
+                if (translateValue > -pageWidth) {
+                    translationX = translateValue;
                 } else {
-                    alpha = 1;
-                    scale = 1;
                     translationX = 0;
                 }
-                break;
+            } else {
+                alpha = 1;
+                scale = 1;
+                translationX = 0;
+            }
+            break;
 
-            case DEPTH:
-                if (position > 0 && position < 1) {
-                    // moving to the right
-                    alpha = (1 - position);
-                    scale = MIN_SCALE_DEPTH + (1 - MIN_SCALE_DEPTH) * (1 - Math.abs(position));
-                    translationX = (page.getWidth() * -position);
+        case DEPTH:
+            if (position > 0 && position < 1) {
+                // moving to the right
+                alpha = (1 - position);
+                scale = MIN_SCALE_DEPTH + (1 - MIN_SCALE_DEPTH) * (1 - Math.abs(position));
+                translationX = (page.getWidth() * -position);
+            } else {
+                // use default for all other cases
+                alpha = 1;
+                scale = 1;
+                translationX = 0;
+            }
+            break;
+
+        case ZOOM:
+            if (position >= -1 && position <= 1) {
+                scale = Math.max(MIN_SCALE_ZOOM, 1 - Math.abs(position));
+                alpha = MIN_ALPHA_ZOOM
+                        + (scale - MIN_SCALE_ZOOM) / (1 - MIN_SCALE_ZOOM) * (1 - MIN_ALPHA_ZOOM);
+                float vMargin = page.getHeight() * (1 - scale) / 2;
+                float hMargin = page.getWidth() * (1 - scale) / 2;
+                if (position < 0) {
+                    translationX = (hMargin - vMargin / 2);
                 } else {
-                    // use default for all other cases
-                    alpha = 1;
-                    scale = 1;
-                    translationX = 0;
+                    translationX = (-hMargin + vMargin / 2);
                 }
-                break;
+            } else {
+                alpha = 1;
+                scale = 1;
+                translationX = 0;
+            }
+            break;
 
-            case ZOOM:
-                if (position >= -1 && position <= 1) {
-                    scale = Math.max(MIN_SCALE_ZOOM, 1 - Math.abs(position));
-                    alpha = MIN_ALPHA_ZOOM
-                            + (scale - MIN_SCALE_ZOOM) / (1 - MIN_SCALE_ZOOM) * (1 - MIN_ALPHA_ZOOM);
-                    float vMargin = page.getHeight() * (1 - scale) / 2;
-                    float hMargin = page.getWidth() * (1 - scale) / 2;
-                    if (position < 0) {
-                        translationX = (hMargin - vMargin / 2);
-                    } else {
-                        translationX = (-hMargin + vMargin / 2);
-                    }
-                } else {
-                    alpha = 1;
-                    scale = 1;
-                    translationX = 0;
-                }
-                break;
-
-            default:
-                return;
+        default:
+            return;
         }
 
         page.setAlpha(alpha);

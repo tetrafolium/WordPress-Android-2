@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ReaderBlogIdPostIdList extends ArrayList<ReaderBlogIdPostId>
-        implements Serializable {
+    implements Serializable {
     private static final long serialVersionUID = 0L;
 
     public ReaderBlogIdPostIdList() {

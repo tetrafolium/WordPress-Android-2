@@ -47,10 +47,10 @@ public class WPPermissionUtils {
      * @return true if all permissions granted
      */
     public static boolean setPermissionListAsked(@NonNull Activity activity,
-                                                 int requestCode,
-                                                 @NonNull String[] permissions,
-                                                 @NonNull int[] grantResults,
-                                                 boolean checkForAlwaysDenied) {
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults,
+            boolean checkForAlwaysDenied) {
         for (int i = 0; i < permissions.length; i++) {
             AppPrefs.PrefKey key = getPermissionAskedKey(permissions[i]);
             if (key != null) {
@@ -65,7 +65,7 @@ public class WPPermissionUtils {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                 allGranted = false;
                 if (checkForAlwaysDenied
-                    && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[i])) {
+                        && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[i])) {
                     showPermissionAlwaysDeniedDialog(activity, permissions[i]);
                     break;
                 }
@@ -107,7 +107,7 @@ public class WPPermissionUtils {
         // denied, but it also returns false if the app has never requested that permission - so we
         // check it only if we know we've asked for this permission
         if (isPermissionAsked(activity, permission)
-            && ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_DENIED) {
+                && ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_DENIED) {
             boolean shouldShow = ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
             return !shouldShow;
         }
@@ -116,9 +116,9 @@ public class WPPermissionUtils {
     }
 
     private static void trackPermissionResult(int requestCode,
-                                              @NonNull String permission,
-                                              int result,
-                                              boolean isFirstTime) {
+            @NonNull String permission,
+            int result,
+            boolean isFirstTime) {
         Map<String, String> props = new HashMap<>();
         props.put("permission", permission);
         props.put("request_code", Integer.toString(requestCode));
@@ -137,15 +137,15 @@ public class WPPermissionUtils {
      */
     private static AppPrefs.PrefKey getPermissionAskedKey(@NonNull String permission) {
         switch (permission) {
-            case android.Manifest.permission.WRITE_EXTERNAL_STORAGE:
-                return AppPrefs.UndeletablePrefKey.ASKED_PERMISSION_STORAGE_WRITE;
-            case android.Manifest.permission.READ_EXTERNAL_STORAGE:
-                return AppPrefs.UndeletablePrefKey.ASKED_PERMISSION_STORAGE_READ;
-            case android.Manifest.permission.CAMERA:
-                return AppPrefs.UndeletablePrefKey.ASKED_PERMISSION_CAMERA;
-            default:
-                AppLog.w(AppLog.T.UTILS, "No key for requested permission");
-                return null;
+        case android.Manifest.permission.WRITE_EXTERNAL_STORAGE:
+            return AppPrefs.UndeletablePrefKey.ASKED_PERMISSION_STORAGE_WRITE;
+        case android.Manifest.permission.READ_EXTERNAL_STORAGE:
+            return AppPrefs.UndeletablePrefKey.ASKED_PERMISSION_STORAGE_READ;
+        case android.Manifest.permission.CAMERA:
+            return AppPrefs.UndeletablePrefKey.ASKED_PERMISSION_CAMERA;
+        default:
+            AppLog.w(AppLog.T.UTILS, "No key for requested permission");
+            return null;
         }
     }
 
@@ -154,14 +154,14 @@ public class WPPermissionUtils {
      */
     public static String getPermissionName(@NonNull Context context, @NonNull String permission) {
         switch (permission) {
-            case android.Manifest.permission.WRITE_EXTERNAL_STORAGE:
-            case android.Manifest.permission.READ_EXTERNAL_STORAGE:
-                return context.getString(R.string.permission_storage);
-            case android.Manifest.permission.CAMERA:
-                return context.getString(R.string.permission_camera);
-            default:
-                AppLog.w(AppLog.T.UTILS, "No name for requested permission");
-                return context.getString(R.string.unknown);
+        case android.Manifest.permission.WRITE_EXTERNAL_STORAGE:
+        case android.Manifest.permission.READ_EXTERNAL_STORAGE:
+            return context.getString(R.string.permission_storage);
+        case android.Manifest.permission.CAMERA:
+            return context.getString(R.string.permission_camera);
+        default:
+            AppLog.w(AppLog.T.UTILS, "No name for requested permission");
+            return context.getString(R.string.unknown);
         }
     }
 
@@ -170,21 +170,21 @@ public class WPPermissionUtils {
      * alerting them to this fact and enabling them to visit the app settings to edit permissions
      */
     private static void showPermissionAlwaysDeniedDialog(@NonNull final Activity activity,
-                                                         @NonNull String permission) {
+            @NonNull String permission) {
         String message = String.format(activity.getString(R.string.permissions_denied_message),
-                getPermissionName(activity, permission));
+                                       getPermissionName(activity, permission));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(activity, R.style.Calypso_Dialog_Alert))
-                .setTitle(activity.getString(R.string.permissions_denied_title))
-                .setMessage(Html.fromHtml(message))
-                .setPositiveButton(R.string.button_edit_permissions, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        showAppSettings(activity);
-                    }
-                })
-                .setNegativeButton(R.string.button_not_now, null);
+            new ContextThemeWrapper(activity, R.style.Calypso_Dialog_Alert))
+        .setTitle(activity.getString(R.string.permissions_denied_title))
+        .setMessage(Html.fromHtml(message))
+        .setPositiveButton(R.string.button_edit_permissions, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showAppSettings(activity);
+            }
+        })
+        .setNegativeButton(R.string.button_not_now, null);
         builder.show();
     }
 

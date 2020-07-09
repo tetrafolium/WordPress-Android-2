@@ -129,9 +129,9 @@ public class ReaderCommentService extends Service {
     }
 
     private static void updateCommentsForPost(final long blogId,
-                                              final long postId,
-                                              final int pageNumber,
-                                              final ReaderActions.UpdateResultListener resultListener) {
+            final long postId,
+            final int pageNumber,
+            final ReaderActions.UpdateResultListener resultListener) {
         String path = "sites/" + blogId + "/posts/" + postId + "/replies/"
                       + "?number=" + Integer.toString(ReaderConstants.READER_MAX_COMMENTS_TO_REQUEST)
                       + "&meta=likes"
@@ -158,10 +158,10 @@ public class ReaderCommentService extends Service {
     }
 
     private static void handleUpdateCommentsResponse(final JSONObject jsonObject,
-                                                     final long blogId,
-                                                     final long postId,
-                                                     final int pageNumber,
-                                                     final ReaderActions.UpdateResultListener resultListener) {
+            final long blogId,
+            final long postId,
+            final int pageNumber,
+            final ReaderActions.UpdateResultListener resultListener) {
         if (jsonObject == null) {
             resultListener.onUpdateResult(ReaderActions.UpdateResult.FAILED);
             return;
@@ -210,9 +210,9 @@ public class ReaderCommentService extends Service {
                 }
 
                 ReaderActions.UpdateResult result =
-                        (hasNewComments ? ReaderActions.UpdateResult.HAS_NEW : ReaderActions.UpdateResult.UNCHANGED);
+                    (hasNewComments ? ReaderActions.UpdateResult.HAS_NEW : ReaderActions.UpdateResult.UNCHANGED);
                 resultListener.onUpdateResult(result);
             }
-        }.start();
+        } .start();
     }
 }

@@ -42,7 +42,7 @@ public class NotificationsUpdateService extends Service implements Notifications
         if (intent != null) {
             String noteId = intent.getStringExtra(NotificationsListFragment.NOTE_ID_EXTRA);
             boolean isStartedByTappingOnNotification = intent.getBooleanExtra(
-                    IS_TAPPED_ON_NOTIFICATION, false);
+                        IS_TAPPED_ON_NOTIFICATION, false);
             mNotificationsUpdateLogic.performRefresh(noteId, isStartedByTappingOnNotification, null);
         }
         return START_NOT_STICKY;

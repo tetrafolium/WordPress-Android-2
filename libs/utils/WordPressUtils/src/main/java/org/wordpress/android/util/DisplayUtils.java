@@ -58,7 +58,7 @@ public class DisplayUtils {
 
     public static boolean isXLarge(Context context) {
         if ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
-            == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+                == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
             return true;
         }
         return false;
@@ -74,7 +74,7 @@ public class DisplayUtils {
         }
         TypedValue tv = new TypedValue();
         if (context.getTheme() != null
-            && context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                && context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             return TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
         }
 

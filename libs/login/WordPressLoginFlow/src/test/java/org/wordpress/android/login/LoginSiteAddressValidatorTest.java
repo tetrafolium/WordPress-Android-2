@@ -105,16 +105,16 @@ public class LoginSiteAddressValidatorTest {
     public void testItReturnsValidWhenGivenValidURLs() {
         // Arrange
         final List<String> validUrls = Arrays.asList(
-                "http://subdomain.example.com",
-                "http://example.ca",
-                "example.ca",
-                "subdomain.example.com",
-                "  space-with-subdomain.example.net",
-                "https://subdomain.example.com/folder",
-                "http://subdomain.example.com/folder/over/there ",
-                "7.7.7.7",
-                "http://7.7.13.45",
-                "http://47.147.43.45/folder   ");
+                                           "http://subdomain.example.com",
+                                           "http://example.ca",
+                                           "example.ca",
+                                           "subdomain.example.com",
+                                           "  space-with-subdomain.example.net",
+                                           "https://subdomain.example.com/folder",
+                                           "http://subdomain.example.com/folder/over/there ",
+                                           "7.7.7.7",
+                                           "http://7.7.13.45",
+                                           "http://47.147.43.45/folder   ");
 
         // Act and Assert
         assertThat(validUrls).allSatisfy(new Consumer<String>() {

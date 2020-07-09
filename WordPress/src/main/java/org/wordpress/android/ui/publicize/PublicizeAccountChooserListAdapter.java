@@ -21,7 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class PublicizeAccountChooserListAdapter
-        extends RecyclerView.Adapter<PublicizeAccountChooserListAdapter.ViewHolder> {
+    extends RecyclerView.Adapter<PublicizeAccountChooserListAdapter.ViewHolder> {
     private List<PublicizeConnection> mConnectionItems;
     private OnPublicizeAccountChooserListener mListener;
     private boolean mAreAccountsConnected;
@@ -30,7 +30,7 @@ public class PublicizeAccountChooserListAdapter
     @Inject ImageManager mImageManager;
 
     public PublicizeAccountChooserListAdapter(Context context, List<PublicizeConnection> connectionItems,
-                                              OnPublicizeAccountChooserListener listener, boolean isConnected) {
+            OnPublicizeAccountChooserListener listener, boolean isConnected) {
         ((WordPress) context.getApplicationContext()).component().inject(this);
         mConnectionItems = connectionItems;
         mListener = listener;
@@ -41,7 +41,7 @@ public class PublicizeAccountChooserListAdapter
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.publicize_connection_list_item, parent, false);
+                    .inflate(R.layout.publicize_connection_list_item, parent, false);
 
         return new ViewHolder(view);
     }

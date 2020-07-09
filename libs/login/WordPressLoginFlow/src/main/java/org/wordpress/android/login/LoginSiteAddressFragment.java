@@ -47,7 +47,7 @@ import javax.inject.Inject;
 import dagger.android.support.AndroidSupportInjection;
 
 public class LoginSiteAddressFragment extends LoginBaseFormFragment<LoginListener> implements TextWatcher,
-        OnEditorCommitListener {
+    OnEditorCommitListener {
     private static final String KEY_REQUESTED_SITE_ADDRESS = "KEY_REQUESTED_SITE_ADDRESS";
 
     public static final String TAG = "login_site_address_fragment_tag";
@@ -76,12 +76,12 @@ public class LoginSiteAddressFragment extends LoginBaseFormFragment<LoginListene
     @Override
     protected void setupLabel(@NonNull TextView label) {
         switch (mLoginListener.getLoginMode()) {
-            case SHARE_INTENT:
-                label.setText(R.string.enter_site_address_share_intent);
-                break;
-            default:
-                label.setText(R.string.enter_site_address);
-                break;
+        case SHARE_INTENT:
+            label.setText(R.string.enter_site_address_share_intent);
+            break;
+        default:
+            label.setText(R.string.enter_site_address);
+            break;
         }
     }
 
@@ -232,41 +232,41 @@ public class LoginSiteAddressFragment extends LoginBaseFormFragment<LoginListene
 
     public void handleDiscoveryError(DiscoveryError error, final String failedEndpoint) {
         switch (error) {
-            case ERRONEOUS_SSL_CERTIFICATE:
-                mLoginListener.handleSslCertificateError(mMemorizingTrustManager,
-                        new LoginListener.SelfSignedSSLCallback() {
-                            @Override
-                            public void certificateTrusted() {
-                                if (failedEndpoint == null) {
-                                    return;
-                                }
-                                // retry site lookup
-                                discover();
-                            }
-                        });
-                break;
-            case HTTP_AUTH_REQUIRED:
-                askForHttpAuthCredentials(failedEndpoint);
-                break;
-            case NO_SITE_ERROR:
-                showError(R.string.no_site_error);
-                break;
-            case INVALID_URL:
-                showError(R.string.invalid_site_url_message);
-                mAnalyticsListener.trackInsertedInvalidUrl();
-                break;
-            case MISSING_XMLRPC_METHOD:
-                showError(R.string.xmlrpc_missing_method_error);
-                break;
-            case XMLRPC_BLOCKED:
-                showError(R.string.xmlrpc_post_blocked_error);
-                break;
-            case XMLRPC_FORBIDDEN:
-                showError(R.string.xmlrpc_endpoint_forbidden_error);
-                break;
-            case GENERIC_ERROR:
-                showError(R.string.error_generic);
-                break;
+        case ERRONEOUS_SSL_CERTIFICATE:
+            mLoginListener.handleSslCertificateError(mMemorizingTrustManager,
+            new LoginListener.SelfSignedSSLCallback() {
+                @Override
+                public void certificateTrusted() {
+                    if (failedEndpoint == null) {
+                        return;
+                    }
+                    // retry site lookup
+                    discover();
+                }
+            });
+            break;
+        case HTTP_AUTH_REQUIRED:
+            askForHttpAuthCredentials(failedEndpoint);
+            break;
+        case NO_SITE_ERROR:
+            showError(R.string.no_site_error);
+            break;
+        case INVALID_URL:
+            showError(R.string.invalid_site_url_message);
+            mAnalyticsListener.trackInsertedInvalidUrl();
+            break;
+        case MISSING_XMLRPC_METHOD:
+            showError(R.string.xmlrpc_missing_method_error);
+            break;
+        case XMLRPC_BLOCKED:
+            showError(R.string.xmlrpc_post_blocked_error);
+            break;
+        case XMLRPC_FORBIDDEN:
+            showError(R.string.xmlrpc_endpoint_forbidden_error);
+            break;
+        case GENERIC_ERROR:
+            showError(R.string.error_generic);
+            break;
         }
     }
 
@@ -323,9 +323,9 @@ public class LoginSiteAddressFragment extends LoginBaseFormFragment<LoginListene
 
             // it's a wp.com site so, treat it as such.
             mLoginListener.gotWpcomSiteInfo(
-                    UrlUtils.removeScheme(event.site.getUrl()),
-                    event.site.getName(),
-                    event.site.getIconUrl());
+                UrlUtils.removeScheme(event.site.getUrl()),
+                event.site.getName(),
+                event.site.getIconUrl());
         }
     }
 
@@ -350,7 +350,7 @@ public class LoginSiteAddressFragment extends LoginBaseFormFragment<LoginListene
 
         if (event.isError()) {
             mAnalyticsListener.trackLoginFailed(event.getClass().getSimpleName(),
-                    event.error.name(), event.error.toString());
+                                                event.error.name(), event.error.toString());
 
             if (event.error == DiscoveryError.WORDPRESS_COM_SITE) {
                 AppLog.e(T.API, "Inputted a wpcom address in site address screen.");
@@ -369,7 +369,7 @@ public class LoginSiteAddressFragment extends LoginBaseFormFragment<LoginListene
                 return;
             } else {
                 AppLog.e(T.API, "onDiscoveryResponse has error: " + event.error.name()
-                                + " - " + event.error.toString());
+                         + " - " + event.error.toString());
                 handleDiscoveryError(event.error, event.failedEndpoint);
                 return;
             }
@@ -400,10 +400,10 @@ public class LoginSiteAddressFragment extends LoginBaseFormFragment<LoginListene
 
         if (event.isError()) {
             mAnalyticsListener.trackConnectedSiteInfoFailed(
-                    requestedSiteAddress,
-                    event.getClass().getSimpleName(),
-                    event.error.type.name(),
-                    event.error.message);
+                requestedSiteAddress,
+                event.getClass().getSimpleName(),
+                event.error.type.name(),
+                event.error.message);
 
             AppLog.e(T.API, "onFetchedConnectSiteInfo has error: " + event.error.message);
 
@@ -440,9 +440,9 @@ public class LoginSiteAddressFragment extends LoginBaseFormFragment<LoginListene
                 showError(R.string.enter_wordpress_site);
             } else {
                 mLoginListener.gotConnectedSiteInfo(
-                        event.info.url,
-                        event.info.urlAfterRedirects,
-                        hasJetpack);
+                    event.info.url,
+                    event.info.urlAfterRedirects,
+                    hasJetpack);
             }
         }
     }

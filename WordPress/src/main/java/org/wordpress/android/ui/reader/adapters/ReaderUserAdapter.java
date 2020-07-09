@@ -85,7 +85,7 @@ public class ReaderUserAdapter extends RecyclerView.Adapter<ReaderUserAdapter.Us
         }
 
         mImageManager.loadIntoCircle(holder.mImgAvatar, ImageType.AVATAR,
-                GravatarUtils.fixGravatarUrl(user.getAvatarUrl(), mAvatarSz));
+                                     GravatarUtils.fixGravatarUrl(user.getAvatarUrl(), mAvatarSz));
     }
 
     @Override

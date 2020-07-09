@@ -28,7 +28,7 @@ public class SignupBottomSheetDialog extends WPBottomSheetDialog {
             }
         });
         termsOfServiceText.setText(Html.fromHtml(String.format(
-                context.getResources().getString(R.string.signup_terms_of_service_text), "<u>", "</u>")));
+                                       context.getResources().getString(R.string.signup_terms_of_service_text), "<u>", "</u>")));
 
         Button signupWithEmailButton = layout.findViewById(R.id.signup_email);
         signupWithEmailButton.setOnClickListener(new View.OnClickListener() {

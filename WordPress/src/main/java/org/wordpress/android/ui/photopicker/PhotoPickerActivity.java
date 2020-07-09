@@ -42,7 +42,7 @@ import javax.inject.Inject;
 import static org.wordpress.android.ui.posts.FeaturedImageHelperKt.EMPTY_LOCAL_POST_ID;
 
 public class PhotoPickerActivity extends AppCompatActivity
-        implements PhotoPickerFragment.PhotoPickerListener {
+    implements PhotoPickerFragment.PhotoPickerListener {
     private static final String PICKER_FRAGMENT_TAG = "picker_fragment_tag";
     private static final String KEY_MEDIA_CAPTURE_PATH = "media_capture_path";
 
@@ -121,9 +121,9 @@ public class PhotoPickerActivity extends AppCompatActivity
         if (fragment == null) {
             fragment = PhotoPickerFragment.newInstance(this, mBrowserType, mSite);
             getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container, fragment, PICKER_FRAGMENT_TAG)
-                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                .commitAllowingStateLoss();
+            .replace(R.id.fragment_container, fragment, PICKER_FRAGMENT_TAG)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .commitAllowingStateLoss();
         } else {
             fragment.setPhotoPickerListener(this);
         }
@@ -175,54 +175,54 @@ public class PhotoPickerActivity extends AppCompatActivity
         }
 
         switch (requestCode) {
-            // user chose a photo from the device library
-            case RequestCodes.PICTURE_LIBRARY:
-                if (data != null) {
-                    Uri imageUri = data.getData();
-                    if (imageUri != null) {
-                        doMediaUriSelected(imageUri, PhotoPickerMediaSource.ANDROID_PICKER);
-                    }
+        // user chose a photo from the device library
+        case RequestCodes.PICTURE_LIBRARY:
+            if (data != null) {
+                Uri imageUri = data.getData();
+                if (imageUri != null) {
+                    doMediaUriSelected(imageUri, PhotoPickerMediaSource.ANDROID_PICKER);
                 }
-                break;
-            // user took a photo with the device camera
-            case RequestCodes.TAKE_PHOTO:
-                try {
-                    WPMediaUtils.scanMediaFile(this, mMediaCapturePath);
-                    File f = new File(mMediaCapturePath);
-                    Uri capturedImageUri = Uri.fromFile(f);
-                    doMediaUriSelected(capturedImageUri, PhotoPickerMediaSource.ANDROID_CAMERA);
-                } catch (RuntimeException e) {
-                    AppLog.e(AppLog.T.MEDIA, e);
+            }
+            break;
+        // user took a photo with the device camera
+        case RequestCodes.TAKE_PHOTO:
+            try {
+                WPMediaUtils.scanMediaFile(this, mMediaCapturePath);
+                File f = new File(mMediaCapturePath);
+                Uri capturedImageUri = Uri.fromFile(f);
+                doMediaUriSelected(capturedImageUri, PhotoPickerMediaSource.ANDROID_CAMERA);
+            } catch (RuntimeException e) {
+                AppLog.e(AppLog.T.MEDIA, e);
+            }
+            break;
+        // user selected from WP media library, extract the media ID and pass to caller
+        case RequestCodes.SINGLE_SELECT_MEDIA_PICKER:
+            if (data.hasExtra(MediaBrowserActivity.RESULT_IDS)) {
+                ArrayList<Long> ids =
+                    ListUtils.fromLongArray(data.getLongArrayExtra(MediaBrowserActivity.RESULT_IDS));
+                if (ids != null && ids.size() == 1) {
+                    doMediaIdSelected(ids.get(0), PhotoPickerMediaSource.WP_MEDIA_PICKER);
                 }
-                break;
-            // user selected from WP media library, extract the media ID and pass to caller
-            case RequestCodes.SINGLE_SELECT_MEDIA_PICKER:
-                if (data.hasExtra(MediaBrowserActivity.RESULT_IDS)) {
-                    ArrayList<Long> ids =
-                            ListUtils.fromLongArray(data.getLongArrayExtra(MediaBrowserActivity.RESULT_IDS));
-                    if (ids != null && ids.size() == 1) {
-                        doMediaIdSelected(ids.get(0), PhotoPickerMediaSource.WP_MEDIA_PICKER);
-                    }
-                }
-                break;
-            // user selected a stock photo
-            case RequestCodes.STOCK_MEDIA_PICKER_SINGLE_SELECT:
-                if (data != null && data.hasExtra(EXTRA_MEDIA_ID)) {
-                    long mediaId = data.getLongExtra(EXTRA_MEDIA_ID, 0);
-                    doMediaIdSelected(mediaId, PhotoPickerMediaSource.STOCK_MEDIA_PICKER);
-                }
-                break;
+            }
+            break;
+        // user selected a stock photo
+        case RequestCodes.STOCK_MEDIA_PICKER_SINGLE_SELECT:
+            if (data != null && data.hasExtra(EXTRA_MEDIA_ID)) {
+                long mediaId = data.getLongExtra(EXTRA_MEDIA_ID, 0);
+                doMediaIdSelected(mediaId, PhotoPickerMediaSource.STOCK_MEDIA_PICKER);
+            }
+            break;
         }
     }
 
     private void launchCamera() {
         WPMediaUtils.launchCamera(this, BuildConfig.APPLICATION_ID,
-                                  new WPMediaUtils.LaunchCameraCallback() {
-                                      @Override
-                                      public void onMediaCapturePathReady(String mediaCapturePath) {
-                                          mMediaCapturePath = mediaCapturePath;
-                                      }
-                                  });
+        new WPMediaUtils.LaunchCameraCallback() {
+            @Override
+            public void onMediaCapturePathReady(String mediaCapturePath) {
+                mMediaCapturePath = mediaCapturePath;
+            }
+        });
     }
 
     private void launchPictureLibrary() {
@@ -251,22 +251,22 @@ public class PhotoPickerActivity extends AppCompatActivity
         if (mBrowserType == MediaBrowserType.FEATURED_IMAGE_PICKER) {
             final String mimeType = getContentResolver().getType(mediaUri);
             WPMediaUtils.fetchMediaAndDoNext(this, mediaUri,
-                                             new WPMediaUtils.MediaFetchDoNext() {
-                                                 @Override
-                                                 public void doNext(Uri uri) {
-                                                     mFeaturedImageHelper
-                                                             .queueFeaturedImageForUpload(PhotoPickerActivity.this,
-                                                                     mLocalPostId, mSite, uri, mimeType);
-                                                     Intent intent = new Intent()
-                                                             .putExtra(EXTRA_MEDIA_QUEUED, true);
-                                                     setResult(RESULT_OK, intent);
-                                                     finish();
-                                                 }
-                                             });
+            new WPMediaUtils.MediaFetchDoNext() {
+                @Override
+                public void doNext(Uri uri) {
+                    mFeaturedImageHelper
+                    .queueFeaturedImageForUpload(PhotoPickerActivity.this,
+                                                 mLocalPostId, mSite, uri, mimeType);
+                    Intent intent = new Intent()
+                    .putExtra(EXTRA_MEDIA_QUEUED, true);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            });
         } else {
             Intent intent = new Intent()
-                    .putExtra(EXTRA_MEDIA_URI, mediaUri.toString())
-                    .putExtra(EXTRA_MEDIA_SOURCE, source.name());
+            .putExtra(EXTRA_MEDIA_URI, mediaUri.toString())
+            .putExtra(EXTRA_MEDIA_SOURCE, source.name());
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -274,8 +274,8 @@ public class PhotoPickerActivity extends AppCompatActivity
 
     private void doMediaIdSelected(long mediaId, @NonNull PhotoPickerMediaSource source) {
         Intent data = new Intent()
-                .putExtra(EXTRA_MEDIA_ID, mediaId)
-                .putExtra(EXTRA_MEDIA_SOURCE, source.name());
+        .putExtra(EXTRA_MEDIA_ID, mediaId)
+        .putExtra(EXTRA_MEDIA_SOURCE, source.name());
         setResult(RESULT_OK, data);
         finish();
     }
@@ -290,18 +290,18 @@ public class PhotoPickerActivity extends AppCompatActivity
     @Override
     public void onPhotoPickerIconClicked(@NonNull PhotoPickerFragment.PhotoPickerIcon icon) {
         switch (icon) {
-            case ANDROID_CAPTURE_PHOTO:
-                launchCamera();
-                break;
-            case ANDROID_CHOOSE_PHOTO:
-                launchPictureLibrary();
-                break;
-            case WP_MEDIA:
-                launchWPMediaLibrary();
-                break;
-            case STOCK_MEDIA:
-                launchStockMediaPicker();
-                break;
+        case ANDROID_CAPTURE_PHOTO:
+            launchCamera();
+            break;
+        case ANDROID_CHOOSE_PHOTO:
+            launchPictureLibrary();
+            break;
+        case WP_MEDIA:
+            launchWPMediaLibrary();
+            break;
+        case STOCK_MEDIA:
+            launchStockMediaPicker();
+            break;
         }
     }
 }

@@ -111,15 +111,15 @@ import java.util.UUID;
 import static org.wordpress.android.editor.EditorImageMetaData.ARG_EDITOR_IMAGE_METADATA;
 
 public class AztecEditorFragment extends EditorFragmentAbstract implements
-        AztecText.OnImeBackListener,
-        AztecText.OnImageTappedListener,
-        AztecText.OnVideoTappedListener,
-        AztecText.OnMediaDeletedListener,
-        AztecText.OnVideoInfoRequestedListener,
-        View.OnTouchListener,
-        EditorMediaUploadListener,
-        IAztecToolbarClickListener,
-        IHistoryListener {
+    AztecText.OnImeBackListener,
+    AztecText.OnImageTappedListener,
+    AztecText.OnVideoTappedListener,
+    AztecText.OnMediaDeletedListener,
+    AztecText.OnVideoInfoRequestedListener,
+    View.OnTouchListener,
+    EditorMediaUploadListener,
+    IAztecToolbarClickListener,
+    IHistoryListener {
     public static class AztecLoggingException extends Exception {
         public AztecLoggingException(String message) {
             super(message);
@@ -276,13 +276,13 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         mFormattingToolbar.setExpanded(mIsToolbarExpanded);
 
         mTitle.setOnFocusChangeListener(
-                new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View view, boolean hasFocus) {
-                        mFormattingToolbar.enableFormatButtons(!hasFocus);
-                    }
-                }
-                                       );
+        new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                mFormattingToolbar.enableFormatButtons(!hasFocus);
+            }
+        }
+        );
 
         mContent.setOnDragListener(mOnDragListener);
         mSource.setOnDragListener(mOnDragListener);
@@ -305,55 +305,55 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
         MediaToolbarGalleryButton mediaToolbarGalleryButton = new MediaToolbarGalleryButton(mFormattingToolbar);
         mediaToolbarGalleryButton.setMediaToolbarButtonClickListener(
-                new IMediaToolbarButton.IMediaToolbarClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (mMediaToolbarButtonClickListener != null) {
-                            mMediaToolbarButtonClickListener.onMediaToolbarButtonClicked(MediaToolbarAction.GALLERY);
-                        }
-                    }
-                });
+        new IMediaToolbarButton.IMediaToolbarClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mMediaToolbarButtonClickListener != null) {
+                    mMediaToolbarButtonClickListener.onMediaToolbarButtonClicked(MediaToolbarAction.GALLERY);
+                }
+            }
+        });
 
         MediaToolbarCameraButton mediaToolbarCameraButton = new MediaToolbarCameraButton(mFormattingToolbar);
         mediaToolbarCameraButton.setMediaToolbarButtonClickListener(
-                new IMediaToolbarButton.IMediaToolbarClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (mMediaToolbarButtonClickListener != null) {
-                            mMediaToolbarButtonClickListener.onMediaToolbarButtonClicked(MediaToolbarAction.CAMERA);
-                        }
-                    }
-                });
+        new IMediaToolbarButton.IMediaToolbarClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mMediaToolbarButtonClickListener != null) {
+                    mMediaToolbarButtonClickListener.onMediaToolbarButtonClicked(MediaToolbarAction.CAMERA);
+                }
+            }
+        });
 
         MediaToolbarLibraryButton mediaToolbarLibraryButton = new MediaToolbarLibraryButton(mFormattingToolbar);
         mediaToolbarLibraryButton.setMediaToolbarButtonClickListener(
-                new IMediaToolbarButton.IMediaToolbarClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (mMediaToolbarButtonClickListener != null) {
-                            mMediaToolbarButtonClickListener.onMediaToolbarButtonClicked(MediaToolbarAction.LIBRARY);
-                        }
-                    }
-                });
+        new IMediaToolbarButton.IMediaToolbarClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mMediaToolbarButtonClickListener != null) {
+                    mMediaToolbarButtonClickListener.onMediaToolbarButtonClicked(MediaToolbarAction.LIBRARY);
+                }
+            }
+        });
 
         Aztec.Factory.with(mContent, mSource, mFormattingToolbar, this)
-                     .setImageGetter(mAztecImageLoader)
-                     .setVideoThumbnailGetter(mAztecVideoLoader)
-                     .setOnImeBackListener(this)
-                     .setHistoryListener(this)
-                     .setOnImageTappedListener(this)
-                     .setOnVideoTappedListener(this)
-                     .setOnMediaDeletedListener(this)
-                     .setOnVideoInfoRequestedListener(this)
-                     .addPlugin(new WordPressCommentsPlugin(mContent))
-                     .addPlugin(new MoreToolbarButton(mContent))
-                     .addPlugin(new CaptionShortcodePlugin(mContent))
-                     .addPlugin(new VideoShortcodePlugin())
-                     .addPlugin(new AudioShortcodePlugin())
-                     .addPlugin(new HiddenGutenbergPlugin(mContent))
-                     .addPlugin(mediaToolbarGalleryButton)
-                     .addPlugin(mediaToolbarCameraButton)
-                     .addPlugin(mediaToolbarLibraryButton);
+        .setImageGetter(mAztecImageLoader)
+        .setVideoThumbnailGetter(mAztecVideoLoader)
+        .setOnImeBackListener(this)
+        .setHistoryListener(this)
+        .setOnImageTappedListener(this)
+        .setOnVideoTappedListener(this)
+        .setOnMediaDeletedListener(this)
+        .setOnVideoInfoRequestedListener(this)
+        .addPlugin(new WordPressCommentsPlugin(mContent))
+        .addPlugin(new MoreToolbarButton(mContent))
+        .addPlugin(new CaptionShortcodePlugin(mContent))
+        .addPlugin(new VideoShortcodePlugin())
+        .addPlugin(new AudioShortcodePlugin())
+        .addPlugin(new HiddenGutenbergPlugin(mContent))
+        .addPlugin(mediaToolbarGalleryButton)
+        .addPlugin(mediaToolbarCameraButton)
+        .addPlugin(mediaToolbarLibraryButton);
 
         mEditorFragmentListener.onEditorFragmentInitialized();
 
@@ -389,8 +389,8 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         // hide the actionbar because the keyboard is going to appear (even if it was hidden
         // prior to being paused).
         if (mEditorWasPaused
-            && (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-            && !getResources().getBoolean(R.bool.is_large_tablet_landscape)) {
+                && (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                && !getResources().getBoolean(R.bool.is_large_tablet_landscape)) {
             mHideActionBarOnSoftKeyboardUp = true;
             hideActionBarIfNeeded();
         }
@@ -492,7 +492,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
         mInvalidateOptionsHandler.removeCallbacks(mInvalidateOptionsRunnable);
         mInvalidateOptionsHandler.postDelayed(mInvalidateOptionsRunnable,
-                getResources().getInteger(android.R.integer.config_mediumAnimTime));
+                                              getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
 
     @Override
@@ -503,7 +503,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
         mInvalidateOptionsHandler.removeCallbacks(mInvalidateOptionsRunnable);
         mInvalidateOptionsHandler.postDelayed(mInvalidateOptionsRunnable,
-                getResources().getInteger(android.R.integer.config_mediumAnimTime));
+                                              getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
 
     @Override
@@ -586,7 +586,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
     private void addOverlayToGifs() {
         AztecMediaSpan[] imageOrVideoSpans =
-                mContent.getText().getSpans(0, mContent.getText().length(), AztecMediaSpan.class);
+            mContent.getText().getSpans(0, mContent.getText().length(), AztecMediaSpan.class);
 
         // scans through all the MediaSpans and adds ANIMATED_MEDIA attribute to GIF images
         for (AztecMediaSpan currentClass : imageOrVideoSpans) {
@@ -594,10 +594,10 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
             AztecAttributes attributes = currentClass.getAttributes();
 
             if (attributes.hasAttribute(ATTR_SRC)
-                && !attributes.hasAttribute(ANIMATED_MEDIA)
-                && !classes.hasClass(ATTR_STATUS_FAILED)
-                && !classes.hasClass(ATTR_STATUS_UPLOADING)
-                && MediaUtils.isGif(attributes.getValue(ATTR_SRC))) {
+                    && !attributes.hasAttribute(ANIMATED_MEDIA)
+                    && !classes.hasClass(ATTR_STATUS_FAILED)
+                    && !classes.hasClass(ATTR_STATUS_UPLOADING)
+                    && MediaUtils.isGif(attributes.getValue(ATTR_SRC))) {
                 attributes.setValue(ANIMATED_MEDIA, ANIMATED_MEDIA);
             }
         }
@@ -744,21 +744,21 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         // Show an Alert Dialog asking the user if he wants to remove all failed media before upload
         if (hasFailedMediaUploads()) {
             new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert))
-                    .setMessage(R.string.editor_failed_uploads_switch_html)
-                    .setPositiveButton(R.string.editor_remove_failed_uploads, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // Clear failed uploads and switch to HTML mode
-                            removeAllFailedMediaUploads();
-                            toggleHtmlMode();
-                        }
-                    }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            .setMessage(R.string.editor_failed_uploads_switch_html)
+            .setPositiveButton(R.string.editor_remove_failed_uploads, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // Clear failed uploads and switch to HTML mode
+                    removeAllFailedMediaUploads();
+                    toggleHtmlMode();
+                }
+            }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // nothing special to do
                 }
             })
-                    .create()
-                    .show();
+            .create()
+            .show();
         } else {
             toggleHtmlMode();
         }
@@ -905,15 +905,15 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
     private void overlayProgressingMedia(MediaPredicate predicate) {
         // set intermediate shade overlay
         mContent.setOverlay(predicate, 0,
-                new ColorDrawable(getResources().getColor(R.color.media_shade_overlay_color)),
-                Gravity.FILL);
+                            new ColorDrawable(getResources().getColor(R.color.media_shade_overlay_color)),
+                            Gravity.FILL);
 
         Drawable progressDrawable = getResources().getDrawable(android.R.drawable.progress_horizontal);
         // set the height of the progress bar to 2 (it's in dp since the drawable will be adjusted by the span)
         progressDrawable.setBounds(0, 0, 0, 4);
 
         mContent.setOverlay(predicate, 1, progressDrawable,
-                Gravity.FILL_HORIZONTAL | Gravity.TOP);
+                            Gravity.FILL_HORIZONTAL | Gravity.TOP);
 
         mContent.resetAttributedMediaSpan(predicate);
     }
@@ -921,7 +921,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
     private void overlayFailedMedia() {
         for (String localMediaId : mFailedMediaIds) {
             Attributes attributes =
-                    mContent.getElementAttributes(MediaPredicate.getLocalMediaIdPredicate(localMediaId));
+                mContent.getElementAttributes(MediaPredicate.getLocalMediaIdPredicate(localMediaId));
             overlayFailedMedia(localMediaId, attributes);
         }
     }
@@ -938,8 +938,8 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         textDrawable.setTranslateY(iconDrawable.getIntrinsicHeight() / 2);
 
         mContent.setOverlay(localMediaIdPredicate, 0,
-                new ColorDrawable(getResources().getColor(R.color.media_shade_overlay_color)),
-                Gravity.FILL);
+                            new ColorDrawable(getResources().getColor(R.color.media_shade_overlay_color)),
+                            Gravity.FILL);
         mContent.setOverlay(localMediaIdPredicate, 1, iconDrawable, Gravity.CENTER);
         mContent.setOverlay(localMediaIdPredicate, 2, textDrawable, Gravity.CENTER);
         mContent.updateElementAttributes(localMediaIdPredicate, new AztecAttributes(attributes));
@@ -986,7 +986,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
                 if (!TextUtils.isEmpty(mediaFile.getVideoPressShortCode())) {
                     attributes.removeAttribute(ATTR_SRC);
                     String videoPressId = ShortcodeUtils.getVideoPressIdFromShortCode(
-                            mediaFile.getVideoPressShortCode());
+                                              mediaFile.getVideoPressShortCode());
                     attributes.setValue(VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_ID(), videoPressId);
                     attributes.setValue(VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_SRC(), mediaUrl);
                 }
@@ -1000,19 +1000,19 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
             }
 
             final String posterURL = mediaFile.isVideo() ? Utils.escapeQuotes(StringUtils.notNullStr(
-                    mediaFile.getThumbnailURL())) : mediaUrl;
+                                         mediaFile.getThumbnailURL())) : mediaUrl;
             mAztecImageLoader.loadImage(posterURL, new Callbacks() {
                 private void replaceDrawable(Drawable newDrawable) {
                     AztecMediaSpan[] imageOrVideoSpans =
-                            mContent.getText().getSpans(0, mContent.getText().length(), AztecMediaSpan.class);
+                        mContent.getText().getSpans(0, mContent.getText().length(), AztecMediaSpan.class);
                     for (AztecMediaSpan currentClass : imageOrVideoSpans) {
                         if (currentClass.getAttributes().hasAttribute(ATTR_SRC)
-                            && mediaUrl.equals(currentClass.getAttributes().getValue(ATTR_SRC))) {
+                                && mediaUrl.equals(currentClass.getAttributes().getValue(ATTR_SRC))) {
                             currentClass.setDrawable(newDrawable);
                         } else if (currentClass.getAttributes().hasAttribute(
-                                VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_SRC())
+                                       VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_SRC())
                                    && mediaUrl.equals(currentClass.getAttributes().getValue(
-                                VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_SRC()))) {
+                                                          VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_SRC()))) {
                             currentClass.setDrawable(newDrawable);
                         }
                     }
@@ -1053,8 +1053,8 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         } else {
             String localMediaId = String.valueOf(mediaFile.getId());
             final String safeMediaPreviewUrl = mediaFile.isVideo()
-                    ? Utils.escapeQuotes(StringUtils.notNullStr(mediaFile.getThumbnailURL()))
-                    : Utils.escapeQuotes(mediaUrl);
+                                               ? Utils.escapeQuotes(StringUtils.notNullStr(mediaFile.getThumbnailURL()))
+                                               : Utils.escapeQuotes(mediaUrl);
 
             AztecAttributes attrs = new AztecAttributes();
             attrs.setValue(ATTR_ID_WP, localMediaId);
@@ -1064,8 +1064,8 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
             addDefaultSizeClassIfMissing(attrs);
 
             Bitmap bitmapToShow = ImageUtils.getWPImageSpanThumbnailFromFilePath(
-                    getActivity(), safeMediaPreviewUrl, maxMediaSize
-                                                                                );
+                                      getActivity(), safeMediaPreviewUrl, maxMediaSize
+                                  );
             MediaPredicate localMediaIdPredicate = MediaPredicate.getLocalMediaIdPredicate(localMediaId);
             if (bitmapToShow != null) {
                 // By default, BitmapFactory.decodeFile sets the bitmap's density to the device default so, we need
@@ -1114,12 +1114,12 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         String shortcode = "[gallery %s=\"%s\" ids=\"%s\"]";
         if (TextUtils.isEmpty(mediaGallery.getType())) {
             shortcode = String.format(shortcode, "columns",
-                    mediaGallery.getNumColumns(),
-                    mediaGallery.getIdsStr());
+                                      mediaGallery.getNumColumns(),
+                                      mediaGallery.getIdsStr());
         } else {
             shortcode = String.format(shortcode, "type",
-                    mediaGallery.getType(),
-                    mediaGallery.getIdsStr());
+                                      mediaGallery.getType(),
+                                      mediaGallery.getIdsStr());
         }
         mContent.getText().insert(mContent.getSelectionEnd(), shortcode);
     }
@@ -1194,7 +1194,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         if (mediaFile != null) {
             String remoteUrl = Utils.escapeQuotes(mediaFile.getFileURL());
             AppLog.i(T.MEDIA, "onMediaUploadSucceeded - Remote URL: " + remoteUrl + ", Filename: "
-                              + mediaFile.getFileName());
+                     + mediaFile.getFileName());
 
             // we still need to refresh the screen visually, no matter whether the service already
             // saved the post to Db or not
@@ -1224,7 +1224,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
                 // VideoPress special case here
                 if (mediaType.equals(MediaType.VIDEO) && !TextUtils.isEmpty(mediaFile.getVideoPressShortCode())) {
                     String videoPressId = ShortcodeUtils.getVideoPressIdFromShortCode(
-                            mediaFile.getVideoPressShortCode());
+                                              mediaFile.getVideoPressShortCode());
                     attrs.setValue(VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_ID(), videoPressId);
                     attrs.setValue(VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_SRC(), remoteUrl);
                     attrs.removeAttribute("src");
@@ -1339,7 +1339,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
                 try {
                     AztecText.AttributePredicate localMediaIdPredicate =
-                            MediaPredicate.getLocalMediaIdPredicate(localMediaId);
+                        MediaPredicate.getLocalMediaIdPredicate(localMediaId);
                     mContent.setOverlayLevel(localMediaIdPredicate, 1, (int) (progress * 10000));
                     mContent.resetAttributedMediaSpan(localMediaIdPredicate);
                 } catch (IndexOutOfBoundsException ex) {
@@ -1359,25 +1359,25 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
     @Override
     public void onMediaUploadFailed(final String localMediaId, final EditorFragmentAbstract.MediaType
-            mediaType, final String errorMessage) {
+                                    mediaType, final String errorMessage) {
         if (!isAdded() || mContent == null) {
             return;
         }
         if (mediaType != null) {
             switch (mediaType) {
-                case IMAGE:
-                case VIDEO:
-                    MediaPredicate localMediaIdPredicate = MediaPredicate.getLocalMediaIdPredicate(localMediaId);
-                    AttributesWithClass attributesWithClass = getAttributesWithClass(
+            case IMAGE:
+            case VIDEO:
+                MediaPredicate localMediaIdPredicate = MediaPredicate.getLocalMediaIdPredicate(localMediaId);
+                AttributesWithClass attributesWithClass = getAttributesWithClass(
                             mContent.getElementAttributes(localMediaIdPredicate));
 
-                    attributesWithClass.removeClass(ATTR_STATUS_UPLOADING);
-                    attributesWithClass.addClass(ATTR_STATUS_FAILED);
+                attributesWithClass.removeClass(ATTR_STATUS_UPLOADING);
+                attributesWithClass.addClass(ATTR_STATUS_FAILED);
 
-                    mContent.clearOverlays(localMediaIdPredicate);
-                    overlayFailedMedia(localMediaId, attributesWithClass.getAttributes());
-                    mContent.resetAttributedMediaSpan(localMediaIdPredicate);
-                    break;
+                mContent.clearOverlays(localMediaIdPredicate);
+                overlayFailedMedia(localMediaId, attributesWithClass.getAttributes());
+                mContent.resetAttributedMediaSpan(localMediaIdPredicate);
+                break;
             }
             mFailedMediaIds.add(localMediaId);
             mUploadingMediaProgressMax.remove(localMediaId);
@@ -1389,7 +1389,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         // VideoPress special case here
         if (attrs.hasAttribute(VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_ID())) {
             mEditorFragmentListener.onVideoPressInfoRequested(attrs.getValue(
-                    VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_ID()));
+                        VideoPressExtensionsKt.getATTRIBUTE_VIDEOPRESS_HIDDEN_ID()));
         }
     }
 
@@ -1402,7 +1402,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         super.onConfigurationChanged(newConfig);
         // Toggle action bar auto-hiding for the new orientation
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE
-            && !getResources().getBoolean(R.bool.is_large_tablet_landscape)) {
+                && !getResources().getBoolean(R.bool.is_large_tablet_landscape)) {
             mHideActionBarOnSoftKeyboardUp = true;
             hideActionBarIfNeeded();
         } else {
@@ -1416,7 +1416,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         // In landscape mode, if the title or content view has received a touch event, the keyboard will be
         // displayed and the action bar should hide
         if (event.getAction() == MotionEvent.ACTION_UP
-            && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mHideActionBarOnSoftKeyboardUp = true;
             hideActionBarIfNeeded();
         }
@@ -1435,8 +1435,8 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
             return;
         }
         if (!isHardwareKeyboardPresent()
-            && mHideActionBarOnSoftKeyboardUp
-            && actionBar.isShowing()) {
+                && mHideActionBarOnSoftKeyboardUp
+                && actionBar.isShowing()) {
             getActionBar().hide();
         }
     }
@@ -1484,90 +1484,90 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         @Override
         public boolean onDrag(View view, DragEvent dragEvent) {
             switch (dragEvent.getAction()) {
-                case DragEvent.ACTION_DRAG_STARTED:
-                    return isSupported(dragEvent.getClipDescription(), DRAGNDROP_SUPPORTED_MIMETYPES_TEXT)
-                           || isSupported(dragEvent.getClipDescription(), DRAGNDROP_SUPPORTED_MIMETYPES_IMAGE);
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    // would be nice to start marking the place the item will drop
-                    break;
-                case DragEvent.ACTION_DRAG_LOCATION:
-                    int x = DisplayUtils.pxToDp(getActivity(), (int) dragEvent.getX());
-                    int y = DisplayUtils.pxToDp(getActivity(), (int) dragEvent.getY());
+            case DragEvent.ACTION_DRAG_STARTED:
+                return isSupported(dragEvent.getClipDescription(), DRAGNDROP_SUPPORTED_MIMETYPES_TEXT)
+                       || isSupported(dragEvent.getClipDescription(), DRAGNDROP_SUPPORTED_MIMETYPES_IMAGE);
+            case DragEvent.ACTION_DRAG_ENTERED:
+                // would be nice to start marking the place the item will drop
+                break;
+            case DragEvent.ACTION_DRAG_LOCATION:
+                int x = DisplayUtils.pxToDp(getActivity(), (int) dragEvent.getX());
+                int y = DisplayUtils.pxToDp(getActivity(), (int) dragEvent.getY());
 
-                    mContent.setSelection(mContent.getOffsetForPosition(x, y));
-                    break;
-                case DragEvent.ACTION_DRAG_EXITED:
-                    // clear any drop marking maybe
-                    break;
-                case DragEvent.ACTION_DROP:
-                    if (mSource.getVisibility() == View.VISIBLE) {
-                        if (isSupported(dragEvent.getClipDescription(), DRAGNDROP_SUPPORTED_MIMETYPES_IMAGE)) {
-                            // don't allow dropping images into the HTML source
-                            ToastUtils.showToast(getActivity(), R.string.editor_dropped_html_images_not_allowed,
-                                    ToastUtils.Duration.LONG);
-                            return true;
-                        } else {
-                            // let the system handle the text drop
-                            return false;
-                        }
-                    }
-
-                    if (isSupported(dragEvent.getClipDescription(), DRAGNDROP_SUPPORTED_MIMETYPES_IMAGE)
-                        && isTitleFocused()) {
-                        // don't allow dropping images into the title field
-                        ToastUtils.showToast(getActivity(), R.string.editor_dropped_title_images_not_allowed,
-                                ToastUtils.Duration.LONG);
+                mContent.setSelection(mContent.getOffsetForPosition(x, y));
+                break;
+            case DragEvent.ACTION_DRAG_EXITED:
+                // clear any drop marking maybe
+                break;
+            case DragEvent.ACTION_DROP:
+                if (mSource.getVisibility() == View.VISIBLE) {
+                    if (isSupported(dragEvent.getClipDescription(), DRAGNDROP_SUPPORTED_MIMETYPES_IMAGE)) {
+                        // don't allow dropping images into the HTML source
+                        ToastUtils.showToast(getActivity(), R.string.editor_dropped_html_images_not_allowed,
+                                             ToastUtils.Duration.LONG);
                         return true;
+                    } else {
+                        // let the system handle the text drop
+                        return false;
                     }
+                }
 
-                    if (isAdded()) {
-                        mEditorDragAndDropListener.onRequestDragAndDropPermissions(dragEvent);
-                    }
+                if (isSupported(dragEvent.getClipDescription(), DRAGNDROP_SUPPORTED_MIMETYPES_IMAGE)
+                        && isTitleFocused()) {
+                    // don't allow dropping images into the title field
+                    ToastUtils.showToast(getActivity(), R.string.editor_dropped_title_images_not_allowed,
+                                         ToastUtils.Duration.LONG);
+                    return true;
+                }
 
-                    ClipDescription clipDescription = dragEvent.getClipDescription();
-                    if (clipDescription == null || clipDescription.getMimeTypeCount() < 1) {
-                        break;
-                    }
+                if (isAdded()) {
+                    mEditorDragAndDropListener.onRequestDragAndDropPermissions(dragEvent);
+                }
 
-                    ContentResolver contentResolver = getActivity().getContentResolver();
-                    ArrayList<Uri> uris = new ArrayList<>();
-                    boolean unsupportedDropsFound = false;
-
-                    for (int i = 0; i < dragEvent.getClipData().getItemCount(); i++) {
-                        ClipData.Item item = dragEvent.getClipData().getItemAt(i);
-                        Uri uri = item.getUri();
-
-                        final String uriType = uri != null ? contentResolver.getType(uri) : null;
-                        if (uriType != null && DRAGNDROP_SUPPORTED_MIMETYPES_IMAGE.contains(uriType)) {
-                            uris.add(uri);
-                            continue;
-                        } else if (item.getText() != null) {
-                            insertTextToEditor(item.getText().toString());
-                            continue;
-                        } else if (item.getHtmlText() != null) {
-                            insertTextToEditor(item.getHtmlText());
-                            continue;
-                        }
-
-                        // any other drop types are not supported, including web URLs. We cannot proactively
-                        // determine their mime type for filtering
-                        unsupportedDropsFound = true;
-                    }
-
-                    if (unsupportedDropsFound) {
-                        ToastUtils.showToast(getActivity(), R.string.editor_dropped_unsupported_files, ToastUtils
-                                .Duration.LONG);
-                    }
-
-                    if (uris.size() > 0) {
-                        mEditorDragAndDropListener.onMediaDropped(uris);
-                    }
-
+                ClipDescription clipDescription = dragEvent.getClipDescription();
+                if (clipDescription == null || clipDescription.getMimeTypeCount() < 1) {
                     break;
-                case DragEvent.ACTION_DRAG_ENDED:
-                    // clear any drop marking maybe
-                default:
-                    break;
+                }
+
+                ContentResolver contentResolver = getActivity().getContentResolver();
+                ArrayList<Uri> uris = new ArrayList<>();
+                boolean unsupportedDropsFound = false;
+
+                for (int i = 0; i < dragEvent.getClipData().getItemCount(); i++) {
+                    ClipData.Item item = dragEvent.getClipData().getItemAt(i);
+                    Uri uri = item.getUri();
+
+                    final String uriType = uri != null ? contentResolver.getType(uri) : null;
+                    if (uriType != null && DRAGNDROP_SUPPORTED_MIMETYPES_IMAGE.contains(uriType)) {
+                        uris.add(uri);
+                        continue;
+                    } else if (item.getText() != null) {
+                        insertTextToEditor(item.getText().toString());
+                        continue;
+                    } else if (item.getHtmlText() != null) {
+                        insertTextToEditor(item.getHtmlText());
+                        continue;
+                    }
+
+                    // any other drop types are not supported, including web URLs. We cannot proactively
+                    // determine their mime type for filtering
+                    unsupportedDropsFound = true;
+                }
+
+                if (unsupportedDropsFound) {
+                    ToastUtils.showToast(getActivity(), R.string.editor_dropped_unsupported_files, ToastUtils
+                                         .Duration.LONG);
+                }
+
+                if (uris.size() > 0) {
+                    mEditorDragAndDropListener.onMediaDropped(uris);
+                }
+
+                break;
+            case DragEvent.ACTION_DRAG_ENDED:
+            // clear any drop marking maybe
+            default:
+                break;
             }
             return true;
         }
@@ -1655,149 +1655,149 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
         setIdAttributeOnMedia(attrs, idName, localMediaId);
 
         switch (uploadStatus) {
-            case ATTR_STATUS_UPLOADING:
-                // Display 'cancel upload' dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                        new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
-                builder.setTitle(getString(R.string.stop_upload_dialog_title));
-                builder.setPositiveButton(R.string.stop_upload_dialog_button_yes,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                if (mUploadingMediaProgressMax.containsKey(localMediaId)) {
-                                    mEditorFragmentListener.onMediaUploadCancelClicked(localMediaId);
+        case ATTR_STATUS_UPLOADING:
+            // Display 'cancel upload' dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            builder.setTitle(getString(R.string.stop_upload_dialog_title));
+            builder.setPositiveButton(R.string.stop_upload_dialog_button_yes,
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (mUploadingMediaProgressMax.containsKey(localMediaId)) {
+                        mEditorFragmentListener.onMediaUploadCancelClicked(localMediaId);
 
-                                    switch (mediaType) {
-                                        case IMAGE:
-                                            mContent.removeMedia(mTappedMediaPredicate);
-                                            break;
-                                        case VIDEO:
-                                            mContent.removeMedia(mTappedMediaPredicate);
-                                    }
-                                    mUploadingMediaProgressMax.remove(localMediaId);
-                                } else {
-                                    ToastUtils.showToast(getActivity(), R.string.upload_finished_toast).show();
-                                }
-
-                                dialog.dismiss();
-                            }
-                        });
-
-                builder.setNegativeButton(R.string.stop_upload_dialog_button_no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                break;
-            case ATTR_STATUS_FAILED:
-                // Retry media upload
-                boolean successfullyRetried = true;
-                if (mFailedMediaIds.contains(localMediaId)) {
-                    successfullyRetried = mEditorFragmentListener.onMediaRetryClicked(localMediaId);
-                }
-                if (successfullyRetried) {
-                    switch (mediaType) {
+                        switch (mediaType) {
                         case IMAGE:
-                        case VIDEO:
-                            AttributesWithClass attributesWithClass = getAttributesWithClass(
-                                    mContent.getElementAttributes(mTappedMediaPredicate));
-
-                            // add or remove the failed class depending on whether the media was uploaded or not
-                            attributesWithClass = addFailedStatusToMediaIfLocalSrcPresent(attributesWithClass);
-
-                            // clear overlays
-                            mContent.clearOverlays(mTappedMediaPredicate);
-
-                            if (!attributesWithClass.hasClass(ATTR_STATUS_FAILED)) {
-                                // just save the item and leave
-                                mContent.resetAttributedMediaSpan(mTappedMediaPredicate);
-                                return;
-                            }
-
-                            attributesWithClass.addClass(ATTR_STATUS_UPLOADING);
-                            if (mediaType.equals(MediaType.VIDEO)) {
-                                attributesWithClass.addClass(TEMP_VIDEO_UPLOADING_CLASS);
-                            }
-
-                            // set intermediate shade overlay
-                            overlayProgressingMedia(mTappedMediaPredicate);
-
-                            mContent.updateElementAttributes(mTappedMediaPredicate,
-                                    attributesWithClass.getAttributes());
-
-                            if (mediaType.equals(MediaType.VIDEO)) {
-                                overlayVideoIcon(2, mTappedMediaPredicate);
-                            }
-
-                            mContent.resetAttributedMediaSpan(mTappedMediaPredicate);
+                            mContent.removeMedia(mTappedMediaPredicate);
                             break;
+                        case VIDEO:
+                            mContent.removeMedia(mTappedMediaPredicate);
+                        }
+                        mUploadingMediaProgressMax.remove(localMediaId);
+                    } else {
+                        ToastUtils.showToast(getActivity(), R.string.upload_finished_toast).show();
                     }
-                    mFailedMediaIds.remove(localMediaId);
-                    mUploadingMediaProgressMax.put(localMediaId, 0f);
+
+                    dialog.dismiss();
                 }
-                break;
-            default:
-                if (mediaType.equals(MediaType.VIDEO)) {
-                    try {
-                        // Open the video preview in the default browser for now.
-                        // TODO open the preview activity already available in media?
-                        final String videoURL = meta.getString(ATTR_SRC);
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
-                        startActivity(browserIntent);
-                    } catch (JSONException e) {
-                        AppLog.e(AppLog.T.EDITOR, "Could not retrieve image url from JSON metadata");
-                    } catch (ActivityNotFoundException e) {
-                        Toast.makeText(this.getActivity(),
-                                "No application can handle this request." + " Please install a Web browser",
-                                Toast.LENGTH_LONG).show();
+            });
+
+            builder.setNegativeButton(R.string.stop_upload_dialog_button_no, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            break;
+        case ATTR_STATUS_FAILED:
+            // Retry media upload
+            boolean successfullyRetried = true;
+            if (mFailedMediaIds.contains(localMediaId)) {
+                successfullyRetried = mEditorFragmentListener.onMediaRetryClicked(localMediaId);
+            }
+            if (successfullyRetried) {
+                switch (mediaType) {
+                case IMAGE:
+                case VIDEO:
+                    AttributesWithClass attributesWithClass = getAttributesWithClass(
+                                mContent.getElementAttributes(mTappedMediaPredicate));
+
+                    // add or remove the failed class depending on whether the media was uploaded or not
+                    attributesWithClass = addFailedStatusToMediaIfLocalSrcPresent(attributesWithClass);
+
+                    // clear overlays
+                    mContent.clearOverlays(mTappedMediaPredicate);
+
+                    if (!attributesWithClass.hasClass(ATTR_STATUS_FAILED)) {
+                        // just save the item and leave
+                        mContent.resetAttributedMediaSpan(mTappedMediaPredicate);
+                        return;
                     }
-                    return;
+
+                    attributesWithClass.addClass(ATTR_STATUS_UPLOADING);
+                    if (mediaType.equals(MediaType.VIDEO)) {
+                        attributesWithClass.addClass(TEMP_VIDEO_UPLOADING_CLASS);
+                    }
+
+                    // set intermediate shade overlay
+                    overlayProgressingMedia(mTappedMediaPredicate);
+
+                    mContent.updateElementAttributes(mTappedMediaPredicate,
+                                                     attributesWithClass.getAttributes());
+
+                    if (mediaType.equals(MediaType.VIDEO)) {
+                        overlayVideoIcon(2, mTappedMediaPredicate);
+                    }
+
+                    mContent.resetAttributedMediaSpan(mTappedMediaPredicate);
+                    break;
                 }
-
-                // If it's not a picture skip the click
-                if (!mediaType.equals(MediaType.IMAGE)) {
-                    return;
+                mFailedMediaIds.remove(localMediaId);
+                mUploadingMediaProgressMax.put(localMediaId, 0f);
+            }
+            break;
+        default:
+            if (mediaType.equals(MediaType.VIDEO)) {
+                try {
+                    // Open the video preview in the default browser for now.
+                    // TODO open the preview activity already available in media?
+                    final String videoURL = meta.getString(ATTR_SRC);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
+                    startActivity(browserIntent);
+                } catch (JSONException e) {
+                    AppLog.e(AppLog.T.EDITOR, "Could not retrieve image url from JSON metadata");
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(this.getActivity(),
+                                   "No application can handle this request." + " Please install a Web browser",
+                                   Toast.LENGTH_LONG).show();
                 }
+                return;
+            }
 
-                Gson gson = new Gson();
+            // If it's not a picture skip the click
+            if (!mediaType.equals(MediaType.IMAGE)) {
+                return;
+            }
 
-                EditorImageMetaData metaData = gson.fromJson(meta.toString(), EditorImageMetaData.class);
+            Gson gson = new Gson();
 
-                AztecAttributes captionAttributes =
-                        CaptionExtensionsKt.getImageCaptionAttributes(mContent, mTappedMediaPredicate);
+            EditorImageMetaData metaData = gson.fromJson(meta.toString(), EditorImageMetaData.class);
 
-                if (captionAttributes.hasAttribute(ATTR_ALIGN)) {
-                    metaData.setAlign(captionAttributes.getValue(ATTR_ALIGN));
-                }
+            AztecAttributes captionAttributes =
+                CaptionExtensionsKt.getImageCaptionAttributes(mContent, mTappedMediaPredicate);
 
-                metaData.setCaption(CaptionExtensionsKt.getImageCaption(mContent, mTappedMediaPredicate));
+            if (captionAttributes.hasAttribute(ATTR_ALIGN)) {
+                metaData.setAlign(captionAttributes.getValue(ATTR_ALIGN));
+            }
 
-                String mediaLink = MediaLinkExtensionsKt.getMediaLink(mContent, mTappedMediaPredicate);
-                if (!TextUtils.isEmpty(mediaLink)) {
-                    AztecAttributes linkAttributes =
-                            MediaLinkExtensionsKt.getMediaLinkAttributes(mContent, mTappedMediaPredicate);
+            metaData.setCaption(CaptionExtensionsKt.getImageCaption(mContent, mTappedMediaPredicate));
 
-                    metaData.setLinkUrl(mediaLink);
+            String mediaLink = MediaLinkExtensionsKt.getMediaLink(mContent, mTappedMediaPredicate);
+            if (!TextUtils.isEmpty(mediaLink)) {
+                AztecAttributes linkAttributes =
+                    MediaLinkExtensionsKt.getMediaLinkAttributes(mContent, mTappedMediaPredicate);
 
-                    String linkTarget = linkAttributes.getValue(ATTR_TARGET);
-                    metaData.setLinkTargetBlank(!TextUtils.isEmpty(linkTarget) && linkTarget.equals("_blank"));
-                }
+                metaData.setLinkUrl(mediaLink);
 
-                // Use https:// when requesting the auth header, in case the image is incorrectly using http://
-                // If an auth header is returned, force https:// for the actual HTTP request
-                final String imageSrc = metaData.getSrc();
-                String authHeader = mEditorFragmentListener.onAuthHeaderRequested(UrlUtils.makeHttps(imageSrc));
-                if (authHeader.length() > 0) {
-                    metaData.setSrc(UrlUtils.makeHttps(imageSrc));
-                }
+                String linkTarget = linkAttributes.getValue(ATTR_TARGET);
+                metaData.setLinkTargetBlank(!TextUtils.isEmpty(linkTarget) && linkTarget.equals("_blank"));
+            }
 
-                if (mEditorImageSettingsListener != null) {
-                    mEditorImageSettingsListener.onImageSettingsRequested(metaData);
-                }
+            // Use https:// when requesting the auth header, in case the image is incorrectly using http://
+            // If an auth header is returned, force https:// for the actual HTTP request
+            final String imageSrc = metaData.getSrc();
+            String authHeader = mEditorFragmentListener.onAuthHeaderRequested(UrlUtils.makeHttps(imageSrc));
+            if (authHeader.length() > 0) {
+                metaData.setSrc(UrlUtils.makeHttps(imageSrc));
+            }
 
-                break;
+            if (mEditorImageSettingsListener != null) {
+                mEditorImageSettingsListener.onImageSettingsRequested(metaData);
+            }
+
+            break;
         }
     }
 
@@ -1855,7 +1855,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
                     if (!TextUtils.isEmpty(metaData.getLinkUrl())) {
                         AztecAttributes linkAttributes =
-                                MediaLinkExtensionsKt.getMediaLinkAttributes(mContent, mTappedMediaPredicate);
+                            MediaLinkExtensionsKt.getMediaLinkAttributes(mContent, mTappedMediaPredicate);
 
                         // without "noopener" img tag around img might be removed by calypso editor
                         linkAttributes.setValue("rel", "noopener");
@@ -1870,9 +1870,9 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
                         }
 
                         MediaLinkExtensionsKt.addLinkToMedia(mContent, mTappedMediaPredicate,
-                                UrlUtils.addUrlSchemeIfNeeded(metaData.getLinkUrl(),
-                                        false),
-                                linkAttributes);
+                                                             UrlUtils.addUrlSchemeIfNeeded(metaData.getLinkUrl(),
+                                                                     false),
+                                                             linkAttributes);
                     } else {
                         MediaLinkExtensionsKt.removeLinkFromMedia(mContent, mTappedMediaPredicate);
                     }
@@ -1887,7 +1887,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
                     if (!TextUtils.isEmpty(metaData.getCaption())) {
                         AztecAttributes captionAttributes =
-                                CaptionExtensionsKt.getImageCaptionAttributes(mContent, mTappedMediaPredicate);
+                            CaptionExtensionsKt.getImageCaptionAttributes(mContent, mTappedMediaPredicate);
 
                         // if caption is present apply align attribute to it instead of image
                         if (!TextUtils.isEmpty(metaData.getAlign())) {
@@ -1900,7 +1900,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
                         captionAttributes.setValue(ATTR_DIMEN_WIDTH, metaData.getWidth());
 
                         CaptionExtensionsKt.setImageCaption(mContent, mTappedMediaPredicate, metaData.getCaption(),
-                                captionAttributes);
+                                                            captionAttributes);
 
                         // setting caption causes rendering issue in some cases, reset content to avoid them
                         mContent.fromHtml(mContent.toHtml(false), false);
@@ -1984,14 +1984,14 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
     @NonNull
     private static List<Attributes> getAllElementAttributes(Spanned content,
-                                                            AztecText.AttributePredicate predicate) {
+            AztecText.AttributePredicate predicate) {
         return getElementAttributes(content, predicate, false);
     }
 
     @NonNull
     private static List<Attributes> getElementAttributes(Spanned content,
-                                                         AztecText.AttributePredicate predicate,
-                                                         boolean returnFirstFoundOnly) {
+            AztecText.AttributePredicate predicate,
+            boolean returnFirstFoundOnly) {
         IAztecAttributedSpan[] spans = content.getSpans(0, content.length(), IAztecAttributedSpan.class);
         List<Attributes> allAttrs = new ArrayList<>();
         for (IAztecAttributedSpan span : spans) {
@@ -2007,8 +2007,8 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
 
     @NonNull
     private static List<IAztecAttributedSpan> getSpansForPredicate(Spanned content,
-                                                                   AztecText.AttributePredicate predicate,
-                                                                   boolean returnFirstFoundOnly) {
+            AztecText.AttributePredicate predicate,
+            boolean returnFirstFoundOnly) {
         IAztecAttributedSpan[] spans = content.getSpans(0, content.length(), IAztecAttributedSpan.class);
         List<IAztecAttributedSpan> allMatchingSpans = new ArrayList<>();
         for (IAztecAttributedSpan span : spans) {
@@ -2023,8 +2023,8 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
     }
 
     private static void updateElementAttributes(Spanned content,
-                                                AztecText.AttributePredicate predicate,
-                                                AztecAttributes attrs) {
+            AztecText.AttributePredicate predicate,
+            AztecAttributes attrs) {
         IAztecAttributedSpan[] spans = content.getSpans(0, content.length(), IAztecAttributedSpan.class);
         for (IAztecAttributedSpan span : spans) {
             if (predicate.matches(span.getAttributes())) {
@@ -2035,7 +2035,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
     }
 
     private static SpannableStringBuilder getCalypsoCompatibleStringBuilder(Context context, String postContent,
-                                                                            AztecParser parser) {
+            AztecParser parser) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         String cleanSource = Format.removeSourceEditorFormatting(postContent, true, false);
         builder.append(parser.parseHtmlForInspection(cleanSource, context));
@@ -2060,7 +2060,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
     }
 
     public static String replaceMediaFileWithUrl(Context context, @NonNull String postContent,
-                                                 String localMediaId, MediaFile mediaFile) {
+            String localMediaId, MediaFile mediaFile) {
         if (mediaFile != null) {
             String remoteUrl = StringUtils.notNullStr(Utils.escapeQuotes(mediaFile.getFileURL()));
             // fill in Aztec with the post's content
@@ -2111,7 +2111,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
             // this method is called but the element doesn't exist in the post content anymore
             if (firstElementAttributes != null) {
                 AttributesWithClass attributesWithClass = getAttributesWithClass(
-                        firstElementAttributes);
+                            firstElementAttributes);
                 attributesWithClass.removeClass(ATTR_STATUS_UPLOADING);
                 if (mediaFile.isVideo()) {
                     attributesWithClass.removeClass(TEMP_VIDEO_UPLOADING_CLASS);
@@ -2188,7 +2188,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
     }
 
     private static List<String> getMediaMarkedAsClassInPostContent(Context context, @NonNull String postContent,
-                                                                   String classToUse) {
+            String classToUse) {
         ArrayList<String> mediaMarkedUploading = new ArrayList<>();
         // fill in Aztec with the post's content
         AztecParser parser = getAztecParserWithPlugins();
@@ -2275,7 +2275,7 @@ public class AztecEditorFragment extends EditorFragmentAbstract implements
     }
 
     private static AttributesWithClass addFailedStatusToMediaIfLocalSrcPresent(
-            AttributesWithClass attributesWithClass) {
+        AttributesWithClass attributesWithClass) {
         // check if "src" value is remote or local, it only makes sense to mark failed local files
         AztecAttributes attrsOneItem = attributesWithClass.getAttributes();
         String mediaPath = attrsOneItem.getValue("src");

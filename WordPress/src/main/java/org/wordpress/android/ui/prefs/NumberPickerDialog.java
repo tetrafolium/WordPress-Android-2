@@ -26,8 +26,8 @@ import org.wordpress.android.R;
 import org.wordpress.android.util.WPPrefUtils;
 
 public class NumberPickerDialog extends DialogFragment
-        implements DialogInterface.OnClickListener,
-        CompoundButton.OnCheckedChangeListener {
+    implements DialogInterface.OnClickListener,
+    CompoundButton.OnCheckedChangeListener {
     public static final String SHOW_SWITCH_KEY = "show-switch";
     public static final String SWITCH_ENABLED_KEY = "switch-enabled";
     public static final String SWITCH_TITLE_KEY = "switch-title";
@@ -57,7 +57,7 @@ public class NumberPickerDialog extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         View view = View.inflate(getActivity(), R.layout.number_picker_dialog, null);
         TextView switchText = view.findViewById(R.id.number_picker_text);
         mSwitch = view.findViewById(R.id.number_picker_switch);
@@ -165,16 +165,16 @@ public class NumberPickerDialog extends DialogFragment
         TextView titleText = titleView.findViewById(R.id.title);
         titleText.setText(title);
         titleText.setLayoutParams(new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT));
+                                      RelativeLayout.LayoutParams.MATCH_PARENT,
+                                      RelativeLayout.LayoutParams.WRAP_CONTENT));
         return titleView;
     }
 
     private Intent getResultIntent() {
         if (mConfirmed) {
             return new Intent()
-                    .putExtra(SWITCH_ENABLED_KEY, mSwitch.isChecked())
-                    .putExtra(CUR_VALUE_KEY, mNumberPicker.getValue());
+                   .putExtra(SWITCH_ENABLED_KEY, mSwitch.isChecked())
+                   .putExtra(CUR_VALUE_KEY, mNumberPicker.getValue());
         }
 
         return null;

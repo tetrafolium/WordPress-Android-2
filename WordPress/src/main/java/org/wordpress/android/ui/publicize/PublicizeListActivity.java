@@ -39,10 +39,10 @@ import java.util.Map;
 import javax.inject.Inject;
 
 public class PublicizeListActivity extends AppCompatActivity
-        implements
-        PublicizeActions.OnPublicizeActionListener,
-        PublicizeServiceAdapter.OnServiceClickListener,
-        PublicizeListFragment.PublicizeButtonPrefsListener {
+    implements
+    PublicizeActions.OnPublicizeActionListener,
+    PublicizeServiceAdapter.OnServiceClickListener,
+    PublicizeListFragment.PublicizeButtonPrefsListener {
     private SiteModel mSite;
     private ProgressDialog mProgressDialog;
 
@@ -110,9 +110,9 @@ public class PublicizeListActivity extends AppCompatActivity
         String tag = getString(R.string.fragment_tag_publicize_list);
         Fragment fragment = PublicizeListFragment.newInstance(mSite);
         getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment, tag)
-                .commit();
+        .beginTransaction()
+        .replace(R.id.fragment_container, fragment, tag)
+        .commit();
     }
 
     private PublicizeListFragment getListFragment() {
@@ -152,11 +152,11 @@ public class PublicizeListActivity extends AppCompatActivity
         String tag = getString(R.string.fragment_tag_publicize_detail);
         Fragment detailFragment = PublicizeDetailFragment.newInstance(mSite, service);
         getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, detailFragment, tag)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(tag)
-                .commit();
+        .beginTransaction()
+        .replace(R.id.fragment_container, detailFragment, tag)
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        .addToBackStack(tag)
+        .commit();
     }
 
     private PublicizeDetailFragment getDetailFragment() {
@@ -185,11 +185,11 @@ public class PublicizeListActivity extends AppCompatActivity
         String tag = getString(R.string.fragment_tag_publicize_webview);
         Fragment webViewFragment = PublicizeWebViewFragment.newInstance(mSite, service, publicizeConnection);
         getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, webViewFragment, tag)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(tag)
-                .commit();
+        .beginTransaction()
+        .replace(R.id.fragment_container, webViewFragment, tag)
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        .addToBackStack(tag)
+        .commit();
     }
 
     private PublicizeWebViewFragment getWebViewFragment() {
@@ -261,9 +261,9 @@ public class PublicizeListActivity extends AppCompatActivity
 
     private void confirmDisconnect(final PublicizeConnection publicizeConnection) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
         builder.setMessage(
-                String.format(getString(R.string.dlg_confirm_publicize_disconnect), publicizeConnection.getLabel()));
+            String.format(getString(R.string.dlg_confirm_publicize_disconnect), publicizeConnection.getLabel()));
         builder.setTitle(R.string.share_btn_disconnect);
         builder.setCancelable(true);
         builder.setPositiveButton(R.string.share_btn_disconnect, new DialogInterface.OnClickListener() {
@@ -337,7 +337,7 @@ public class PublicizeListActivity extends AppCompatActivity
         }
 
         PublicizeActions.connectStepTwo(event.getSiteId(), event.getKeychainId(),
-                event.getService(), event.getExternalUserId());
+                                        event.getService(), event.getExternalUserId());
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(R.string.connecting_account));
         mProgressDialog.show();
@@ -371,15 +371,15 @@ public class PublicizeListActivity extends AppCompatActivity
         AnalyticsUtils.trackWithSiteDetails(Stat.OPENED_SHARING_BUTTON_MANAGEMENT, mSite);
         Fragment fragment = PublicizeButtonPrefsFragment.newInstance(mSite);
         getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, fragment)
-                            .addToBackStack(null)
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                            .commit();
+        .replace(R.id.fragment_container, fragment)
+        .addToBackStack(null)
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        .commit();
     }
 
     private void showAlertForFailureReason(int reasonResId) {
         final AlertDialog.Builder builder =
-                new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.Calypso_Dialog));
+            new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.Calypso_Dialog));
         builder.setMessage(reasonResId);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
         builder.show();

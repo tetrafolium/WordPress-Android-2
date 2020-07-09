@@ -62,7 +62,7 @@ public class Person {
 
     @Nullable
     public static Person followerFromJSON(JSONObject json, int localTableBlogId, boolean isEmailFollower)
-            throws JSONException {
+    throws JSONException {
         if (json == null) {
             return null;
         }

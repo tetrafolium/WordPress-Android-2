@@ -196,7 +196,7 @@ public class MediaGridAdapter extends RecyclerView.Adapter<MediaGridAdapter.Grid
             mImageManager.cancelRequestAndClearImageView(holder.mImageView);
         }
         holder.mImageView.setContentDescription(mContext.getString(R.string.media_grid_item_image_desc,
-                StringUtils.notNullStr(media.getFileName())));
+                                                StringUtils.notNullStr(media.getFileName())));
 
         if (mBrowserType.canMultiselect() && canSelect) {
             holder.mSelectionCountContainer.setVisibility(View.VISIBLE);
@@ -247,8 +247,8 @@ public class MediaGridAdapter extends RecyclerView.Adapter<MediaGridAdapter.Grid
 
         // if we are near the end, make a call to fetch more
         if (position == getItemCount() - 1
-            && !mHasRetrievedAll
-            && mCallback != null) {
+                && !mHasRetrievedAll
+                && mCallback != null) {
             mCallback.onAdapterFetchMoreData();
         }
     }
@@ -473,7 +473,7 @@ public class MediaGridAdapter extends RecyclerView.Adapter<MediaGridAdapter.Grid
                         public void run() {
                             WordPress.getBitmapCache().put(filePath, thumb);
                             if (imageView.getTag(R.id.media_grid_file_path_id) instanceof String
-                                && (imageView.getTag(R.id.media_grid_file_path_id)).equals(filePath)) {
+                                    && (imageView.getTag(R.id.media_grid_file_path_id)).equals(filePath)) {
                                 imageView.setTag(R.id.media_grid_file_path_id, null);
                                 notifyItemChanged(position);
                             }
@@ -481,7 +481,7 @@ public class MediaGridAdapter extends RecyclerView.Adapter<MediaGridAdapter.Grid
                     });
                 }
             }
-        }.start();
+        } .start();
     }
 
     public boolean isEmpty() {
@@ -551,7 +551,7 @@ public class MediaGridAdapter extends RecyclerView.Adapter<MediaGridAdapter.Grid
         // show and animate the count
         if (selected) {
             holder.mSelectionCountTextView
-                    .setText(String.format(Locale.getDefault(), "%d", mSelectedItems.indexOf(localMediaId) + 1));
+            .setText(String.format(Locale.getDefault(), "%d", mSelectedItems.indexOf(localMediaId) + 1));
         } else {
             holder.mSelectionCountTextView.setText(null);
         }
@@ -599,18 +599,18 @@ public class MediaGridAdapter extends RecyclerView.Adapter<MediaGridAdapter.Grid
 
     private String getLabelForMediaUploadState(MediaUploadState uploadState) {
         switch (uploadState) {
-            case QUEUED:
-                return mContext.getString(R.string.media_upload_state_queued);
-            case UPLOADING:
-                return mContext.getString(R.string.media_upload_state_uploading);
-            case DELETING:
-                return mContext.getString(R.string.media_upload_state_deleting);
-            case DELETED:
-                return mContext.getString(R.string.media_upload_state_deleted);
-            case FAILED:
-                return mContext.getString(R.string.media_upload_state_failed);
-            case UPLOADED:
-                return mContext.getString(R.string.media_upload_state_uploaded);
+        case QUEUED:
+            return mContext.getString(R.string.media_upload_state_queued);
+        case UPLOADING:
+            return mContext.getString(R.string.media_upload_state_uploading);
+        case DELETING:
+            return mContext.getString(R.string.media_upload_state_deleting);
+        case DELETED:
+            return mContext.getString(R.string.media_upload_state_deleted);
+        case FAILED:
+            return mContext.getString(R.string.media_upload_state_failed);
+        case UPLOADED:
+            return mContext.getString(R.string.media_upload_state_uploaded);
         }
         return "";
     }

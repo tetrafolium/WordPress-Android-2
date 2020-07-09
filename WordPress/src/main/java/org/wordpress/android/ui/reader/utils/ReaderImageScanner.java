@@ -13,8 +13,8 @@ public class ReaderImageScanner {
     private final boolean mContentContainsImages;
 
     private static final Pattern IMG_TAG_PATTERN = Pattern.compile(
-            "<img[^>]* src=\\\"([^\\\"]*)\\\"[^>]*>",
-            Pattern.CASE_INSENSITIVE);
+                "<img[^>]* src=\\\"([^\\\"]*)\\\"[^>]*>",
+                Pattern.CASE_INSENSITIVE);
 
     public ReaderImageScanner(String contentOfPost, boolean isPrivate) {
         mContent = contentOfPost;

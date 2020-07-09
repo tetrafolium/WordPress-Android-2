@@ -84,8 +84,8 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 public class LoginActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener,
-        Callback, LoginListener, GoogleListener, LoginPrologueListener, SignupSheetListener,
-        HasSupportFragmentInjector, BasicDialogPositiveClickInterface {
+    Callback, LoginListener, GoogleListener, LoginPrologueListener, SignupSheetListener,
+    HasSupportFragmentInjector, BasicDialogPositiveClickInterface {
     public static final String ARG_JETPACK_CONNECT_SOURCE = "ARG_JETPACK_CONNECT_SOURCE";
     public static final String MAGIC_LOGIN = "magic-login";
     public static final String TOKEN_PARAMETER = "token";
@@ -133,30 +133,30 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
         if (savedInstanceState == null) {
             if (getIntent() != null) {
                 mJetpackConnectSource =
-                        (JetpackConnectionSource) getIntent().getSerializableExtra(ARG_JETPACK_CONNECT_SOURCE);
+                    (JetpackConnectionSource) getIntent().getSerializableExtra(ARG_JETPACK_CONNECT_SOURCE);
             }
 
             mLoginAnalyticsListener.trackLoginAccessed();
 
             switch (getLoginMode()) {
-                case FULL:
-                case WPCOM_LOGIN_ONLY:
-                    showFragment(new LoginPrologueFragment(), LoginPrologueFragment.TAG);
-                    break;
-                case SELFHOSTED_ONLY:
-                    showFragment(new LoginSiteAddressFragment(), LoginSiteAddressFragment.TAG);
-                    break;
-                case JETPACK_STATS:
-                case WPCOM_LOGIN_DEEPLINK:
-                case WPCOM_REAUTHENTICATE:
-                case SHARE_INTENT:
-                    checkSmartLockPasswordAndStartLogin();
-                    break;
+            case FULL:
+            case WPCOM_LOGIN_ONLY:
+                showFragment(new LoginPrologueFragment(), LoginPrologueFragment.TAG);
+                break;
+            case SELFHOSTED_ONLY:
+                showFragment(new LoginSiteAddressFragment(), LoginSiteAddressFragment.TAG);
+                break;
+            case JETPACK_STATS:
+            case WPCOM_LOGIN_DEEPLINK:
+            case WPCOM_REAUTHENTICATE:
+            case SHARE_INTENT:
+                checkSmartLockPasswordAndStartLogin();
+                break;
             }
         } else {
             mSignupSheetDisplayed = savedInstanceState.getBoolean(KEY_SIGNUP_SHEET_DISPLAYED);
             mSmartLockHelperState = SmartLockHelperState.valueOf(
-                    savedInstanceState.getString(KEY_SMARTLOCK_HELPER_STATE));
+                                        savedInstanceState.getString(KEY_SMARTLOCK_HELPER_STATE));
 
             if (mSmartLockHelperState != SmartLockHelperState.NOT_TRIGGERED) {
                 // reconnect SmartLockHelper
@@ -196,7 +196,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     private void slideInFragment(Fragment fragment, boolean shouldAddToBackStack, String tag) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.activity_slide_in_from_right, R.anim.activity_slide_out_to_left,
-                R.anim.activity_slide_in_from_left, R.anim.activity_slide_out_to_right);
+                                                R.anim.activity_slide_in_from_left, R.anim.activity_slide_out_to_right);
         fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
         if (shouldAddToBackStack) {
             fragmentTransaction.addToBackStack(null);
@@ -239,43 +239,43 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
 
     private void loggedInAndFinish(ArrayList<Integer> oldSitesIds, boolean doLoginUpdate) {
         switch (getLoginMode()) {
-            case FULL:
-            case WPCOM_LOGIN_ONLY:
-                ActivityLauncher.showMainActivityAndLoginEpilogue(this, oldSitesIds, doLoginUpdate);
+        case FULL:
+        case WPCOM_LOGIN_ONLY:
+            ActivityLauncher.showMainActivityAndLoginEpilogue(this, oldSitesIds, doLoginUpdate);
+            setResult(Activity.RESULT_OK);
+            finish();
+            break;
+        case JETPACK_STATS:
+            ActivityLauncher.showLoginEpilogueForResult(this, true, oldSitesIds, true);
+            break;
+        case WPCOM_LOGIN_DEEPLINK:
+        case WPCOM_REAUTHENTICATE:
+            ActivityLauncher.showLoginEpilogueForResult(this, true, oldSitesIds, false);
+            break;
+        case SHARE_INTENT:
+        case SELFHOSTED_ONLY:
+            // We are comparing list of site ID's before self-hosted site was added and after, trying to find a
+            // newly added self-hosted site's ID, so we can select it
+            ArrayList<Integer> newSitesIds = new ArrayList<>();
+            for (SiteModel site : mSiteStore.getSites()) {
+                newSitesIds.add(site.getId());
+            }
+            newSitesIds.removeAll(oldSitesIds);
+
+            if (newSitesIds.size() > 0) {
+                Intent intent = new Intent();
+                intent.putExtra(SitePickerActivity.KEY_LOCAL_ID, newSitesIds.get(0));
+                setResult(Activity.RESULT_OK, intent);
+            } else {
+                AppLog.e(T.MAIN, "Couldn't detect newly added self-hosted site. "
+                         + "Expected at least 1 site ID but was 0.");
+                ToastUtils.showToast(this, R.string.site_picker_failed_selecting_added_site);
                 setResult(Activity.RESULT_OK);
-                finish();
-                break;
-            case JETPACK_STATS:
-                ActivityLauncher.showLoginEpilogueForResult(this, true, oldSitesIds, true);
-                break;
-            case WPCOM_LOGIN_DEEPLINK:
-            case WPCOM_REAUTHENTICATE:
-                ActivityLauncher.showLoginEpilogueForResult(this, true, oldSitesIds, false);
-                break;
-            case SHARE_INTENT:
-            case SELFHOSTED_ONLY:
-                // We are comparing list of site ID's before self-hosted site was added and after, trying to find a
-                // newly added self-hosted site's ID, so we can select it
-                ArrayList<Integer> newSitesIds = new ArrayList<>();
-                for (SiteModel site : mSiteStore.getSites()) {
-                    newSitesIds.add(site.getId());
-                }
-                newSitesIds.removeAll(oldSitesIds);
+            }
 
-                if (newSitesIds.size() > 0) {
-                    Intent intent = new Intent();
-                    intent.putExtra(SitePickerActivity.KEY_LOCAL_ID, newSitesIds.get(0));
-                    setResult(Activity.RESULT_OK, intent);
-                } else {
-                    AppLog.e(T.MAIN, "Couldn't detect newly added self-hosted site. "
-                                     + "Expected at least 1 site ID but was 0.");
-                    ToastUtils.showToast(this, R.string.site_picker_failed_selecting_added_site);
-                    setResult(Activity.RESULT_OK);
-                }
-
-                // skip the epilogue when only added a self-hosted site or sharing to WordPress
-                finish();
-                break;
+            // skip the epilogue when only added a self-hosted site or sharing to WordPress
+            finish();
+            break;
         }
     }
 
@@ -285,38 +285,38 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case RequestCodes.SHOW_LOGIN_EPILOGUE_AND_RETURN:
-            case RequestCodes.SHOW_SIGNUP_EPILOGUE_AND_RETURN:
-                // we showed the epilogue screen as informational and sites got loaded so, just
-                // return to login caller now
-                setResult(RESULT_OK);
-                finish();
-                break;
-            case RequestCodes.SMART_LOCK_SAVE:
-                if (resultCode == RESULT_OK) {
-                    mLoginAnalyticsListener.trackLoginAutofillCredentialsUpdated();
-                    AppLog.d(AppLog.T.NUX, "Credentials saved");
-                } else {
-                    AppLog.d(AppLog.T.NUX, "Credentials save cancelled");
-                }
-                break;
-            case RequestCodes.SMART_LOCK_READ:
-                if (resultCode == RESULT_OK) {
-                    AppLog.d(AppLog.T.NUX, "Credentials retrieved");
-                    Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
-                    onCredentialRetrieved(credential);
-                } else {
-                    AppLog.e(AppLog.T.NUX, "Credential read failed");
-                    onCredentialsUnavailable();
-                }
-                break;
+        case RequestCodes.SHOW_LOGIN_EPILOGUE_AND_RETURN:
+        case RequestCodes.SHOW_SIGNUP_EPILOGUE_AND_RETURN:
+            // we showed the epilogue screen as informational and sites got loaded so, just
+            // return to login caller now
+            setResult(RESULT_OK);
+            finish();
+            break;
+        case RequestCodes.SMART_LOCK_SAVE:
+            if (resultCode == RESULT_OK) {
+                mLoginAnalyticsListener.trackLoginAutofillCredentialsUpdated();
+                AppLog.d(AppLog.T.NUX, "Credentials saved");
+            } else {
+                AppLog.d(AppLog.T.NUX, "Credentials save cancelled");
+            }
+            break;
+        case RequestCodes.SMART_LOCK_READ:
+            if (resultCode == RESULT_OK) {
+                AppLog.d(AppLog.T.NUX, "Credentials retrieved");
+                Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
+                onCredentialRetrieved(credential);
+            } else {
+                AppLog.e(AppLog.T.NUX, "Credential read failed");
+                onCredentialsUnavailable();
+            }
+            break;
         }
     }
 
     private void jumpToUsernamePassword(String username, String password) {
         LoginUsernamePasswordFragment loginUsernamePasswordFragment = LoginUsernamePasswordFragment.newInstance(
-                "wordpress.com", "wordpress.com", "WordPress.com", "https://s0.wp.com/i/webclip.png", username,
-                password, true);
+                    "wordpress.com", "wordpress.com", "WordPress.com", "https://s0.wp.com/i/webclip.png", username,
+                    password, true);
         slideInFragment(loginUsernamePasswordFragment, true, LoginUsernamePasswordFragment.TAG);
     }
 
@@ -434,7 +434,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     @Override
     public void newUserCreatedButErrored(String email, String password) {
         LoginEmailPasswordFragment loginEmailPasswordFragment =
-                LoginEmailPasswordFragment.newInstance(email, password, null, null, false);
+            LoginEmailPasswordFragment.newInstance(email, password, null, null, false);
         slideInFragment(loginEmailPasswordFragment, false, LoginEmailPasswordFragment.TAG);
     }
 
@@ -445,12 +445,12 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
         initSmartLockIfNotFinished(false);
         if (getLoginMode() != LoginMode.WPCOM_LOGIN_DEEPLINK && getLoginMode() != LoginMode.SHARE_INTENT) {
             LoginMagicLinkRequestFragment loginMagicLinkRequestFragment = LoginMagicLinkRequestFragment.newInstance(
-                    email, AuthEmailPayloadScheme.WORDPRESS, mIsJetpackConnect,
-                    mJetpackConnectSource != null ? mJetpackConnectSource.toString() : null);
+                        email, AuthEmailPayloadScheme.WORDPRESS, mIsJetpackConnect,
+                        mJetpackConnectSource != null ? mJetpackConnectSource.toString() : null);
             slideInFragment(loginMagicLinkRequestFragment, true, LoginMagicLinkRequestFragment.TAG);
         } else {
             LoginEmailPasswordFragment loginEmailPasswordFragment =
-                    LoginEmailPasswordFragment.newInstance(email, null, null, null, false);
+                LoginEmailPasswordFragment.newInstance(email, null, null, null, false);
             slideInFragment(loginEmailPasswordFragment, true, LoginEmailPasswordFragment.TAG);
         }
     }
@@ -465,7 +465,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     public void loginViaSocialAccount(String email, String idToken, String service, boolean isPasswordRequired) {
         dismissSignupSheet();
         LoginEmailPasswordFragment loginEmailPasswordFragment =
-                LoginEmailPasswordFragment.newInstance(email, null, idToken, service, isPasswordRequired);
+            LoginEmailPasswordFragment.newInstance(email, null, idToken, service, isPasswordRequired);
         slideInFragment(loginEmailPasswordFragment, true, LoginEmailPasswordFragment.TAG);
     }
 
@@ -512,7 +512,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     public void usePasswordInstead(String email) {
         mLoginAnalyticsListener.trackLoginMagicLinkExited();
         LoginEmailPasswordFragment loginEmailPasswordFragment =
-                LoginEmailPasswordFragment.newInstance(email, null, null, null, false);
+            LoginEmailPasswordFragment.newInstance(email, null, null, null, false);
         slideInFragment(loginEmailPasswordFragment, true, LoginEmailPasswordFragment.TAG);
     }
 
@@ -534,8 +534,8 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
         dismissSignupSheet();
         mLoginAnalyticsListener.trackLoginSocial2faNeeded();
         Login2FaFragment login2FaFragment = Login2FaFragment.newInstanceSocial(email, userId,
-                nonceAuthenticator, nonceBackup,
-                nonceSms);
+                                            nonceAuthenticator, nonceBackup,
+                                            nonceSms);
         slideInFragment(login2FaFragment, true, Login2FaFragment.TAG);
     }
 
@@ -543,7 +543,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     public void needs2faSocialConnect(String email, String password, String idToken, String service) {
         mLoginAnalyticsListener.trackLoginSocial2faNeeded();
         Login2FaFragment login2FaFragment =
-                Login2FaFragment.newInstanceSocialConnect(email, password, idToken, service);
+            Login2FaFragment.newInstanceSocialConnect(email, password, idToken, service);
         slideInFragment(login2FaFragment, true, Login2FaFragment.TAG);
     }
 
@@ -560,14 +560,14 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
 
     public void gotWpcomSiteInfo(String siteAddress, String siteName, String siteIconUrl) {
         LoginUsernamePasswordFragment loginUsernamePasswordFragment = LoginUsernamePasswordFragment.newInstance(
-                siteAddress, siteAddress, siteName, siteIconUrl, null, null, true);
+                    siteAddress, siteAddress, siteName, siteIconUrl, null, null, true);
         slideInFragment(loginUsernamePasswordFragment, true, LoginUsernamePasswordFragment.TAG);
     }
 
     @Override
     public void gotXmlRpcEndpoint(String inputSiteAddress, String endpointAddress) {
         LoginUsernamePasswordFragment loginUsernamePasswordFragment = LoginUsernamePasswordFragment.newInstance(
-                inputSiteAddress, endpointAddress, null, null, null, null, false);
+                    inputSiteAddress, endpointAddress, null, null, null, null, false);
         slideInFragment(loginUsernamePasswordFragment, true, LoginUsernamePasswordFragment.TAG);
     }
 
@@ -584,7 +584,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
 
     private void viewHelpAndSupport(Origin origin) {
         List<String> extraSupportTags = getLoginMode() == LoginMode.JETPACK_STATS ? Collections
-                .singletonList(ZendeskExtraTags.connectingJetpack) : null;
+                                        .singletonList(ZendeskExtraTags.connectingJetpack) : null;
         ActivityLauncher.viewHelpAndSupport(this, origin, null, extraSupportTags);
     }
 
@@ -689,9 +689,9 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
             final String loginModeStr = "LoginMode: " + (getLoginMode() != null ? getLoginMode().name() : "null");
             AppLog.w(AppLog.T.NUX, "Internal inconsistency error! mSmartLockHelper found null!" + loginModeStr);
             CrashLoggingUtils.logException(
-                    new RuntimeException("Internal inconsistency error! mSmartLockHelper found null!"),
-                    AppLog.T.NUX,
-                    loginModeStr);
+                new RuntimeException("Internal inconsistency error! mSmartLockHelper found null!"),
+                AppLog.T.NUX,
+                loginModeStr);
 
             // bail
             return;
@@ -712,23 +712,23 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
         AppLog.d(AppLog.T.NUX, "Google API client connected");
 
         switch (mSmartLockHelperState) {
-            case NOT_TRIGGERED:
-                // should not reach this state here!
-                throw new RuntimeException("Internal inconsistency error!");
-            case TRIGGER_FILL_IN_ON_CONNECT:
-                mSmartLockHelperState = SmartLockHelperState.FINISHED;
+        case NOT_TRIGGERED:
+            // should not reach this state here!
+            throw new RuntimeException("Internal inconsistency error!");
+        case TRIGGER_FILL_IN_ON_CONNECT:
+            mSmartLockHelperState = SmartLockHelperState.FINISHED;
 
-                // force account chooser
-                mSmartLockHelper.disableAutoSignIn();
+            // force account chooser
+            mSmartLockHelper.disableAutoSignIn();
 
-                mSmartLockHelper.smartLockAutoFill(this);
-                break;
-            case FINISH_ON_CONNECT:
-                mSmartLockHelperState = SmartLockHelperState.FINISHED;
-                break;
-            case FINISHED:
-                // don't do anything special. We're reconnecting the GoogleApiClient on rotation.
-                break;
+            mSmartLockHelper.smartLockAutoFill(this);
+            break;
+        case FINISH_ON_CONNECT:
+            mSmartLockHelperState = SmartLockHelperState.FINISHED;
+            break;
+        case FINISHED:
+            // don't do anything special. We're reconnecting the GoogleApiClient on rotation.
+            break;
         }
     }
 
@@ -765,14 +765,14 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     @Override
     public void onGoogleEmailSelected(String email) {
         LoginEmailFragment loginEmailFragment =
-                (LoginEmailFragment) getSupportFragmentManager().findFragmentByTag(LoginEmailFragment.TAG);
+            (LoginEmailFragment) getSupportFragmentManager().findFragmentByTag(LoginEmailFragment.TAG);
         loginEmailFragment.setGoogleEmail(email);
     }
 
     @Override
     public void onGoogleLoginFinished() {
         LoginEmailFragment loginEmailFragment =
-                (LoginEmailFragment) getSupportFragmentManager().findFragmentByTag(LoginEmailFragment.TAG);
+            (LoginEmailFragment) getSupportFragmentManager().findFragmentByTag(LoginEmailFragment.TAG);
         loginEmailFragment.finishLogin();
     }
 
@@ -795,10 +795,10 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
         if (!getSupportFragmentManager().isStateSaved()) {
             BasicFragmentDialog dialog = new BasicFragmentDialog();
             dialog.initialize(GOOGLE_ERROR_DIALOG_TAG, getString(R.string.error),
-                    msg,
-                    getString(org.wordpress.android.login.R.string.login_error_button),
-                    null,
-                    null);
+                              msg,
+                              getString(org.wordpress.android.login.R.string.login_error_button),
+                              null,
+                              null);
             dialog.show(getSupportFragmentManager(), GOOGLE_ERROR_DIALOG_TAG);
         } else {
             AppLog.d(T.MAIN, "'Google sign up failed' dialog not shown, because the activity wasn't visible.");
@@ -808,9 +808,9 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     @Override
     public void onPositiveClicked(@NotNull String instanceTag) {
         switch (instanceTag) {
-            case GOOGLE_ERROR_DIALOG_TAG:
-                // just dismiss the dialog
-                break;
+        case GOOGLE_ERROR_DIALOG_TAG:
+            // just dismiss the dialog
+            break;
         }
     }
 
@@ -831,9 +831,9 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     }
 
     @Override public void gotConnectedSiteInfo(
-            @NonNull String siteAddress,
-            @Nullable String redirectUrl,
-            boolean hasJetpack) {
+        @NonNull String siteAddress,
+        @Nullable String redirectUrl,
+        boolean hasJetpack) {
         // Not used in WordPress app
     }
 }

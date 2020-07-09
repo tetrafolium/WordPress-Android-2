@@ -270,7 +270,7 @@ public class EditCommentActivity extends AppCompatActivity {
 
     private void showEditErrorAlert() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
         dialogBuilder.setTitle(getResources().getText(R.string.error));
         dialogBuilder.setMessage(R.string.error_edit_comment);
         dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -310,22 +310,22 @@ public class EditCommentActivity extends AppCompatActivity {
         }
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
         dialogBuilder.setTitle(getResources().getText(R.string.cancel_edit));
         dialogBuilder.setMessage(getResources().getText(R.string.sure_to_cancel_edit_comment));
         dialogBuilder.setPositiveButton(getResources().getText(R.string.yes),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        finish();
-                    }
-                });
+        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                finish();
+            }
+        });
         dialogBuilder.setNegativeButton(
-                getResources().getText(R.string.no),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // just close the dialog
-                    }
-                });
+            getResources().getText(R.string.no),
+        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // just close the dialog
+            }
+        });
         dialogBuilder.setCancelable(true);
 
         mCancelEditCommentDialog = dialogBuilder.create();

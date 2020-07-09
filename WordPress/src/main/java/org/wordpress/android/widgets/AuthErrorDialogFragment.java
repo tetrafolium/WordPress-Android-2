@@ -48,7 +48,7 @@ public class AuthErrorDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder b = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         b.setTitle(mTitleId);
         b.setMessage(mMessageId);
         b.setCancelable(true);

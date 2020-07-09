@@ -31,12 +31,12 @@ public class UserNoteBlock extends NoteBlock {
     }
 
     public UserNoteBlock(
-            Context context,
-            FormattableContent noteObject,
-            OnNoteBlockTextClickListener onNoteBlockTextClickListener,
-            OnGravatarClickedListener onGravatarClickedListener,
-            ImageManager imageManager,
-            NotificationsUtilsWrapper notificationsUtilsWrapper) {
+        Context context,
+        FormattableContent noteObject,
+        OnNoteBlockTextClickListener onNoteBlockTextClickListener,
+        OnGravatarClickedListener onGravatarClickedListener,
+        ImageManager imageManager,
+        NotificationsUtilsWrapper notificationsUtilsWrapper) {
         super(noteObject, imageManager, notificationsUtilsWrapper, onNoteBlockTextClickListener);
 
         if (context != null) {
@@ -175,19 +175,19 @@ public class UserNoteBlock extends NoteBlock {
 
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 v.animate()
-                 .scaleX(0.9f)
-                 .scaleY(0.9f)
-                 .alpha(0.5f)
-                 .setDuration(animationDuration)
-                 .setInterpolator(new DecelerateInterpolator());
+                .scaleX(0.9f)
+                .scaleY(0.9f)
+                .alpha(0.5f)
+                .setDuration(animationDuration)
+                .setInterpolator(new DecelerateInterpolator());
             } else if (event.getActionMasked() == MotionEvent.ACTION_UP
                        || event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
                 v.animate()
-                 .scaleX(1.0f)
-                 .scaleY(1.0f)
-                 .alpha(1.0f)
-                 .setDuration(animationDuration)
-                 .setInterpolator(new DecelerateInterpolator());
+                .scaleX(1.0f)
+                .scaleY(1.0f)
+                .alpha(1.0f)
+                .setDuration(animationDuration)
+                .setInterpolator(new DecelerateInterpolator());
 
                 if (event.getActionMasked() == MotionEvent.ACTION_UP && mGravatarClickedListener != null) {
                     // Fire the listener, which will load the site preview for the user's site
@@ -204,8 +204,8 @@ public class UserNoteBlock extends NoteBlock {
         String siteUrl = getUserUrl();
         if (mGravatarClickedListener != null) {
             mGravatarClickedListener
-                    .onGravatarClicked(FormattableContentUtilsKt.getMetaIdsSiteIdOrZero(getNoteData()),
-                            FormattableContentUtilsKt.getMetaIdsUserIdOrZero(getNoteData()), siteUrl);
+            .onGravatarClicked(FormattableContentUtilsKt.getMetaIdsSiteIdOrZero(getNoteData()),
+                               FormattableContentUtilsKt.getMetaIdsUserIdOrZero(getNoteData()), siteUrl);
         }
     }
 }

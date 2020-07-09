@@ -219,15 +219,15 @@ public abstract class LoginBaseFormFragment<LoginListenerType> extends Fragment 
         }
 
         mProgressDialog =
-                ProgressDialog.show(getActivity(), "", getActivity().getString(getProgressBarText()), true, cancellable,
-                        new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialogInterface) {
-                                if (isInProgress()) {
-                                    endProgress();
-                                }
-                            }
-                        });
+            ProgressDialog.show(getActivity(), "", getActivity().getString(getProgressBarText()), true, cancellable,
+        new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                if (isInProgress()) {
+                    endProgress();
+                }
+            }
+        });
         mInProgress = true;
     }
 

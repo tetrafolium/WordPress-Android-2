@@ -52,92 +52,92 @@ public class LoginGoogleFragment extends GoogleFragment {
         super.onActivityResult(request, result, data);
 
         switch (request) {
-            case REQUEST_LOGIN:
-                disconnectGoogleClient();
-                mLoginRequested = false;
-                if (result == RESULT_OK) {
-                    AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - succcess");
-                    GoogleSignInResult loginResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+        case REQUEST_LOGIN:
+            disconnectGoogleClient();
+            mLoginRequested = false;
+            if (result == RESULT_OK) {
+                AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - succcess");
+                GoogleSignInResult loginResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
-                    if (loginResult.isSuccess()) {
-                        try {
-                            GoogleSignInAccount account = loginResult.getSignInAccount();
+                if (loginResult.isSuccess()) {
+                    try {
+                        GoogleSignInAccount account = loginResult.getSignInAccount();
 
-                            if (account != null) {
-                                mGoogleEmail = account.getEmail() != null ? account.getEmail() : "";
-                                mGoogleListener.onGoogleEmailSelected(mGoogleEmail);
-                                mIdToken = account.getIdToken() != null ? account.getIdToken() : "";
-                            }
-
-                            AppLog.d(T.MAIN,
-                                    "GOOGLE LOGIN: Google has returned a sign in result - dispatching "
-                                    + "SocialLoginAction");
-                            PushSocialPayload payload = new PushSocialPayload(mIdToken, SERVICE_TYPE_GOOGLE);
-                            mDispatcher.dispatch(AccountActionBuilder.newPushSocialLoginAction(payload));
-                        } catch (NullPointerException exception) {
-                            AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - NPE");
-                            AppLog.e(T.NUX, "Cannot get ID token from Google login account.", exception);
-                            showError(getString(R.string.login_error_generic));
+                        if (account != null) {
+                            mGoogleEmail = account.getEmail() != null ? account.getEmail() : "";
+                            mGoogleListener.onGoogleEmailSelected(mGoogleEmail);
+                            mIdToken = account.getIdToken() != null ? account.getIdToken() : "";
                         }
-                    } else {
-                        AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - error");
-                        mAnalyticsListener.trackSocialButtonFailure();
-                        switch (loginResult.getStatus().getStatusCode()) {
-                            // Internal error.
-                            case GoogleSignInStatusCodes.INTERNAL_ERROR:
-                                AppLog.e(T.NUX, "Google Login Failed: internal error.");
-                                showError(getString(R.string.login_error_generic));
-                                break;
-                            // Attempted to connect with an invalid account name specified.
-                            case GoogleSignInStatusCodes.INVALID_ACCOUNT:
-                                AppLog.e(T.NUX, "Google Login Failed: invalid account name.");
-                                showError(getString(R.string.login_error_generic)
-                                          + getString(R.string.login_error_suffix));
-                                break;
-                            // Network error.
-                            case GoogleSignInStatusCodes.NETWORK_ERROR:
-                                AppLog.e(T.NUX, "Google Login Failed: network error.");
-                                showError(getString(R.string.error_generic_network));
-                                break;
-                            // Cancelled by the user.
-                            case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
-                                AppLog.e(T.NUX, "Google Login Failed: cancelled by user.");
-                                break;
-                            // Attempt didn't succeed with the current account.
-                            case GoogleSignInStatusCodes.SIGN_IN_FAILED:
-                                AppLog.e(T.NUX, "Google Login Failed: current account failed.");
-                                showError(getString(R.string.login_error_generic));
-                                break;
-                            // Attempted to connect, but the user is not signed in.
-                            case GoogleSignInStatusCodes.SIGN_IN_REQUIRED:
-                                AppLog.e(T.NUX, "Google Login Failed: user is not signed in.");
-                                showError(getString(R.string.login_error_generic));
-                                break;
-                            // Timeout error.
-                            case GoogleSignInStatusCodes.TIMEOUT:
-                                AppLog.e(T.NUX, "Google Login Failed: timeout error.");
-                                showError(getString(R.string.google_error_timeout));
-                                break;
-                            // Unknown error.
-                            default:
-                                AppLog.e(T.NUX, "Google Login Failed: unknown error.");
-                                showError(getString(R.string.login_error_generic));
-                                break;
-                        }
+
+                        AppLog.d(T.MAIN,
+                                 "GOOGLE LOGIN: Google has returned a sign in result - dispatching "
+                                 + "SocialLoginAction");
+                        PushSocialPayload payload = new PushSocialPayload(mIdToken, SERVICE_TYPE_GOOGLE);
+                        mDispatcher.dispatch(AccountActionBuilder.newPushSocialLoginAction(payload));
+                    } catch (NullPointerException exception) {
+                        AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - NPE");
+                        AppLog.e(T.NUX, "Cannot get ID token from Google login account.", exception);
+                        showError(getString(R.string.login_error_generic));
                     }
-                } else if (result == RESULT_CANCELED) {
-                    AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - canceled");
-                    mAnalyticsListener.trackSocialButtonFailure();
-                    AppLog.e(T.NUX, "Google Login Failed: result was CANCELED.");
-                    finishFlow();
                 } else {
-                    AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - unknown");
+                    AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - error");
                     mAnalyticsListener.trackSocialButtonFailure();
-                    AppLog.e(T.NUX, "Google Login Failed: result was not OK or CANCELED.");
-                    showError(getString(R.string.login_error_generic));
+                    switch (loginResult.getStatus().getStatusCode()) {
+                    // Internal error.
+                    case GoogleSignInStatusCodes.INTERNAL_ERROR:
+                        AppLog.e(T.NUX, "Google Login Failed: internal error.");
+                        showError(getString(R.string.login_error_generic));
+                        break;
+                    // Attempted to connect with an invalid account name specified.
+                    case GoogleSignInStatusCodes.INVALID_ACCOUNT:
+                        AppLog.e(T.NUX, "Google Login Failed: invalid account name.");
+                        showError(getString(R.string.login_error_generic)
+                                  + getString(R.string.login_error_suffix));
+                        break;
+                    // Network error.
+                    case GoogleSignInStatusCodes.NETWORK_ERROR:
+                        AppLog.e(T.NUX, "Google Login Failed: network error.");
+                        showError(getString(R.string.error_generic_network));
+                        break;
+                    // Cancelled by the user.
+                    case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
+                        AppLog.e(T.NUX, "Google Login Failed: cancelled by user.");
+                        break;
+                    // Attempt didn't succeed with the current account.
+                    case GoogleSignInStatusCodes.SIGN_IN_FAILED:
+                        AppLog.e(T.NUX, "Google Login Failed: current account failed.");
+                        showError(getString(R.string.login_error_generic));
+                        break;
+                    // Attempted to connect, but the user is not signed in.
+                    case GoogleSignInStatusCodes.SIGN_IN_REQUIRED:
+                        AppLog.e(T.NUX, "Google Login Failed: user is not signed in.");
+                        showError(getString(R.string.login_error_generic));
+                        break;
+                    // Timeout error.
+                    case GoogleSignInStatusCodes.TIMEOUT:
+                        AppLog.e(T.NUX, "Google Login Failed: timeout error.");
+                        showError(getString(R.string.google_error_timeout));
+                        break;
+                    // Unknown error.
+                    default:
+                        AppLog.e(T.NUX, "Google Login Failed: unknown error.");
+                        showError(getString(R.string.login_error_generic));
+                        break;
+                    }
                 }
+            } else if (result == RESULT_CANCELED) {
+                AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - canceled");
+                mAnalyticsListener.trackSocialButtonFailure();
+                AppLog.e(T.NUX, "Google Login Failed: result was CANCELED.");
+                finishFlow();
+            } else {
+                AppLog.d(T.MAIN, "GOOGLE LOGIN: Google has returned a sign in result - unknown");
+                mAnalyticsListener.trackSocialButtonFailure();
+                AppLog.e(T.NUX, "Google Login Failed: result was not OK or CANCELED.");
+                showError(getString(R.string.login_error_generic));
+            }
 
-                break;
+            break;
         }
     }
 
@@ -147,12 +147,12 @@ public class LoginGoogleFragment extends GoogleFragment {
         if (event.isError()) {
             AppLog.d(T.MAIN, "GOOGLE LOGIN: onAuthenticationChanged - error");
             AppLog.e(T.API, "LoginGoogleFragment.onAuthenticationChanged: " + event.error.type
-                            + " - " + event.error.message);
+                     + " - " + event.error.message);
             mAnalyticsListener.trackLoginFailed(event.getClass().getSimpleName(),
-                    event.error.type.toString(), event.error.message);
+                                                event.error.type.toString(), event.error.message);
 
             mAnalyticsListener.trackSocialFailure(event.getClass().getSimpleName(),
-                    event.error.type.toString(), event.error.message);
+                                                  event.error.type.toString(), event.error.message);
 
             showError(getString(R.string.login_error_generic));
         } else {
@@ -172,43 +172,43 @@ public class LoginGoogleFragment extends GoogleFragment {
 
             if (event.error.type != AccountSocialErrorType.USER_EXISTS) {
                 mAnalyticsListener.trackLoginFailed(event.getClass().getSimpleName(),
-                        event.error.type.toString(), event.error.message);
+                                                    event.error.type.toString(), event.error.message);
 
                 mAnalyticsListener.trackSocialFailure(event.getClass().getSimpleName(),
-                        event.error.type.toString(), event.error.message);
+                                                      event.error.type.toString(), event.error.message);
             }
 
             switch (event.error.type) {
-                // WordPress account exists with input email address, but not connected.
-                case USER_EXISTS:
-                    AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - wordpress acount exists but not connected");
-                    mAnalyticsListener.trackSocialAccountsNeedConnecting();
-                    mLoginListener.loginViaSocialAccount(mGoogleEmail, mIdToken, SERVICE_TYPE_GOOGLE, true);
-                    break;
-                // WordPress account does not exist with input email address.
-                case UNKNOWN_USER:
-                    AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - wordpress acount doesn't exist");
-                    mAnalyticsListener.trackSocialErrorUnknownUser();
-                    showError(getString(R.string.login_error_email_not_found_v2));
-                    break;
-                // Too many attempts on sending SMS verification code. The user has to wait before they try again
-                case SMS_CODE_THROTTLED:
-                    AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - error - sms code throttled");
-                    showError(getString(R.string.login_error_sms_throttled));
-                    break;
-                // Unknown error.
-                case GENERIC_ERROR:
-                // Do nothing for now (included to show all error types) and just fall through to 'default'
-                default:
-                    AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - unknown error");
-                    showError(getString(R.string.login_error_generic));
-                    break;
+            // WordPress account exists with input email address, but not connected.
+            case USER_EXISTS:
+                AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - wordpress acount exists but not connected");
+                mAnalyticsListener.trackSocialAccountsNeedConnecting();
+                mLoginListener.loginViaSocialAccount(mGoogleEmail, mIdToken, SERVICE_TYPE_GOOGLE, true);
+                break;
+            // WordPress account does not exist with input email address.
+            case UNKNOWN_USER:
+                AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - wordpress acount doesn't exist");
+                mAnalyticsListener.trackSocialErrorUnknownUser();
+                showError(getString(R.string.login_error_email_not_found_v2));
+                break;
+            // Too many attempts on sending SMS verification code. The user has to wait before they try again
+            case SMS_CODE_THROTTLED:
+                AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - error - sms code throttled");
+                showError(getString(R.string.login_error_sms_throttled));
+                break;
+            // Unknown error.
+            case GENERIC_ERROR:
+            // Do nothing for now (included to show all error types) and just fall through to 'default'
+            default:
+                AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - unknown error");
+                showError(getString(R.string.login_error_generic));
+                break;
             }
-        // Response does not return error when two-factor authentication is required.
+            // Response does not return error when two-factor authentication is required.
         } else if (event.requiresTwoStepAuth || Login2FaFragment.TWO_FACTOR_TYPE_SMS.equals(event.notificationSent)) {
             AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - needs 2fa");
             mLoginListener.needs2faSocial(mGoogleEmail, event.userId, event.nonceAuthenticator, event.nonceBackup,
-                    event.nonceSms);
+                                          event.nonceSms);
         } else {
             AppLog.d(T.MAIN, "GOOGLE LOGIN: onSocialChanged - success");
             mGoogleListener.onGoogleLoginFinished();

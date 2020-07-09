@@ -21,7 +21,7 @@ import org.wordpress.android.util.AppLog.T;
  */
 @TargetApi(21)
 public class InstallationReferrerJobService extends JobService implements
-        InstallationReferrerServiceLogic.ServiceCompletionListener {
+    InstallationReferrerServiceLogic.ServiceCompletionListener {
     @Override
     public boolean onStartJob(JobParameters params) {
         AppLog.i(T.UTILS, "installation referrer job service > started");

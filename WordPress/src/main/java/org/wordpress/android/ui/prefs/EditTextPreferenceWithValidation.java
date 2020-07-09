@@ -49,7 +49,7 @@ public class EditTextPreferenceWithValidation extends SummaryEditTextPreference 
             });
 
             positiveButton.setTextColor(ContextCompat.getColorStateList(getContext(),
-                    R.color.primary_40_neutral_40_selector));
+                                        R.color.primary_40_neutral_40_selector));
 
             getEditText().addTextChangedListener(new TextWatcher() {
                 @Override
@@ -63,19 +63,19 @@ public class EditTextPreferenceWithValidation extends SummaryEditTextPreference 
                 @Override
                 public void afterTextChanged(Editable s) {
                     switch (mValidationType) {
-                        case NONE:
-                            break;
-                        case EMAIL:
-                            positiveButton.setEnabled(ValidationUtils.validateEmail(s));
-                            break;
-                        case PASSWORD:
-                            positiveButton.setEnabled(ValidationUtils.validatePassword(s));
-                            break;
-                        case URL:
-                            positiveButton.setEnabled(ValidationUtils.validateUrl(s));
-                            break;
-                        case PASSWORD_SELF_HOSTED:
-                            positiveButton.setEnabled(ValidationUtils.validatePasswordSelfHosted(s));
+                    case NONE:
+                        break;
+                    case EMAIL:
+                        positiveButton.setEnabled(ValidationUtils.validateEmail(s));
+                        break;
+                    case PASSWORD:
+                        positiveButton.setEnabled(ValidationUtils.validatePassword(s));
+                        break;
+                    case URL:
+                        positiveButton.setEnabled(ValidationUtils.validateUrl(s));
+                        break;
+                    case PASSWORD_SELF_HOSTED:
+                        positiveButton.setEnabled(ValidationUtils.validatePasswordSelfHosted(s));
                     }
                 }
             });
@@ -91,7 +91,7 @@ public class EditTextPreferenceWithValidation extends SummaryEditTextPreference 
 
         // Use "hidden" input type for passwords so characters are replaced with dots for added security.
         hideInputCharacters(
-                mValidationType == ValidationType.PASSWORD || mValidationType == ValidationType.PASSWORD_SELF_HOSTED);
+            mValidationType == ValidationType.PASSWORD || mValidationType == ValidationType.PASSWORD_SELF_HOSTED);
     }
 
     public void setValidationType(ValidationType validationType) {

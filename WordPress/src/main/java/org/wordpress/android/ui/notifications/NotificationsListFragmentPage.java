@@ -75,8 +75,8 @@ import static org.wordpress.android.ui.notifications.services.NotificationsUpdat
 import static org.wordpress.android.util.WPSwipeToRefreshHelper.buildSwipeToRefreshHelper;
 
 public class NotificationsListFragmentPage extends Fragment implements
-        OnScrollToTopListener,
-        NotesAdapter.DataLoadedListener {
+    OnScrollToTopListener,
+    NotesAdapter.DataLoadedListener {
     private static final String KEY_TAB_POSITION = "tabPosition";
 
     private ActionableEmptyView mActionableEmptyView;
@@ -113,24 +113,24 @@ public class NotificationsListFragmentPage extends Fragment implements
         }
 
         switch (mTabPosition) {
-            case TAB_POSITION_ALL:
-                mNotesAdapter.setFilter(FILTER_ALL);
-                break;
-            case TAB_POSITION_COMMENT:
-                mNotesAdapter.setFilter(FILTER_COMMENT);
-                break;
-            case TAB_POSITION_FOLLOW:
-                mNotesAdapter.setFilter(FILTER_FOLLOW);
-                break;
-            case TAB_POSITION_LIKE:
-                mNotesAdapter.setFilter(FILTER_LIKE);
-                break;
-            case TAB_POSITION_UNREAD:
-                mNotesAdapter.setFilter(FILTER_UNREAD);
-                break;
-            default:
-                mNotesAdapter.setFilter(FILTER_ALL);
-                break;
+        case TAB_POSITION_ALL:
+            mNotesAdapter.setFilter(FILTER_ALL);
+            break;
+        case TAB_POSITION_COMMENT:
+            mNotesAdapter.setFilter(FILTER_COMMENT);
+            break;
+        case TAB_POSITION_FOLLOW:
+            mNotesAdapter.setFilter(FILTER_FOLLOW);
+            break;
+        case TAB_POSITION_LIKE:
+            mNotesAdapter.setFilter(FILTER_LIKE);
+            break;
+        case TAB_POSITION_UNREAD:
+            mNotesAdapter.setFilter(FILTER_UNREAD);
+            break;
+        default:
+            mNotesAdapter.setFilter(FILTER_ALL);
+            break;
         }
     }
 
@@ -172,14 +172,14 @@ public class NotificationsListFragmentPage extends Fragment implements
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-                (CustomSwipeRefreshLayout) view.findViewById(R.id.notifications_refresh),
-                new SwipeToRefreshHelper.RefreshListener() {
-                    @Override
-                    public void onRefreshStarted() {
-                        hideNewNotificationsBar();
-                        fetchNotesFromRemote();
-                    }
-                });
+                                    (CustomSwipeRefreshLayout) view.findViewById(R.id.notifications_refresh),
+        new SwipeToRefreshHelper.RefreshListener() {
+            @Override
+            public void onRefreshStarted() {
+                hideNewNotificationsBar();
+                fetchNotesFromRemote();
+            }
+        });
 
         mNewNotificationsBar = view.findViewById(R.id.layout_new_notificatons);
         mNewNotificationsBar.setVisibility(View.GONE);
@@ -451,43 +451,43 @@ public class NotificationsListFragmentPage extends Fragment implements
         }
 
         switch (mTabPosition) {
-            case TAB_POSITION_ALL:
+        case TAB_POSITION_ALL:
+            showEmptyView(
+                R.string.notifications_empty_all,
+                R.string.notifications_empty_action_all,
+                R.string.notifications_empty_view_reader);
+            break;
+        case TAB_POSITION_COMMENT:
+            showEmptyView(
+                R.string.notifications_empty_comments,
+                R.string.notifications_empty_action_comments,
+                R.string.notifications_empty_view_reader);
+            break;
+        case TAB_POSITION_FOLLOW:
+            showEmptyView(
+                R.string.notifications_empty_followers,
+                R.string.notifications_empty_action_followers_likes,
+                R.string.notifications_empty_view_reader);
+            break;
+        case TAB_POSITION_LIKE:
+            showEmptyView(
+                R.string.notifications_empty_likes,
+                R.string.notifications_empty_action_followers_likes,
+                R.string.notifications_empty_view_reader);
+            break;
+        case TAB_POSITION_UNREAD:
+            if (getSelectedSite() == null) {
+                showEmptyView(R.string.notifications_empty_unread);
+            } else {
                 showEmptyView(
-                        R.string.notifications_empty_all,
-                        R.string.notifications_empty_action_all,
-                        R.string.notifications_empty_view_reader);
-                break;
-            case TAB_POSITION_COMMENT:
-                showEmptyView(
-                        R.string.notifications_empty_comments,
-                        R.string.notifications_empty_action_comments,
-                        R.string.notifications_empty_view_reader);
-                break;
-            case TAB_POSITION_FOLLOW:
-                showEmptyView(
-                        R.string.notifications_empty_followers,
-                        R.string.notifications_empty_action_followers_likes,
-                        R.string.notifications_empty_view_reader);
-                break;
-            case TAB_POSITION_LIKE:
-                showEmptyView(
-                        R.string.notifications_empty_likes,
-                        R.string.notifications_empty_action_followers_likes,
-                        R.string.notifications_empty_view_reader);
-                break;
-            case TAB_POSITION_UNREAD:
-                if (getSelectedSite() == null) {
-                    showEmptyView(R.string.notifications_empty_unread);
-                } else {
-                    showEmptyView(
-                            R.string.notifications_empty_unread,
-                            R.string.notifications_empty_action_unread,
-                            R.string.posts_empty_list_button);
-                }
+                    R.string.notifications_empty_unread,
+                    R.string.notifications_empty_action_unread,
+                    R.string.posts_empty_list_button);
+            }
 
-                break;
-            default:
-                showEmptyView(R.string.notifications_empty_list);
+            break;
+        default:
+            showEmptyView(R.string.notifications_empty_list);
         }
 
         mActionableEmptyView.image.setVisibility(DisplayUtils.isLandscape(getContext()) ? View.GONE : View.VISIBLE);
@@ -539,22 +539,22 @@ public class NotificationsListFragmentPage extends Fragment implements
     public void onEventMainThread(final NoteLikeOrModerationStatusChanged event) {
         NotificationsActions.downloadNoteAndUpdateDB(
             event.noteId,
-            new RestRequest.Listener() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    EventBus.getDefault().removeStickyEvent(NoteLikeOrModerationStatusChanged.class);
-                    Note note = NotificationsTable.getNoteById(event.noteId);
+        new RestRequest.Listener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                EventBus.getDefault().removeStickyEvent(NoteLikeOrModerationStatusChanged.class);
+                Note note = NotificationsTable.getNoteById(event.noteId);
 
-                    if (note != null) {
-                        mNotesAdapter.replaceNote(note);
-                    }
-                }
-            }, new RestRequest.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    EventBus.getDefault().removeStickyEvent(NoteLikeOrModerationStatusChanged.class);
+                if (note != null) {
+                    mNotesAdapter.replaceNote(note);
                 }
             }
+        }, new RestRequest.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                EventBus.getDefault().removeStickyEvent(NoteLikeOrModerationStatusChanged.class);
+            }
+        }
         );
     }
 

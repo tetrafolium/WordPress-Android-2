@@ -69,8 +69,8 @@ import static org.wordpress.android.models.Note.NOTE_LIKE_TYPE;
 import static org.wordpress.android.ui.notifications.services.NotificationsUpdateServiceStarter.IS_TAPPED_ON_NOTIFICATION;
 
 public class NotificationsDetailActivity extends AppCompatActivity implements
-        CommentActions.OnNoteCommentActionListener,
-        BasicFragmentDialog.BasicDialogPositiveClickInterface {
+    CommentActions.OnNoteCommentActionListener,
+    BasicFragmentDialog.BasicDialogPositiveClickInterface {
     private static final String ARG_TITLE = "activityTitle";
     private static final String DOMAIN_WPCOM = "wordpress.com";
 
@@ -175,7 +175,7 @@ public class NotificationsDetailActivity extends AppCompatActivity implements
         NotesAdapter.FILTERS filter = NotesAdapter.FILTERS.FILTER_ALL;
         if (getIntent().hasExtra(NotificationsListFragment.NOTE_CURRENT_LIST_FILTER_EXTRA)) {
             filter = (NotesAdapter.FILTERS) getIntent()
-                    .getSerializableExtra(NotificationsListFragment.NOTE_CURRENT_LIST_FILTER_EXTRA);
+                     .getSerializableExtra(NotificationsListFragment.NOTE_CURRENT_LIST_FILTER_EXTRA);
         }
 
         mAdapter = buildNoteListAdapterAndSetPosition(note, filter);
@@ -287,18 +287,18 @@ public class NotificationsDetailActivity extends AppCompatActivity implements
             if (TextUtils.isEmpty(title)) {
                 // set a default title if title is not set within the note
                 switch (note.getType()) {
-                    case NOTE_FOLLOW_TYPE:
-                        title = getString(R.string.follows);
-                        break;
-                    case NOTE_COMMENT_LIKE_TYPE:
-                        title = getString(R.string.comment_likes);
-                        break;
-                    case NOTE_LIKE_TYPE:
-                        title = getString(R.string.like);
-                        break;
-                    case NOTE_COMMENT_TYPE:
-                        title = getString(R.string.comment);
-                        break;
+                case NOTE_FOLLOW_TYPE:
+                    title = getString(R.string.follows);
+                    break;
+                case NOTE_COMMENT_LIKE_TYPE:
+                    title = getString(R.string.comment_likes);
+                    break;
+                case NOTE_LIKE_TYPE:
+                    title = getString(R.string.like);
+                    break;
+                case NOTE_COMMENT_TYPE:
+                    title = getString(R.string.comment);
+                    break;
                 }
             }
 
@@ -314,7 +314,7 @@ public class NotificationsDetailActivity extends AppCompatActivity implements
     }
 
     private NotificationDetailFragmentAdapter buildNoteListAdapterAndSetPosition(Note note,
-                                                                                 NotesAdapter.FILTERS filter) {
+            NotesAdapter.FILTERS filter) {
         NotificationDetailFragmentAdapter adapter;
         ArrayList<Note> notes = NotificationsTable.getLatestNotes();
         ArrayList<Note> filteredNotes = new ArrayList<>();
@@ -342,10 +342,10 @@ public class NotificationsDetailActivity extends AppCompatActivity implements
         if (note.isCommentType()) {
             // show comment detail for comment notifications
             boolean isInstantReply = getIntent().getBooleanExtra(NotificationsListFragment.NOTE_INSTANT_REPLY_EXTRA,
-                                                                 false);
+                                     false);
             fragment = CommentDetailFragment.newInstance(note.getId(),
-                                                         getIntent().getStringExtra(
-                                                                 NotificationsListFragment.NOTE_PREFILLED_REPLY_EXTRA));
+                       getIntent().getStringExtra(
+                           NotificationsListFragment.NOTE_PREFILLED_REPLY_EXTRA));
 
             if (isInstantReply) {
                 ((CommentDetailFragment) fragment).enableShouldFocusReplyField();
@@ -438,7 +438,7 @@ public class NotificationsDetailActivity extends AppCompatActivity implements
 
     private void setProgressVisible(boolean visible) {
         final ProgressBar progress =
-                findViewById(R.id.progress_loading);
+            findViewById(R.id.progress_loading);
         if (progress != null) {
             progress.setVisibility(visible ? View.VISIBLE : View.GONE);
         }

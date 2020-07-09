@@ -61,7 +61,7 @@ public class SitePickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public interface HeaderHandler {
         RecyclerView.ViewHolder onCreateViewHolder(LayoutInflater layoutInflater, ViewGroup parent,
-                                                   boolean attachToRoot);
+                boolean attachToRoot);
         void onBindViewHolder(RecyclerView.ViewHolder holder, SiteList sites);
     }
 
@@ -162,7 +162,7 @@ public class SitePickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         mTextColorHidden = context.getResources().getColor(R.color.neutral_30);
 
         mSelectedItemBackground =
-                new ColorDrawable(context.getResources().getColor(R.color.gray_5));
+            new ColorDrawable(context.getResources().getColor(R.color.gray_5));
 
         mHeaderHandler = headerHandler;
         mSelectedItemPos = getPositionOffset();
@@ -244,7 +244,7 @@ public class SitePickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         mImageManager.load(holder.mImgBlavatar, ImageType.BLAVATAR, site.mBlavatarUrl);
 
         if ((site.mLocalId == mCurrentLocalId && !mIsMultiSelectEnabled)
-            || (mIsMultiSelectEnabled && isItemSelected(position))) {
+                || (mIsMultiSelectEnabled && isItemSelected(position))) {
             holder.mLayoutContainer.setBackground(mSelectedItemBackground);
         } else {
             holder.mLayoutContainer.setBackground(null);
@@ -255,7 +255,7 @@ public class SitePickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.mIsSiteHidden = site.mIsHidden;
             holder.mTxtTitle.setTextColor(site.mIsHidden ? mTextColorHidden : mTextColorNormal);
             holder.mTxtTitle
-                    .setTypeface(holder.mTxtTitle.getTypeface(), site.mIsHidden ? Typeface.NORMAL : Typeface.BOLD);
+            .setTypeface(holder.mTxtTitle.getTypeface(), site.mIsHidden ? Typeface.NORMAL : Typeface.BOLD);
             holder.mImgBlavatar.setAlpha(site.mIsHidden ? 0.5f : 1f);
         }
 
@@ -514,8 +514,8 @@ public class SitePickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         changeSet.add(siteRecord);
                         siteRecord.mIsHidden = !makeVisible;
                         if (!makeVisible
-                            && siteRecord.mLocalId != currentSiteId
-                            && recentIds.contains(siteRecord.mLocalId)) {
+                                && siteRecord.mLocalId != currentSiteId
+                                && recentIds.contains(siteRecord.mLocalId)) {
                             AppPrefs.removeRecentlyPickedSiteId(siteRecord.mLocalId);
                         }
                     }
@@ -632,7 +632,7 @@ public class SitePickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 SiteList allSites = (SiteList) sites.clone();
                 SiteList filteredSites = filteredSitesByTextIfInSearchMode(sites);
 
-                return new SiteList[]{allSites, filteredSites};
+                return new SiteList[] {allSites, filteredSites};
             }
 
             return null;
@@ -742,8 +742,8 @@ public class SitePickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             for (SiteRecord site : sites) {
                 i = indexOfSite(site);
                 if (i == -1
-                    || this.get(i).mIsHidden != site.mIsHidden
-                    || this.get(i).mIsRecentPick != site.mIsRecentPick) {
+                        || this.get(i).mIsHidden != site.mIsHidden
+                        || this.get(i).mIsRecentPick != site.mIsRecentPick) {
                     return false;
                 }
             }

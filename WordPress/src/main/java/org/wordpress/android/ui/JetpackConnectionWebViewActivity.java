@@ -26,7 +26,7 @@ import static org.wordpress.android.ui.RequestCodes.JETPACK_LOGIN;
  * Use one of the static factory methods to start the flow.
  */
 public class JetpackConnectionWebViewActivity extends WPWebViewActivity
-        implements JetpackConnectionWebViewClientListener {
+    implements JetpackConnectionWebViewClientListener {
     private static final String REDIRECT_PAGE_STATE_ITEM = "redirectPage";
     private static final String TRACKING_SOURCE_KEY = "tracking_source";
 
@@ -35,7 +35,7 @@ public class JetpackConnectionWebViewActivity extends WPWebViewActivity
     private JetpackConnectionWebViewClient mWebViewClient;
 
     public static void startJetpackConnectionFlow(Context context, JetpackConnectionSource source, SiteModel site,
-                                                  boolean authorized) {
+            boolean authorized) {
         if (site.isJetpackInstalled()) {
             startManualFlow(context, source, site, authorized);
         } else {
@@ -53,10 +53,10 @@ public class JetpackConnectionWebViewActivity extends WPWebViewActivity
     }
 
     private static void startJetpackConnectionFlow(Context context,
-                                                   String url,
-                                                   SiteModel site,
-                                                   boolean authorized,
-                                                   JetpackConnectionSource source) {
+            String url,
+            SiteModel site,
+            boolean authorized,
+            JetpackConnectionSource source) {
         if (!checkContextAndUrl(context, url)) {
             return;
         }
@@ -95,8 +95,8 @@ public class JetpackConnectionWebViewActivity extends WPWebViewActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == JETPACK_LOGIN && resultCode == RESULT_OK) {
             JetpackConnectionWebViewActivity.startJetpackConnectionFlow(
-                    this, mWebViewClient.getRedirectPage(), mSite, mAccountStore.hasAccessToken(),
-                    (JetpackConnectionSource) getIntent().getSerializableExtra(TRACKING_SOURCE_KEY));
+                this, mWebViewClient.getRedirectPage(), mSite, mAccountStore.hasAccessToken(),
+                (JetpackConnectionSource) getIntent().getSerializableExtra(TRACKING_SOURCE_KEY));
         }
         finish();
     }
@@ -104,7 +104,7 @@ public class JetpackConnectionWebViewActivity extends WPWebViewActivity
     @Override
     protected void cancel() {
         JetpackConnectionUtils.trackWithSource(AnalyticsTracker.Stat.INSTALL_JETPACK_CANCELLED,
-                (JetpackConnectionSource) getIntent().getSerializableExtra(TRACKING_SOURCE_KEY));
+                                               (JetpackConnectionSource) getIntent().getSerializableExtra(TRACKING_SOURCE_KEY));
     }
 
     @Override
@@ -130,8 +130,8 @@ public class JetpackConnectionWebViewActivity extends WPWebViewActivity
     public void onRequiresWPComLogin(WebView webView, String redirectPage) {
         String authenticationUrl = WPWebViewActivity.getSiteLoginUrl(mSite);
         String postData = WPWebViewActivity.getAuthenticationPostData(authenticationUrl, redirectPage,
-                                                                      mSite.getUsername(), mSite.getPassword(),
-                                                                      mAccountStore.getAccessToken());
+                          mSite.getUsername(), mSite.getPassword(),
+                          mAccountStore.getAccessToken());
         webView.postUrl(authenticationUrl, postData.getBytes());
     }
 
@@ -146,7 +146,7 @@ public class JetpackConnectionWebViewActivity extends WPWebViewActivity
     @Override
     public void onJetpackSuccessfullyConnected(Uri uri) {
         JetpackConnectionUtils.trackWithSource(AnalyticsTracker.Stat.INSTALL_JETPACK_COMPLETED,
-                (JetpackConnectionSource) getIntent().getSerializableExtra(TRACKING_SOURCE_KEY));
+                                               (JetpackConnectionSource) getIntent().getSerializableExtra(TRACKING_SOURCE_KEY));
         Intent intent = new Intent(this, JetpackConnectionResultActivity.class);
         intent.setData(uri);
         intent.putExtra(SITE, mSite);

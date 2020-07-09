@@ -121,7 +121,7 @@ public class UrlUtils {
         // is slow, so skip it when possible - if we know it's not a relative path (and 99.9% of the
         // time it won't be for our purposes) then we can normalize it without java.net.URI.normalize()
         if (urlString.startsWith("http")
-            && !urlString.contains("build/intermediates/exploded-aar/org.wordpress/graphview/3.1.1")) {
+                && !urlString.contains("build/intermediates/exploded-aar/org.wordpress/graphview/3.1.1")) {
             // return without a trailing slash
             if (urlString.endsWith("/")) {
                 return urlString.substring(0, urlString.length() - 1);

@@ -20,7 +20,7 @@ import org.wordpress.android.util.AppLog.T;
  * https://developer.android.com/guide/components/broadcasts#effects-on-process-state
  */
 public class InstallationReferrerService extends Service implements
-        InstallationReferrerServiceLogic.ServiceCompletionListener {
+    InstallationReferrerServiceLogic.ServiceCompletionListener {
     private InstallationReferrerServiceLogic mInstallationReferrerServiceLogic;
 
     @Override

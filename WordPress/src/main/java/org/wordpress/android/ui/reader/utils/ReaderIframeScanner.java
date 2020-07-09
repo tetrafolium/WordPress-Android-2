@@ -7,8 +7,8 @@ public class ReaderIframeScanner {
     private final String mContent;
 
     private static final Pattern IFRAME_TAG_PATTERN = Pattern.compile(
-            "<iframe[^>]* src=\\\'([^\\\']*)\\\'[^>]*>",
-            Pattern.CASE_INSENSITIVE);
+                "<iframe[^>]* src=\\\'([^\\\']*)\\\'[^>]*>",
+                Pattern.CASE_INSENSITIVE);
 
     public ReaderIframeScanner(String contentOfPost) {
         mContent = contentOfPost;

@@ -17,8 +17,8 @@ public class NotesParseTest extends TestCase {
     // Trying to reproduce https://github.com/wordpress-mobile/WordPress-Android/issues/900
     public void testSpanInListItem1() {
         String text =
-                "<ul><li><span>Current Record: </span><span>20</span></li><li><span>Old Record: </span>"
-                + "<span>1</span></li></ul>";
+            "<ul><li><span>Current Record: </span><span>20</span></li><li><span>Old Record: </span>"
+            + "<span>1</span></li></ul>";
         Spanned spanned = HtmlUtils.fromHtml(text);
         assertEquals("Current Record: 20\nOld Record: 1\n", spanned.toString());
     }

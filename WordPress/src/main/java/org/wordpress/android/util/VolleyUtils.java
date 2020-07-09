@@ -56,7 +56,7 @@ public class VolleyUtils {
      */
     public static JSONObject volleyErrorToJSON(VolleyError volleyError) {
         if (volleyError == null || volleyError.networkResponse == null || volleyError.networkResponse.data == null
-            || volleyError.networkResponse.headers == null) {
+                || volleyError.networkResponse.headers == null) {
             return null;
         }
 

@@ -132,8 +132,8 @@ public class ReaderUpdateLogic {
 
                 // manually insert Bookmark tag, as server doesn't support bookmarking yet
                 serverTopics.add(new ReaderTag("", "",
-                        mContext.getString(R.string.reader_save_for_later_title), "",
-                        ReaderTagType.BOOKMARKED));
+                                               mContext.getString(R.string.reader_save_for_later_title), "",
+                                               ReaderTagType.BOOKMARKED));
 
                 // parse topics from the response, detect whether they're different from local
                 ReaderTagList localTopics = new ReaderTagList();
@@ -166,7 +166,7 @@ public class ReaderUpdateLogic {
 
                 taskCompleted(UpdateTask.TAGS);
             }
-        }.start();
+        } .start();
     }
 
     /*
@@ -272,7 +272,7 @@ public class ReaderUpdateLogic {
 
                 taskCompleted(UpdateTask.FOLLOWED_BLOGS);
             }
-        }.start();
+        } .start();
     }
 
     /***
@@ -314,6 +314,6 @@ public class ReaderUpdateLogic {
 
                 taskCompleted(UpdateTask.RECOMMENDED_BLOGS);
             }
-        }.start();
+        } .start();
     }
 }

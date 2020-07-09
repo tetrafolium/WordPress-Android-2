@@ -46,24 +46,24 @@ public class ReaderIconCountView extends LinearLayout {
 
         if (attrs != null) {
             TypedArray a = context.getTheme().obtainStyledAttributes(
-                    attrs,
-                    R.styleable.ReaderIconCountView,
-                    0, 0);
+                               attrs,
+                               R.styleable.ReaderIconCountView,
+                               0, 0);
             try {
                 mIconType = a.getInteger(R.styleable.ReaderIconCountView_readerIcon, ICON_LIKE);
                 switch (mIconType) {
-                    case ICON_LIKE:
-                        mImageView.setImageDrawable(ContextCompat.getDrawable(context,
-                                R.drawable.reader_button_like));
-                        mImageView.setImageTintList(getResources().getColorStateList(
-                                R.color.neutral_accent_neutral_40_selector));
-                        break;
-                    case ICON_COMMENT:
-                        mImageView.setImageDrawable(ContextCompat.getDrawable(context,
-                                R.drawable.ic_comment_white_24dp));
-                        mImageView.setImageTintList(getResources().getColorStateList(
-                                R.color.neutral_primary_40_neutral_40_selector));
-                        break;
+                case ICON_LIKE:
+                    mImageView.setImageDrawable(ContextCompat.getDrawable(context,
+                                                R.drawable.reader_button_like));
+                    mImageView.setImageTintList(getResources().getColorStateList(
+                                                    R.color.neutral_accent_neutral_40_selector));
+                    break;
+                case ICON_COMMENT:
+                    mImageView.setImageDrawable(ContextCompat.getDrawable(context,
+                                                R.drawable.ic_comment_white_24dp));
+                    mImageView.setImageTintList(getResources().getColorStateList(
+                                                    R.color.neutral_primary_40_neutral_40_selector));
+                    break;
                 }
             } finally {
                 a.recycle();

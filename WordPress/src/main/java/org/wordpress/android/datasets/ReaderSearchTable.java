@@ -38,7 +38,7 @@ public class ReaderSearchTable {
         String date = DateTimeUtils.iso8601FromDate(new Date());
 
         SQLiteStatement stmt = ReaderDatabase.getWritableDb().compileStatement(
-                "INSERT OR REPLACE INTO tbl_search_suggestions (query_string, date_used) VALUES (?1,?2)");
+                                   "INSERT OR REPLACE INTO tbl_search_suggestions (query_string, date_used) VALUES (?1,?2)");
         try {
             stmt.bindString(1, query);
             stmt.bindString(2, date);
@@ -49,7 +49,7 @@ public class ReaderSearchTable {
     }
 
     public static void deleteQueryString(@NonNull String query) {
-        String[] args = new String[]{query};
+        String[] args = new String[] {query};
         ReaderDatabase.getWritableDb().delete("tbl_search_suggestions", "query_string=?", args);
     }
 
@@ -71,7 +71,7 @@ public class ReaderSearchTable {
             args = null;
         } else {
             sql = "SELECT * FROM tbl_search_suggestions WHERE query_string LIKE ?";
-            args = new String[]{filter + "%"};
+            args = new String[] {filter + "%"};
         }
 
         sql += " ORDER BY date_used DESC";

@@ -42,8 +42,8 @@ public class WPScrollView extends ScrollView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mScrollDirectionListener != null
-            && event.getActionMasked() == MotionEvent.ACTION_MOVE
-            && event.getHistorySize() > 0) {
+                && event.getActionMasked() == MotionEvent.ACTION_MOVE
+                && event.getHistorySize() > 0) {
             float initialY = event.getHistoricalY(event.getHistorySize() - 1);
             float distanceY = initialY - event.getY();
             if (distanceY < 0) {

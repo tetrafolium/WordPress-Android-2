@@ -282,9 +282,9 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
             @Override public void onChanged(@Nullable WebPreviewUiState webPreviewUiState) {
                 if (webPreviewUiState != null) {
                     mUiHelpers.updateVisibility(mActionableEmptyView,
-                            webPreviewUiState.getActionableEmptyView());
+                                                webPreviewUiState.getActionableEmptyView());
                     mUiHelpers.updateVisibility(mFullScreenProgressLayout,
-                            webPreviewUiState.getFullscreenProgressLayoutVisibility());
+                                                webPreviewUiState.getFullscreenProgressLayoutVisibility());
 
                     if (webPreviewUiState instanceof WebPreviewFullscreenUiState) {
                         WebPreviewFullscreenUiState state = (WebPreviewFullscreenUiState) webPreviewUiState;
@@ -363,7 +363,7 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
             @Override
             public void onChanged(@Nullable Unit unit) {
                 ReaderActivityLauncher.openUrl(WPWebViewActivity.this, mWebView.getUrl(),
-                        ReaderActivityLauncher.OpenUrlType.EXTERNAL);
+                                               ReaderActivityLauncher.OpenUrlType.EXTERNAL);
             }
         });
 
@@ -380,13 +380,13 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
                     mPreviewModeButton.post(new Runnable() {
                         @Override public void run() {
                             int popupWidth =
-                                    getResources().getDimensionPixelSize(R.dimen.web_preview_mode_popup_width);
+                                getResources().getDimensionPixelSize(R.dimen.web_preview_mode_popup_width);
                             int popupOffset = getResources().getDimensionPixelSize(R.dimen.margin_extra_large);
 
                             mPreviewModeSelector = new ListPopupWindow(WPWebViewActivity.this);
                             mPreviewModeSelector.setWidth(popupWidth);
                             mPreviewModeSelector.setAdapter(new PreviewModeMenuAdapter(WPWebViewActivity.this,
-                                    previewModelSelectorStatus.getSelectedPreviewMode()));
+                                                            previewModelSelectorStatus.getSelectedPreviewMode()));
                             mPreviewModeSelector.setDropDownGravity(Gravity.END);
                             mPreviewModeSelector.setAnchorView(mPreviewModeButton);
                             mPreviewModeSelector.setHorizontalOffset(-popupOffset);
@@ -430,21 +430,21 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
     }
 
     public static void openUrlByUsingGlobalWPCOMCredentials(Context context,
-                                                            String url,
-                                                            boolean allowPreviewModeSelection) {
+            String url,
+            boolean allowPreviewModeSelection) {
         openWPCOMURL(context, url, null, null, allowPreviewModeSelection, false);
     }
 
     public static void openPostUrlByUsingGlobalWPCOMCredentials(Context context, String url, String shareableUrl,
-                                                                String shareSubject, boolean allowPreviewModeSelection,
-                                                                boolean startPreviewForResult) {
+            String shareSubject, boolean allowPreviewModeSelection,
+            boolean startPreviewForResult) {
         openWPCOMURL(context, url, shareableUrl, shareSubject, allowPreviewModeSelection, startPreviewForResult);
     }
 
     // frameNonce is used to show drafts, without it "no page found" error would be thrown
     public static void openJetpackBlogPostPreview(Context context, String url, String shareableUrl, String shareSubject,
-                                                  String frameNonce, boolean allowPreviewModeSelection,
-                                                  boolean startPreviewForResult) {
+            String frameNonce, boolean allowPreviewModeSelection,
+            boolean startPreviewForResult) {
         if (!TextUtils.isEmpty(frameNonce)) {
             url += "&frame-nonce=" + UrlUtils.urlEncode(frameNonce);
         }
@@ -467,14 +467,14 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
     }
 
     public static void openUrlByUsingBlogCredentials(
-            Context context,
-            SiteModel site,
-            PostModel post,
-            String url,
-            String[] listOfAllowedURLs,
-            boolean disableLinks,
-            boolean allowPreviewModeSelection,
-            boolean startPreviewForResult) {
+        Context context,
+        SiteModel site,
+        PostModel post,
+        String url,
+        String[] listOfAllowedURLs,
+        boolean disableLinks,
+        boolean allowPreviewModeSelection,
+        boolean startPreviewForResult) {
         if (context == null) {
             AppLog.e(AppLog.T.UTILS, "Context is null");
             return;
@@ -510,7 +510,7 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
 
         if (startPreviewForResult) {
             intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
-                    WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
+                            WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
             ((Activity) context).startActivityForResult(intent, RequestCodes.REMOTE_PREVIEW_POST);
         } else {
             context.startActivity(intent);
@@ -518,10 +518,10 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
     }
 
     public static void openActionableEmptyViewDirectly(
-            Context context,
-            WPWebViewUsageCategory directUsageCategory,
-            String postTitle
-                                                      ) {
+        Context context,
+        WPWebViewUsageCategory directUsageCategory,
+        String postTitle
+    ) {
         Intent intent = new Intent(context, WPWebViewActivity.class);
         intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE, directUsageCategory.getValue());
         intent.putExtra(WPWebViewActivity.ACTION_BAR_TITLE, postTitle);
@@ -591,13 +591,13 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
     }
 
     private static void openWPCOMURL(
-            Context context,
-            String url,
-            String shareableUrl,
-            String shareSubject,
-            boolean allowPreviewModeSelection,
-            boolean startPreviewForResult
-                                    ) {
+        Context context,
+        String url,
+        String shareableUrl,
+        String shareSubject,
+        boolean allowPreviewModeSelection,
+        boolean startPreviewForResult
+    ) {
         if (!checkContextAndUrl(context, url)) {
             return;
         }
@@ -616,7 +616,7 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
 
         if (startPreviewForResult) {
             intent.putExtra(WPWebViewActivity.WEBVIEW_USAGE_TYPE,
-                    WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
+                            WPWebViewUsageCategory.REMOTE_PREVIEWING.getValue());
             ((Activity) context).startActivityForResult(intent, RequestCodes.REMOTE_PREVIEW_POST);
         } else {
             context.startActivity(intent);
@@ -730,7 +730,7 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
                 for (SiteModel siteModel : wpComSites) {
                     // Only replace the url if we know the unmapped url and if it's a custom domain
                     if (!TextUtils.isEmpty(siteModel.getUnmappedUrl())
-                        && !siteModel.getUrl().contains(".wordpress.com")) {
+                            && !siteModel.getUrl().contains(".wordpress.com")) {
                         addressToLoad = addressToLoad.replace(siteModel.getUrl(), siteModel.getUnmappedUrl());
                     }
                 }
@@ -770,28 +770,28 @@ public class WPWebViewActivity extends WebViewActivity implements ErrorManagedWe
      */
     protected void loadAuthenticatedUrl(String authenticationURL, String urlToLoad, String username, String password) {
         String postData = getAuthenticationPostData(authenticationURL, urlToLoad, username, password,
-                mAccountStore.getAccessToken());
+                          mAccountStore.getAccessToken());
 
         mWebView.postUrl(authenticationURL, postData.getBytes());
     }
 
     public static String getAuthenticationPostData(String authenticationUrl, String urlToLoad, String username,
-                                                   String password, String token) {
+            String password, String token) {
         if (TextUtils.isEmpty(authenticationUrl)) {
             return "";
         }
 
         try {
             String postData = String.format(
-                    "log=%s&pwd=%s&redirect_to=%s",
-                    URLEncoder.encode(StringUtils.notNullStr(username), ENCODING_UTF8),
-                    URLEncoder.encode(StringUtils.notNullStr(password), ENCODING_UTF8),
-                    URLEncoder.encode(StringUtils.notNullStr(urlToLoad), ENCODING_UTF8)
-                                           );
+                                  "log=%s&pwd=%s&redirect_to=%s",
+                                  URLEncoder.encode(StringUtils.notNullStr(username), ENCODING_UTF8),
+                                  URLEncoder.encode(StringUtils.notNullStr(password), ENCODING_UTF8),
+                                  URLEncoder.encode(StringUtils.notNullStr(urlToLoad), ENCODING_UTF8)
+                              );
 
             // Add token authorization when signing in to WP.com
             if (WPUrlUtils.safeToAddWordPressComAuthToken(authenticationUrl)
-                && authenticationUrl.contains("wordpress.com/wp-login.php") && !TextUtils.isEmpty(token)) {
+                    && authenticationUrl.contains("wordpress.com/wp-login.php") && !TextUtils.isEmpty(token)) {
                 postData += "&authorization=Bearer " + URLEncoder.encode(token, ENCODING_UTF8);
             }
 

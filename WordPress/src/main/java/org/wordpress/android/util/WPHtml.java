@@ -131,8 +131,8 @@ public class WPHtml {
         }
 
         HtmlToSpannedConverter converter = new HtmlToSpannedConverter(source,
-                                                                      imageGetter, tagHandler, parser, ctx, post,
-                                                                      maxImageWidth);
+                imageGetter, tagHandler, parser, ctx, post,
+                maxImageWidth);
         return converter.convert();
     }
 
@@ -279,7 +279,7 @@ public class WPHtml {
                     out.append(((WPImageSpan) style[j]).getSource());
                     out.append("\" android-uri=\""
                                + ((WPImageSpan) style[j]).getImageSource()
-                                                         .toString() + "\"");
+                               .toString() + "\"");
                     out.append(" />");
                     // Don't output the dummy character underlying the image.
                     i = next;
@@ -292,8 +292,8 @@ public class WPHtml {
                 if (style[j] instanceof ForegroundColorSpan) {
                     out.append("<font color =\"#");
                     String color = Integer
-                            .toHexString(((ForegroundColorSpan) style[j])
-                                                 .getForegroundColor() + 0x01000000);
+                                   .toHexString(((ForegroundColorSpan) style[j])
+                                                .getForegroundColor() + 0x01000000);
                     while (color.length() < 6) {
                         color = "0" + color;
                     }
@@ -409,25 +409,25 @@ public class WPHtml {
                 int yRes = mediaFile.getHeight();
                 String mimeType = mediaFile.getMimeType();
                 content = String.format(Locale.US,
-                        "<video width=\"%s\" height=\"%s\" controls=\"controls\">"
-                        + "<source src=\"%s\" type=\"%s\" /><a href=\"%s\">Click to view video</a>.</video>",
-                        xRes, yRes, url, mimeType, url);
+                                        "<video width=\"%s\" height=\"%s\" controls=\"controls\">"
+                                        + "<source src=\"%s\" type=\"%s\" /><a href=\"%s\">Click to view video</a>.</video>",
+                                        xRes, yRes, url, mimeType, url);
             }
         } else {
             String alignment = "";
             switch (mediaFile.getHorizontalAlignment()) {
-                case 0:
-                    alignment = "alignnone";
-                    break;
-                case 1:
-                    alignment = "alignleft";
-                    break;
-                case 2:
-                    alignment = "aligncenter";
-                    break;
-                case 3:
-                    alignment = "alignright";
-                    break;
+            case 0:
+                alignment = "alignnone";
+                break;
+            case 1:
+                alignment = "alignleft";
+                break;
+            case 2:
+                alignment = "aligncenter";
+                break;
+            case 3:
+                alignment = "alignright";
+                break;
             }
             String alignmentCSS = "class=\"" + alignment + " size-full\" ";
             String title = mediaFile.getTitle();
@@ -455,7 +455,7 @@ public class WPHtml {
         for (int i = start; i < end; i = next) {
             next = text.nextSpanTransition(i, end, SpannableString.class);
             SpannableString[] images = text.getSpans(i, next,
-                                                     SpannableString.class);
+                                       SpannableString.class);
 
             for (SpannableString image : images) {
                 out.append(image.toString());

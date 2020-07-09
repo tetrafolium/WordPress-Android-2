@@ -71,7 +71,7 @@ public class ReaderTagStrip extends LinearLayout {
 
     private void addTag(@NonNull final String tagName) {
         String tagDisplayName =
-                mNumTags > 0 ? ", " + ReaderUtils.makeHashTag(tagName) : ReaderUtils.makeHashTag(tagName);
+            mNumTags > 0 ? ", " + ReaderUtils.makeHashTag(tagName) : ReaderUtils.makeHashTag(tagName);
 
         // inflate a new textView to show this tag
         LayoutInflater inflater = LayoutInflater.from(getContext());

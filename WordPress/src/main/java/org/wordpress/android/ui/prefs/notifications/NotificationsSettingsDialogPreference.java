@@ -42,8 +42,8 @@ public class NotificationsSettingsDialogPreference extends DialogPreference {
     }
 
     public NotificationsSettingsDialogPreference(Context context, AttributeSet attrs, Channel channel,
-                                                 Type type, long blogId, NotificationsSettings settings,
-                                                 OnNotificationsSettingsChangedListener listener) {
+            Type type, long blogId, NotificationsSettings settings,
+            OnNotificationsSettingsChangedListener listener) {
         super(context, attrs);
 
         mChannel = channel;
@@ -62,11 +62,11 @@ public class NotificationsSettingsDialogPreference extends DialogPreference {
     protected View onCreateDialogView() {
         ScrollView outerView = new ScrollView(getContext());
         outerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                                  LinearLayout.LayoutParams.WRAP_CONTENT));
 
         LinearLayout innerView = new LinearLayout(getContext());
         innerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                                                LinearLayout.LayoutParams.MATCH_PARENT));
+                                  LinearLayout.LayoutParams.MATCH_PARENT));
         innerView.setOrientation(LinearLayout.VERTICAL);
 
         View spacerView = new View(getContext());
@@ -87,27 +87,27 @@ public class NotificationsSettingsDialogPreference extends DialogPreference {
         String typeString = mType.toString();
 
         switch (mChannel) {
-            case BLOGS:
-                settingsJson = JSONUtils.queryJSON(mSettings.getBlogSettings().get(mBlogId),
-                                                   typeString, new JSONObject());
-                settingsArray = getContext().getResources().getStringArray(R.array.notifications_blog_settings);
-                settingsValues = getContext().getResources().getStringArray(R.array.notifications_blog_settings_values);
-                break;
-            case OTHER:
-                settingsJson = JSONUtils.queryJSON(mSettings.getOtherSettings(),
-                                                   typeString, new JSONObject());
-                settingsArray = getContext().getResources().getStringArray(R.array.notifications_other_settings);
-                settingsValues =
-                        getContext().getResources().getStringArray(R.array.notifications_other_settings_values);
-                break;
-            case WPCOM:
-                settingsJson = mSettings.getWPComSettings();
-                settingsArray = getContext().getResources().getStringArray(R.array.notifications_wpcom_settings);
-                settingsValues =
-                        getContext().getResources().getStringArray(R.array.notifications_wpcom_settings_values);
-                summaryArray =
-                        getContext().getResources().getStringArray(R.array.notifications_wpcom_settings_summaries);
-                break;
+        case BLOGS:
+            settingsJson = JSONUtils.queryJSON(mSettings.getBlogSettings().get(mBlogId),
+                                               typeString, new JSONObject());
+            settingsArray = getContext().getResources().getStringArray(R.array.notifications_blog_settings);
+            settingsValues = getContext().getResources().getStringArray(R.array.notifications_blog_settings_values);
+            break;
+        case OTHER:
+            settingsJson = JSONUtils.queryJSON(mSettings.getOtherSettings(),
+                                               typeString, new JSONObject());
+            settingsArray = getContext().getResources().getStringArray(R.array.notifications_other_settings);
+            settingsValues =
+                getContext().getResources().getStringArray(R.array.notifications_other_settings_values);
+            break;
+        case WPCOM:
+            settingsJson = mSettings.getWPComSettings();
+            settingsArray = getContext().getResources().getStringArray(R.array.notifications_wpcom_settings);
+            settingsValues =
+                getContext().getResources().getStringArray(R.array.notifications_wpcom_settings_values);
+            summaryArray =
+                getContext().getResources().getStringArray(R.array.notifications_wpcom_settings_summaries);
+            break;
         }
 
         if (settingsJson != null && settingsArray.length == settingsValues.length) {
@@ -152,16 +152,16 @@ public class NotificationsSettingsDialogPreference extends DialogPreference {
     }
 
     private CompoundButton.OnCheckedChangeListener mOnCheckedChangedListener =
-            new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    try {
-                        mUpdatedJson.put(compoundButton.getTag().toString(), isChecked);
-                    } catch (JSONException e) {
-                        AppLog.e(AppLog.T.NOTIFS, "Could not add notification setting change to JSONObject");
-                    }
-                }
-            };
+    new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            try {
+                mUpdatedJson.put(compoundButton.getTag().toString(), isChecked);
+            } catch (JSONException e) {
+                AppLog.e(AppLog.T.NOTIFS, "Could not add notification setting change to JSONObject");
+            }
+        }
+    };
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
@@ -173,8 +173,8 @@ public class NotificationsSettingsDialogPreference extends DialogPreference {
             while (keys.hasNext()) {
                 String settingName = (String) keys.next();
                 mSettings.updateSettingForChannelAndType(
-                        mChannel, mType, settingName,
-                        mUpdatedJson.optBoolean(settingName), mBlogId
+                    mChannel, mType, settingName,
+                    mUpdatedJson.optBoolean(settingName), mBlogId
                 );
             }
         }

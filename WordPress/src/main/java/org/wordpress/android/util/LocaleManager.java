@@ -221,7 +221,7 @@ public class LocaleManager {
      */
     @Nullable
     public static Pair<String[], String[]> createSortedLanguageDisplayStrings(CharSequence[] languageCodes,
-                                                                              Locale locale) {
+            Locale locale) {
         if (languageCodes == null || languageCodes.length < 1) {
             return null;
         }
@@ -230,7 +230,7 @@ public class LocaleManager {
         for (int i = 0; i < languageCodes.length; ++i) {
             // "__" is used to sort the language code with the display string so both arrays are sorted at the same time
             entryStrings.add(i, StringUtils.capitalize(
-                    getLanguageString(languageCodes[i].toString(), locale)) + "__" + languageCodes[i]);
+                                 getLanguageString(languageCodes[i].toString(), locale)) + "__" + languageCodes[i]);
         }
 
         Collections.sort(entryStrings, Collator.getInstance(locale));
@@ -261,7 +261,7 @@ public class LocaleManager {
         String[] detailStrings = new String[languageCodes.length];
         for (int i = 0; i < languageCodes.length; ++i) {
             detailStrings[i] = StringUtils.capitalize(getLanguageString(
-                    languageCodes[i].toString(), languageLocale(languageCodes[i].toString())));
+                                   languageCodes[i].toString(), languageLocale(languageCodes[i].toString())));
         }
 
         return detailStrings;

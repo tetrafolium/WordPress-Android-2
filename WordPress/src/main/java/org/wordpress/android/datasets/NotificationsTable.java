@@ -45,7 +45,7 @@ public class NotificationsTable {
     }
 
     public static ArrayList<Note> getLatestNotes(int limit) {
-        Cursor cursor = getDb().query(NOTIFICATIONS_TABLE, new String[]{"note_id", "raw_note_data"},
+        Cursor cursor = getDb().query(NOTIFICATIONS_TABLE, new String[] {"note_id", "raw_note_data"},
                                       null, null, null, null, "timestamp DESC", "" + limit);
         ArrayList<Note> notes = new ArrayList<Note>();
         while (cursor.moveToNext()) {
@@ -73,10 +73,10 @@ public class NotificationsTable {
             // Update
             String[] args = {note.getId()};
             result = getDb().update(
-                    NOTIFICATIONS_TABLE,
-                    values,
-                    "note_id=?",
-                    args);
+                         NOTIFICATIONS_TABLE,
+                         values,
+                         "note_id=?",
+                         args);
             return result == 1;
         } else {
             // insert
@@ -137,8 +137,8 @@ public class NotificationsTable {
             return null;
         }
         Cursor cursor =
-                getDb().query(NOTIFICATIONS_TABLE, new String[]{"raw_note_data"}, "note_id=" + noteID, null, null, null,
-                              null);
+            getDb().query(NOTIFICATIONS_TABLE, new String[] {"raw_note_data"}, "note_id=" + noteID, null, null, null,
+                          null);
         try {
             if (cursor.moveToFirst()) {
                 JSONObject jsonNote = new JSONObject(cursor.getString(0));

@@ -204,13 +204,13 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
         ((WordPress) getActivity().getApplication()).component().inject(this);
 
         switch (getArguments().getInt(KEY_MODE)) {
-            case FROM_BLOG_COMMENT:
-                setComment(getArguments().getLong(KEY_COMMENT_ID), getArguments().getInt(KEY_SITE_LOCAL_ID));
-                break;
-            case FROM_NOTE:
-                setNote(getArguments().getString(KEY_NOTE_ID));
-                setReplyText(getArguments().getString(KEY_REPLY_TEXT));
-                break;
+        case FROM_BLOG_COMMENT:
+            setComment(getArguments().getLong(KEY_COMMENT_ID), getArguments().getInt(KEY_SITE_LOCAL_ID));
+            break;
+        case FROM_NOTE:
+            setNote(getArguments().getString(KEY_NOTE_ID));
+            setReplyText(getArguments().getString(KEY_REPLY_TEXT));
+            break;
         }
 
         if (savedInstanceState != null) {
@@ -315,44 +315,44 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
 
         ImageView buttonExpand = mLayoutReply.findViewById(R.id.button_expand);
         buttonExpand.setOnClickListener(
-            new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = Companion.newBundle(
-                            mEditReply.getText().toString(),
-                            mEditReply.getSelectionStart(),
-                            mEditReply.getSelectionEnd()
-                                                       );
+        new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = Companion.newBundle(
+                                    mEditReply.getText().toString(),
+                                    mEditReply.getSelectionStart(),
+                                    mEditReply.getSelectionEnd()
+                                );
 
-                    new Builder(requireContext())
-                        .setTitle(R.string.comment)
-                        .setOnCollapseListener(new OnCollapseListener() {
-                            @Override
-                            public void onCollapse(@Nullable Bundle result) {
-                                if (result != null) {
-                                    mEditReply.setText(result.getString(RESULT_REPLY));
-                                    mEditReply.setSelection(result.getInt(RESULT_SELECTION_START),
-                                            result.getInt(RESULT_SELECTION_END));
-                                    mEditReply.requestFocus();
-                                }
-                            }
-                        })
-                        .setOnConfirmListener(new OnConfirmListener() {
-                            @Override
-                            public void onConfirm(@Nullable Bundle result) {
-                                if (result != null) {
-                                    mEditReply.setText(result.getString(RESULT_REPLY));
-                                    submitReply();
-                                }
-                            }
-                        })
-                        .setContent(CommentFullScreenDialogFragment.class, bundle)
-                        .setAction(R.string.send)
-                        .setHideActivityBar(true)
-                        .build()
-                        .show(requireActivity().getSupportFragmentManager(), CollapseFullScreenDialogFragment.TAG);
-                }
+                new Builder(requireContext())
+                .setTitle(R.string.comment)
+                .setOnCollapseListener(new OnCollapseListener() {
+                    @Override
+                    public void onCollapse(@Nullable Bundle result) {
+                        if (result != null) {
+                            mEditReply.setText(result.getString(RESULT_REPLY));
+                            mEditReply.setSelection(result.getInt(RESULT_SELECTION_START),
+                                                    result.getInt(RESULT_SELECTION_END));
+                            mEditReply.requestFocus();
+                        }
+                    }
+                })
+                .setOnConfirmListener(new OnConfirmListener() {
+                    @Override
+                    public void onConfirm(@Nullable Bundle result) {
+                        if (result != null) {
+                            mEditReply.setText(result.getString(RESULT_REPLY));
+                            submitReply();
+                        }
+                    }
+                })
+                .setContent(CommentFullScreenDialogFragment.class, bundle)
+                .setAction(R.string.send)
+                .setHideActivityBar(true)
+                .build()
+                .show(requireActivity().getSupportFragmentManager(), CollapseFullScreenDialogFragment.TAG);
             }
+        }
         );
         buttonExpand.setOnLongClickListener(new OnLongClickListener() {
             @Override public boolean onLongClick(View view) {
@@ -428,19 +428,19 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
                 // If the comment status is trash or spam, next deletion is a permanent deletion.
                 if (status == CommentStatus.TRASH || status == CommentStatus.SPAM) {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+                        new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
                     dialogBuilder.setTitle(getResources().getText(R.string.delete));
                     dialogBuilder.setMessage(getResources().getText(R.string.dlg_sure_to_delete_comment));
                     dialogBuilder.setPositiveButton(getResources().getText(R.string.yes),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    moderateComment(CommentStatus.DELETED);
-                                announceCommentStatusChangeForAccessibility(CommentStatus.DELETED);
-                                }
-                            });
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            moderateComment(CommentStatus.DELETED);
+                            announceCommentStatusChangeForAccessibility(CommentStatus.DELETED);
+                        }
+                    });
                     dialogBuilder.setNegativeButton(
-                            getResources().getText(R.string.no),
-                            null);
+                        getResources().getText(R.string.no),
+                        null);
                     dialogBuilder.setCancelable(true);
                     dialogBuilder.create().show();
                 } else {
@@ -487,7 +487,7 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
         }
         mSuggestionServiceConnectionManager = new SuggestionServiceConnectionManager(getActivity(), mSite.getSiteId());
         mSuggestionAdapter = SuggestionUtils.setupSuggestions(mSite, getActivity(),
-                                                              mSuggestionServiceConnectionManager);
+                             mSuggestionServiceConnectionManager);
         if (mSuggestionAdapter != null) {
             mEditReply.setAdapter(mSuggestionAdapter);
         }
@@ -625,7 +625,7 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
     public void onEventMainThread(SuggestionEvents.SuggestionNameListUpdated event) {
         // check if the updated suggestions are for the current blog and update the suggestions
         if (event.mRemoteBlogId != 0 && mSite != null
-            && event.mRemoteBlogId == mSite.getSiteId() && mSuggestionAdapter != null) {
+                && event.mRemoteBlogId == mSite.getSiteId() && mSuggestionAdapter != null) {
             List<Suggestion> suggestions = SuggestionTable.getSuggestionsForSite(event.mRemoteBlogId);
             mSuggestionAdapter.setSuggestionList(suggestions);
         }
@@ -734,7 +734,7 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
 
         txtName.setText(mComment.getAuthorName() == null ? getString(R.string.anonymous) : mComment.getAuthorName());
         txtDate.setText(DateTimeUtils.javaDateToTimeSpan(DateTimeUtils.dateFromIso8601(mComment.getDatePublished()),
-                                                         WordPress.getContext()));
+                        WordPress.getContext()));
 
         int maxImageSz = getResources().getDimensionPixelSize(R.dimen.reader_comment_max_image_size);
         CommentUtils.displayHtmlComment(mTxtContent, mComment.getContent(), maxImageSz);
@@ -888,7 +888,7 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
                         // right now this will happen from notifications
                         AppLog.i(T.COMMENTS, "comment detail > no post click listener");
                         ReaderActivityLauncher.showReaderPostDetail(getActivity(), site.getSiteId(),
-                                                                    mComment.getRemotePostId());
+                                mComment.getRemotePostId());
                     }
                 }
             });
@@ -897,18 +897,18 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
 
     private void trackModerationFromNotification(final CommentStatus newStatus) {
         switch (newStatus) {
-            case APPROVED:
-                AnalyticsTracker.track(Stat.NOTIFICATION_APPROVED);
-                break;
-            case UNAPPROVED:
-                AnalyticsTracker.track(Stat.NOTIFICATION_UNAPPROVED);
-                break;
-            case SPAM:
-                AnalyticsTracker.track(Stat.NOTIFICATION_FLAGGED_AS_SPAM);
-                break;
-            case TRASH:
-                AnalyticsTracker.track(Stat.NOTIFICATION_TRASHED);
-                break;
+        case APPROVED:
+            AnalyticsTracker.track(Stat.NOTIFICATION_APPROVED);
+            break;
+        case UNAPPROVED:
+            AnalyticsTracker.track(Stat.NOTIFICATION_UNAPPROVED);
+            break;
+        case SPAM:
+            AnalyticsTracker.track(Stat.NOTIFICATION_FLAGGED_AS_SPAM);
+            break;
+        case TRASH:
+            AnalyticsTracker.track(Stat.NOTIFICATION_TRASHED);
+            break;
         }
     }
 
@@ -943,7 +943,7 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
         if (newStatus == CommentStatus.DELETED) {
             // For deletion, we need to dispatch a specific action.
             mDispatcher
-                    .dispatch(CommentActionBuilder.newDeleteCommentAction(new RemoteCommentPayload(mSite, mComment)));
+            .dispatch(CommentActionBuilder.newDeleteCommentAction(new RemoteCommentPayload(mSite, mComment)));
         } else {
             // Actual moderation (push the modified comment).
             mComment.setStatus(newStatus.toString());
@@ -984,8 +984,8 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
         reply.setContent(replyText);
 
         mDispatcher.dispatch(CommentActionBuilder.newCreateNewCommentAction(new RemoteCreateCommentPayload(mSite,
-                                                                                                           mComment,
-                                                                                                           reply)));
+                             mComment,
+                             reply)));
     }
 
     /*
@@ -1003,23 +1003,23 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
 
         CommentStatus commentStatus = CommentStatus.fromString(mComment.getStatus());
         switch (commentStatus) {
-            case APPROVED:
-                statusTextResId = R.string.comment_status_approved;
-                statusColor = ContextCompat.getColor(getActivity(), R.color.warning_60);
-                break;
-            case UNAPPROVED:
-                statusTextResId = R.string.comment_status_unapproved;
-                statusColor = ContextCompat.getColor(getActivity(), R.color.warning_60);
-                break;
-            case SPAM:
-                statusTextResId = R.string.comment_status_spam;
-                statusColor = ContextCompat.getColor(getActivity(), R.color.error);
-                break;
-            case TRASH:
-            default:
-                statusTextResId = R.string.comment_status_trash;
-                statusColor = ContextCompat.getColor(getActivity(), R.color.error);
-                break;
+        case APPROVED:
+            statusTextResId = R.string.comment_status_approved;
+            statusColor = ContextCompat.getColor(getActivity(), R.color.warning_60);
+            break;
+        case UNAPPROVED:
+            statusTextResId = R.string.comment_status_unapproved;
+            statusColor = ContextCompat.getColor(getActivity(), R.color.warning_60);
+            break;
+        case SPAM:
+            statusTextResId = R.string.comment_status_spam;
+            statusColor = ContextCompat.getColor(getActivity(), R.color.error);
+            break;
+        case TRASH:
+        default:
+            statusTextResId = R.string.comment_status_trash;
+            statusColor = ContextCompat.getColor(getActivity(), R.color.error);
+            break;
         }
 
         if (canLike()) {
@@ -1100,7 +1100,7 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
             newStatus = CommentStatus.UNAPPROVED;
         }
         announceCommentStatusChangeForAccessibility(
-                currentStatus == CommentStatus.TRASH ? CommentStatus.UNTRASH : newStatus);
+            currentStatus == CommentStatus.TRASH ? CommentStatus.UNTRASH : newStatus);
 
         mComment.setStatus(newStatus.toString());
         setModerateButtonForStatus(newStatus);
@@ -1225,14 +1225,14 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
             // Optimistically set comment to approved when liking an unapproved comment
             // WP.com will set a comment to approved if it is liked while unapproved
             if (mBtnLikeComment.isActivated()
-                && CommentStatus.fromString(mComment.getStatus()) == CommentStatus.UNAPPROVED) {
+                    && CommentStatus.fromString(mComment.getStatus()) == CommentStatus.UNAPPROVED) {
                 mComment.setStatus(CommentStatus.APPROVED.toString());
                 mNotificationsDetailListFragment.refreshBlocksForCommentStatus(CommentStatus.APPROVED);
                 setModerateButtonForStatus(CommentStatus.APPROVED);
             }
         }
         mDispatcher.dispatch(CommentActionBuilder.newLikeCommentAction(
-                new RemoteLikeCommentPayload(mSite, mComment, mBtnLikeComment.isActivated())));
+                                 new RemoteLikeCommentPayload(mSite, mComment, mBtnLikeComment.isActivated())));
         mBtnLikeComment.announceForAccessibility(getText(mBtnLikeComment.isActivated() ? R.string.comment_liked_talkback
                 : R.string.comment_unliked_talkback));
     }
@@ -1259,7 +1259,7 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
 
     private void setProgressVisible(boolean visible) {
         final ProgressBar progress = (isAdded() && getView() != null
-                ? (ProgressBar) getView().findViewById(R.id.progress_loading) : null);
+                                      ? (ProgressBar) getView().findViewById(R.id.progress_loading) : null);
         if (progress != null) {
             progress.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
@@ -1365,34 +1365,34 @@ public class CommentDetailFragment extends Fragment implements NotificationFragm
     private void announceCommentStatusChangeForAccessibility(CommentStatus newStatus) {
         int resId = -1;
         switch (newStatus) {
-            case APPROVED:
-                resId = R.string.comment_approved_talkback;
-                break;
-            case UNAPPROVED:
-                resId = R.string.comment_unapproved_talkback;
-                break;
-            case SPAM:
-                resId = R.string.comment_spam_talkback;
-                break;
-            case TRASH:
-                resId = R.string.comment_trash_talkback;
-                break;
-            case DELETED:
-                resId = R.string.comment_delete_talkback;
-                break;
-            case UNSPAM:
-                resId = R.string.comment_unspam_talkback;
-                break;
-            case UNTRASH:
-                resId = R.string.comment_untrash_talkback;
-                break;
-            case ALL:
-                // ignore
-                break;
-            default:
-                AppLog.w(T.COMMENTS,
-                        "AnnounceCommentStatusChangeForAccessibility - Missing switch branch for comment status: "
-                        + newStatus);
+        case APPROVED:
+            resId = R.string.comment_approved_talkback;
+            break;
+        case UNAPPROVED:
+            resId = R.string.comment_unapproved_talkback;
+            break;
+        case SPAM:
+            resId = R.string.comment_spam_talkback;
+            break;
+        case TRASH:
+            resId = R.string.comment_trash_talkback;
+            break;
+        case DELETED:
+            resId = R.string.comment_delete_talkback;
+            break;
+        case UNSPAM:
+            resId = R.string.comment_unspam_talkback;
+            break;
+        case UNTRASH:
+            resId = R.string.comment_untrash_talkback;
+            break;
+        case ALL:
+            // ignore
+            break;
+        default:
+            AppLog.w(T.COMMENTS,
+                     "AnnounceCommentStatusChangeForAccessibility - Missing switch branch for comment status: "
+                     + newStatus);
         }
         if (resId != -1 && getView() != null) {
             getView().announceForAccessibility(getText(resId));

@@ -92,7 +92,7 @@ public abstract class ApplicationModule {
 
     @Provides
     public static WizardManager<SiteCreationStep> provideWizardManager(
-            SiteCreationStepsProvider stepsProvider) {
+        SiteCreationStepsProvider stepsProvider) {
         return new WizardManager<>(stepsProvider.getSteps());
     }
 

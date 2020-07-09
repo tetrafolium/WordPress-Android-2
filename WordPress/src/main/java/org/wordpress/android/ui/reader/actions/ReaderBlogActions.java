@@ -93,7 +93,7 @@ public class ReaderBlogActions {
     }
 
     private static void internalUnfollowBlogByUrl(long blogId,
-                                                  final ActionListener actionListener) {
+            final ActionListener actionListener) {
         String blogUrl = ReaderBlogTable.getBlogUrl(blogId);
         if (TextUtils.isEmpty(blogUrl)) {
             AppLog.w(T.READER, "URL not found for blogId " + blogId);
@@ -132,10 +132,10 @@ public class ReaderBlogActions {
             public void onResult(ReaderBlog blogInfo) {
                 if (blogInfo != null) {
                     internalFollowFeed(
-                            blogInfo.feedId,
-                            blogInfo.getFeedUrl(),
-                            isAskingToFollow,
-                            actionListener);
+                        blogInfo.feedId,
+                        blogInfo.getFeedUrl(),
+                        isAskingToFollow,
+                        actionListener);
                 } else {
                     ReaderActions.callActionListener(actionListener, false);
                 }
@@ -168,19 +168,19 @@ public class ReaderBlogActions {
                 long feedIdToFollow = blogInfo != null ? blogInfo.feedId : 0;
                 String feedUrlToFollow = (blogInfo != null && blogInfo.hasFeedUrl()) ? blogInfo.getFeedUrl() : feedUrl;
                 internalFollowFeed(
-                        feedIdToFollow,
-                        feedUrlToFollow,
-                        true,
-                        actionListener);
+                    feedIdToFollow,
+                    feedUrlToFollow,
+                    true,
+                    actionListener);
             }
         });
     }
 
     private static boolean internalFollowFeed(
-            final long feedId,
-            final String feedUrl,
-            final boolean isAskingToFollow,
-            final ActionListener actionListener) {
+        final long feedId,
+        final String feedUrl,
+        final boolean isAskingToFollow,
+        final ActionListener actionListener) {
         // feedUrl is required
         if (TextUtils.isEmpty(feedUrl)) {
             ReaderActions.callActionListener(actionListener, false);
@@ -331,7 +331,7 @@ public class ReaderBlogActions {
             WordPress.getRestClientUtilsV1_1().get("read/sites/" + blogId, listener, errorListener);
         } else {
             WordPress.getRestClientUtilsV1_1()
-                     .get("read/sites/" + UrlUtils.urlEncode(UrlUtils.getHost(blogUrl)), listener, errorListener);
+            .get("read/sites/" + UrlUtils.urlEncode(UrlUtils.getHost(blogUrl)), listener, errorListener);
         }
     }
 
@@ -429,10 +429,10 @@ public class ReaderBlogActions {
         // TODO: this should be a HEAD request, but even though Volley supposedly supports HEAD
         // using it results in "java.lang.IllegalStateException: Unknown method type"
         StringRequest request = new StringRequest(
-                Request.Method.GET,
-                blogUrl,
-                listener,
-                errorListener);
+            Request.Method.GET,
+            blogUrl,
+            listener,
+            errorListener);
         WordPress.sRequestQueue.add(request);
     }
 

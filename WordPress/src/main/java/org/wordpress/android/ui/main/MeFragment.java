@@ -322,33 +322,33 @@ public class MeFragment extends Fragment implements MainToolbarFragment, WPMainA
             mImageManager.load(mAvatarImageView, bitmap);
         } else {
             mImageManager.loadIntoCircle(mAvatarImageView, ImageType.AVATAR_WITHOUT_BACKGROUND,
-                    newAvatarUploaded ? injectFilePath : avatarUrl, new RequestListener<Drawable>() {
-                        @Override
-                        public void onLoadFailed(@Nullable Exception e) {
-                            final String appLogMessage = "onLoadFailed while loading Gravatar image!";
-                            if (e == null) {
-                                AppLog.e(T.MAIN, appLogMessage + " e == null");
-                            } else {
-                                AppLog.e(T.MAIN, appLogMessage, e);
-                            }
+            newAvatarUploaded ? injectFilePath : avatarUrl, new RequestListener<Drawable>() {
+                @Override
+                public void onLoadFailed(@Nullable Exception e) {
+                    final String appLogMessage = "onLoadFailed while loading Gravatar image!";
+                    if (e == null) {
+                        AppLog.e(T.MAIN, appLogMessage + " e == null");
+                    } else {
+                        AppLog.e(T.MAIN, appLogMessage, e);
+                    }
 
-                            // For some reason, the Activity can be null so, guard for it. See #8590.
-                            if (getActivity() != null) {
-                                ToastUtils.showToast(getActivity(), R.string.error_refreshing_gravatar,
-                                        ToastUtils.Duration.SHORT);
-                            }
-                        }
+                    // For some reason, the Activity can be null so, guard for it. See #8590.
+                    if (getActivity() != null) {
+                        ToastUtils.showToast(getActivity(), R.string.error_refreshing_gravatar,
+                                             ToastUtils.Duration.SHORT);
+                    }
+                }
 
-                        @Override
-                        public void onResourceReady(@NotNull Drawable resource) {
-                            if (newAvatarUploaded && resource instanceof BitmapDrawable) {
-                                Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
-                                // create a copy since the original bitmap may by automatically recycled
-                                bitmap = bitmap.copy(bitmap.getConfig(), true);
-                                WordPress.getBitmapCache().put(avatarUrl, bitmap);
-                            }
-                        }
-                    }, mAppPrefsWrapper.getAvatarVersion());
+                @Override
+                public void onResourceReady(@NotNull Drawable resource) {
+                    if (newAvatarUploaded && resource instanceof BitmapDrawable) {
+                        Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
+                        // create a copy since the original bitmap may by automatically recycled
+                        bitmap = bitmap.copy(bitmap.getConfig(), true);
+                        WordPress.getBitmapCache().put(avatarUrl, bitmap);
+                    }
+                }
+            }, mAppPrefsWrapper.getAvatarVersion());
         }
     }
 
@@ -363,15 +363,15 @@ public class MeFragment extends Fragment implements MainToolbarFragment, WPMainA
         }
 
         new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert))
-                .setMessage(message)
-                .setPositiveButton(R.string.signout, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        signOutWordPressCom();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .setCancelable(true)
-                .create().show();
+        .setMessage(message)
+        .setPositiveButton(R.string.signout, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                signOutWordPressCom();
+            }
+        })
+        .setNegativeButton(R.string.cancel, null)
+        .setCancelable(true)
+        .create().show();
     }
 
     private void signOutWordPressCom() {
@@ -395,53 +395,53 @@ public class MeFragment extends Fragment implements MainToolbarFragment, WPMainA
         }
 
         switch (requestCode) {
-            case RequestCodes.PHOTO_PICKER:
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    String strMediaUri = data.getStringExtra(PhotoPickerActivity.EXTRA_MEDIA_URI);
-                    if (strMediaUri == null) {
-                        AppLog.e(AppLog.T.UTILS, "Can't resolve picked or captured image");
-                        return;
-                    }
-                    PhotoPickerMediaSource source = PhotoPickerMediaSource.fromString(
-                            data.getStringExtra(PhotoPickerActivity.EXTRA_MEDIA_SOURCE));
-                    AnalyticsTracker.Stat stat =
-                            source == PhotoPickerMediaSource.ANDROID_CAMERA
-                                    ? AnalyticsTracker.Stat.ME_GRAVATAR_SHOT_NEW
-                                    : AnalyticsTracker.Stat.ME_GRAVATAR_GALLERY_PICKED;
-                    AnalyticsTracker.track(stat);
-                    Uri imageUri = Uri.parse(strMediaUri);
-                    if (imageUri != null) {
-                        boolean didGoWell = WPMediaUtils.fetchMediaAndDoNext(getActivity(), imageUri,
-                                                                             new WPMediaUtils.MediaFetchDoNext() {
-                                                                                 @Override
-                                                                                 public void doNext(Uri uri) {
-                                                                                     startCropActivity(uri);
-                                                                                 }
-                                                                             });
-
-                        if (!didGoWell) {
-                            AppLog.e(AppLog.T.UTILS, "Can't download picked or captured image");
+        case RequestCodes.PHOTO_PICKER:
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                String strMediaUri = data.getStringExtra(PhotoPickerActivity.EXTRA_MEDIA_URI);
+                if (strMediaUri == null) {
+                    AppLog.e(AppLog.T.UTILS, "Can't resolve picked or captured image");
+                    return;
+                }
+                PhotoPickerMediaSource source = PhotoPickerMediaSource.fromString(
+                                                    data.getStringExtra(PhotoPickerActivity.EXTRA_MEDIA_SOURCE));
+                AnalyticsTracker.Stat stat =
+                    source == PhotoPickerMediaSource.ANDROID_CAMERA
+                    ? AnalyticsTracker.Stat.ME_GRAVATAR_SHOT_NEW
+                    : AnalyticsTracker.Stat.ME_GRAVATAR_GALLERY_PICKED;
+                AnalyticsTracker.track(stat);
+                Uri imageUri = Uri.parse(strMediaUri);
+                if (imageUri != null) {
+                    boolean didGoWell = WPMediaUtils.fetchMediaAndDoNext(getActivity(), imageUri,
+                    new WPMediaUtils.MediaFetchDoNext() {
+                        @Override
+                        public void doNext(Uri uri) {
+                            startCropActivity(uri);
                         }
+                    });
+
+                    if (!didGoWell) {
+                        AppLog.e(AppLog.T.UTILS, "Can't download picked or captured image");
                     }
                 }
-                break;
-            case UCrop.REQUEST_CROP:
-                AnalyticsTracker.track(AnalyticsTracker.Stat.ME_GRAVATAR_CROPPED);
+            }
+            break;
+        case UCrop.REQUEST_CROP:
+            AnalyticsTracker.track(AnalyticsTracker.Stat.ME_GRAVATAR_CROPPED);
 
-                if (resultCode == Activity.RESULT_OK) {
-                    WPMediaUtils.fetchMediaAndDoNext(getActivity(), UCrop.getOutput(data),
-                                                     new WPMediaUtils.MediaFetchDoNext() {
-                                                         @Override
-                                                         public void doNext(Uri uri) {
-                                                             startGravatarUpload(
-                                                                     MediaUtils.getRealPathFromURI(getActivity(), uri));
-                                                         }
-                                                     });
-                } else if (resultCode == UCrop.RESULT_ERROR) {
-                    AppLog.e(AppLog.T.MAIN, "Image cropping failed!", UCrop.getError(data));
-                    ToastUtils.showToast(getActivity(), R.string.error_cropping_image, Duration.SHORT);
-                }
-                break;
+            if (resultCode == Activity.RESULT_OK) {
+                WPMediaUtils.fetchMediaAndDoNext(getActivity(), UCrop.getOutput(data),
+                new WPMediaUtils.MediaFetchDoNext() {
+                    @Override
+                    public void doNext(Uri uri) {
+                        startGravatarUpload(
+                            MediaUtils.getRealPathFromURI(getActivity(), uri));
+                    }
+                });
+            } else if (resultCode == UCrop.RESULT_ERROR) {
+                AppLog.e(AppLog.T.MAIN, "Image cropping failed!", UCrop.getError(data));
+                ToastUtils.showToast(getActivity(), R.string.error_cropping_image, Duration.SHORT);
+            }
+            break;
         }
     }
 
@@ -464,9 +464,9 @@ public class MeFragment extends Fragment implements MainToolbarFragment, WPMainA
         options.setHideBottomControls(true);
 
         UCrop.of(uri, Uri.fromFile(new File(context.getCacheDir(), "cropped_for_gravatar.jpg")))
-             .withAspectRatio(1, 1)
-             .withOptions(options)
-             .start(getActivity(), this);
+        .withAspectRatio(1, 1)
+        .withOptions(options)
+        .start(getActivity(), this);
     }
 
     private void startGravatarUpload(final String filePath) {
@@ -484,17 +484,17 @@ public class MeFragment extends Fragment implements MainToolbarFragment, WPMainA
         showGravatarProgressBar(true);
 
         GravatarApi.uploadGravatar(file, mAccountStore.getAccount().getEmail(), mAccountStore.getAccessToken(),
-                                   new GravatarApi.GravatarUploadListener() {
-                                       @Override
-                                       public void onSuccess() {
-                                           EventBus.getDefault().post(new GravatarUploadFinished(filePath, true));
-                                       }
+        new GravatarApi.GravatarUploadListener() {
+            @Override
+            public void onSuccess() {
+                EventBus.getDefault().post(new GravatarUploadFinished(filePath, true));
+            }
 
-                                       @Override
-                                       public void onError() {
-                                           EventBus.getDefault().post(new GravatarUploadFinished(filePath, false));
-                                       }
-                                   });
+            @Override
+            public void onError() {
+                EventBus.getDefault().post(new GravatarUploadFinished(filePath, false));
+            }
+        });
     }
 
     public static class GravatarUploadFinished {

@@ -58,7 +58,7 @@ public class PersonDetailFragment extends Fragment {
     @Inject ImageManager mImageManager;
 
     public static PersonDetailFragment newInstance(long currentUserId, long personId, int localTableBlogId,
-                                                   Person.PersonType personType) {
+            Person.PersonType personType) {
         PersonDetailFragment personDetailFragment = new PersonDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putLong(ARG_CURRENT_USER_ID, currentUserId);
@@ -177,11 +177,11 @@ public class PersonDetailFragment extends Fragment {
 
             // Adds extra padding to display name for email followers to make it vertically centered
             int padding = mPersonType == Person.PersonType.EMAIL_FOLLOWER
-                    ? (int) getResources().getDimension(R.dimen.margin_small) : 0;
+                          ? (int) getResources().getDimension(R.dimen.margin_small) : 0;
             changeDisplayNameTopPadding(padding);
         } else {
             AppLog.w(AppLog.T.PEOPLE, "Person returned null from DB for personID: " + mPersonId
-                                      + " & localTableBlogID: " + mLocalTableBlogId);
+                     + " & localTableBlogID: " + mLocalTableBlogId);
         }
     }
 
@@ -218,9 +218,9 @@ public class PersonDetailFragment extends Fragment {
         }
 
         RoleChangeDialogFragment dialog = RoleChangeDialogFragment.newInstance(person.getPersonID(),
-                                                                               mSiteStore.getSiteByLocalId(
-                                                                                       mLocalTableBlogId),
-                                                                               person.getRole());
+                                          mSiteStore.getSiteByLocalId(
+                                              mLocalTableBlogId),
+                                          person.getRole());
         dialog.show(getFragmentManager(), null);
     }
 

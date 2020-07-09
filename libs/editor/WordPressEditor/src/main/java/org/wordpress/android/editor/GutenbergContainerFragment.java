@@ -45,7 +45,7 @@ public class GutenbergContainerFragment extends Fragment {
                                   OnEditorAutosaveListener onEditorAutosaveListener,
                                   OnAuthHeaderRequestedListener onAuthHeaderRequestedListener) {
         mWPAndroidGlueCode.attachToContainer(viewGroup, onMediaLibraryButtonListener, onReattachQueryListener,
-                onEditorMountListener, onEditorAutosaveListener, onAuthHeaderRequestedListener);
+                                             onEditorMountListener, onEditorAutosaveListener, onAuthHeaderRequestedListener);
     }
 
     @Override
@@ -59,14 +59,14 @@ public class GutenbergContainerFragment extends Fragment {
         mWPAndroidGlueCode = new WPAndroidGlueCode();
         mWPAndroidGlueCode.onCreate(getContext());
         mWPAndroidGlueCode.onCreateView(
-                getContext(),
-                mHtmlModeEnabled,
-                getActivity().getApplication(),
-                BuildConfig.DEBUG,
-                BuildConfig.BUILD_GUTENBERG_FROM_SOURCE,
-                isNewPost,
-                localeString,
-                translations);
+            getContext(),
+            mHtmlModeEnabled,
+            getActivity().getApplication(),
+            BuildConfig.DEBUG,
+            BuildConfig.BUILD_GUTENBERG_FROM_SOURCE,
+            isNewPost,
+            localeString,
+            translations);
 
         // clear the content initialization flag since a new ReactRootView has been created;
         mHasReceivedAnyContent = false;

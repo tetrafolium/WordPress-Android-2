@@ -106,31 +106,31 @@ public class ThemeWebActivity extends WPWebViewActivity {
                                 boolean isPremium) {
         if (theme.isWpComTheme()) {
             switch (type) {
-                case PREVIEW:
-                    String domain = isPremium ? THEME_DOMAIN_PREMIUM : THEME_DOMAIN_PUBLIC;
-                    return String
-                            .format(THEME_URL_PREVIEW, UrlUtils.getHost(site.getUrl()), domain, theme.getThemeId());
-                case DEMO:
-                    String url = theme.getDemoUrl();
-                    if (url.contains("?")) {
-                        return url + "&" + THEME_URL_DEMO_PARAMETER;
-                    } else {
-                        return url + "?" + THEME_URL_DEMO_PARAMETER;
-                    }
-                case DETAILS:
-                    return String.format(THEME_URL_DETAILS, theme.getThemeId());
-                case SUPPORT:
-                    return String.format(THEME_URL_SUPPORT, theme.getThemeId());
+            case PREVIEW:
+                String domain = isPremium ? THEME_DOMAIN_PREMIUM : THEME_DOMAIN_PUBLIC;
+                return String
+                       .format(THEME_URL_PREVIEW, UrlUtils.getHost(site.getUrl()), domain, theme.getThemeId());
+            case DEMO:
+                String url = theme.getDemoUrl();
+                if (url.contains("?")) {
+                    return url + "&" + THEME_URL_DEMO_PARAMETER;
+                } else {
+                    return url + "?" + THEME_URL_DEMO_PARAMETER;
+                }
+            case DETAILS:
+                return String.format(THEME_URL_DETAILS, theme.getThemeId());
+            case SUPPORT:
+                return String.format(THEME_URL_SUPPORT, theme.getThemeId());
             }
         } else {
             switch (type) {
-                case PREVIEW:
-                    return site.getAdminUrl() + "customize.php?theme=" + getIdentifierForCustomizer(site, theme);
-                case DEMO:
-                    return site.getAdminUrl() + "themes.php?theme=" + theme.getThemeId();
-                case DETAILS:
-                case SUPPORT:
-                    return theme.getThemeUrl();
+            case PREVIEW:
+                return site.getAdminUrl() + "customize.php?theme=" + getIdentifierForCustomizer(site, theme);
+            case DEMO:
+                return site.getAdminUrl() + "themes.php?theme=" + theme.getThemeId();
+            case DETAILS:
+            case SUPPORT:
+                return theme.getThemeUrl();
             }
         }
         return "";

@@ -24,7 +24,7 @@ public class LinkDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         LayoutInflater inflater = getActivity().getLayoutInflater();
         //noinspection InflateParams
         View view = inflater.inflate(R.layout.dialog_link, null);
@@ -33,20 +33,20 @@ public class LinkDialogFragment extends DialogFragment {
         final EditText linkEditText = (EditText) view.findViewById(R.id.linkText);
 
         builder.setView(view)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent();
-                        intent.putExtra(LINK_DIALOG_ARG_URL, urlEditText.getText().toString());
-                        intent.putExtra(LINK_DIALOG_ARG_TEXT, linkEditText.getText().toString());
-                        getTargetFragment().onActivityResult(getTargetRequestCode(), getTargetRequestCode(), intent);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        LinkDialogFragment.this.getDialog().cancel();
-                    }
-                });
+        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent();
+                intent.putExtra(LINK_DIALOG_ARG_URL, urlEditText.getText().toString());
+                intent.putExtra(LINK_DIALOG_ARG_TEXT, linkEditText.getText().toString());
+                getTargetFragment().onActivityResult(getTargetRequestCode(), getTargetRequestCode(), intent);
+            }
+        })
+        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                LinkDialogFragment.this.getDialog().cancel();
+            }
+        });
 
         // If updating an existing link, add a 'Delete' button
         if (getTargetRequestCode() == LINK_DIALOG_REQUEST_CODE_UPDATE) {

@@ -67,38 +67,38 @@ public class ReaderMenuAdapter extends BaseAdapter {
         int colorRes;
         int iconRes;
         switch (mMenuItems.get(position)) {
-            case ITEM_FOLLOW:
-                textRes = R.string.reader_btn_follow;
-                colorRes = R.color.primary;
-                iconRes = R.drawable.ic_reader_follow_white_24dp;
-                break;
-            case ITEM_UNFOLLOW:
-                textRes = R.string.reader_btn_unfollow;
-                colorRes = R.color.success;
-                iconRes = R.drawable.ic_reader_following_white_24dp;
-                break;
-            case ITEM_BLOCK:
-                textRes = R.string.reader_menu_block_blog;
-                colorRes = ContextExtensionsKt.getColorResIdFromAttribute(convertView.getContext(), R.attr.wpColorText);
-                iconRes = R.drawable.ic_block_white_24dp;
-                break;
-            case ITEM_NOTIFICATIONS_OFF:
-                textRes = R.string.reader_btn_notifications_off;
-                colorRes = R.color.success;
-                iconRes = R.drawable.ic_bell_white_24dp;
-                break;
-            case ITEM_NOTIFICATIONS_ON:
-                textRes = R.string.reader_btn_notifications_on;
-                colorRes = R.color.neutral_80;
-                iconRes = R.drawable.ic_bell_white_24dp;
-                break;
-            case ITEM_SHARE:
-                textRes = R.string.reader_btn_share;
-                colorRes = ContextExtensionsKt.getColorResIdFromAttribute(convertView.getContext(), R.attr.wpColorText);
-                iconRes = R.drawable.ic_share_white_24dp;
-                break;
-            default:
-                return convertView;
+        case ITEM_FOLLOW:
+            textRes = R.string.reader_btn_follow;
+            colorRes = R.color.primary;
+            iconRes = R.drawable.ic_reader_follow_white_24dp;
+            break;
+        case ITEM_UNFOLLOW:
+            textRes = R.string.reader_btn_unfollow;
+            colorRes = R.color.success;
+            iconRes = R.drawable.ic_reader_following_white_24dp;
+            break;
+        case ITEM_BLOCK:
+            textRes = R.string.reader_menu_block_blog;
+            colorRes = ContextExtensionsKt.getColorResIdFromAttribute(convertView.getContext(), R.attr.wpColorText);
+            iconRes = R.drawable.ic_block_white_24dp;
+            break;
+        case ITEM_NOTIFICATIONS_OFF:
+            textRes = R.string.reader_btn_notifications_off;
+            colorRes = R.color.success;
+            iconRes = R.drawable.ic_bell_white_24dp;
+            break;
+        case ITEM_NOTIFICATIONS_ON:
+            textRes = R.string.reader_btn_notifications_on;
+            colorRes = R.color.neutral_80;
+            iconRes = R.drawable.ic_bell_white_24dp;
+            break;
+        case ITEM_SHARE:
+            textRes = R.string.reader_btn_share;
+            colorRes = ContextExtensionsKt.getColorResIdFromAttribute(convertView.getContext(), R.attr.wpColorText);
+            iconRes = R.drawable.ic_share_white_24dp;
+            break;
+        default:
+            return convertView;
         }
 
         holder.mText.setText(textRes);

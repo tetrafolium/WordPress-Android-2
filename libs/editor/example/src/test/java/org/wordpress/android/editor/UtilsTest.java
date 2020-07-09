@@ -75,7 +75,7 @@ public class UtilsTest {
         identifiers.add("title");
 
         assertEquals(keyValueSet, splitValuePairDelimitedString(
-                "url=http://www.wordpress.com/~user~title=I'm a link!", "~", identifiers));
+                         "url=http://www.wordpress.com/~user~title=I'm a link!", "~", identifiers));
 
         // Test usage with a matching identifier but no delimiters
         keyValueSet.clear();

@@ -82,7 +82,7 @@ public class NotificationsUtils {
     }
 
     public static void getPushNotificationSettings(Context context, RestRequest.Listener listener,
-                                                   RestRequest.ErrorListener errorListener) {
+            RestRequest.ErrorListener errorListener) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         String deviceID = settings.getString(WPCOM_PUSH_DEVICE_SERVER_ID, null);
         String settingsEndpoint = WPCOM_SETTINGS_ENDPOINT;
@@ -171,12 +171,12 @@ public class NotificationsUtils {
     }
 
     static SpannableStringBuilder getSpannableContentForRanges(
-            FormattableContentMapper formattableContentMapper,
-            JSONObject blockObject, TextView textView,
-            final NoteBlock.OnNoteBlockTextClickListener onNoteBlockTextClickListener,
-            boolean isFooter) {
+        FormattableContentMapper formattableContentMapper,
+        JSONObject blockObject, TextView textView,
+        final NoteBlock.OnNoteBlockTextClickListener onNoteBlockTextClickListener,
+        boolean isFooter) {
         return getSpannableContentForRanges(mapJsonToFormattableContent(formattableContentMapper, blockObject),
-                textView, onNoteBlockTextClickListener, isFooter);
+                                            textView, onNoteBlockTextClickListener, isFooter);
     }
 
     /**
@@ -189,20 +189,20 @@ public class NotificationsUtils {
      * @return Spannable string with formatted content
      */
     static SpannableStringBuilder getSpannableContentForRanges(FormattableContent formattableContent, TextView textView,
-                                                  final NoteBlock.OnNoteBlockTextClickListener
-                                                          onNoteBlockTextClickListener,
-                                                  boolean isFooter) {
+            final NoteBlock.OnNoteBlockTextClickListener
+            onNoteBlockTextClickListener,
+            boolean isFooter) {
         Function1<NoteBlockClickableSpan, Unit> clickListener =
-                onNoteBlockTextClickListener != null ? new Function1<NoteBlockClickableSpan, Unit>() {
-                    @Override public Unit invoke(NoteBlockClickableSpan noteBlockClickableSpan) {
-                        onNoteBlockTextClickListener.onNoteBlockTextClicked(noteBlockClickableSpan);
-                        return null;
-                    }
-                } : null;
+        onNoteBlockTextClickListener != null ? new Function1<NoteBlockClickableSpan, Unit>() {
+            @Override public Unit invoke(NoteBlockClickableSpan noteBlockClickableSpan) {
+                onNoteBlockTextClickListener.onNoteBlockTextClicked(noteBlockClickableSpan);
+                return null;
+            }
+        } : null;
         return getSpannableContentForRanges(formattableContent,
-                textView,
-                isFooter,
-                clickListener);
+                                            textView,
+                                            isFooter,
+                                            clickListener);
     }
 
     /**
@@ -215,20 +215,20 @@ public class NotificationsUtils {
      * @return Spannable string with formatted content
      */
     static SpannableStringBuilder getSpannableContentForRanges(FormattableContent formattableContent,
-                                                  TextView textView,
-                                                  final Function1<FormattableRange, Unit> clickHandler,
-                                                  boolean isFooter) {
+            TextView textView,
+            final Function1<FormattableRange, Unit> clickHandler,
+            boolean isFooter) {
         Function1<NoteBlockClickableSpan, Unit> clickListener =
-                clickHandler != null ? new Function1<NoteBlockClickableSpan, Unit>() {
-                    @Override public Unit invoke(NoteBlockClickableSpan noteBlockClickableSpan) {
-                        clickHandler.invoke(noteBlockClickableSpan.getFormattableRange());
-                        return null;
-                    }
-                } : null;
+        clickHandler != null ? new Function1<NoteBlockClickableSpan, Unit>() {
+            @Override public Unit invoke(NoteBlockClickableSpan noteBlockClickableSpan) {
+                clickHandler.invoke(noteBlockClickableSpan.getFormattableRange());
+                return null;
+            }
+        } : null;
         return getSpannableContentForRanges(formattableContent,
-                textView,
-                isFooter,
-                clickListener);
+                                            textView,
+                                            isFooter,
+                                            clickListener);
     }
 
     /**
@@ -241,10 +241,10 @@ public class NotificationsUtils {
      * @return Spannable string with formatted content
      */
     private static SpannableStringBuilder getSpannableContentForRanges(FormattableContent formattableContent,
-                                                          TextView textView,
-                                                          boolean isFooter,
-                                                          final Function1<NoteBlockClickableSpan, Unit>
-                                                                  onNoteBlockTextClickListener) {
+            TextView textView,
+            boolean isFooter,
+            final Function1<NoteBlockClickableSpan, Unit>
+            onNoteBlockTextClickListener) {
         if (formattableContent == null) {
             return new SpannableStringBuilder();
         }
@@ -262,7 +262,7 @@ public class NotificationsUtils {
         if (rangesArray != null) {
             for (FormattableRange range : rangesArray) {
                 NoteBlockClickableSpan clickableSpan =
-                        new NoteBlockClickableSpan(range, shouldLink, isFooter) {
+                new NoteBlockClickableSpan(range, shouldLink, isFooter) {
                     @Override
                     public void onClick(View widget) {
                         if (onNoteBlockTextClickListener != null) {
@@ -273,15 +273,15 @@ public class NotificationsUtils {
 
                 List<Integer> indices = clickableSpan.getIndices();
                 if (indices != null && indices.size() == 2 && indices.get(0) <= spannableStringBuilder.length()
-                    && indices.get(1) <= spannableStringBuilder.length()) {
+                        && indices.get(1) <= spannableStringBuilder.length()) {
                     spannableStringBuilder
-                            .setSpan(clickableSpan, indices.get(0), indices.get(1), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    .setSpan(clickableSpan, indices.get(0), indices.get(1), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 
                     // Add additional styling if the range wants it
                     if (clickableSpan.getSpanStyle() != Typeface.NORMAL) {
                         StyleSpan styleSpan = new StyleSpan(clickableSpan.getSpanStyle());
                         spannableStringBuilder
-                                .setSpan(styleSpan, indices.get(0), indices.get(1), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                        .setSpan(styleSpan, indices.get(0), indices.get(1), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                     }
 
                     if (onNoteBlockTextClickListener != null && textView != null) {
@@ -296,7 +296,7 @@ public class NotificationsUtils {
     }
 
     public static int[] getIndicesForRange(JSONObject rangeObject) {
-        int[] indices = new int[]{0, 0};
+        int[] indices = new int[] {0, 0};
         if (rangeObject == null) {
             return indices;
         }
@@ -314,7 +314,7 @@ public class NotificationsUtils {
      * Adds ImageSpans to the passed SpannableStringBuilder
      */
     private static void addImageSpansForBlockMedia(TextView textView, FormattableContent subject,
-                                                   SpannableStringBuilder spannableStringBuilder) {
+            SpannableStringBuilder spannableStringBuilder) {
         if (textView == null || subject == null || spannableStringBuilder == null) {
             return;
         }
@@ -342,8 +342,8 @@ public class NotificationsUtils {
             int startIndex = -1;
             int endIndex = -1;
             List<Integer> indices =
-                    (mediaObject.getIndices() != null && mediaObject.getIndices().size() == 2) ? mediaObject
-                            .getIndices() : null;
+                (mediaObject.getIndices() != null && mediaObject.getIndices().size() == 2) ? mediaObject
+                .getIndices() : null;
             if (indices != null) {
                 startIndex = indices.get(0);
                 endIndex = indices.get(1);
@@ -367,7 +367,7 @@ public class NotificationsUtils {
                 // Move the image to a new line if needed
                 int previousCharIndex = (startIndex > 0) ? startIndex - 1 : 0;
                 if (!spannableHasCharacterAtIndex(spannableStringBuilder, '\n', previousCharIndex)
-                    || spannableStringBuilder.getSpans(startIndex, startIndex, ImageSpan.class).length > 0) {
+                        || spannableStringBuilder.getSpans(startIndex, startIndex, ImageSpan.class).length > 0) {
                     imagePlaceholder = "\n ";
                 }
 
@@ -375,7 +375,7 @@ public class NotificationsUtils {
 
                 // Add a newline after the image if needed
                 if (!spannableHasCharacterAtIndex(spannableStringBuilder, '\n', startIndex)
-                    && !spannableHasCharacterAtIndex(spannableStringBuilder, '\r', startIndex)) {
+                        && !spannableHasCharacterAtIndex(spannableStringBuilder, '\r', startIndex)) {
                     imagePlaceholder += "\n";
                 }
 
@@ -383,18 +383,18 @@ public class NotificationsUtils {
 
                 // Add the image span
                 spannableStringBuilder.setSpan(
-                        noteImageSpan,
-                        spanIndex,
-                        spanIndex + 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    noteImageSpan,
+                    spanIndex,
+                    spanIndex + 1,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 );
 
                 // Add an AlignmentSpan to center the image
                 spannableStringBuilder.setSpan(
-                        new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER),
-                        spanIndex,
-                        spanIndex + 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER),
+                    spanIndex,
+                    spanIndex + 1,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 );
 
                 indexAdjustment += imagePlaceholder.length();
@@ -430,14 +430,14 @@ public class NotificationsUtils {
 
     public static void showPushAuthAlert(Context context, final String token, String title, String message) {
         if (context == null
-            || TextUtils.isEmpty(token)
-            || TextUtils.isEmpty(title)
-            || TextUtils.isEmpty(message)) {
+                || TextUtils.isEmpty(token)
+                || TextUtils.isEmpty(title)
+                || TextUtils.isEmpty(message)) {
             return;
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(context, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(context, R.style.Calypso_Dialog_Alert));
         builder.setTitle(title).setMessage(message);
 
         builder.setPositiveButton(R.string.mnu_comment_approve, new DialogInterface.OnClickListener() {
@@ -464,13 +464,13 @@ public class NotificationsUtils {
         tokenMap.put("action", "authorize_login");
         tokenMap.put("push_token", token);
         WordPress.getRestClientUtilsV1_1().post(
-                PUSH_AUTH_ENDPOINT, tokenMap, null, null,
-                new RestRequest.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AnalyticsTracker.track(AnalyticsTracker.Stat.PUSH_AUTHENTICATION_FAILED);
-                    }
-                });
+            PUSH_AUTH_ENDPOINT, tokenMap, null, null,
+        new RestRequest.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AnalyticsTracker.track(AnalyticsTracker.Stat.PUSH_AUTHENTICATION_FAILED);
+            }
+        });
 
         AnalyticsTracker.track(AnalyticsTracker.Stat.PUSH_AUTHENTICATION_APPROVED);
     }
@@ -504,7 +504,7 @@ public class NotificationsUtils {
         if (note == null) {
             // At this point we don't have the note :(
             AppLog.w(T.NOTIFS, "Cannot build the Note object by using info available in the PN payload. Please see "
-                               + "previous log messages for detailed information about the error.");
+                     + "previous log messages for detailed information about the error.");
         }
 
         return note;

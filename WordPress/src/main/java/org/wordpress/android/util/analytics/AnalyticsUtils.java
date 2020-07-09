@@ -82,9 +82,9 @@ public class AnalyticsUtils {
     }
 
     public static void updateAnalyticsPreference(Context ctx,
-                                                 Dispatcher mDispatcher,
-                                                 AccountStore mAccountStore,
-                                                 boolean optOut) {
+            Dispatcher mDispatcher,
+            AccountStore mAccountStore,
+            boolean optOut) {
         AnalyticsTracker.setHasUserOptedOut(optOut);
         if (optOut) {
             AnalyticsTracker.clearAllData();
@@ -174,7 +174,7 @@ public class AnalyticsUtils {
                                             Map<String, Object> properties) {
         if (site == null || !SiteUtils.isAccessedViaWPComRest(site)) {
             AppLog.w(AppLog.T.STATS, "The passed blog obj is null or it's not a wpcom or Jetpack."
-                                     + " Tracking analytics without blog info");
+                     + " Tracking analytics without blog info");
             AnalyticsTracker.track(stat, properties);
             return;
         }
@@ -213,8 +213,8 @@ public class AnalyticsUtils {
     }
 
     public static void trackQuickActionTouched(QuickActionTrackPropertyValue type,
-                                               SiteModel site,
-                                               CommentModel comment) {
+            SiteModel site,
+            CommentModel comment) {
         Map<String, Object> properties = new HashMap<>(1);
         properties.put("quick_action", type.toString());
 
@@ -241,12 +241,12 @@ public class AnalyticsUtils {
      * @param comment The comment object
      */
     public static void trackCommentReplyWithDetails(boolean isQuickReply, SiteModel site,
-                                                    CommentModel comment) {
+            CommentModel comment) {
         AnalyticsTracker.Stat stat = isQuickReply ? AnalyticsTracker.Stat.NOTIFICATION_QUICK_ACTIONS_REPLIED_TO
-                : AnalyticsTracker.Stat.NOTIFICATION_REPLIED_TO;
+                                     : AnalyticsTracker.Stat.NOTIFICATION_REPLIED_TO;
         if (site == null || !SiteUtils.isAccessedViaWPComRest(site)) {
             AppLog.w(AppLog.T.STATS, "The passed blog obj is null or it's not a wpcom or Jetpack."
-                                     + " Tracking analytics without blog info");
+                     + " Tracking analytics without blog info");
             AnalyticsTracker.track(stat);
             return;
         }

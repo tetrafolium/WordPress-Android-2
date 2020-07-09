@@ -34,7 +34,7 @@ public class ReaderThumbnailTable {
         }
 
         SQLiteStatement stmt = ReaderDatabase.getWritableDb().compileStatement(
-                "INSERT OR REPLACE INTO tbl_thumbnails (full_url, thumbnail_url, post_id) VALUES (?1,?2,?3)");
+                                   "INSERT OR REPLACE INTO tbl_thumbnails (full_url, thumbnail_url, post_id) VALUES (?1,?2,?3)");
         try {
             stmt.bindString(1, fullUrl);
             stmt.bindString(2, thumbnailUrl);
@@ -50,8 +50,8 @@ public class ReaderThumbnailTable {
             return null;
         }
         return SqlUtils.stringForQuery(
-                ReaderDatabase.getReadableDb(),
-                "SELECT thumbnail_url FROM tbl_thumbnails WHERE full_url=?",
-                new String[]{fullUrl});
+                   ReaderDatabase.getReadableDb(),
+                   "SELECT thumbnail_url FROM tbl_thumbnails WHERE full_url=?",
+                   new String[] {fullUrl});
     }
 }

@@ -52,7 +52,7 @@ import javax.inject.Inject;
 
 @SuppressWarnings("deprecation")
 public class AccountSettingsFragment extends PreferenceFragment implements OnPreferenceChangeListener,
-        OnConfirmListener {
+    OnConfirmListener {
     private Preference mUsernamePreference;
     private EditTextPreferenceWithValidation mEmailPreference;
     private DetailListPreference mPrimarySitePreference;
@@ -77,12 +77,12 @@ public class AccountSettingsFragment extends PreferenceFragment implements OnPre
         mEmailPreference = (EditTextPreferenceWithValidation) findPreference(getString(R.string.pref_key_email));
         mPrimarySitePreference = (DetailListPreference) findPreference(getString(R.string.pref_key_primary_site));
         mWebAddressPreference =
-                (EditTextPreferenceWithValidation) findPreference(getString(R.string.pref_key_web_address));
+            (EditTextPreferenceWithValidation) findPreference(getString(R.string.pref_key_web_address));
         mChangePasswordPreference =
-                (EditTextPreferenceWithValidation) findPreference(getString(R.string.pref_key_change_password));
+            (EditTextPreferenceWithValidation) findPreference(getString(R.string.pref_key_change_password));
 
         mEmailPreference.getEditText()
-                        .setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        .setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         mEmailPreference.setValidationType(EditTextPreferenceWithValidation.ValidationType.EMAIL);
         mWebAddressPreference.getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
         mWebAddressPreference.setValidationType(EditTextPreferenceWithValidation.ValidationType.URL);
@@ -169,8 +169,8 @@ public class AccountSettingsFragment extends PreferenceFragment implements OnPre
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                getActivity().finish();
+        case android.R.id.home:
+            getActivity().finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -223,10 +223,10 @@ public class AccountSettingsFragment extends PreferenceFragment implements OnPre
                 };
 
                 mEmailSnackbar = Snackbar
-                        .make(getView(), "", Snackbar.LENGTH_INDEFINITE)
-                        .setAction(getString(R.string.button_discard), clickListener);
+                                 .make(getView(), "", Snackbar.LENGTH_INDEFINITE)
+                                 .setAction(getString(R.string.button_discard), clickListener);
                 TextView textView =
-                        mEmailSnackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+                    mEmailSnackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
                 textView.setMaxLines(4);
             }
             // instead of creating a new snackbar, update the current one to avoid the jumping animation
@@ -301,7 +301,7 @@ public class AccountSettingsFragment extends PreferenceFragment implements OnPre
                 // 1. The server-side error type is generic, but patching this server-side is quite involved
                 // 2. We know the error string return from the server has decent localization
                 String errorMessage = !TextUtils.isEmpty(event.error.message) ? event.error.message
-                        : getString(R.string.error_post_account_settings);
+                                      : getString(R.string.error_post_account_settings);
                 ToastUtils.showToast(getActivity(), errorMessage, ToastUtils.Duration.LONG);
                 AppLog.e(T.SETTINGS, event.error.message);
             } else {
@@ -311,26 +311,26 @@ public class AccountSettingsFragment extends PreferenceFragment implements OnPre
         } else {
             if (event.isError()) {
                 switch (event.error.type) {
-                    case SETTINGS_FETCH_GENERIC_ERROR:
-                        ToastUtils.showToast(getActivity(), R.string.error_fetch_account_settings,
-                                ToastUtils.Duration.LONG);
-                        break;
-                    case SETTINGS_FETCH_REAUTHORIZATION_REQUIRED_ERROR:
-                        ToastUtils.showToast(getActivity(), R.string.error_disabled_apis,
-                                ToastUtils.Duration.LONG);
-                        break;
-                    case SETTINGS_POST_ERROR:
-                        // We usually rely on event.error.type and provide our own localized message.
-                        // This case is exceptional because:
-                        // 1. The server-side error type is generic, but patching this server-side is quite involved
-                        // 2. We know the error string return from the server has decent localization
-                        String errorMessage = !TextUtils.isEmpty(event.error.message) ? event.error.message
-                                : getString(R.string.error_post_account_settings);
-                        ToastUtils.showToast(getActivity(), errorMessage, ToastUtils.Duration.LONG);
-                        // we optimistically show the email change snackbar, if that request fails, we should
-                        // remove the snackbar
-                        checkIfEmailChangeIsPending();
-                        break;
+                case SETTINGS_FETCH_GENERIC_ERROR:
+                    ToastUtils.showToast(getActivity(), R.string.error_fetch_account_settings,
+                                         ToastUtils.Duration.LONG);
+                    break;
+                case SETTINGS_FETCH_REAUTHORIZATION_REQUIRED_ERROR:
+                    ToastUtils.showToast(getActivity(), R.string.error_disabled_apis,
+                                         ToastUtils.Duration.LONG);
+                    break;
+                case SETTINGS_POST_ERROR:
+                    // We usually rely on event.error.type and provide our own localized message.
+                    // This case is exceptional because:
+                    // 1. The server-side error type is generic, but patching this server-side is quite involved
+                    // 2. We know the error string return from the server has decent localization
+                    String errorMessage = !TextUtils.isEmpty(event.error.message) ? event.error.message
+                                          : getString(R.string.error_post_account_settings);
+                    ToastUtils.showToast(getActivity(), errorMessage, ToastUtils.Duration.LONG);
+                    // we optimistically show the email change snackbar, if that request fails, we should
+                    // remove the snackbar
+                    checkIfEmailChangeIsPending();
+                    break;
                 }
             } else {
                 refreshAccountDetails();
@@ -355,17 +355,17 @@ public class AccountSettingsFragment extends PreferenceFragment implements OnPre
         AccountModel account = mAccountStore.getAccount();
 
         final Bundle bundle =
-                SettingsUsernameChangerFragment.newBundle(account.getDisplayName(), account.getUserName());
+            SettingsUsernameChangerFragment.newBundle(account.getDisplayName(), account.getUserName());
 
         new FullScreenDialogFragment.Builder(getActivity())
-                .setTitle(R.string.username_changer_title)
-                .setAction(R.string.username_changer_action)
-                .setOnConfirmListener(this)
-                .setHideActivityBar(true)
-                .setOnDismissListener(null)
-                .setContent(SettingsUsernameChangerFragment.class, bundle)
-                .build()
-                .show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), FullScreenDialogFragment.TAG);
+        .setTitle(R.string.username_changer_title)
+        .setAction(R.string.username_changer_action)
+        .setOnConfirmListener(this)
+        .setHideActivityBar(true)
+        .setOnDismissListener(null)
+        .setContent(SettingsUsernameChangerFragment.class, bundle)
+        .build()
+        .show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), FullScreenDialogFragment.TAG);
     }
 
     @Override public void onConfirm(@Nullable Bundle result) {
@@ -374,8 +374,8 @@ public class AccountSettingsFragment extends PreferenceFragment implements OnPre
 
             if (username != null) {
                 WPSnackbar.make(getView(),
-                        String.format(getString(R.string.settings_username_changer_toast_content), username),
-                        Snackbar.LENGTH_LONG).show();
+                                String.format(getString(R.string.settings_username_changer_toast_content), username),
+                                Snackbar.LENGTH_LONG).show();
                 mUsernamePreference.setSummary(username);
             }
         }

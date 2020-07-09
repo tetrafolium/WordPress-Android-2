@@ -101,7 +101,7 @@ public class SiteSettingsFormatDialog extends DialogFragment implements DialogIn
         }
 
         @StringRes int titleRes = formatType == FormatType.DATE_FORMAT
-                ? R.string.site_settings_date_format_title : R.string.site_settings_time_format_title;
+                                  ? R.string.site_settings_date_format_title : R.string.site_settings_time_format_title;
         txtTitle.setText(titleRes);
 
         txtHelp.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +112,7 @@ public class SiteSettingsFormatDialog extends DialogFragment implements DialogIn
         });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         builder.setPositiveButton(android.R.string.ok, this);
         builder.setNegativeButton(R.string.cancel, this);
         builder.setView(view);
@@ -127,7 +127,7 @@ public class SiteSettingsFormatDialog extends DialogFragment implements DialogIn
         for (int i = 0; i < mEntries.length; i++) {
             RadioButton radio = new RadioButton(getActivity());
             CompoundButtonCompat.setButtonTintList(radio,
-                    getResources().getColorStateList(R.color.primary_40_gray_20_gray_40_selector));
+                                                   getResources().getColorStateList(R.color.primary_40_gray_20_gray_40_selector));
             radio.setText(mEntries[i]);
             radio.setId(i);
             mRadioGroup.addView(radio);

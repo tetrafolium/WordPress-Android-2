@@ -21,14 +21,14 @@ public class NativeNotificationsUtils {
 
     private static void showMessageToUser(String message, boolean intermediateMessage, int pushId, Context context) {
         NotificationCompat.Builder builder = getBuilder(context,
-                context.getString(R.string.notification_channel_transient_id))
-                .setContentText(message).setTicker(message)
-                .setOnlyAlertOnce(true);
+                                             context.getString(R.string.notification_channel_transient_id))
+                                             .setContentText(message).setTicker(message)
+                                             .setOnlyAlertOnce(true);
         showMessageToUserWithBuilder(builder, message, intermediateMessage, pushId, context);
     }
 
     public static void showMessageToUserWithBuilder(NotificationCompat.Builder builder, String message,
-                                                    boolean intermediateMessage, int pushId, Context context) {
+            boolean intermediateMessage, int pushId, Context context) {
         if (!intermediateMessage) {
             builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
         }
@@ -40,10 +40,10 @@ public class NativeNotificationsUtils {
 
     public static NotificationCompat.Builder getBuilder(Context context, String channelId) {
         return new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
-                .setColor(context.getResources().getColor(R.color.primary_50))
-                .setContentTitle(context.getString(R.string.app_name))
-                .setAutoCancel(true);
+               .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
+               .setColor(context.getResources().getColor(R.color.primary_50))
+               .setContentTitle(context.getString(R.string.app_name))
+               .setAutoCancel(true);
     }
 
     public static void dismissNotification(int pushId, Context context) {

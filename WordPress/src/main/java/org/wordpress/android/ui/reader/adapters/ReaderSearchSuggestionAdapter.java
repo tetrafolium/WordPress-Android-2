@@ -35,7 +35,7 @@ public class ReaderSearchSuggestionAdapter extends CursorAdapter {
     public ReaderSearchSuggestionAdapter(Context context) {
         super(context, null, false);
         String clearAllText = context.getString(R.string.label_clear_search_history);
-        mClearAllRow = new Object[]{CLEAR_ALL_ROW_ID, clearAllText};
+        mClearAllRow = new Object[] {CLEAR_ALL_ROW_ID, clearAllText};
         mClearAllBgColor = ContextCompat.getColor(context, R.color.neutral_0);
         mSuggestionBgColor = ContextCompat.getColor(context, R.color.neutral_0);
     }
@@ -51,16 +51,17 @@ public class ReaderSearchSuggestionAdapter extends CursorAdapter {
 
         // create a MatrixCursor which will be the actual cursor behind this adapter
         MatrixCursor matrixCursor = new MatrixCursor(
-                new String[]{
-                        ReaderSearchTable.COL_ID,
-                        ReaderSearchTable.COL_QUERY});
+            new String[] {
+                ReaderSearchTable.COL_ID,
+                ReaderSearchTable.COL_QUERY
+            });
 
         if (sqlCursor.moveToFirst()) {
             // first populate the matrix from the db cursor...
             do {
                 long id = sqlCursor.getLong(sqlCursor.getColumnIndex(ReaderSearchTable.COL_ID));
                 String query = sqlCursor.getString(sqlCursor.getColumnIndex(ReaderSearchTable.COL_QUERY));
-                matrixCursor.addRow(new Object[]{id, query});
+                matrixCursor.addRow(new Object[] {id, query});
             } while (sqlCursor.moveToNext());
 
             // ...then add our custom item
@@ -166,16 +167,16 @@ public class ReaderSearchSuggestionAdapter extends CursorAdapter {
 
     private void confirmClearSavedSearches(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(context, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(context, R.style.Calypso_Dialog_Alert));
         builder.setMessage(R.string.dlg_confirm_clear_search_history)
-               .setCancelable(true)
-               .setNegativeButton(R.string.no, null)
-               .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int id) {
-                       clearSavedSearches();
-                   }
-               });
+        .setCancelable(true)
+        .setNegativeButton(R.string.no, null)
+        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                clearSavedSearches();
+            }
+        });
         AlertDialog alert = builder.create();
         alert.show();
     }

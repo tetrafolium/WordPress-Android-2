@@ -49,7 +49,7 @@ import dagger.android.support.AndroidSupportInjection;
 import static android.content.Context.CLIPBOARD_SERVICE;
 
 public class Login2FaFragment extends LoginBaseFormFragment<LoginListener> implements TextWatcher,
-        OnEditorCommitListener {
+    OnEditorCommitListener {
     private static final String KEY_2FA_TYPE = "KEY_2FA_TYPE";
     private static final String KEY_IN_PROGRESS_MESSAGE_ID = "KEY_IN_PROGRESS_MESSAGE_ID";
     private static final String KEY_NONCE_AUTHENTICATOR = "KEY_NONCE_AUTHENTICATOR";
@@ -115,8 +115,8 @@ public class Login2FaFragment extends LoginBaseFormFragment<LoginListener> imple
     }
 
     public static Login2FaFragment newInstanceSocial(String emailAddress, String userId,
-                                                     String nonceAuthenticator, String nonceBackup,
-                                                     String nonceSms) {
+            String nonceAuthenticator, String nonceBackup,
+            String nonceSms) {
         Login2FaFragment fragment = new Login2FaFragment();
         Bundle args = new Bundle();
         args.putString(ARG_EMAIL_ADDRESS, emailAddress);
@@ -132,7 +132,7 @@ public class Login2FaFragment extends LoginBaseFormFragment<LoginListener> imple
     }
 
     public static Login2FaFragment newInstanceSocialConnect(String emailAddress, String password,
-                                                            String idToken, String service) {
+            String idToken, String service) {
         Login2FaFragment fragment = new Login2FaFragment();
         Bundle args = new Bundle();
         args.putString(ARG_EMAIL_ADDRESS, emailAddress);
@@ -157,7 +157,7 @@ public class Login2FaFragment extends LoginBaseFormFragment<LoginListener> imple
     @Override
     protected void setupLabel(@NonNull TextView label) {
         label.setText(mSentSmsCode ? getString(R.string.enter_verification_code_sms, mPhoneNumber)
-                : getString(R.string.enter_verification_code));
+                      : getString(R.string.enter_verification_code));
         mLabel = label;
     }
 
@@ -333,18 +333,18 @@ public class Login2FaFragment extends LoginBaseFormFragment<LoginListener> imple
 
     private void setAuthCodeTypeAndNonce(String twoStepCode) {
         switch (twoStepCode.length()) {
-            case LENGTH_NONCE_AUTHENTICATOR:
-                mType = TWO_FACTOR_TYPE_AUTHENTICATOR;
-                mNonce = mNonceAuthenticator;
-                break;
-            case LENGTH_NONCE_BACKUP:
-                mType = TWO_FACTOR_TYPE_BACKUP;
-                mNonce = mNonceBackup;
-                break;
-            case LENGTH_NONCE_SMS:
-                mType = TWO_FACTOR_TYPE_SMS;
-                mNonce = mNonceSms;
-                break;
+        case LENGTH_NONCE_AUTHENTICATOR:
+            mType = TWO_FACTOR_TYPE_AUTHENTICATOR;
+            mNonce = mNonceAuthenticator;
+            break;
+        case LENGTH_NONCE_BACKUP:
+            mType = TWO_FACTOR_TYPE_BACKUP;
+            mNonce = mNonceBackup;
+            break;
+        case LENGTH_NONCE_SMS:
+            mType = TWO_FACTOR_TYPE_SMS;
+            mNonce = mNonceSms;
+            break;
         }
     }
 
@@ -378,28 +378,28 @@ public class Login2FaFragment extends LoginBaseFormFragment<LoginListener> imple
 
     private void handleAuthError(AuthenticationErrorType error, String errorMessage) {
         switch (error) {
-            case INVALID_OTP:
-                show2FaError(getString(R.string.invalid_verification_code));
-                break;
-            case NEEDS_2FA:
-                // we get this error when requesting a verification code sent via SMS so, just ignore it.
-                break;
-            case INVALID_REQUEST:
-                // TODO: FluxC: could be specific?
-            default:
-                AppLog.e(T.NUX, "Server response: " + errorMessage);
+        case INVALID_OTP:
+            show2FaError(getString(R.string.invalid_verification_code));
+            break;
+        case NEEDS_2FA:
+            // we get this error when requesting a verification code sent via SMS so, just ignore it.
+            break;
+        case INVALID_REQUEST:
+        // TODO: FluxC: could be specific?
+        default:
+            AppLog.e(T.NUX, "Server response: " + errorMessage);
 
-                ToastUtils.showToast(getActivity(),
-                        errorMessage == null ? getString(R.string.error_generic) : errorMessage);
-                break;
+            ToastUtils.showToast(getActivity(),
+                                 errorMessage == null ? getString(R.string.error_generic) : errorMessage);
+            break;
         }
     }
 
     private void showErrorDialog(String message) {
         AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginTheme))
-                .setMessage(message)
-                .setPositiveButton(R.string.login_error_button, null)
-                .create();
+        .setMessage(message)
+        .setPositiveButton(R.string.login_error_button, null)
+        .create();
         dialog.show();
     }
 
@@ -413,11 +413,11 @@ public class Login2FaFragment extends LoginBaseFormFragment<LoginListener> imple
 
             AppLog.e(T.API, "onAuthenticationChanged has error: " + event.error.type + " - " + event.error.message);
             mAnalyticsListener.trackLoginFailed(event.getClass().getSimpleName(),
-                    event.error.type.toString(), event.error.message);
+                                                event.error.type.toString(), event.error.message);
 
             if (mIsSocialLogin) {
                 mAnalyticsListener.trackSocialFailure(event.getClass().getSimpleName(),
-                        event.error.type.toString(), event.error.message);
+                                                      event.error.type.toString(), event.error.message);
             }
 
             if (isAdded()) {
@@ -442,41 +442,41 @@ public class Login2FaFragment extends LoginBaseFormFragment<LoginListener> imple
     public void onSocialChanged(OnSocialChanged event) {
         if (event.isError()) {
             switch (event.error.type) {
-                // Two-factor authentication code was incorrect; save new nonce for another try.
-                case INVALID_TWO_STEP_CODE:
-                    endProgress();
+            // Two-factor authentication code was incorrect; save new nonce for another try.
+            case INVALID_TWO_STEP_CODE:
+                endProgress();
 
-                    switch (mType) {
-                        case TWO_FACTOR_TYPE_AUTHENTICATOR:
-                            mNonceAuthenticator = event.error.nonce;
-                            break;
-                        case TWO_FACTOR_TYPE_BACKUP:
-                            mNonceBackup = event.error.nonce;
-                            break;
-                        case TWO_FACTOR_TYPE_SMS:
-                            mNonceSms = event.error.nonce;
-                            break;
-                    }
-
-                    show2FaError(getString(R.string.invalid_verification_code));
+                switch (mType) {
+                case TWO_FACTOR_TYPE_AUTHENTICATOR:
+                    mNonceAuthenticator = event.error.nonce;
                     break;
-                // Two-factor authentication via SMS failed; show message, log error,
-                // and replace SMS nonce with response.
-                case INVALID_TWO_STEP_NONCE:
-                case NO_PHONE_NUMBER_FOR_ACCOUNT:
-                case SMS_AUTHENTICATION_UNAVAILABLE:
-                case SMS_CODE_THROTTLED:
-                    endProgress();
-                    showErrorDialog(event.error.message);
-                    AppLog.e(T.API, event.error.type + ": " + event.error.message);
+                case TWO_FACTOR_TYPE_BACKUP:
+                    mNonceBackup = event.error.nonce;
+                    break;
+                case TWO_FACTOR_TYPE_SMS:
                     mNonceSms = event.error.nonce;
                     break;
-                case UNABLE_CONNECT:
-                    AppLog.e(T.API, "Unable to connect WordPress.com account to social account.");
-                    break;
-                case USER_ALREADY_ASSOCIATED:
-                    AppLog.e(T.API, "This social account is already associated with a WordPress.com account.");
-                    break;
+                }
+
+                show2FaError(getString(R.string.invalid_verification_code));
+                break;
+            // Two-factor authentication via SMS failed; show message, log error,
+            // and replace SMS nonce with response.
+            case INVALID_TWO_STEP_NONCE:
+            case NO_PHONE_NUMBER_FOR_ACCOUNT:
+            case SMS_AUTHENTICATION_UNAVAILABLE:
+            case SMS_CODE_THROTTLED:
+                endProgress();
+                showErrorDialog(event.error.message);
+                AppLog.e(T.API, event.error.type + ": " + event.error.message);
+                mNonceSms = event.error.nonce;
+                break;
+            case UNABLE_CONNECT:
+                AppLog.e(T.API, "Unable to connect WordPress.com account to social account.");
+                break;
+            case USER_ALREADY_ASSOCIATED:
+                AppLog.e(T.API, "This social account is already associated with a WordPress.com account.");
+                break;
             }
 
             // Finish login on social connect error.
@@ -484,7 +484,7 @@ public class Login2FaFragment extends LoginBaseFormFragment<LoginListener> imple
                 mAnalyticsListener.trackSocialConnectFailure();
                 doFinishLogin();
             }
-        // Two-factor authentication code was sent via SMS to account phone number; replace SMS nonce with response.
+            // Two-factor authentication code was sent via SMS to account phone number; replace SMS nonce with response.
         } else if (!TextUtils.isEmpty(event.phoneNumber) && !TextUtils.isEmpty(event.nonce)) {
             endProgress();
             mPhoneNumber = event.phoneNumber;

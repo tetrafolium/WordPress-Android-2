@@ -76,7 +76,7 @@ public class StatsConnectJetpackActivity extends AppCompatActivity {
 
         // Continue Jetpack connect flow if coming from login/signup magic link.
         if (savedInstanceState == null && getIntent() != null && getIntent().getExtras() != null
-            && getIntent().getExtras().getBoolean(ARG_CONTINUE_JETPACK_CONNECT, false)) {
+                && getIntent().getExtras().getBoolean(ARG_CONTINUE_JETPACK_CONNECT, false)) {
             if (TextUtils.isEmpty(mAccountStore.getAccount().getUserName())) {
                 mDispatcher.dispatch(AccountActionBuilder.newFetchAccountAction());
             } else {
@@ -89,7 +89,7 @@ public class StatsConnectJetpackActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startJetpackConnectionFlow(
-                        (SiteModel) StatsConnectJetpackActivity.this.getIntent().getSerializableExtra(SITE));
+                    (SiteModel) StatsConnectJetpackActivity.this.getIntent().getSerializableExtra(SITE));
             }
         });
         Button jetpackFaq = findViewById(R.id.jetpack_faq);
@@ -100,11 +100,11 @@ public class StatsConnectJetpackActivity extends AppCompatActivity {
         });
         TextView jetpackTermsAndConditions = findViewById(R.id.jetpack_terms_and_conditions);
         jetpackTermsAndConditions.setText(Html.fromHtml(String.format(
-                getResources().getString(R.string.jetpack_connection_terms_and_conditions), "<u>", "</u>")));
+                                              getResources().getString(R.string.jetpack_connection_terms_and_conditions), "<u>", "</u>")));
         jetpackTermsAndConditions.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View v) {
                 WPWebViewActivity.openURL(StatsConnectJetpackActivity.this,
-                        WPUrlUtils.buildTermsOfServiceUrl(StatsConnectJetpackActivity.this));
+                                          WPUrlUtils.buildTermsOfServiceUrl(StatsConnectJetpackActivity.this));
             }
         });
     }
@@ -124,18 +124,18 @@ public class StatsConnectJetpackActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case android.R.id.home:
+            this.finish();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 
     private void startJetpackConnectionFlow(SiteModel siteModel) {
         mIsJetpackConnectStarted = true;
         JetpackConnectionWebViewActivity
-                .startJetpackConnectionFlow(this, STATS, siteModel, mAccountStore.hasAccessToken());
+        .startJetpackConnectionFlow(this, STATS, siteModel, mAccountStore.hasAccessToken());
         finish();
     }
 
@@ -145,7 +145,7 @@ public class StatsConnectJetpackActivity extends AppCompatActivity {
         if (!isFinishing()) {
             if (event.isError()) {
                 AppLog.e(T.API, "StatsConnectJetpackActivity.onAccountChanged error: "
-                                + event.error.type + " - " + event.error.message);
+                         + event.error.type + " - " + event.error.message);
             } else if (!mIsJetpackConnectStarted && event.causeOfChange == AccountAction.FETCH_ACCOUNT
                        && !TextUtils.isEmpty(mAccountStore.getAccount().getUserName())) {
                 startJetpackConnectionFlow((SiteModel) getIntent().getSerializableExtra(SITE));

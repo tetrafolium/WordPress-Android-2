@@ -159,17 +159,17 @@ public class AppLogViewerActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case ID_SHARE:
-                shareAppLog();
-                return true;
-            case ID_COPY_TO_CLIPBOARD:
-                copyAppLogToClipboard();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case android.R.id.home:
+            finish();
+            return true;
+        case ID_SHARE:
+            shareAppLog();
+            return true;
+        case ID_COPY_TO_CLIPBOARD:
+            copyAppLogToClipboard();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 }

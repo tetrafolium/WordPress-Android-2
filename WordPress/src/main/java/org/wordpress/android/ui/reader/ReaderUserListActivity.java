@@ -111,15 +111,15 @@ public class ReaderUserListActivity extends AppCompatActivity {
                 if (commentId == 0) {
                     // commentId is empty (not passed), so we're showing users who like a post
                     users = ReaderUserTable.getUsersWhoLikePost(
-                            blogId,
-                            postId,
-                            ReaderConstants.READER_MAX_USERS_TO_DISPLAY);
+                                blogId,
+                                postId,
+                                ReaderConstants.READER_MAX_USERS_TO_DISPLAY);
                 } else {
                     // commentId is non-empty, so we're showing users who like a comment
                     users = ReaderUserTable.getUsersWhoLikeComment(
-                            blogId,
-                            commentId,
-                            ReaderConstants.READER_MAX_USERS_TO_DISPLAY);
+                                blogId,
+                                commentId,
+                                ReaderConstants.READER_MAX_USERS_TO_DISPLAY);
                 }
 
                 runOnUiThread(new Runnable() {
@@ -132,7 +132,7 @@ public class ReaderUserListActivity extends AppCompatActivity {
                     }
                 });
             }
-        }.start();
+        } .start();
     }
 
     private String getTitleString(final long blogId,

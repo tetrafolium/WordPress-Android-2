@@ -18,36 +18,36 @@ public enum ReaderTagType {
 
     public static ReaderTagType fromInt(int value) {
         switch (value) {
-            case INT_RECOMMENDED:
-                return RECOMMENDED;
-            case INT_FOLLOWED:
-                return FOLLOWED;
-            case INT_CUSTOM_LIST:
-                return CUSTOM_LIST;
-            case INT_SEARCH:
-                return SEARCH;
-            case INT_BOOKMARKED:
-                return BOOKMARKED;
-            default:
-                return DEFAULT;
+        case INT_RECOMMENDED:
+            return RECOMMENDED;
+        case INT_FOLLOWED:
+            return FOLLOWED;
+        case INT_CUSTOM_LIST:
+            return CUSTOM_LIST;
+        case INT_SEARCH:
+            return SEARCH;
+        case INT_BOOKMARKED:
+            return BOOKMARKED;
+        default:
+            return DEFAULT;
         }
     }
 
     public int toInt() {
         switch (this) {
-            case FOLLOWED:
-                return INT_FOLLOWED;
-            case RECOMMENDED:
-                return INT_RECOMMENDED;
-            case CUSTOM_LIST:
-                return INT_CUSTOM_LIST;
-            case SEARCH:
-                return INT_SEARCH;
-            case BOOKMARKED:
-                return INT_BOOKMARKED;
-            case DEFAULT:
-            default:
-                return INT_DEFAULT;
+        case FOLLOWED:
+            return INT_FOLLOWED;
+        case RECOMMENDED:
+            return INT_RECOMMENDED;
+        case CUSTOM_LIST:
+            return INT_CUSTOM_LIST;
+        case SEARCH:
+            return INT_SEARCH;
+        case BOOKMARKED:
+            return INT_BOOKMARKED;
+        case DEFAULT:
+        default:
+            return INT_DEFAULT;
         }
     }
 }

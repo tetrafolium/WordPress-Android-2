@@ -62,15 +62,15 @@ public class PhotonUtils {
         String query = "?strip=info";
 
         switch (quality) {
-            case HIGH:
-                query += "&quality=100";
-                break;
-            case LOW:
-                query += "&quality=35";
-                break;
-            default: // medium
-                query += "&quality=65";
-                break;
+        case HIGH:
+            query += "&quality=100";
+            break;
+        case LOW:
+            query += "&quality=35";
+            break;
+        default: // medium
+            query += "&quality=65";
+            break;
         }
 
         // if both width & height are passed use the "resize" param, use only "w" or "h" if just

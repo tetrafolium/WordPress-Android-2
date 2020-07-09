@@ -29,7 +29,7 @@ public class AutolinkUtilsTest extends InstrumentationTestCase {
         String sourceTest = "http://test.com http://test.com";
         String output = AutolinkUtils.autoCreateLinks(sourceTest);
         String expected =
-                "<a href=\"http://test.com\">http://test.com</a> <a href=\"http://test.com\">http://test.com</a>";
+            "<a href=\"http://test.com\">http://test.com</a> <a href=\"http://test.com\">http://test.com</a>";
         assertEquals(expected, output);
     }
 
@@ -37,7 +37,7 @@ public class AutolinkUtilsTest extends InstrumentationTestCase {
         String sourceTest = "http://test.com\nhttp://test.com";
         String output = AutolinkUtils.autoCreateLinks(sourceTest);
         String expected =
-                "<a href=\"http://test.com\">http://test.com</a>\n<a href=\"http://test.com\">http://test.com</a>";
+            "<a href=\"http://test.com\">http://test.com</a>\n<a href=\"http://test.com\">http://test.com</a>";
         assertEquals(expected, output);
     }
 
@@ -70,7 +70,7 @@ public class AutolinkUtilsTest extends InstrumentationTestCase {
         String sourceTest = "hey http://youtube.com/watch?test salut http://test.com hello";
         String output = AutolinkUtils.autoCreateLinks(sourceTest);
         String expected =
-                "hey http://youtube.com/watch?test salut <a href=\"http://test.com\">http://test.com</a> hello";
+            "hey http://youtube.com/watch?test salut <a href=\"http://test.com\">http://test.com</a> hello";
         assertEquals(expected, output);
     }
 

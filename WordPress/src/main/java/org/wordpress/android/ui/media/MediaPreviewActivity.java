@@ -161,9 +161,9 @@ public class MediaPreviewActivity extends AppCompatActivity implements MediaPrev
 
     private static void startIntent(Context context, Intent intent) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(
-                context,
-                R.anim.fade_in,
-                R.anim.fade_out);
+                                            context,
+                                            R.anim.fade_in,
+                                            R.anim.fade_out);
         ActivityCompat.startActivity(context, intent, options.toBundle());
     }
 
@@ -281,9 +281,9 @@ public class MediaPreviewActivity extends AppCompatActivity implements MediaPrev
             fragment = MediaPreviewFragment.newInstance(mSite, mContentUri);
         }
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, MediaPreviewFragment.TAG)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
+        .replace(R.id.fragment_container, fragment, MediaPreviewFragment.TAG)
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        .commit();
 
         fragment.setOnMediaTappedListener(this);
     }
@@ -317,9 +317,9 @@ public class MediaPreviewActivity extends AppCompatActivity implements MediaPrev
                 int count = mPagerAdapter.getCount();
                 if (count > 1) {
                     String title = String.format(
-                            getString(R.string.media_preview_title),
-                            position + 1,
-                            count);
+                                       getString(R.string.media_preview_title),
+                                       position + 1,
+                                       count);
                     mToolbar.setTitle(title);
                 }
             }
@@ -374,20 +374,20 @@ public class MediaPreviewActivity extends AppCompatActivity implements MediaPrev
             @Override
             public void onPageSelected(int position) {
                 switch (getPreviewType()) {
-                    case MULTI_MEDIA_IDS:
-                        // pause the outgoing fragment and unpause the incoming one - this prevents audio/video from
-                        // playing in inactive fragments
-                        if (mLastPosition != position) {
-                            mPagerAdapter.pauseFragment(mLastPosition);
-                        }
-                        mPagerAdapter.unpauseFragment(position);
-                        mMediaId = Integer.valueOf(mMediaIdOrUrlList.get(position));
-                        // fire event so settings activity shows the same media as this activity (user may have swiped)
-                        EventBus.getDefault().post(new MediaPreviewSwiped(mMediaId));
-                        break;
-                    case MULTI_IMAGE_URLS:
-                        mContentUri = mMediaIdOrUrlList.get(position);
-                        break;
+                case MULTI_MEDIA_IDS:
+                    // pause the outgoing fragment and unpause the incoming one - this prevents audio/video from
+                    // playing in inactive fragments
+                    if (mLastPosition != position) {
+                        mPagerAdapter.pauseFragment(mLastPosition);
+                    }
+                    mPagerAdapter.unpauseFragment(position);
+                    mMediaId = Integer.valueOf(mMediaIdOrUrlList.get(position));
+                    // fire event so settings activity shows the same media as this activity (user may have swiped)
+                    EventBus.getDefault().post(new MediaPreviewSwiped(mMediaId));
+                    break;
+                case MULTI_IMAGE_URLS:
+                    mContentUri = mMediaIdOrUrlList.get(position);
+                    break;
                 }
                 mLastPosition = position;
                 showToolbar();
@@ -415,26 +415,26 @@ public class MediaPreviewActivity extends AppCompatActivity implements MediaPrev
         public Fragment getItem(int position) {
             MediaPreviewFragment fragment;
             switch (getPreviewType()) {
-                case MULTI_MEDIA_IDS:
-                    int id = Integer.valueOf(mMediaIdOrUrlList.get(position));
-                    MediaModel media = mMediaStore.getMediaWithLocalId(id);
-                    // make sure we autoplay the initial item (relevant only for audio/video)
-                    boolean autoPlay;
-                    if (id == mMediaId && !mDidAutoPlay) {
-                        autoPlay = true;
-                        mDidAutoPlay = true;
-                    } else {
-                        autoPlay = false;
-                    }
-                    fragment = MediaPreviewFragment.newInstance(mSite, media, autoPlay);
-                    break;
-                case MULTI_IMAGE_URLS:
-                    String imageUrl = mMediaIdOrUrlList.get(position);
-                    fragment = MediaPreviewFragment.newInstance(null, imageUrl);
-                    break;
-                default:
-                    // should never get here
-                    throw new RuntimeException("Unhandled preview type");
+            case MULTI_MEDIA_IDS:
+                int id = Integer.valueOf(mMediaIdOrUrlList.get(position));
+                MediaModel media = mMediaStore.getMediaWithLocalId(id);
+                // make sure we autoplay the initial item (relevant only for audio/video)
+                boolean autoPlay;
+                if (id == mMediaId && !mDidAutoPlay) {
+                    autoPlay = true;
+                    mDidAutoPlay = true;
+                } else {
+                    autoPlay = false;
+                }
+                fragment = MediaPreviewFragment.newInstance(mSite, media, autoPlay);
+                break;
+            case MULTI_IMAGE_URLS:
+                String imageUrl = mMediaIdOrUrlList.get(position);
+                fragment = MediaPreviewFragment.newInstance(null, imageUrl);
+                break;
+            default:
+                // should never get here
+                throw new RuntimeException("Unhandled preview type");
             }
 
             fragment.setOnMediaTappedListener(MediaPreviewActivity.this);

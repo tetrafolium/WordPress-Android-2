@@ -86,17 +86,17 @@ public class VideoOptimizer implements org.m4m.IProgressListener {
         mOutputPath = mCacheDir.getPath() + "/" + mFilename;
 
         MediaComposer mediaComposer = WPVideoUtils.getVideoOptimizationComposer(
-                getContext(),
-                mInputPath,
-                mOutputPath,
-                this,
-                AppPrefs.getVideoOptimizeWidth(),
-                AppPrefs.getVideoOptimizeQuality());
+                                          getContext(),
+                                          mInputPath,
+                                          mOutputPath,
+                                          this,
+                                          AppPrefs.getVideoOptimizeWidth(),
+                                          AppPrefs.getVideoOptimizeQuality());
 
         if (mediaComposer == null) {
             AppLog.w(AppLog.T.MEDIA, "VideoOptimizer > null composer");
             AnalyticsTracker.track(MEDIA_VIDEO_CANT_OPTIMIZE, AnalyticsUtils.getMediaProperties(getContext(), true,
-                    null, mInputPath));
+                                   null, mInputPath));
             mListener.onVideoOptimizationCompleted(mMedia);
             return;
         }
@@ -115,14 +115,14 @@ public class VideoOptimizer implements org.m4m.IProgressListener {
     private void trackVideoProcessingEvents(boolean isError, Exception exception) {
         Map<String, Object> properties = new HashMap<>();
         Map<String, Object> inputVideoProperties =
-                AnalyticsUtils.getMediaProperties(getContext(), true, null, mInputPath);
+            AnalyticsUtils.getMediaProperties(getContext(), true, null, mInputPath);
         putAllWithPrefix("input_video_", inputVideoProperties, properties);
         if (mOutputPath != null) {
             Map<String, Object> outputVideoProperties = AnalyticsUtils.getMediaProperties(getContext(), true, null,
-                                                                                          mOutputPath);
+                    mOutputPath);
             putAllWithPrefix("output_video_", outputVideoProperties, properties);
             String savedMegabytes =
-                    String.valueOf((FileUtils.length(mInputPath) - FileUtils.length(mOutputPath)) / (1024 * 1024));
+                String.valueOf((FileUtils.length(mInputPath) - FileUtils.length(mOutputPath)) / (1024 * 1024));
             properties.put("saved_megabytes", savedMegabytes);
         }
 

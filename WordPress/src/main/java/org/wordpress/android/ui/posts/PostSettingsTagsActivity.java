@@ -153,7 +153,7 @@ public class PostSettingsTagsActivity extends AppCompatActivity implements TextW
     @Override
     public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
         if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN)
-            && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                && (keyCode == KeyEvent.KEYCODE_ENTER)) {
             // Since we don't allow new lines, we should add comma on "enter" to separate the tags
             String currentText = mTagsEditText.getText().toString();
             if (!currentText.isEmpty() && !currentText.endsWith(",")) {
@@ -213,10 +213,10 @@ public class PostSettingsTagsActivity extends AppCompatActivity implements TextW
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTaxonomyChanged(OnTaxonomyChanged event) {
         switch (event.causeOfChange) {
-            case FETCH_TAGS:
-                mAdapter.setAllTags(mTaxonomyStore.getTagsForSite(mSite));
-                filterListForCurrentText();
-                break;
+        case FETCH_TAGS:
+            mAdapter.setAllTags(mTaxonomyStore.getTagsForSite(mSite));
+            filterListForCurrentText();
+            break;
         }
     }
 
@@ -266,7 +266,7 @@ public class PostSettingsTagsActivity extends AppCompatActivity implements TextW
                     } else {
                         for (TermModel tag : allTags) {
                             if (tag.getName().toLowerCase(Locale.getDefault())
-                                   .contains(text.toLowerCase(Locale.getDefault()))) {
+                                    .contains(text.toLowerCase(Locale.getDefault()))) {
                                 filteredTags.add(tag);
                             }
                         }

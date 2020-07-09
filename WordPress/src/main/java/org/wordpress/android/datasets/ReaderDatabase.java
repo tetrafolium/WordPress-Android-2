@@ -170,7 +170,7 @@ public class ReaderDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         AppLog.i(T.READER,
-                "Upgrading database from version " + oldVersion + " to version " + newVersion + " IN PROGRESS");
+                 "Upgrading database from version " + oldVersion + " to version " + newVersion + " IN PROGRESS");
         int currentVersion = oldVersion;
         if (currentVersion <= DB_LAST_VERSION_WITHOUT_MIGRATION_SCRIPT) {
             // versions 0 - 136 didn't support migration scripts, so we can safely drop and recreate all tables
@@ -179,16 +179,16 @@ public class ReaderDatabase extends SQLiteOpenHelper {
         }
 
         switch (currentVersion) {
-            case 136:
-                // no-op
-                currentVersion++;
+        case 136:
+            // no-op
+            currentVersion++;
         }
         if (currentVersion != newVersion) {
             throw new RuntimeException(
-                    "Migration from version " + oldVersion + " to version " + newVersion + " FAILED. ");
+                "Migration from version " + oldVersion + " to version " + newVersion + " FAILED. ");
         }
         AppLog.i(T.READER,
-                "Upgrading database from version " + oldVersion + " to version " + newVersion + " SUCCEEDED");
+                 "Upgrading database from version " + oldVersion + " to version " + newVersion + " SUCCEEDED");
     }
 
     @Override
@@ -277,7 +277,7 @@ public class ReaderDatabase extends SQLiteOpenHelper {
             public void run() {
                 purge();
             }
-        }.start();
+        } .start();
     }
 
     /*

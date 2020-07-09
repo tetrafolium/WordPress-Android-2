@@ -292,12 +292,12 @@ public class MediaUtils {
                 String guessedContentType = null;
                 try {
                     guessedContentType =
-                            uc.getContentType(); // internally calls guessContentTypeFromName(url.getFile()); and
+                        uc.getContentType(); // internally calls guessContentTypeFromName(url.getFile()); and
                     // guessContentTypeFromStream(is);
                 } catch (StringIndexOutOfBoundsException e) {
                     // Ref: https://github.com/wordpress-mobile/WordPress-Android/issues/5699
                     AppLog.e(AppLog.T.MEDIA, "Error getting the content type for " + mediaFile.getPath()
-                                             + " by using URLConnection.getContentType", e);
+                             + " by using URLConnection.getContentType", e);
                 }
                 // check if returned "content/unknown"
                 if (!TextUtils.isEmpty(guessedContentType) && !guessedContentType.equals("content/unknown")) {
@@ -306,7 +306,7 @@ public class MediaUtils {
             } catch (MalformedURLException e) {
                 AppLog.e(AppLog.T.MEDIA,
                          "MalformedURLException while trying to guess the content type for the file here " + mediaFile
-                                 .getPath() + " with URLConnection", e);
+                         .getPath() + " with URLConnection", e);
             } catch (IOException e) {
                 AppLog.e(AppLog.T.MEDIA,
                          "Error while trying to guess the content type for the file here " + mediaFile.getPath()
@@ -326,7 +326,7 @@ public class MediaUtils {
             } catch (FileNotFoundException e) {
                 AppLog.e(AppLog.T.MEDIA,
                          "FileNotFoundException while trying to guess the content type for the file " + mediaFile
-                                 .getPath(), e);
+                         .getPath(), e);
             } catch (IOException e) {
                 AppLog.e(AppLog.T.MEDIA,
                          "IOException while trying to guess the content type for the file " + mediaFile.getPath(), e);
@@ -444,10 +444,10 @@ public class MediaUtils {
                     return id.substring(4);
                 }
 
-                String[] contentUriPrefixesToTry = new String[]{
-                        "content://downloads/public_downloads",
-                        "content://downloads/my_downloads",
-                        "content://downloads/all_downloads"
+                String[] contentUriPrefixesToTry = new String[] {
+                    "content://downloads/public_downloads",
+                    "content://downloads/my_downloads",
+                    "content://downloads/all_downloads"
                 };
 
                 for (String contentUriPrefix : contentUriPrefixesToTry) {
@@ -479,8 +479,8 @@ public class MediaUtils {
 
                 final String selection = MediaStore.MediaColumns._ID + "=?";
 
-                final String[] selectionArgs = new String[]{
-                        split[1]
+                final String[] selectionArgs = new String[] {
+                    split[1]
                 };
 
                 return getDataColumn(context, contentUri, selection, selectionArgs);
@@ -506,7 +506,7 @@ public class MediaUtils {
         final String column = MediaStore.MediaColumns.DATA;
 
         final String[] projection = {
-                column
+            column
         };
 
         try {

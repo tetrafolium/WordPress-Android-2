@@ -142,41 +142,41 @@ public class PostUtils {
         Map<String, Object> properties = new HashMap<>();
         PostUtils.addPostTypeToAnalyticsProperties(post, properties);
         switch (status) {
-            case PUBLISHED:
-                if (!post.isLocalDraft()) {
-                    properties.put("post_id", post.getRemotePostId());
-                    properties.put(AnalyticsUtils.HAS_GUTENBERG_BLOCKS_KEY,
-                            PostUtils.contentContainsGutenbergBlocks(post.getContent()));
-                    AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.EDITOR_UPDATED_POST, site, properties);
-                } else {
-                    // Analytics for the event EDITOR_PUBLISHED_POST are tracked in PostUploadHandler
-                }
-                break;
-            case SCHEDULED:
-                if (!post.isLocalDraft()) {
-                    properties.put("post_id", post.getRemotePostId());
-                    properties.put(AnalyticsUtils.HAS_GUTENBERG_BLOCKS_KEY,
-                            PostUtils.contentContainsGutenbergBlocks(post.getContent()));
-                    AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.EDITOR_UPDATED_POST, site, properties);
-                } else {
-                    properties.put("word_count", AnalyticsUtils.getWordCount(post.getContent()));
-                    properties.put("editor_source",
-                            shouldShowGutenbergEditor(post.isLocalDraft(), post, site)
-                                    ? SiteUtils.GB_EDITOR_NAME : SiteUtils.AZTEC_EDITOR_NAME);
-                    properties.put(AnalyticsUtils.HAS_GUTENBERG_BLOCKS_KEY,
-                            PostUtils.contentContainsGutenbergBlocks(post.getContent()));
-                    AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.EDITOR_SCHEDULED_POST, site,
-                                                        properties);
-                }
-                break;
-            case DRAFT:
+        case PUBLISHED:
+            if (!post.isLocalDraft()) {
                 properties.put("post_id", post.getRemotePostId());
                 properties.put(AnalyticsUtils.HAS_GUTENBERG_BLOCKS_KEY,
-                        PostUtils.contentContainsGutenbergBlocks(post.getContent()));
-                AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.EDITOR_SAVED_DRAFT, site, properties);
-                break;
-            default:
-                // No-op
+                               PostUtils.contentContainsGutenbergBlocks(post.getContent()));
+                AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.EDITOR_UPDATED_POST, site, properties);
+            } else {
+                // Analytics for the event EDITOR_PUBLISHED_POST are tracked in PostUploadHandler
+            }
+            break;
+        case SCHEDULED:
+            if (!post.isLocalDraft()) {
+                properties.put("post_id", post.getRemotePostId());
+                properties.put(AnalyticsUtils.HAS_GUTENBERG_BLOCKS_KEY,
+                               PostUtils.contentContainsGutenbergBlocks(post.getContent()));
+                AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.EDITOR_UPDATED_POST, site, properties);
+            } else {
+                properties.put("word_count", AnalyticsUtils.getWordCount(post.getContent()));
+                properties.put("editor_source",
+                               shouldShowGutenbergEditor(post.isLocalDraft(), post, site)
+                               ? SiteUtils.GB_EDITOR_NAME : SiteUtils.AZTEC_EDITOR_NAME);
+                properties.put(AnalyticsUtils.HAS_GUTENBERG_BLOCKS_KEY,
+                               PostUtils.contentContainsGutenbergBlocks(post.getContent()));
+                AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.EDITOR_SCHEDULED_POST, site,
+                                                    properties);
+            }
+            break;
+        case DRAFT:
+            properties.put("post_id", post.getRemotePostId());
+            properties.put(AnalyticsUtils.HAS_GUTENBERG_BLOCKS_KEY,
+                           PostUtils.contentContainsGutenbergBlocks(post.getContent()));
+            AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.EDITOR_SAVED_DRAFT, site, properties);
+            break;
+        default:
+            // No-op
         }
     }
 
@@ -187,9 +187,9 @@ public class PostUtils {
             properties.put("post_id", post.getRemotePostId());
         }
         properties.put(AnalyticsUtils.HAS_GUTENBERG_BLOCKS_KEY,
-                PostUtils.contentContainsGutenbergBlocks(post.getContent()));
+                       PostUtils.contentContainsGutenbergBlocks(post.getContent()));
         AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.EDITOR_OPENED, site,
-                properties);
+                                            properties);
     }
 
     public static boolean isPublishable(PostModel post) {
@@ -225,8 +225,8 @@ public class PostUtils {
                                     && newPost.getCategoryIdList().containsAll(oldPost.getCategoryIdList())
                                     && PostLocation.equals(oldPost.getLocation(), newPost.getLocation())
                                     && oldPost.getChangesConfirmedContentHashcode() == newPost
-                .getChangesConfirmedContentHashcode()
-        );
+                                    .getChangesConfirmedContentHashcode()
+                                   );
     }
 
     public static String getPostListExcerptFromPost(PostModel post) {
@@ -351,7 +351,7 @@ public class PostUtils {
     }
 
     public static Set<PostModel> getPostsThatIncludeAnyOfTheseMedia(PostStore postStore,
-                                                                    List<MediaModel> mediaModelList) {
+            List<MediaModel> mediaModelList) {
         // if there' a Post to which the retried media belongs, clear their status
         HashSet<PostModel> postsThatContainListedMedia = new HashSet<>();
         for (MediaModel media : mediaModelList) {
@@ -402,10 +402,10 @@ public class PostUtils {
     }
 
     public static String replaceMediaFileWithUrlInGutenbergPost(@NonNull String postContent,
-                                                 String localMediaId, MediaFile mediaFile) {
+            String localMediaId, MediaFile mediaFile) {
         if (mediaFile != null && contentContainsGutenbergBlocks(postContent)) {
             String remoteUrl = org.wordpress.android.util.StringUtils
-                    .notNullStr(Utils.escapeQuotes(mediaFile.getFileURL()));
+                               .notNullStr(Utils.escapeQuotes(mediaFile.getFileURL()));
             // TODO: replace the URL
             if (!mediaFile.isVideo()) {
                 // replace gutenberg block id holder with serverMediaId, and url_holder with remoteUrl
@@ -444,7 +444,7 @@ public class PostUtils {
     }
 
     public static boolean isMediaInGutenbergPostBody(@NonNull String postContent,
-                                            String localMediaId) {
+            String localMediaId) {
         // check if media is in Gutenberg Post
         String imgBlockHeaderToSearchFor = String.format("<!-- wp:image {\"id\":%s} -->", localMediaId);
         return postContent.indexOf(imgBlockHeaderToSearchFor) != -1;
@@ -471,11 +471,11 @@ public class PostUtils {
         Context context = WordPress.getContext();
         String firstPart = context.getString(R.string.dialog_confirm_load_remote_post_body);
         String secondPart =
-                String.format(context.getString(R.string.dialog_confirm_load_remote_post_body_2),
-                        getFormattedDateForLastModified(
-                                context, DateTimeUtils.timestampFromIso8601Millis(post.getLastModified())),
-                        getFormattedDateForLastModified(
-                                context, DateTimeUtils.timestampFromIso8601Millis(post.getRemoteLastModified())));
+            String.format(context.getString(R.string.dialog_confirm_load_remote_post_body_2),
+                          getFormattedDateForLastModified(
+                              context, DateTimeUtils.timestampFromIso8601Millis(post.getLastModified())),
+                          getFormattedDateForLastModified(
+                              context, DateTimeUtils.timestampFromIso8601Millis(post.getRemoteLastModified())));
         return firstPart + secondPart;
     }
 
@@ -484,13 +484,13 @@ public class PostUtils {
         String firstPart = context.getString(R.string.dialog_confirm_autosave_body_first_part);
 
         String lastModified =
-                TextUtils.isEmpty(post.getDateLocallyChanged()) ? post.getLastModified() : post.getDateLocallyChanged();
+            TextUtils.isEmpty(post.getDateLocallyChanged()) ? post.getLastModified() : post.getDateLocallyChanged();
         String secondPart =
-                String.format(context.getString(R.string.dialog_confirm_autosave_body_second_part),
-                        getFormattedDateForLastModified(
-                                context, DateTimeUtils.timestampFromIso8601Millis(lastModified)),
-                        getFormattedDateForLastModified(
-                                context, DateTimeUtils.timestampFromIso8601Millis(post.getAutoSaveModified())));
+            String.format(context.getString(R.string.dialog_confirm_autosave_body_second_part),
+                          getFormattedDateForLastModified(
+                              context, DateTimeUtils.timestampFromIso8601Millis(lastModified)),
+                          getFormattedDateForLastModified(
+                              context, DateTimeUtils.timestampFromIso8601Millis(post.getAutoSaveModified())));
         return new UiStringText(firstPart + secondPart);
     }
 
@@ -501,11 +501,11 @@ public class PostUtils {
         Date date = new Date(timeSinceLastModified);
 
         DateFormat dateFormat = DateFormat.getDateInstance(
-                DateFormat.MEDIUM,
-                LocaleManager.getSafeLocale(context));
+                                    DateFormat.MEDIUM,
+                                    LocaleManager.getSafeLocale(context));
         DateFormat timeFormat = DateFormat.getTimeInstance(
-                DateFormat.SHORT,
-                LocaleManager.getSafeLocale(context));
+                                    DateFormat.SHORT,
+                                    LocaleManager.getSafeLocale(context));
 
 
         // The timezone on the website is at GMT
@@ -519,18 +519,18 @@ public class PostUtils {
         String previewUrl;
 
         switch (remotePreviewType) {
-            case NOT_A_REMOTE_PREVIEW:
-            case REMOTE_PREVIEW:
-                // always add the preview parameter to avoid bumping stats when viewing posts
-                previewUrl = UrlUtils.appendUrlParameter(post.getLink(), "preview", "true");
-                break;
-            case REMOTE_PREVIEW_WITH_REMOTE_AUTO_SAVE:
-                previewUrl = post.getAutoSavePreviewUrl();
-                break;
-            default:
-                throw new IllegalArgumentException(
-                        "Cannot get a Preview URL for " + remotePreviewType + " Preview type."
-                );
+        case NOT_A_REMOTE_PREVIEW:
+        case REMOTE_PREVIEW:
+            // always add the preview parameter to avoid bumping stats when viewing posts
+            previewUrl = UrlUtils.appendUrlParameter(post.getLink(), "preview", "true");
+            break;
+        case REMOTE_PREVIEW_WITH_REMOTE_AUTO_SAVE:
+            previewUrl = post.getAutoSavePreviewUrl();
+            break;
+        default:
+            throw new IllegalArgumentException(
+                "Cannot get a Preview URL for " + remotePreviewType + " Preview type."
+            );
         }
 
         return previewUrl;

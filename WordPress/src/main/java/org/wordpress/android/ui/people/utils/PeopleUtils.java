@@ -65,7 +65,7 @@ public class PeopleUtils {
     }
 
     public static void fetchRevisionAuthorsDetails(final SiteModel site, List<String> authors,
-                                                   final FetchUsersCallback callback) {
+            final FetchUsersCallback callback) {
         RestRequest.Listener listener = new RestRequest.Listener() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -85,7 +85,7 @@ public class PeopleUtils {
                         callback.onSuccess(people, true);
                     } catch (JSONException e) {
                         AppLog.e(T.API, "JSON exception occurred while parsing the revision author details"
-                                        + " from batch response for sites/%s/users: " + e);
+                                 + " from batch response for sites/%s/users: " + e);
                         callback.onError();
                     }
                 }
@@ -106,8 +106,8 @@ public class PeopleUtils {
 
         for (int i = 0; i < authors.size(); i++) {
             batchParams.put(String.format(Locale.US, "urls[%d]", i),
-                    String.format(Locale.US, "/sites/%d/users?search=%s&search_columns=ID",
-                            site.getSiteId(), authors.get(i)));
+                            String.format(Locale.US, "/sites/%d/users?search=%s&search_columns=ID",
+                                          site.getSiteId(), authors.get(i)));
         }
 
         WordPress.getRestClientUtilsV1_1().get("batch/", batchParams, null, listener, errorListener);
@@ -131,7 +131,7 @@ public class PeopleUtils {
                     try {
                         JSONArray jsonArray = jsonObject.getJSONArray("subscribers");
                         Person.PersonType personType = isEmailFollower
-                                ? Person.PersonType.EMAIL_FOLLOWER : Person.PersonType.FOLLOWER;
+                                                       ? Person.PersonType.EMAIL_FOLLOWER : Person.PersonType.FOLLOWER;
                         List<Person> people = peopleListFromJSON(jsonArray, site.getId(), personType);
                         int pageFetched = jsonObject.optInt("page");
                         int numberOfPages = jsonObject.optInt("pages");
@@ -139,7 +139,7 @@ public class PeopleUtils {
                         callback.onSuccess(people, pageFetched, isEndOfList);
                     } catch (JSONException e) {
                         AppLog.e(T.API, "JSON exception occurred while parsing the response for "
-                                        + "sites/%s/stats/followers: " + e);
+                                 + "sites/%s/stats/followers: " + e);
                         callback.onError();
                     }
                 }
@@ -177,7 +177,7 @@ public class PeopleUtils {
                         callback.onSuccess(people, isEndOfList);
                     } catch (JSONException e) {
                         AppLog.e(T.API, "JSON exception occurred while parsing the response for "
-                                        + "sites/%s/viewers: " + e);
+                                 + "sites/%s/viewers: " + e);
                         callback.onError();
                     }
                 }
@@ -336,7 +336,7 @@ public class PeopleUtils {
     }
 
     private static List<Person> peopleListFromJSON(JSONArray jsonArray, int localTableBlogId,
-                                                   Person.PersonType personType) throws JSONException {
+            Person.PersonType personType) throws JSONException {
         if (jsonArray == null) {
             return null;
         }
@@ -386,7 +386,7 @@ public class PeopleUtils {
     }
 
     public static void validateUsernames(final List<String> usernames, String role, long wpComBlogId, final
-    ValidateUsernameCallback callback) {
+                                         ValidateUsernameCallback callback) {
         RestRequest.Listener listener = new RestRequest.Listener() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -406,26 +406,26 @@ public class PeopleUtils {
                             errorredUsernameCount++;
 
                             switch (userError.optString("code")) {
-                                case "invalid_input":
-                                    switch (userError.optString("message")) {
-                                        case "Invalid email":
-                                            callback.onUsernameValidation(username, ValidationResult.INVALID_EMAIL);
-                                            continue;
-                                        case "User not found":
-                                            // fall through to the default case
-                                        default:
-                                            callback.onUsernameValidation(username, ValidationResult.USER_NOT_FOUND);
-                                            continue;
-                                    }
-                                case "invalid_input_has_role":
-                                    callback.onUsernameValidation(username, ValidationResult.ALREADY_MEMBER);
+                            case "invalid_input":
+                                switch (userError.optString("message")) {
+                                case "Invalid email":
+                                    callback.onUsernameValidation(username, ValidationResult.INVALID_EMAIL);
                                     continue;
-                                case "invalid_input_following":
-                                    callback.onUsernameValidation(username, ValidationResult.ALREADY_FOLLOWING);
+                                case "User not found":
+                                // fall through to the default case
+                                default:
+                                    callback.onUsernameValidation(username, ValidationResult.USER_NOT_FOUND);
                                     continue;
-                                case "invalid_user_blocked_invites":
-                                    callback.onUsernameValidation(username, ValidationResult.BLOCKED_INVITES);
-                                    continue;
+                                }
+                            case "invalid_input_has_role":
+                                callback.onUsernameValidation(username, ValidationResult.ALREADY_MEMBER);
+                                continue;
+                            case "invalid_input_following":
+                                callback.onUsernameValidation(username, ValidationResult.ALREADY_FOLLOWING);
+                                continue;
+                            case "invalid_user_blocked_invites":
+                                callback.onUsernameValidation(username, ValidationResult.BLOCKED_INVITES);
+                                continue;
                             }
 
                             callback.onError();

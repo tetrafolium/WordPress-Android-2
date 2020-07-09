@@ -43,8 +43,8 @@ public class PublicizeWebViewFragment extends PublicizeBaseFragment {
      * new connection to the service
      */
     public static PublicizeWebViewFragment newInstance(@NonNull SiteModel site,
-                                                       @NonNull PublicizeService service,
-                                                       PublicizeConnection connection) {
+            @NonNull PublicizeService service,
+            PublicizeConnection connection) {
         Bundle args = new Bundle();
         args.putSerializable(WordPress.SITE, site);
         args.putString(PublicizeConstants.ARG_SERVICE_ID, service.getId());
@@ -143,11 +143,11 @@ public class PublicizeWebViewFragment extends PublicizeBaseFragment {
 
         // request must be authenticated with wp.com credentials
         String postData = WPWebViewActivity.getAuthenticationPostData(
-                WPWebViewActivity.WPCOM_LOGIN_URL,
-                connectUrl,
-                mAccountStore.getAccount().getUserName(),
-                "",
-                mAccountStore.getAccessToken());
+                              WPWebViewActivity.WPCOM_LOGIN_URL,
+                              connectUrl,
+                              mAccountStore.getAccount().getUserName(),
+                              "",
+                              mAccountStore.getAccessToken());
 
         mWebView.postUrl(WPWebViewActivity.WPCOM_LOGIN_URL, postData.getBytes());
     }
@@ -167,13 +167,13 @@ public class PublicizeWebViewFragment extends PublicizeBaseFragment {
             if (isAdded() && url != null) {
                 Uri uri = Uri.parse(url);
                 if (uri.getHost().equals("public-api.wordpress.com")
-                    && uri.getPath().equals("/connect/")
-                    && uri.getQueryParameter("action").equals("verify")) {
+                        && uri.getPath().equals("/connect/")
+                        && uri.getQueryParameter("action").equals("verify")) {
                     // "denied" param will appear on failure or cancellation
                     String denied = uri.getQueryParameter("denied");
                     if (!TextUtils.isEmpty(denied)) {
                         EventBus.getDefault().post(new PublicizeEvents.ActionCompleted(false,
-                                ConnectAction.CONNECT, mServiceId));
+                                                   ConnectAction.CONNECT, mServiceId));
                         return;
                     }
 

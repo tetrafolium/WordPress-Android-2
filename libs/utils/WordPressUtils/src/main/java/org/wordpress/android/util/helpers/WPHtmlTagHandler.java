@@ -25,32 +25,32 @@ public class WPHtmlTagHandler implements Html.TagHandler {
                           final XMLReader xmlReader) {
         if (tag != null) {
             switch (tag) {
-                case "WPUL":
-                    if (opening) {
-                        mListParents.add("ul");
-                    } else {
-                        mListParents.remove("ul");
-                    }
-                    break;
-                case "WPOL":
-                    if (opening) {
-                        mListParents.add("ol");
-                    } else {
-                        mListParents.remove("ol");
-                    }
-                    break;
-                case "WPLI":
-                    if (!opening) {
-                        handleListTag(output);
-                    }
-                    break;
-                case "dd":
-                    if (opening) {
-                        mListParents.add("dd");
-                    } else {
-                        mListParents.remove("dd");
-                    }
-                    break;
+            case "WPUL":
+                if (opening) {
+                    mListParents.add("ul");
+                } else {
+                    mListParents.remove("ul");
+                }
+                break;
+            case "WPOL":
+                if (opening) {
+                    mListParents.add("ol");
+                } else {
+                    mListParents.remove("ol");
+                }
+                break;
+            case "WPLI":
+                if (!opening) {
+                    handleListTag(output);
+                }
+                break;
+            case "dd":
+                if (opening) {
+                    mListParents.add("dd");
+                } else {
+                    mListParents.remove("dd");
+                }
+                break;
             }
         }
     }

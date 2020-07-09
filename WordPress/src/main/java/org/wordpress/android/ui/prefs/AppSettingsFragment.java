@@ -48,7 +48,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 public class AppSettingsFragment extends PreferenceFragment
-        implements OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
+    implements OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
     public static final int LANGUAGE_CHANGED = 1000;
 
     private DetailListPreference mLanguagePreference;
@@ -77,25 +77,25 @@ public class AppSettingsFragment extends PreferenceFragment
         addPreferencesFromResource(R.xml.app_settings);
 
         findPreference(getString(R.string.pref_key_send_usage)).setOnPreferenceChangeListener(
-                new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        if (newValue == null) {
-                            return false;
-                        }
-                        boolean hasUserOptedOut = !(boolean) newValue;
-                        AnalyticsUtils.updateAnalyticsPreference(
-                                getActivity(),
-                                mDispatcher,
-                                mAccountStore,
-                                hasUserOptedOut);
-
-
-                        CrashLoggingUtils.stopCrashLogging();
-
-                        return true;
-                    }
+        new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue == null) {
+                    return false;
                 }
+                boolean hasUserOptedOut = !(boolean) newValue;
+                AnalyticsUtils.updateAnalyticsPreference(
+                    getActivity(),
+                    mDispatcher,
+                    mAccountStore,
+                    hasUserOptedOut);
+
+
+                CrashLoggingUtils.stopCrashLogging();
+
+                return true;
+            }
+        }
         );
         updateAnalyticsSyncUI();
 
@@ -103,38 +103,38 @@ public class AppSettingsFragment extends PreferenceFragment
         mLanguagePreference.setOnPreferenceChangeListener(this);
 
         findPreference(getString(R.string.pref_key_language))
-                .setOnPreferenceClickListener(this);
+        .setOnPreferenceClickListener(this);
         findPreference(getString(R.string.pref_key_device_settings))
-                .setOnPreferenceClickListener(this);
+        .setOnPreferenceClickListener(this);
         findPreference(getString(R.string.pref_key_app_about))
-                .setOnPreferenceClickListener(this);
+        .setOnPreferenceClickListener(this);
         findPreference(getString(R.string.pref_key_oss_licenses))
-                .setOnPreferenceClickListener(this);
+        .setOnPreferenceClickListener(this);
 
         mOptimizedImage =
-                (WPSwitchPreference) WPPrefUtils
-                        .getPrefAndSetChangeListener(this, R.string.pref_key_optimize_image, this);
+            (WPSwitchPreference) WPPrefUtils
+            .getPrefAndSetChangeListener(this, R.string.pref_key_optimize_image, this);
         mImageMaxSizePref = (DetailListPreference) WPPrefUtils
-                .getPrefAndSetChangeListener(this, R.string.pref_key_site_image_width, this);
+                            .getPrefAndSetChangeListener(this, R.string.pref_key_site_image_width, this);
         mImageQualityPref =
-                (DetailListPreference) WPPrefUtils
-                        .getPrefAndSetChangeListener(this, R.string.pref_key_site_image_quality, this);
+            (DetailListPreference) WPPrefUtils
+            .getPrefAndSetChangeListener(this, R.string.pref_key_site_image_quality, this);
         mOptimizedVideo =
-                (WPSwitchPreference) WPPrefUtils
-                        .getPrefAndSetChangeListener(this, R.string.pref_key_optimize_video, this);
+            (WPSwitchPreference) WPPrefUtils
+            .getPrefAndSetChangeListener(this, R.string.pref_key_optimize_video, this);
 
         mVideoWidthPref =
-                (DetailListPreference) WPPrefUtils
-                        .getPrefAndSetChangeListener(this, R.string.pref_key_site_video_width, this);
+            (DetailListPreference) WPPrefUtils
+            .getPrefAndSetChangeListener(this, R.string.pref_key_site_video_width, this);
         mVideoEncorderBitratePref =
-                (DetailListPreference) WPPrefUtils
-                        .getPrefAndSetChangeListener(this, R.string.pref_key_site_video_encoder_bitrate, this);
+            (DetailListPreference) WPPrefUtils
+            .getPrefAndSetChangeListener(this, R.string.pref_key_site_video_encoder_bitrate, this);
         mPrivacySettings = (PreferenceScreen) WPPrefUtils
-                .getPrefAndSetClickListener(this, R.string.pref_key_privacy_settings, this);
+                           .getPrefAndSetClickListener(this, R.string.pref_key_privacy_settings, this);
 
         mStripImageLocation =
-                (WPSwitchPreference) WPPrefUtils
-                        .getPrefAndSetChangeListener(this, R.string.pref_key_strip_image_location, this);
+            (WPSwitchPreference) WPPrefUtils
+            .getPrefAndSetChangeListener(this, R.string.pref_key_strip_image_location, this);
 
         // Set Local settings
         mOptimizedImage.setChecked(AppPrefs.isImageOptimize());
@@ -162,9 +162,9 @@ public class AppSettingsFragment extends PreferenceFragment
 
     private void removeExperimentalCategory() {
         PreferenceCategory experimentalPreferenceCategory =
-                (PreferenceCategory) findPreference(getString(R.string.pref_key_experimental_section));
+            (PreferenceCategory) findPreference(getString(R.string.pref_key_experimental_section));
         PreferenceScreen preferenceScreen =
-                (PreferenceScreen) findPreference(getString(R.string.pref_key_app_settings_root));
+            (PreferenceScreen) findPreference(getString(R.string.pref_key_app_settings_root));
         preferenceScreen.removePreference(experimentalPreferenceCategory);
     }
 
@@ -206,17 +206,17 @@ public class AppSettingsFragment extends PreferenceFragment
 
         if (event.isError()) {
             switch (event.error.type) {
-                case SETTINGS_FETCH_GENERIC_ERROR:
-                    ToastUtils
-                            .showToast(getActivity(), R.string.error_fetch_account_settings, ToastUtils.Duration.LONG);
-                    break;
-                case SETTINGS_FETCH_REAUTHORIZATION_REQUIRED_ERROR:
-                    ToastUtils.showToast(getActivity(), R.string.error_disabled_apis,
-                            ToastUtils.Duration.LONG);
-                    break;
-                case SETTINGS_POST_ERROR:
-                    ToastUtils.showToast(getActivity(), R.string.error_post_account_settings, ToastUtils.Duration.LONG);
-                    break;
+            case SETTINGS_FETCH_GENERIC_ERROR:
+                ToastUtils
+                .showToast(getActivity(), R.string.error_fetch_account_settings, ToastUtils.Duration.LONG);
+                break;
+            case SETTINGS_FETCH_REAUTHORIZATION_REQUIRED_ERROR:
+                ToastUtils.showToast(getActivity(), R.string.error_disabled_apis,
+                                     ToastUtils.Duration.LONG);
+                break;
+            case SETTINGS_POST_ERROR:
+                ToastUtils.showToast(getActivity(), R.string.error_post_account_settings, ToastUtils.Duration.LONG);
+                break;
             }
         } else if (event.causeOfChange == AccountAction.FETCH_SETTINGS) {
             // no need to sync with remote here, or do anything else here, since the logic is already in WordPress.java
@@ -230,7 +230,7 @@ public class AppSettingsFragment extends PreferenceFragment
             return;
         }
         if (mAccountStore.hasAccessToken()) {
-        SwitchPreference tracksOptOutPreference =
+            SwitchPreference tracksOptOutPreference =
                 (SwitchPreference) findPreference(getString(R.string.pref_key_send_usage));
             tracksOptOutPreference.setChecked(!mAccountStore.getAccount().getTracksOptOut());
         }
@@ -301,8 +301,8 @@ public class AppSettingsFragment extends PreferenceFragment
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                getActivity().finish();
+        case android.R.id.home:
+            getActivity().finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -349,7 +349,7 @@ public class AppSettingsFragment extends PreferenceFragment
         String[] availableLocales = getResources().getStringArray(R.array.available_languages);
 
         Pair<String[], String[]> pair =
-                LocaleManager.createSortedLanguageDisplayStrings(availableLocales, languageLocale);
+            LocaleManager.createSortedLanguageDisplayStrings(availableLocales, languageLocale);
         // check for a possible NPE
         if (pair == null) {
             return;

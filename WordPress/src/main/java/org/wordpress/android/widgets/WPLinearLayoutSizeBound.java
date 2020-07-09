@@ -21,7 +21,7 @@ public class WPLinearLayoutSizeBound extends LinearLayout {
     public WPLinearLayoutSizeBound(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = getContext().obtainStyledAttributes(attrs,
-                                                           R.styleable.WPLinearLayoutSizeBound);
+                       R.styleable.WPLinearLayoutSizeBound);
         mMaxWidth = a.getDimensionPixelSize(R.styleable.WPLinearLayoutSizeBound_maxWidth,
                                             Integer.MAX_VALUE);
         mMaxHeight = a.getDimensionPixelSize(R.styleable.WPLinearLayoutSizeBound_maxHeight,

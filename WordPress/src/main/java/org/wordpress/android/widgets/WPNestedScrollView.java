@@ -49,7 +49,7 @@ public class WPNestedScrollView extends NestedScrollView {
         if (getChildCount() > 0) {
             View child = getChildAt(0);
             scrollRange = Math.max(0,
-                    child.getHeight() - (getHeight() - getPaddingBottom() - getPaddingTop()));
+                                   child.getHeight() - (getHeight() - getPaddingBottom() - getPaddingTop()));
         }
         return scrollRange;
     }
@@ -67,29 +67,29 @@ public class WPNestedScrollView extends NestedScrollView {
             int viewportHeight;
             int targetScrollY;
             switch (action) {
-                case AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD:
-                    nsvHost.fling(0);
-                    viewportHeight = nsvHost.getHeight() - nsvHost.getPaddingBottom()
-                                               - nsvHost.getPaddingTop();
-                    targetScrollY = Math.min(nsvHost.getScrollY() + viewportHeight,
-                            nsvHost.getScrollRange());
-                    if (targetScrollY != nsvHost.getScrollY()) {
-                        nsvHost.smoothScrollTo(0, targetScrollY);
-                        return true;
-                    }
+            case AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD:
+                nsvHost.fling(0);
+                viewportHeight = nsvHost.getHeight() - nsvHost.getPaddingBottom()
+                                 - nsvHost.getPaddingTop();
+                targetScrollY = Math.min(nsvHost.getScrollY() + viewportHeight,
+                                         nsvHost.getScrollRange());
+                if (targetScrollY != nsvHost.getScrollY()) {
+                    nsvHost.smoothScrollTo(0, targetScrollY);
+                    return true;
+                }
 
-                    return false;
-                case AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD:
-                    nsvHost.fling(0);
-                    viewportHeight = nsvHost.getHeight() - nsvHost.getPaddingBottom()
-                                               - nsvHost.getPaddingTop();
-                    targetScrollY = Math.max(nsvHost.getScrollY() - viewportHeight, 0);
-                    if (targetScrollY != nsvHost.getScrollY()) {
-                        nsvHost.smoothScrollTo(0, targetScrollY);
-                        return true;
-                    }
+                return false;
+            case AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD:
+                nsvHost.fling(0);
+                viewportHeight = nsvHost.getHeight() - nsvHost.getPaddingBottom()
+                                 - nsvHost.getPaddingTop();
+                targetScrollY = Math.max(nsvHost.getScrollY() - viewportHeight, 0);
+                if (targetScrollY != nsvHost.getScrollY()) {
+                    nsvHost.smoothScrollTo(0, targetScrollY);
+                    return true;
+                }
 
-                    return false;
+                return false;
             }
             return false;
         }

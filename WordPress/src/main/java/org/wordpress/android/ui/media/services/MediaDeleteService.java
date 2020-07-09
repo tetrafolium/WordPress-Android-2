@@ -146,18 +146,18 @@ public class MediaDeleteService extends Service {
 
     private void handleMediaChangedSuccess(@NonNull OnMediaChanged event) {
         switch (event.cause) {
-            case DELETE_MEDIA:
-                if (mCurrentDelete != null) {
-                    AppLog.d(T.MEDIA, mCurrentDelete.getTitle() + " successfully deleted!");
-                    completeCurrentDelete();
-                }
-                break;
-            case REMOVE_MEDIA:
-                if (mCurrentDelete != null) {
-                    AppLog.d(T.MEDIA, "Successfully deleted " + mCurrentDelete.getTitle());
-                    completeCurrentDelete();
-                }
-                break;
+        case DELETE_MEDIA:
+            if (mCurrentDelete != null) {
+                AppLog.d(T.MEDIA, mCurrentDelete.getTitle() + " successfully deleted!");
+                completeCurrentDelete();
+            }
+            break;
+        case REMOVE_MEDIA:
+            if (mCurrentDelete != null) {
+                AppLog.d(T.MEDIA, "Successfully deleted " + mCurrentDelete.getTitle());
+                completeCurrentDelete();
+            }
+            break;
         }
     }
 
@@ -165,31 +165,31 @@ public class MediaDeleteService extends Service {
         MediaModel media = event.mediaList.get(0);
 
         switch (event.error.type) {
-            case AUTHORIZATION_REQUIRED:
-                AppLog.v(T.MEDIA, "Authorization required. Stopping MediaDeleteService.");
-                // stop delete service until authorized to perform actions on site
-                stopSelf();
+        case AUTHORIZATION_REQUIRED:
+            AppLog.v(T.MEDIA, "Authorization required. Stopping MediaDeleteService.");
+            // stop delete service until authorized to perform actions on site
+            stopSelf();
+            break;
+        case NULL_MEDIA_ARG:
+            // shouldn't happen, get back to deleting the queue
+            AppLog.d(T.MEDIA, "Null media argument supplied, skipping current delete.");
+            completeCurrentDelete();
+            break;
+        case NOT_FOUND:
+            if (media == null) {
                 break;
-            case NULL_MEDIA_ARG:
-                // shouldn't happen, get back to deleting the queue
-                AppLog.d(T.MEDIA, "Null media argument supplied, skipping current delete.");
-                completeCurrentDelete();
-                break;
-            case NOT_FOUND:
-                if (media == null) {
-                    break;
-                }
-                AppLog.d(T.MEDIA, "Could not find media (id=" + media.getMediaId() + "). on remote");
-                // remove media from local database
-                mDispatcher.dispatch(MediaActionBuilder.newRemoveMediaAction(mCurrentDelete));
-                break;
-            case PARSE_ERROR:
-                AppLog.d(T.MEDIA, "Error parsing reponse to " + event.cause.toString() + ".");
-                completeCurrentDelete();
-                break;
-            default:
-                completeCurrentDelete();
-                break;
+            }
+            AppLog.d(T.MEDIA, "Could not find media (id=" + media.getMediaId() + "). on remote");
+            // remove media from local database
+            mDispatcher.dispatch(MediaActionBuilder.newRemoveMediaAction(mCurrentDelete));
+            break;
+        case PARSE_ERROR:
+            AppLog.d(T.MEDIA, "Error parsing reponse to " + event.cause.toString() + ".");
+            completeCurrentDelete();
+            break;
+        default:
+            completeCurrentDelete();
+            break;
         }
     }
 

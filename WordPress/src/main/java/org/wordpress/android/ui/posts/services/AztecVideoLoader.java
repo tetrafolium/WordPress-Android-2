@@ -58,6 +58,6 @@ public class AztecVideoLoader implements Html.VideoThumbnailGetter {
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(mContext.getResources(), thumb);
                 callbacks.onThumbnailLoaded(bitmapDrawable);
             }
-        }.execute();
+        } .execute();
     }
 }

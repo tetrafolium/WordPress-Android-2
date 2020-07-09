@@ -25,12 +25,12 @@ public class AniUtils {
 
         public long toMillis(Context context) {
             switch (this) {
-                case LONG:
-                    return context.getResources().getInteger(android.R.integer.config_longAnimTime);
-                case MEDIUM:
-                    return context.getResources().getInteger(android.R.integer.config_mediumAnimTime);
-                default:
-                    return context.getResources().getInteger(android.R.integer.config_shortAnimTime);
+            case LONG:
+                return context.getResources().getInteger(android.R.integer.config_longAnimTime);
+            case MEDIUM:
+                return context.getResources().getInteger(android.R.integer.config_mediumAnimTime);
+            default:
+                return context.getResources().getInteger(android.R.integer.config_shortAnimTime);
             }
         }
     }
@@ -83,7 +83,7 @@ public class AniUtils {
 
         Context context = view.getContext();
         int fabHeight = context.getResources()
-                       .getDimensionPixelSize(R.dimen.design_fab_size);
+                        .getDimensionPixelSize(R.dimen.design_fab_size);
         int fabMargin = context.getResources().getDimensionPixelSize(R.dimen.fab_margin);
         int max = (fabHeight + fabMargin) * 2;
         float fromY = (show ? max : 0f);
@@ -152,10 +152,10 @@ public class AniUtils {
             toY = (show ? 0f : 1f);
         }
         Animation animation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.0f,
-                Animation.RELATIVE_TO_SELF, fromY,
-                Animation.RELATIVE_TO_SELF, toY);
+            Animation.RELATIVE_TO_SELF, 0.0f,
+            Animation.RELATIVE_TO_SELF, 0.0f,
+            Animation.RELATIVE_TO_SELF, fromY,
+            Animation.RELATIVE_TO_SELF, toY);
 
         long durationMillis = duration.toMillis(view.getContext());
         animation.setDuration(durationMillis);

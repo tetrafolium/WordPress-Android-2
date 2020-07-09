@@ -113,14 +113,14 @@ public class GCMMessageService extends FirebaseMessagingService {
 
     // Add to the analytics properties map a subset of the push notification payload.
     private static final String[] PROPERTIES_TO_COPY_INTO_ANALYTICS =
-            {PUSH_ARG_NOTE_ID, PUSH_ARG_TYPE, "blog_id", "post_id", "comment_id"};
+    {PUSH_ARG_NOTE_ID, PUSH_ARG_TYPE, "blog_id", "post_id", "comment_id"};
 
     private void synchronizedHandleDefaultPush(@NonNull Map<String, String> data) {
         // ACTIVE_NOTIFICATIONS_MAP being static, we can't just synchronize the method
         AnalyticsTracker.track(AnalyticsTracker.Stat.NOTIFICATION_RECEIVED_PROCESSING_START);
         synchronized (GCMMessageService.class) {
             NOTIFICATION_HELPER.handleDefaultPush(
-                    this, convertMapToBundle(data), mAccountStore.getAccount().getUserId());
+                this, convertMapToBundle(data), mAccountStore.getAccount().getUserId());
         }
         AnalyticsTracker.track(AnalyticsTracker.Stat.NOTIFICATION_RECEIVED_PROCESSING_END);
     }
@@ -161,7 +161,7 @@ public class GCMMessageService extends FirebaseMessagingService {
     }
 
     public static synchronized void rebuildAndUpdateNotificationsOnSystemBarForThisNote(Context context,
-                                                                                        String noteId) {
+            String noteId) {
         if (ACTIVE_NOTIFICATIONS_MAP.size() > 0) {
             // get the corresponding bundle for this noteId
             // using a copy of the ArrayMap to iterate over on, as we might need to modify the original array
@@ -187,7 +187,7 @@ public class GCMMessageService extends FirebaseMessagingService {
         if (ACTIVE_NOTIFICATIONS_MAP.size() > 0) {
             // get the corresponding bundle for this noteId
             for (Iterator<Map.Entry<Integer, Bundle>> it = ACTIVE_NOTIFICATIONS_MAP.entrySet().iterator();
-                 it.hasNext();) {
+                    it.hasNext();) {
                 Map.Entry<Integer, Bundle> row = it.next();
                 Bundle noteBundle = row.getValue();
                 if (noteBundle.getString(PUSH_ARG_NOTE_ID, "").equals(noteId)) {
@@ -280,7 +280,7 @@ public class GCMMessageService extends FirebaseMessagingService {
     // NoteID is the ID if the note in WordPress
     public static synchronized void bumpPushNotificationsTappedAnalytics(String noteID) {
         for (Iterator<Map.Entry<Integer, Bundle>> it = ACTIVE_NOTIFICATIONS_MAP.entrySet().iterator();
-             it.hasNext();) {
+                it.hasNext();) {
             Map.Entry<Integer, Bundle> row = it.next();
             Bundle noteBundle = row.getValue();
             if (noteBundle.getString(PUSH_ARG_NOTE_ID, "").equals(noteID)) {
@@ -294,7 +294,7 @@ public class GCMMessageService extends FirebaseMessagingService {
     // Mark all notifications as tapped
     public static synchronized void bumpPushNotificationsTappedAllAnalytics() {
         for (Iterator<Map.Entry<Integer, Bundle>> it = ACTIVE_NOTIFICATIONS_MAP.entrySet().iterator();
-             it.hasNext();) {
+                it.hasNext();) {
             Map.Entry<Integer, Bundle> row = it.next();
             Bundle noteBundle = row.getValue();
             bumpPushNotificationsAnalytics(Stat.PUSH_NOTIFICATION_TAPPED, noteBundle, null);
@@ -303,7 +303,7 @@ public class GCMMessageService extends FirebaseMessagingService {
     }
 
     private static void bumpPushNotificationsAnalytics(Stat stat, Bundle noteBundle,
-                                                       Map<String, Object> properties) {
+            Map<String, Object> properties) {
         // Bump Analytics for PNs if "Show notifications" setting is checked (default). Skip otherwise.
         if (!NotificationsUtils.isNotificationsEnabled(WordPress.getContext())) {
             return;
@@ -409,19 +409,19 @@ public class GCMMessageService extends FirebaseMessagingService {
             }
             String message = StringEscapeUtils.unescapeHtml4(data.getString(PUSH_ARG_MSG));
 
-        /*
-         * if this has the same note_id as the previous notification, and the previous notification
-         * was received within the last second, then skip showing it - this handles duplicate
-         * notifications being shown due to the device being registered multiple times with different tokens.
-         * (still investigating how this could happen - 21-Oct-13)
-         *
-         * this also handles the (rare) case where the user receives rapid-fire sub-second like notifications
-         * due to sudden popularity (post gets added to FP and is liked by many people all at once, etc.),
-         * which we also want to avoid since it would drain the battery and annoy the user
-         *
-         * NOTE: different comments on the same post will have a different note_id, but different likes
-         * on the same post will have the same note_id, so don't assume that the note_id is unique
-         */
+            /*
+             * if this has the same note_id as the previous notification, and the previous notification
+             * was received within the last second, then skip showing it - this handles duplicate
+             * notifications being shown due to the device being registered multiple times with different tokens.
+             * (still investigating how this could happen - 21-Oct-13)
+             *
+             * this also handles the (rare) case where the user receives rapid-fire sub-second like notifications
+             * due to sudden popularity (post gets added to FP and is liked by many people all at once, etc.),
+             * which we also want to avoid since it would drain the battery and annoy the user
+             *
+             * NOTE: different comments on the same post will have a different note_id, but different likes
+             * on the same post will have the same note_id, so don't assume that the note_id is unique
+             */
             long thisTime = System.currentTimeMillis();
             if (AppPrefs.getLastPushNotificationWpcomNoteId().equals(wpcomNoteID)) {
                 long seconds = TimeUnit.MILLISECONDS.toSeconds(thisTime - AppPrefs.getLastPushNotificationTime());
@@ -472,7 +472,7 @@ public class GCMMessageService extends FirebaseMessagingService {
             // Build the new notification, add group to support wearable stacking
             NotificationCompat.Builder builder = getNotificationBuilder(context, title, message);
             Bitmap largeIconBitmap =
-                    getLargeIconBitmap(context, data.getString("icon"), shouldCircularizeNoteIcon(noteType));
+                getLargeIconBitmap(context, data.getString("icon"), shouldCircularizeNoteIcon(noteType));
             if (largeIconBitmap != null) {
                 builder.setLargeIcon(largeIconBitmap);
             }
@@ -491,7 +491,7 @@ public class GCMMessageService extends FirebaseMessagingService {
         }
 
         private void addActionsForCommentNotification(Context context, NotificationCompat.Builder builder,
-                                                      String noteId) {
+                String noteId) {
             // Add some actions if this is a comment notification
             boolean areActionsSet = false;
             Note note = NotificationsTable.getNoteById(noteId);
@@ -524,7 +524,7 @@ public class GCMMessageService extends FirebaseMessagingService {
         }
 
         private void addCommentReplyActionForCommentNotification(Context context, NotificationCompat.Builder builder,
-                                                                 String noteId) {
+                String noteId) {
             // adding comment reply action
             Intent commentReplyIntent = getCommentActionReplyIntent(context, noteId);
             commentReplyIntent.addCategory(KEY_CATEGORY_COMMENT_REPLY);
@@ -534,7 +534,7 @@ public class GCMMessageService extends FirebaseMessagingService {
                 commentReplyIntent.putExtra(NotificationsProcessingService.ARG_NOTE_ID, noteId);
             }
             commentReplyIntent
-                    .putExtra(NotificationsProcessingService.ARG_NOTE_BUNDLE, getCurrentNoteBundleForNoteId(noteId));
+            .putExtra(NotificationsProcessingService.ARG_NOTE_BUNDLE, getCurrentNoteBundleForNoteId(noteId));
 
 
             PendingIntent commentReplyPendingIntent = getCommentActionPendingIntent(context, commentReplyIntent);
@@ -543,8 +543,8 @@ public class GCMMessageService extends FirebaseMessagingService {
             // Using backward compatibility with NotificationCompat.
             String replyLabel = context.getString(R.string.reply);
             RemoteInput remoteInput = new RemoteInput.Builder(EXTRA_VOICE_OR_INLINE_REPLY)
-                    .setLabel(replyLabel)
-                    .build();
+            .setLabel(replyLabel)
+            .build();
             NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_reply_white_24dp,
                     context.getString(R.string.reply), commentReplyPendingIntent).addRemoteInput(remoteInput).build();
             // now add the action corresponding to direct-reply
@@ -552,7 +552,7 @@ public class GCMMessageService extends FirebaseMessagingService {
         }
 
         private void addCommentLikeActionForCommentNotification(Context context, NotificationCompat.Builder builder,
-                                                                String noteId) {
+                String noteId) {
             // adding comment like action
             Intent commentLikeIntent = getCommentActionIntent(context);
             commentLikeIntent.addCategory(KEY_CATEGORY_COMMENT_LIKE);
@@ -562,15 +562,15 @@ public class GCMMessageService extends FirebaseMessagingService {
                 commentLikeIntent.putExtra(NotificationsProcessingService.ARG_NOTE_ID, noteId);
             }
             commentLikeIntent
-                    .putExtra(NotificationsProcessingService.ARG_NOTE_BUNDLE, getCurrentNoteBundleForNoteId(noteId));
+            .putExtra(NotificationsProcessingService.ARG_NOTE_BUNDLE, getCurrentNoteBundleForNoteId(noteId));
 
             PendingIntent commentLikePendingIntent = getCommentActionPendingIntentForService(context,
-                                                                                             commentLikeIntent);
+                    commentLikeIntent);
             builder.addAction(R.drawable.ic_star_white_24dp, context.getText(R.string.like), commentLikePendingIntent);
         }
 
         private void addCommentApproveActionForCommentNotification(Context context, NotificationCompat.Builder builder,
-                                                                   String noteId) {
+                String noteId) {
             // adding comment approve action
             Intent commentApproveIntent = getCommentActionIntent(context);
             commentApproveIntent.addCategory(KEY_CATEGORY_COMMENT_MODERATE);
@@ -580,10 +580,10 @@ public class GCMMessageService extends FirebaseMessagingService {
                 commentApproveIntent.putExtra(NotificationsProcessingService.ARG_NOTE_ID, noteId);
             }
             commentApproveIntent
-                    .putExtra(NotificationsProcessingService.ARG_NOTE_BUNDLE, getCurrentNoteBundleForNoteId(noteId));
+            .putExtra(NotificationsProcessingService.ARG_NOTE_BUNDLE, getCurrentNoteBundleForNoteId(noteId));
 
             PendingIntent commentApprovePendingIntent = getCommentActionPendingIntentForService(context,
-                                                                                                commentApproveIntent);
+                    commentApproveIntent);
             builder.addAction(R.drawable.ic_checkmark_white_24dp, context.getText(R.string.approve),
                               commentApprovePendingIntent);
         }
@@ -638,7 +638,7 @@ public class GCMMessageService extends FirebaseMessagingService {
                 try {
                     iconUrl = URLDecoder.decode(iconUrl, "UTF-8");
                     int largeIconSize = context.getResources().getDimensionPixelSize(
-                            android.R.dimen.notification_large_icon_height);
+                                            android.R.dimen.notification_large_icon_height);
                     String resizedUrl = PhotonUtils.getPhotonImageUrl(iconUrl, largeIconSize, largeIconSize);
                     largeIconBitmap = ImageUtils.downloadBitmap(resizedUrl);
                     if (largeIconBitmap != null && shouldCircularizeIcon) {
@@ -654,20 +654,20 @@ public class GCMMessageService extends FirebaseMessagingService {
         private NotificationCompat.Builder getNotificationBuilder(Context context, String title, String message) {
             // Build the new notification, add group to support wearable stacking
             return new NotificationCompat.Builder(context,
-                    context.getString(R.string.notification_channel_normal_id))
-                    .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
-                    .setColor(context.getResources().getColor(R.color.primary_50))
-                    .setContentTitle(title)
-                    .setContentText(message)
-                    .setTicker(message)
-                    .setOnlyAlertOnce(true)
-                    .setAutoCancel(true)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                    .setGroup(NOTIFICATION_GROUP_KEY);
+                                                  context.getString(R.string.notification_channel_normal_id))
+                   .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
+                   .setColor(context.getResources().getColor(R.color.primary_50))
+                   .setContentTitle(title)
+                   .setContentText(message)
+                   .setTicker(message)
+                   .setOnlyAlertOnce(true)
+                   .setAutoCancel(true)
+                   .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                   .setGroup(NOTIFICATION_GROUP_KEY);
         }
 
         private void showGroupNotificationForBuilder(Context context, NotificationCompat.Builder builder,
-                                                     String wpcomNoteID, String message) {
+                String wpcomNoteID, String message) {
             if (builder == null || context == null) {
                 return;
             }
@@ -702,36 +702,36 @@ public class GCMMessageService extends FirebaseMessagingService {
 
                 if (tmpMap.size() > MAX_INBOX_ITEMS) {
                     inboxStyle.setSummaryText(String.format(context.getString(R.string.more_notifications),
-                            tmpMap.size() - MAX_INBOX_ITEMS));
+                                                            tmpMap.size() - MAX_INBOX_ITEMS));
                 }
 
                 String subject =
-                        String.format(context.getString(R.string.new_notifications), tmpMap.size());
+                    String.format(context.getString(R.string.new_notifications), tmpMap.size());
                 NotificationCompat.Builder groupBuilder = new NotificationCompat.Builder(context,
                         context.getString(R.string.notification_channel_normal_id))
-                        .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
-                        .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
-                        .setColor(context.getResources().getColor(R.color.primary_50))
-                        .setGroup(NOTIFICATION_GROUP_KEY)
-                        .setGroupSummary(true)
-                        .setAutoCancel(true)
-                        .setTicker(message)
-                        .setContentTitle(context.getString(R.string.app_name))
-                        .setContentText(subject)
-                        .setStyle(inboxStyle);
+                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
+                .setColor(context.getResources().getColor(R.color.primary_50))
+                .setGroup(NOTIFICATION_GROUP_KEY)
+                .setGroupSummary(true)
+                .setAutoCancel(true)
+                .setTicker(message)
+                .setContentTitle(context.getString(R.string.app_name))
+                .setContentText(subject)
+                .setStyle(inboxStyle);
 
                 showWPComNotificationForBuilder(groupBuilder, context, wpcomNoteID, GROUP_NOTIFICATION_ID, false);
             } else {
                 // Set the individual notification we've already built as the group summary
                 builder.setGroupSummary(true)
-                        .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN);
+                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN);
                 showWPComNotificationForBuilder(builder, context, wpcomNoteID, GROUP_NOTIFICATION_ID, false);
             }
         }
 
         private void showSingleNotificationForBuilder(Context context, NotificationCompat.Builder builder,
-                                                      String noteType, String wpcomNoteID, int pushId,
-                                                      boolean notifyUser) {
+                String noteType, String wpcomNoteID, int pushId,
+                boolean notifyUser) {
             if (builder == null || context == null) {
                 return;
             }
@@ -744,7 +744,7 @@ public class GCMMessageService extends FirebaseMessagingService {
         }
 
         private void showWPComNotificationForBuilder(NotificationCompat.Builder builder, Context context,
-                                                     String wpcomNoteID, int pushId, boolean notifyUser) {
+                String wpcomNoteID, int pushId, boolean notifyUser) {
             Intent resultIntent = new Intent(context, WPMainActivity.class);
             resultIntent.putExtra(WPMainActivity.ARG_OPENED_FROM_PUSH, true);
             resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
@@ -766,17 +766,17 @@ public class GCMMessageService extends FirebaseMessagingService {
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             boolean shouldReceiveNotifications =
-                    prefs.getBoolean(context.getString(R.string.wp_pref_notifications_master), true);
+                prefs.getBoolean(context.getString(R.string.wp_pref_notifications_master), true);
 
             if (shouldReceiveNotifications) {
                 if (notifyUser) {
                     boolean shouldVibrate = prefs.getBoolean(
-                            context.getString(R.string.wp_pref_notification_vibrate), false);
+                                                context.getString(R.string.wp_pref_notification_vibrate), false);
                     boolean shouldBlinkLight = prefs.getBoolean(
-                            context.getString(R.string.wp_pref_notification_light), true);
+                                                   context.getString(R.string.wp_pref_notification_light), true);
                     String notificationSound = prefs.getString(
-                       context.getString(R.string.wp_pref_custom_notification_sound),
-                       context.getString(R.string.notification_settings_item_sights_and_sounds_choose_sound_default));
+                                                   context.getString(R.string.wp_pref_custom_notification_sound),
+                                                   context.getString(R.string.notification_settings_item_sights_and_sounds_choose_sound_default));
 
                     if (!TextUtils.isEmpty(notificationSound)
                             && !notificationSound.trim().toLowerCase(Locale.ROOT).startsWith("file://")) {
@@ -784,7 +784,7 @@ public class GCMMessageService extends FirebaseMessagingService {
                     }
 
                     if (shouldVibrate) {
-                        builder.setVibrate(new long[]{500, 500, 500});
+                        builder.setVibrate(new long[] {500, 500, 500});
                     }
                     if (shouldBlinkLight) {
                         builder.setLights(0xff0000ff, 1000, 5000);
@@ -798,14 +798,14 @@ public class GCMMessageService extends FirebaseMessagingService {
 
                 // Call processing service when notification is dismissed
                 PendingIntent pendingDeleteIntent =
-                        NotificationsProcessingService.getPendingIntentForNotificationDismiss(context, pushId);
+                    NotificationsProcessingService.getPendingIntentForNotificationDismiss(context, pushId);
                 builder.setDeleteIntent(pendingDeleteIntent);
 
                 builder.setCategory(NotificationCompat.CATEGORY_SOCIAL);
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, pushId, resultIntent,
-                                                                        PendingIntent.FLAG_CANCEL_CURRENT
-                                                                        | PendingIntent.FLAG_UPDATE_CURRENT);
+                                              PendingIntent.FLAG_CANCEL_CURRENT
+                                              | PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(pendingIntent);
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 notificationManager.notify(pushId, builder.build());
@@ -846,12 +846,12 @@ public class GCMMessageService extends FirebaseMessagingService {
                 Bundle remainingNote = tmpMap.values().iterator().next();
                 if (remainingNote != null) {
                     String remainingNoteTitle =
-                            StringEscapeUtils.unescapeHtml4(remainingNote.getString(PUSH_ARG_TITLE));
+                        StringEscapeUtils.unescapeHtml4(remainingNote.getString(PUSH_ARG_TITLE));
                     if (!TextUtils.isEmpty(remainingNoteTitle)) {
                         title = remainingNoteTitle;
                     }
                     String remainingNoteMessage =
-                            StringEscapeUtils.unescapeHtml4(remainingNote.getString(PUSH_ARG_MSG));
+                        StringEscapeUtils.unescapeHtml4(remainingNote.getString(PUSH_ARG_MSG));
                     if (!TextUtils.isEmpty(remainingNoteMessage)) {
                         message = remainingNoteMessage;
                     }
@@ -865,16 +865,16 @@ public class GCMMessageService extends FirebaseMessagingService {
                     // if not available; finally just set the system's current time if everything
                     // else fails (not likely)
                     long timeStampToShow =
-                            DateTimeUtils.timestampFromIso8601Millis(remainingNote.getString("note_timestamp"));
+                        DateTimeUtils.timestampFromIso8601Millis(remainingNote.getString("note_timestamp"));
                     timeStampToShow = timeStampToShow != 0 ? timeStampToShow
-                            : remainingNote.getLong("google.sent_time", System.currentTimeMillis());
+                                      : remainingNote.getLong("google.sent_time", System.currentTimeMillis());
                     builder.setWhen(timeStampToShow);
 
                     noteType = StringUtils.notNullStr(remainingNote.getString(PUSH_ARG_TYPE));
                     wpcomNoteID = remainingNote.getString(PUSH_ARG_NOTE_ID, "");
                     if (!tmpMap.isEmpty()) {
                         showSingleNotificationForBuilder(context, builder, noteType, wpcomNoteID,
-                                tmpMap.keyAt(0), false);
+                                                         tmpMap.keyAt(0), false);
                     }
                 }
             }
@@ -933,7 +933,7 @@ public class GCMMessageService extends FirebaseMessagingService {
             }
 
             EventBus.getDefault().post(new NotificationEvents.NotificationsChanged(
-                    ACTIVE_NOTIFICATIONS_MAP.size() > 0));
+                                           ACTIVE_NOTIFICATIONS_MAP.size() > 0));
         }
 
         private void handleNoteDeletePN(Context context, Bundle data) {
@@ -953,7 +953,7 @@ public class GCMMessageService extends FirebaseMessagingService {
             }
 
             EventBus.getDefault().post(new NotificationEvents.NotificationsChanged(
-                    ACTIVE_NOTIFICATIONS_MAP.size() > 0));
+                                           ACTIVE_NOTIFICATIONS_MAP.size() > 0));
         }
 
         // Show a notification for two-step auth users who log in from a web browser
@@ -986,18 +986,18 @@ public class GCMMessageService extends FirebaseMessagingService {
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
                     context.getString(R.string.notification_channel_important_id))
-                    .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
-                    .setColor(context.getResources().getColor(R.color.primary_50))
-                    .setContentTitle(title)
-                    .setContentText(message)
-                    .setAutoCancel(true)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                    .setOnlyAlertOnce(true)
-                    .setPriority(NotificationCompat.PRIORITY_MAX);
+            .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
+            .setColor(context.getResources().getColor(R.color.primary_50))
+            .setContentTitle(title)
+            .setContentText(message)
+            .setAutoCancel(true)
+            .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+            .setOnlyAlertOnce(true)
+            .setPriority(NotificationCompat.PRIORITY_MAX);
 
             PendingIntent pendingIntent =
-                    PendingIntent.getActivity(context, AUTH_PUSH_REQUEST_CODE_OPEN_DIALOG, pushAuthIntent,
-                                              PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(context, AUTH_PUSH_REQUEST_CODE_OPEN_DIALOG, pushAuthIntent,
+                                          PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_UPDATE_CURRENT);
             builder.setContentIntent(pendingIntent);
 
 
@@ -1017,8 +1017,8 @@ public class GCMMessageService extends FirebaseMessagingService {
             authApproveIntent.addCategory("android.intent.category.LAUNCHER");
 
             PendingIntent authApprovePendingIntent =
-                    PendingIntent.getActivity(context, AUTH_PUSH_REQUEST_CODE_APPROVE, authApproveIntent,
-                                              PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(context, AUTH_PUSH_REQUEST_CODE_APPROVE, authApproveIntent,
+                                          PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_UPDATE_CURRENT);
 
             builder.addAction(R.drawable.ic_checkmark_white_24dp, context.getText(R.string.approve),
                               authApprovePendingIntent);
@@ -1028,17 +1028,17 @@ public class GCMMessageService extends FirebaseMessagingService {
             authIgnoreIntent.putExtra(NotificationsProcessingService.ARG_ACTION_TYPE,
                                       NotificationsProcessingService.ARG_ACTION_AUTH_IGNORE);
             PendingIntent authIgnorePendingIntent = PendingIntent.getService(context,
-                                                                             AUTH_PUSH_REQUEST_CODE_IGNORE,
-                                                                             authIgnoreIntent,
-                                                                             PendingIntent.FLAG_CANCEL_CURRENT);
+                                                    AUTH_PUSH_REQUEST_CODE_IGNORE,
+                                                    authIgnoreIntent,
+                                                    PendingIntent.FLAG_CANCEL_CURRENT);
             builder.addAction(R.drawable.ic_close_white_24dp, context.getText(R.string.ignore),
                               authIgnorePendingIntent);
 
 
             // Call processing service when notification is dismissed
             PendingIntent pendingDeleteIntent =
-                    NotificationsProcessingService.getPendingIntentForNotificationDismiss(
-                            context, AUTH_PUSH_NOTIFICATION_ID);
+                NotificationsProcessingService.getPendingIntentForNotificationDismiss(
+                    context, AUTH_PUSH_NOTIFICATION_ID);
             builder.setDeleteIntent(pendingDeleteIntent);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -1052,15 +1052,15 @@ public class GCMMessageService extends FirebaseMessagingService {
             }
 
             switch (noteType) {
-                case PUSH_TYPE_COMMENT:
-                case PUSH_TYPE_LIKE:
-                case PUSH_TYPE_COMMENT_LIKE:
-                case PUSH_TYPE_AUTOMATTCHER:
-                case PUSH_TYPE_FOLLOW:
-                case PUSH_TYPE_REBLOG:
-                    return true;
-                default:
-                    return false;
+            case PUSH_TYPE_COMMENT:
+            case PUSH_TYPE_LIKE:
+            case PUSH_TYPE_COMMENT_LIKE:
+            case PUSH_TYPE_AUTOMATTCHER:
+            case PUSH_TYPE_FOLLOW:
+            case PUSH_TYPE_REBLOG:
+                return true;
+            default:
+                return false;
             }
         }
 

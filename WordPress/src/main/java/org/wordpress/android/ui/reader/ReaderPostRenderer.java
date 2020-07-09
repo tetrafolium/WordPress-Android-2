@@ -89,11 +89,11 @@ public class ReaderPostRenderer {
                 Set<String> jsToInject = injectJSForSpecificEmbedSupport();
 
                 final String htmlContent =
-                        formatPostContentForWebView(
-                                mRenderBuilder.toString(),
-                                jsToInject,
-                                hasTiledGallery,
-                                mResourceVars.mIsWideDisplay);
+                    formatPostContentForWebView(
+                        mRenderBuilder.toString(),
+                        jsToInject,
+                        hasTiledGallery,
+                        mResourceVars.mIsWideDisplay);
 
                 mRenderBuilder = null;
                 handler.post(new Runnable() {
@@ -103,7 +103,7 @@ public class ReaderPostRenderer {
                     }
                 });
             }
-        }.start();
+        } .start();
     }
 
     public static boolean hasTiledGallery(String text) {
@@ -277,8 +277,8 @@ public class ReaderPostRenderer {
             ReaderPostDiscoverData discoverData = mPost.getDiscoverData();
             if (discoverData != null && discoverData.getBlogId() != 0 && discoverData.hasBlogName()) {
                 String label = String.format(
-                        WordPress.getContext().getString(R.string.reader_discover_visit_blog),
-                        discoverData.getBlogName());
+                                   WordPress.getContext().getString(R.string.reader_discover_visit_blog),
+                                   discoverData.getBlogName());
                 String url = ReaderUtils.makeBlogPreviewUrl(discoverData.getBlogId());
 
                 String htmlDiscover = "<div id='discover'>"
@@ -303,10 +303,10 @@ public class ReaderPostRenderer {
      */
     private String getFeaturedImageHtml() {
         String imageUrl = ReaderUtils.getResizedImageUrl(
-                mPost.getFeaturedImage(),
-                mResourceVars.mFullSizeImageWidthPx,
-                mResourceVars.mFeaturedImageHeightPx,
-                mPost.isPrivate);
+                              mPost.getFeaturedImage(),
+                              mResourceVars.mFullSizeImageWidthPx,
+                              mResourceVars.mFeaturedImageHeightPx,
+                              mPost.isPrivate);
 
         return "<img class='size-full' src='" + imageUrl + "'/>";
     }
@@ -347,7 +347,7 @@ public class ReaderPostRenderer {
      * returns the full content, including CSS, that will be shown in the WebView for this post
      */
     private String formatPostContentForWebView(final String content, final Set<String> jsToInject,
-                                               boolean hasTiledGallery, boolean isWideDisplay) {
+            boolean hasTiledGallery, boolean isWideDisplay) {
         final boolean renderAsTiledGallery = hasTiledGallery && isWideDisplay;
 
         // unique CSS class assigned to the gallery elements for easy selection
@@ -358,162 +358,162 @@ public class ReaderPostRenderer {
 
         // title isn't necessary, but it's invalid html5 without one
         sbHtml.append("<title>Reader Post</title>")
-              // https://developers.google.com/chrome/mobile/docs/webview/pixelperfect
-              .append("<meta name='viewport' content='width=device-width, initial-scale=1'>")
-              .append("<style type='text/css'>")
-              .append(" body { font-family: 'Noto Serif', serif; font-weight: 400; margin: 0px; padding: 0px;}")
-              .append(" body, p, div { max-width: 100% !important; word-wrap: break-word; }")
-              // set line-height, font-size but not for .tiled-gallery divs when rendering as tiled
-              // gallery as those will be handled with the .tiled-gallery rules bellow.
-              .append(" p, div" + (renderAsTiledGallery ? ":not(." + galleryOnlyClass + ")" : "")
-                      + ", li { line-height: 1.6em; font-size: 100%; }")
-              .append(" h1, h2 { line-height: 1.2em; }")
-              // counteract pre-defined height/width styles, expect for the tiled-gallery divs when rendering as
-              // tiled gallery as those will be handled with the .tiled-gallery rules bellow.
-              .append(" p, div" + (renderAsTiledGallery ? ":not(.tiled-gallery.*)" : "")
-                      + ", dl, table { width: auto !important; height: auto !important; }")
-              // make sure long strings don't force the user to scroll horizontally
-              .append(" body, p, div, a { word-wrap: break-word; }")
-              // use a consistent top/bottom margin for paragraphs, with no top margin for the first one
-              .append(" p { margin-top: ").append(mResourceVars.mMarginMediumPx).append("px;")
-              .append(" margin-bottom: ").append(mResourceVars.mMarginMediumPx).append("px; }")
-              .append(" p:first-child { margin-top: 0px; }")
-              // add background color and padding to pre blocks, and add overflow scrolling
-              // so user can scroll the block if it's wider than the display
-              .append(" pre { overflow-x: scroll;")
-              .append(" background-color: ").append(mResourceVars.mGreyExtraLightStr).append("; ")
-              .append(" padding: ").append(mResourceVars.mMarginMediumPx).append("px; }")
-              // add a left border to blockquotes
-              .append(" blockquote { color: ").append(mResourceVars.mGreyMediumDarkStr).append("; ")
-              .append(" padding-left: 32px; ")
-              .append(" margin-left: 0px; ")
-              .append(" border-left: 3px solid ").append(mResourceVars.mGreyExtraLightStr).append("; }")
-              // show links in the same color they are elsewhere in the app
-              .append(" a { text-decoration: none; color: ").append(mResourceVars.mLinkColorStr).append("; }")
-              // make sure images aren't wider than the display, strictly enforced for images without size
-              .append(" img { max-width: 100%; width: auto; height: auto; }")
-              .append(" img.size-none { max-width: 100% !important; height: auto !important; }")
-              // center large/medium images, provide a small bottom margin, and add a background color
-              // so the user sees something while they're loading
-              .append(" img.size-full, img.size-large, img.size-medium {")
-              .append(" display: block; margin-left: auto; margin-right: auto;")
-              .append(" background-color: ").append(mResourceVars.mGreyExtraLightStr).append(";")
-              .append(" margin-bottom: ").append(mResourceVars.mMarginMediumPx).append("px; }");
+        // https://developers.google.com/chrome/mobile/docs/webview/pixelperfect
+        .append("<meta name='viewport' content='width=device-width, initial-scale=1'>")
+        .append("<style type='text/css'>")
+        .append(" body { font-family: 'Noto Serif', serif; font-weight: 400; margin: 0px; padding: 0px;}")
+        .append(" body, p, div { max-width: 100% !important; word-wrap: break-word; }")
+        // set line-height, font-size but not for .tiled-gallery divs when rendering as tiled
+        // gallery as those will be handled with the .tiled-gallery rules bellow.
+        .append(" p, div" + (renderAsTiledGallery ? ":not(." + galleryOnlyClass + ")" : "")
+                + ", li { line-height: 1.6em; font-size: 100%; }")
+        .append(" h1, h2 { line-height: 1.2em; }")
+        // counteract pre-defined height/width styles, expect for the tiled-gallery divs when rendering as
+        // tiled gallery as those will be handled with the .tiled-gallery rules bellow.
+        .append(" p, div" + (renderAsTiledGallery ? ":not(.tiled-gallery.*)" : "")
+                + ", dl, table { width: auto !important; height: auto !important; }")
+        // make sure long strings don't force the user to scroll horizontally
+        .append(" body, p, div, a { word-wrap: break-word; }")
+        // use a consistent top/bottom margin for paragraphs, with no top margin for the first one
+        .append(" p { margin-top: ").append(mResourceVars.mMarginMediumPx).append("px;")
+        .append(" margin-bottom: ").append(mResourceVars.mMarginMediumPx).append("px; }")
+        .append(" p:first-child { margin-top: 0px; }")
+        // add background color and padding to pre blocks, and add overflow scrolling
+        // so user can scroll the block if it's wider than the display
+        .append(" pre { overflow-x: scroll;")
+        .append(" background-color: ").append(mResourceVars.mGreyExtraLightStr).append("; ")
+        .append(" padding: ").append(mResourceVars.mMarginMediumPx).append("px; }")
+        // add a left border to blockquotes
+        .append(" blockquote { color: ").append(mResourceVars.mGreyMediumDarkStr).append("; ")
+        .append(" padding-left: 32px; ")
+        .append(" margin-left: 0px; ")
+        .append(" border-left: 3px solid ").append(mResourceVars.mGreyExtraLightStr).append("; }")
+        // show links in the same color they are elsewhere in the app
+        .append(" a { text-decoration: none; color: ").append(mResourceVars.mLinkColorStr).append("; }")
+        // make sure images aren't wider than the display, strictly enforced for images without size
+        .append(" img { max-width: 100%; width: auto; height: auto; }")
+        .append(" img.size-none { max-width: 100% !important; height: auto !important; }")
+        // center large/medium images, provide a small bottom margin, and add a background color
+        // so the user sees something while they're loading
+        .append(" img.size-full, img.size-large, img.size-medium {")
+        .append(" display: block; margin-left: auto; margin-right: auto;")
+        .append(" background-color: ").append(mResourceVars.mGreyExtraLightStr).append(";")
+        .append(" margin-bottom: ").append(mResourceVars.mMarginMediumPx).append("px; }");
 
         if (isWideDisplay) {
             sbHtml
-                    .append(".alignleft {")
-                    .append(" max-width: 100%;")
-                    .append(" float: left;")
-                    .append(" margin-top: 12px;")
-                    .append(" margin-bottom: 12px;")
-                    .append(" margin-right: 32px;}")
-                    .append(".alignright {")
-                    .append(" max-width: 100%;")
-                    .append(" float: right;")
-                    .append(" margin-top: 12px;")
-                    .append(" margin-bottom: 12px;")
-                    .append(" margin-left: 32px;}");
+            .append(".alignleft {")
+            .append(" max-width: 100%;")
+            .append(" float: left;")
+            .append(" margin-top: 12px;")
+            .append(" margin-bottom: 12px;")
+            .append(" margin-right: 32px;}")
+            .append(".alignright {")
+            .append(" max-width: 100%;")
+            .append(" float: right;")
+            .append(" margin-top: 12px;")
+            .append(" margin-bottom: 12px;")
+            .append(" margin-left: 32px;}");
         }
 
         if (renderAsTiledGallery) {
             // tiled-gallery related styles
             sbHtml
-                    .append(".tiled-gallery {")
-                    .append(" clear:both;")
-                    .append(" overflow:hidden;}")
-                    .append(".tiled-gallery img {")
-                    .append(" margin:2px !important;}")
-                    .append(".tiled-gallery .gallery-group {")
-                    .append(" float:left;")
-                    .append(" position:relative;}")
-                    .append(".tiled-gallery .tiled-gallery-item {")
-                    .append(" float:left;")
-                    .append(" margin:0;")
-                    .append(" position:relative;")
-                    .append(" width:inherit;}")
-                    .append(".tiled-gallery .gallery-row {")
-                    .append(" position: relative;")
-                    .append(" left: 50%;")
-                    .append(" -webkit-transform: translateX(-50%);")
-                    .append(" -moz-transform: translateX(-50%);")
-                    .append(" transform: translateX(-50%);")
-                    .append(" overflow:hidden;}")
-                    .append(".tiled-gallery .tiled-gallery-item a {")
-                    .append(" background:transparent;")
-                    .append(" border:none;")
-                    .append(" color:inherit;")
-                    .append(" margin:0;")
-                    .append(" padding:0;")
-                    .append(" text-decoration:none;")
-                    .append(" width:auto;}")
-                    .append(".tiled-gallery .tiled-gallery-item img,")
-                    .append(".tiled-gallery .tiled-gallery-item img:hover {")
-                    .append(" background:none;")
-                    .append(" border:none;")
-                    .append(" box-shadow:none;")
-                    .append(" max-width:100%;")
-                    .append(" padding:0;")
-                    .append(" vertical-align:middle;}")
-                    .append(".tiled-gallery-caption {")
-                    .append(" background:#eee;")
-                    .append(" background:rgba( 255,255,255,0.8 );")
-                    .append(" color:#333;")
-                    .append(" font-size:13px;")
-                    .append(" font-weight:400;")
-                    .append(" overflow:hidden;")
-                    .append(" padding:10px 0;")
-                    .append(" position:absolute;")
-                    .append(" bottom:0;")
-                    .append(" text-indent:10px;")
-                    .append(" text-overflow:ellipsis;")
-                    .append(" width:100%;")
-                    .append(" white-space:nowrap;}")
-                    .append(".tiled-gallery .tiled-gallery-item-small .tiled-gallery-caption {")
-                    .append(" font-size:11px;}")
-                    .append(".widget-gallery .tiled-gallery-unresized {")
-                    .append(" visibility:hidden;")
-                    .append(" height:0px;")
-                    .append(" overflow:hidden;}")
-                    .append(".tiled-gallery .tiled-gallery-item img.grayscale {")
-                    .append(" position:absolute;")
-                    .append(" left:0;")
-                    .append(" top:0;}")
-                    .append(".tiled-gallery .tiled-gallery-item img.grayscale:hover {")
-                    .append(" opacity:0;}")
-                    .append(".tiled-gallery.type-circle .tiled-gallery-item img {")
-                    .append(" border-radius:50% !important;}")
-                    .append(".tiled-gallery.type-circle .tiled-gallery-caption {")
-                    .append(" display:none;")
-                    .append(" opacity:0;}");
+            .append(".tiled-gallery {")
+            .append(" clear:both;")
+            .append(" overflow:hidden;}")
+            .append(".tiled-gallery img {")
+            .append(" margin:2px !important;}")
+            .append(".tiled-gallery .gallery-group {")
+            .append(" float:left;")
+            .append(" position:relative;}")
+            .append(".tiled-gallery .tiled-gallery-item {")
+            .append(" float:left;")
+            .append(" margin:0;")
+            .append(" position:relative;")
+            .append(" width:inherit;}")
+            .append(".tiled-gallery .gallery-row {")
+            .append(" position: relative;")
+            .append(" left: 50%;")
+            .append(" -webkit-transform: translateX(-50%);")
+            .append(" -moz-transform: translateX(-50%);")
+            .append(" transform: translateX(-50%);")
+            .append(" overflow:hidden;}")
+            .append(".tiled-gallery .tiled-gallery-item a {")
+            .append(" background:transparent;")
+            .append(" border:none;")
+            .append(" color:inherit;")
+            .append(" margin:0;")
+            .append(" padding:0;")
+            .append(" text-decoration:none;")
+            .append(" width:auto;}")
+            .append(".tiled-gallery .tiled-gallery-item img,")
+            .append(".tiled-gallery .tiled-gallery-item img:hover {")
+            .append(" background:none;")
+            .append(" border:none;")
+            .append(" box-shadow:none;")
+            .append(" max-width:100%;")
+            .append(" padding:0;")
+            .append(" vertical-align:middle;}")
+            .append(".tiled-gallery-caption {")
+            .append(" background:#eee;")
+            .append(" background:rgba( 255,255,255,0.8 );")
+            .append(" color:#333;")
+            .append(" font-size:13px;")
+            .append(" font-weight:400;")
+            .append(" overflow:hidden;")
+            .append(" padding:10px 0;")
+            .append(" position:absolute;")
+            .append(" bottom:0;")
+            .append(" text-indent:10px;")
+            .append(" text-overflow:ellipsis;")
+            .append(" width:100%;")
+            .append(" white-space:nowrap;}")
+            .append(".tiled-gallery .tiled-gallery-item-small .tiled-gallery-caption {")
+            .append(" font-size:11px;}")
+            .append(".widget-gallery .tiled-gallery-unresized {")
+            .append(" visibility:hidden;")
+            .append(" height:0px;")
+            .append(" overflow:hidden;}")
+            .append(".tiled-gallery .tiled-gallery-item img.grayscale {")
+            .append(" position:absolute;")
+            .append(" left:0;")
+            .append(" top:0;}")
+            .append(".tiled-gallery .tiled-gallery-item img.grayscale:hover {")
+            .append(" opacity:0;}")
+            .append(".tiled-gallery.type-circle .tiled-gallery-item img {")
+            .append(" border-radius:50% !important;}")
+            .append(".tiled-gallery.type-circle .tiled-gallery-caption {")
+            .append(" display:none;")
+            .append(" opacity:0;}");
         }
 
         // see http://codex.wordpress.org/CSS#WordPress_Generated_Classes
         sbHtml
-                .append(" .wp-caption img { margin-top: 0px; margin-bottom: 0px; }")
-                .append(" .wp-caption .wp-caption-text {")
-                .append(" font-size: smaller; line-height: 1.2em; margin: 0px;")
-                .append(" text-align: center;")
-                .append(" padding: ").append(mResourceVars.mMarginMediumPx).append("px; ")
-                .append(" color: ").append(mResourceVars.mGreyMediumDarkStr).append("; }")
-                // attribution for Discover posts
-                .append(" div#discover { ")
-                .append(" margin-top: ").append(mResourceVars.mMarginMediumPx).append("px;")
-                .append(" font-family: sans-serif;")
-                .append(" }")
-                // horizontally center iframes
-                .append(" iframe { display: block; margin: 0 auto; }")
-                // make sure html5 videos fit the browser width and use 16:9 ratio (YouTube standard)
-                .append(" video {")
-                .append(" width: ").append(pxToDp(mResourceVars.mVideoWidthPx)).append("px !important;")
-                .append(" height: ").append(pxToDp(mResourceVars.mVideoHeightPx)).append("px !important; }")
-                // hide forms, form-related elements, legacy RSS sharing links and other ad-related content
-                // http://bit.ly/2FUTvsP
-                .append(" form, input, select, button textarea { display: none; }")
-                .append(" div.feedflare { display: none; }")
-                .append(" .sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, ")
-                .append(" .OUTBRAIN, .adsbygoogle { display: none; }")
-                .append("</style>");
+        .append(" .wp-caption img { margin-top: 0px; margin-bottom: 0px; }")
+        .append(" .wp-caption .wp-caption-text {")
+        .append(" font-size: smaller; line-height: 1.2em; margin: 0px;")
+        .append(" text-align: center;")
+        .append(" padding: ").append(mResourceVars.mMarginMediumPx).append("px; ")
+        .append(" color: ").append(mResourceVars.mGreyMediumDarkStr).append("; }")
+        // attribution for Discover posts
+        .append(" div#discover { ")
+        .append(" margin-top: ").append(mResourceVars.mMarginMediumPx).append("px;")
+        .append(" font-family: sans-serif;")
+        .append(" }")
+        // horizontally center iframes
+        .append(" iframe { display: block; margin: 0 auto; }")
+        // make sure html5 videos fit the browser width and use 16:9 ratio (YouTube standard)
+        .append(" video {")
+        .append(" width: ").append(pxToDp(mResourceVars.mVideoWidthPx)).append("px !important;")
+        .append(" height: ").append(pxToDp(mResourceVars.mVideoHeightPx)).append("px !important; }")
+        // hide forms, form-related elements, legacy RSS sharing links and other ad-related content
+        // http://bit.ly/2FUTvsP
+        .append(" form, input, select, button textarea { display: none; }")
+        .append(" div.feedflare { display: none; }")
+        .append(" .sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, ")
+        .append(" .OUTBRAIN, .adsbygoogle { display: none; }")
+        .append("</style>");
 
         // add a custom CSS class to (any) tiled gallery elements to make them easier selectable for various rules
         final List<String> classAmendRegexes = Arrays.asList(
@@ -531,8 +531,8 @@ public class ReaderPostRenderer {
         }
 
         sbHtml.append("</head><body>")
-              .append(contentCustomised)
-              .append("</body></html>");
+        .append(contentCustomised)
+        .append("</body></html>");
 
         return sbHtml.toString();
     }
@@ -562,8 +562,8 @@ public class ReaderPostRenderer {
         if (imageUrl.contains("w=")) {
             Uri uri = Uri.parse(imageUrl.replace("&#038;", "&"));
             return new ImageSize(
-                    StringUtils.stringToInt(uri.getQueryParameter("w")),
-                    StringUtils.stringToInt(uri.getQueryParameter("h")));
+                       StringUtils.stringToInt(uri.getQueryParameter("w")),
+                       StringUtils.stringToInt(uri.getQueryParameter("h")));
         } else if (imageUrl.contains("resize=")) {
             Uri uri = Uri.parse(imageUrl.replace("&#038;", "&"));
             String param = uri.getQueryParameter("resize");
@@ -571,8 +571,8 @@ public class ReaderPostRenderer {
                 String[] sizes = param.split(",");
                 if (sizes.length == 2) {
                     return new ImageSize(
-                            StringUtils.stringToInt(sizes[0]),
-                            StringUtils.stringToInt(sizes[1]));
+                               StringUtils.stringToInt(sizes[0]),
+                               StringUtils.stringToInt(sizes[1]));
                 }
             }
         }
@@ -582,14 +582,14 @@ public class ReaderPostRenderer {
 
     private ImageSize getImageOriginalSizeFromAttributes(final String imageTag) {
         return new ImageSize(
-                ReaderHtmlUtils.getOriginalWidthAttrValue(imageTag),
-                ReaderHtmlUtils.getOriginalHeightAttrValue(imageTag));
+                   ReaderHtmlUtils.getOriginalWidthAttrValue(imageTag),
+                   ReaderHtmlUtils.getOriginalHeightAttrValue(imageTag));
     }
 
     private ImageSize getImageSizeFromAttributes(final String imageTag) {
         return new ImageSize(
-                ReaderHtmlUtils.getWidthAttrValue(imageTag),
-                ReaderHtmlUtils.getHeightAttrValue(imageTag));
+                   ReaderHtmlUtils.getWidthAttrValue(imageTag),
+                   ReaderHtmlUtils.getHeightAttrValue(imageTag));
     }
 
     private int pxToDp(int px) {

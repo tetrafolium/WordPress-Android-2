@@ -120,8 +120,8 @@ public class ReaderTagTable {
         SQLiteStatement stmt = null;
         try {
             stmt = ReaderDatabase.getWritableDb().compileStatement(
-                    "INSERT OR REPLACE INTO tbl_tags (tag_slug, tag_display_name, tag_title, tag_type, endpoint) "
-                    + "VALUES (?1,?2,?3,?4,?5)");
+                       "INSERT OR REPLACE INTO tbl_tags (tag_slug, tag_display_name, tag_title, tag_type, endpoint) "
+                       + "VALUES (?1,?2,?3,?4,?5)");
 
             for (ReaderTag tag : tagList) {
                 stmt.bindString(1, tag.getTagSlug());
@@ -188,7 +188,7 @@ public class ReaderTagTable {
 
         String[] args = {tagSlug, Integer.toString(tagType.toInt())};
         Cursor c = ReaderDatabase.getReadableDb()
-                                 .rawQuery("SELECT * FROM tbl_tags WHERE tag_slug=? AND tag_type=? LIMIT 1", args);
+                   .rawQuery("SELECT * FROM tbl_tags WHERE tag_slug=? AND tag_type=? LIMIT 1", args);
         try {
             if (!c.moveToFirst()) {
                 return null;
@@ -244,7 +244,7 @@ public class ReaderTagTable {
     private static ReaderTagList getTagsOfType(ReaderTagType tagType) {
         String[] args = {Integer.toString(tagType.toInt())};
         Cursor c = ReaderDatabase.getReadableDb()
-                                 .rawQuery("SELECT * FROM tbl_tags WHERE tag_type=? ORDER BY tag_slug", args);
+                   .rawQuery("SELECT * FROM tbl_tags WHERE tag_type=? ORDER BY tag_slug", args);
         try {
             ReaderTagList tagList = new ReaderTagList();
             if (c.moveToFirst()) {
@@ -386,7 +386,7 @@ public class ReaderTagTable {
 
         SQLiteDatabase db = ReaderDatabase.getWritableDb();
         SQLiteStatement stmt = db.compileStatement("INSERT INTO tbl_tags_recommended (tag_slug, tag_display_name, "
-                                                   + "tag_title, tag_type, endpoint) VALUES (?1,?2,?3,?4,?5)");
+                               + "tag_title, tag_type, endpoint) VALUES (?1,?2,?3,?4,?5)");
         db.beginTransaction();
         try {
             try {

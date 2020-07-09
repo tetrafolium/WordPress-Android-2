@@ -124,12 +124,12 @@ public class DeepLinkingIntentReceiverActivity extends AppCompatActivity {
         if (redirectUri == null || !shouldOpenEditor(redirectUri)) {
             // Replace host to redirect to the browser
             Uri newUri = (new Uri.Builder())
-                    .scheme(uri.getScheme())
-                    .path(REGULAR_TRACKING_PATH)
-                    .query(uri.getQuery())
-                    .fragment(uri.getFragment())
-                    .authority(uri.getAuthority())
-                    .build();
+                         .scheme(uri.getScheme())
+                         .path(REGULAR_TRACKING_PATH)
+                         .query(uri.getQuery())
+                         .fragment(uri.getFragment())
+                         .authority(uri.getAuthority())
+                         .build();
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, newUri);
             startActivity(browserIntent);
             finish();
@@ -179,29 +179,29 @@ public class DeepLinkingIntentReceiverActivity extends AppCompatActivity {
 
     private void handleAppBanner(@NonNull String host) {
         switch (host) {
-            case DEEP_LINK_HOST_NOTIFICATIONS:
-                ActivityLauncher.viewNotificationsInNewStack(getContext());
-                break;
-            case DEEP_LINK_HOST_POST:
-                ActivityLauncher.openEditorInNewStack(getContext());
-                break;
-            case DEEP_LINK_HOST_STATS:
-                long primarySiteId = mAccountStore.getAccount().getPrimarySiteId();
-                SiteModel siteModel = mSiteStore.getSiteBySiteId(primarySiteId);
-                ActivityLauncher.viewStatsInNewStack(getContext(), siteModel);
-                break;
-            case DEEP_LINK_HOST_READ:
-                ActivityLauncher.viewReaderInNewStack(getContext());
-                break;
+        case DEEP_LINK_HOST_NOTIFICATIONS:
+            ActivityLauncher.viewNotificationsInNewStack(getContext());
+            break;
+        case DEEP_LINK_HOST_POST:
+            ActivityLauncher.openEditorInNewStack(getContext());
+            break;
+        case DEEP_LINK_HOST_STATS:
+            long primarySiteId = mAccountStore.getAccount().getPrimarySiteId();
+            SiteModel siteModel = mSiteStore.getSiteBySiteId(primarySiteId);
+            ActivityLauncher.viewStatsInNewStack(getContext(), siteModel);
+            break;
+        case DEEP_LINK_HOST_READ:
+            ActivityLauncher.viewReaderInNewStack(getContext());
+            break;
         }
     }
 
     private boolean isFromAppBanner(String host) {
         return (host != null
                 && (host.equals(DEEP_LINK_HOST_NOTIFICATIONS)
-                || host.equals(DEEP_LINK_HOST_POST)
-                || host.equals(DEEP_LINK_HOST_READ)
-                || host.equals(DEEP_LINK_HOST_STATS)));
+                    || host.equals(DEEP_LINK_HOST_POST)
+                    || host.equals(DEEP_LINK_HOST_READ)
+                    || host.equals(DEEP_LINK_HOST_STATS)));
     }
 
     @Override
@@ -225,7 +225,7 @@ public class DeepLinkingIntentReceiverActivity extends AppCompatActivity {
                                                         blogId, postId);
 
                 ReaderActivityLauncher.showReaderPostDetail(this, false, blogId, postId, null, 0, false,
-                                                            mInterceptedUri);
+                        mInterceptedUri);
             } catch (NumberFormatException e) {
                 AppLog.e(T.READER, e);
             }

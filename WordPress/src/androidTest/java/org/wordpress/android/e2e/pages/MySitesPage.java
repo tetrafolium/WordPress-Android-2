@@ -18,7 +18,7 @@ import static org.wordpress.android.support.WPSupportUtils.longClickOn;
 
 public class MySitesPage {
     private static ViewInteraction chooseSiteLabel =
-            onView(allOf(isAssignableFrom(TextView.class), withParent(isAssignableFrom(Toolbar.class))));
+        onView(allOf(isAssignableFrom(TextView.class), withParent(isAssignableFrom(Toolbar.class))));
 
     public MySitesPage() {
     }

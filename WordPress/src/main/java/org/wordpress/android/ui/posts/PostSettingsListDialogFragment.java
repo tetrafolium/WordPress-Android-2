@@ -71,7 +71,7 @@ public class PostSettingsListDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
 
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -82,20 +82,20 @@ public class PostSettingsListDialogFragment extends DialogFragment {
         };
 
         switch (mDialogType) {
-            case POST_STATUS:
-                builder.setTitle(R.string.post_settings_status);
-                builder.setSingleChoiceItems(
-                        R.array.post_settings_statuses,
-                        mCheckedIndex,
-                        clickListener);
-                break;
-            case POST_FORMAT:
-                builder.setTitle(R.string.post_settings_post_format);
-                builder.setSingleChoiceItems(
-                        R.array.post_format_display_names,
-                        mCheckedIndex,
-                        clickListener);
-                break;
+        case POST_STATUS:
+            builder.setTitle(R.string.post_settings_status);
+            builder.setSingleChoiceItems(
+                R.array.post_settings_statuses,
+                mCheckedIndex,
+                clickListener);
+            break;
+        case POST_FORMAT:
+            builder.setTitle(R.string.post_settings_post_format);
+            builder.setSingleChoiceItems(
+                R.array.post_format_display_names,
+                mCheckedIndex,
+                clickListener);
+            break;
         }
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

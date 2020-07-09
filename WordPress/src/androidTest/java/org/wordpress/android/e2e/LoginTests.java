@@ -23,7 +23,7 @@ import static org.wordpress.android.BuildConfig.E2E_WP_COM_USER_USERNAME;
 public class LoginTests extends BaseTest {
     @Rule
     public ActivityTestRule<LoginMagicLinkInterceptActivity> mMagicLinkActivityTestRule =
-            new ActivityTestRule<>(LoginMagicLinkInterceptActivity.class);
+        new ActivityTestRule<>(LoginMagicLinkInterceptActivity.class);
 
     @Before
     public void setUp() {
@@ -38,9 +38,9 @@ public class LoginTests extends BaseTest {
     @Test
     public void loginWithSiteAddress() {
         new LoginFlow().loginSiteAddress(
-                E2E_WP_COM_USER_SITE_ADDRESS,
-                E2E_WP_COM_USER_USERNAME,
-                E2E_WP_COM_USER_PASSWORD);
+            E2E_WP_COM_USER_SITE_ADDRESS,
+            E2E_WP_COM_USER_USERNAME,
+            E2E_WP_COM_USER_PASSWORD);
     }
 
     @Test
@@ -51,9 +51,9 @@ public class LoginTests extends BaseTest {
     @Test
     public void loginWithSelfHostedAccount() {
         new LoginFlow().loginSiteAddress(
-                E2E_SELF_HOSTED_USER_SITE_ADDRESS,
-                E2E_SELF_HOSTED_USER_USERNAME,
-                E2E_SELF_HOSTED_USER_PASSWORD);
+            E2E_SELF_HOSTED_USER_SITE_ADDRESS,
+            E2E_SELF_HOSTED_USER_USERNAME,
+            E2E_SELF_HOSTED_USER_PASSWORD);
     }
 
     @After

@@ -81,7 +81,7 @@ public class SuggestionAdapter extends BaseAdapter implements Filterable {
             String avatarUrl = GravatarUtils.fixGravatarUrl(suggestion.getImageUrl(), mAvatarSz);
             mImageManager.loadIntoCircle(holder.mImgAvatar, ImageType.AVATAR_WITH_BACKGROUND, avatarUrl);
             holder.mTxtUserLogin
-                    .setText(convertView.getResources().getString(R.string.at_username, suggestion.getUserLogin()));
+            .setText(convertView.getResources().getString(R.string.at_username, suggestion.getUserLogin()));
             holder.mTxtDisplayName.setText(suggestion.getDisplayName());
         }
 
@@ -126,9 +126,9 @@ public class SuggestionAdapter extends BaseAdapter implements Filterable {
                 for (Suggestion suggestion : mOrigSuggestionList) {
                     String lowerCaseConstraint = constraint.toString().toLowerCase(Locale.getDefault());
                     if (suggestion.getUserLogin().toLowerCase(Locale.ROOT).startsWith(lowerCaseConstraint)
-                        || suggestion.getDisplayName().toLowerCase(Locale.getDefault()).startsWith(lowerCaseConstraint)
-                        || suggestion.getDisplayName().toLowerCase(Locale.getDefault())
-                                     .contains(" " + lowerCaseConstraint)) {
+                            || suggestion.getDisplayName().toLowerCase(Locale.getDefault()).startsWith(lowerCaseConstraint)
+                            || suggestion.getDisplayName().toLowerCase(Locale.getDefault())
+                            .contains(" " + lowerCaseConstraint)) {
                         nSuggestionList.add(suggestion);
                     }
                 }

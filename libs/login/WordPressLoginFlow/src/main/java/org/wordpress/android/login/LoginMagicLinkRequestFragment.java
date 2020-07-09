@@ -76,7 +76,7 @@ public class LoginMagicLinkRequestFragment extends Fragment {
 
     @Inject protected LoginAnalyticsListener mAnalyticsListener;
     public static LoginMagicLinkRequestFragment newInstance(String email, AuthEmailPayloadScheme scheme,
-                                                            boolean isJetpackConnect, String jetpackConnectSource) {
+            boolean isJetpackConnect, String jetpackConnectSource) {
         LoginMagicLinkRequestFragment fragment = new LoginMagicLinkRequestFragment();
         Bundle args = new Bundle();
         args.putString(ARG_EMAIL_ADDRESS, email);
@@ -144,27 +144,27 @@ public class LoginMagicLinkRequestFragment extends Fragment {
         mAvatarProgressBar = view.findViewById(R.id.avatar_progress);
         ImageView avatarView = view.findViewById(R.id.gravatar);
         Glide.with(this)
-                .load(GravatarUtils.gravatarFromEmail(mEmail,
-                        getContext().getResources().getDimensionPixelSize(R.dimen.avatar_sz_login)))
-                .apply(RequestOptions.circleCropTransform())
-                .apply(RequestOptions.placeholderOf(R.drawable.ic_gridicons_user_circle_100dp))
-                .apply(RequestOptions.errorOf(R.drawable.ic_gridicons_user_circle_100dp))
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Drawable> target,
-                                                boolean b) {
-                        mAvatarProgressBar.setVisibility(View.GONE);
-                        return false;
-                    }
+        .load(GravatarUtils.gravatarFromEmail(mEmail,
+                                              getContext().getResources().getDimensionPixelSize(R.dimen.avatar_sz_login)))
+        .apply(RequestOptions.circleCropTransform())
+        .apply(RequestOptions.placeholderOf(R.drawable.ic_gridicons_user_circle_100dp))
+        .apply(RequestOptions.errorOf(R.drawable.ic_gridicons_user_circle_100dp))
+        .listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object o, Target<Drawable> target,
+                                        boolean b) {
+                mAvatarProgressBar.setVisibility(View.GONE);
+                return false;
+            }
 
-                    @Override
-                    public boolean onResourceReady(Drawable drawable, Object o, Target<Drawable> target,
-                                                   DataSource dataSource, boolean b) {
-                        mAvatarProgressBar.setVisibility(View.GONE);
-                        return false;
-                    }
-                })
-                .into(avatarView);
+            @Override
+            public boolean onResourceReady(Drawable drawable, Object o, Target<Drawable> target,
+                                           DataSource dataSource, boolean b) {
+                mAvatarProgressBar.setVisibility(View.GONE);
+                return false;
+            }
+        })
+        .into(avatarView);
         return view;
     }
 
@@ -267,14 +267,14 @@ public class LoginMagicLinkRequestFragment extends Fragment {
     protected void startProgress(String message) {
         mRequestMagicLinkButton.setEnabled(false);
         mProgressDialog = ProgressDialog.show(getActivity(), "", message, true, true,
-                new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        if (mInProgress) {
-                            endProgress();
-                        }
-                    }
-                });
+        new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (mInProgress) {
+                    endProgress();
+                }
+            }
+        });
         mInProgress = true;
     }
 
@@ -310,7 +310,7 @@ public class LoginMagicLinkRequestFragment extends Fragment {
             AppLog.e(AppLog.T.API, "OnAuthEmailSent has error: " + event.error.type + " - " + event.error.message);
             if (isAdded()) {
                 ToastUtils.showToast(getActivity(), R.string.magic_link_unavailable_error_message,
-                        ToastUtils.Duration.LONG);
+                                     ToastUtils.Duration.LONG);
             }
             return;
         }

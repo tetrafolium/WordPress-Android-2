@@ -83,7 +83,7 @@ public class SuggestionTable {
 
         String[] args = {Long.toString(siteId)};
         Cursor c = getReadableDb()
-                .rawQuery("SELECT * FROM " + SUGGESTIONS_TABLE + " WHERE site_id=? ORDER BY user_login ASC", args);
+                   .rawQuery("SELECT * FROM " + SUGGESTIONS_TABLE + " WHERE site_id=? ORDER BY user_login ASC", args);
 
         try {
             if (c.moveToFirst()) {
@@ -100,7 +100,7 @@ public class SuggestionTable {
     }
 
     public static int deleteSuggestionsForSite(long siteId) {
-        return getWritableDb().delete(SUGGESTIONS_TABLE, "site_id=?", new String[]{Long.toString(siteId)});
+        return getWritableDb().delete(SUGGESTIONS_TABLE, "site_id=?", new String[] {Long.toString(siteId)});
     }
 
     private static Suggestion getSuggestionFromCursor(Cursor c) {
@@ -112,11 +112,11 @@ public class SuggestionTable {
         long siteId = c.getLong(c.getColumnIndex("site_id"));
 
         return new Suggestion(
-                siteId,
-                userLogin,
-                displayName,
-                imageUrl,
-                taxonomy);
+                   siteId,
+                   userLogin,
+                   displayName,
+                   imageUrl,
+                   taxonomy);
     }
 
     public static void insertTagsForSite(final long siteId, final List<Tag> tags) {
@@ -147,7 +147,7 @@ public class SuggestionTable {
 
         String[] args = {Long.toString(siteId)};
         Cursor c =
-                getReadableDb().rawQuery("SELECT * FROM " + TAXONOMY_TABLE + " WHERE site_id=? ORDER BY tag ASC", args);
+            getReadableDb().rawQuery("SELECT * FROM " + TAXONOMY_TABLE + " WHERE site_id=? ORDER BY tag ASC", args);
 
         try {
             if (c.moveToFirst()) {
@@ -164,7 +164,7 @@ public class SuggestionTable {
     }
 
     public static int deleteTagsForSite(long siteId) {
-        return getWritableDb().delete(TAXONOMY_TABLE, "site_id=?", new String[]{Long.toString(siteId)});
+        return getWritableDb().delete(TAXONOMY_TABLE, "site_id=?", new String[] {Long.toString(siteId)});
     }
 
     private static Tag getTagFromCursor(Cursor c) {
@@ -173,7 +173,7 @@ public class SuggestionTable {
         long siteId = c.getLong(c.getColumnIndex("site_id"));
 
         return new Tag(
-                siteId,
-                tag);
+                   siteId,
+                   tag);
     }
 }

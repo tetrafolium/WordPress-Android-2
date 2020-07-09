@@ -122,18 +122,18 @@ public class SelectCategoriesActivity extends AppCompatActivity {
 
         // swipe to refresh setup
         mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-                (CustomSwipeRefreshLayout) findViewById(R.id.ptr_layout),
-                new RefreshListener() {
-                    @Override
-                    public void onRefreshStarted() {
-                        if (!NetworkUtils.checkConnection(getBaseContext())) {
-                            mSwipeToRefreshHelper.setRefreshing(false);
-                            return;
-                        }
-                        refreshCategories();
-                    }
+                                    (CustomSwipeRefreshLayout) findViewById(R.id.ptr_layout),
+        new RefreshListener() {
+            @Override
+            public void onRefreshStarted() {
+                if (!NetworkUtils.checkConnection(getBaseContext())) {
+                    mSwipeToRefreshHelper.setRefreshing(false);
+                    return;
                 }
-        );
+                refreshCategories();
+            }
+        }
+                                );
 
         populateCategoryList();
 
@@ -276,18 +276,18 @@ public class SelectCategoriesActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTaxonomyChanged(OnTaxonomyChanged event) {
         switch (event.causeOfChange) {
-            case FETCH_CATEGORIES:
-                mSwipeToRefreshHelper.setRefreshing(false);
+        case FETCH_CATEGORIES:
+            mSwipeToRefreshHelper.setRefreshing(false);
 
-                if (event.isError()) {
-                    if (!isFinishing()) {
-                        ToastUtils.showToast(SelectCategoriesActivity.this, R.string.category_refresh_error,
-                                             Duration.LONG);
-                    }
-                } else {
-                    populateCategoryList();
+            if (event.isError()) {
+                if (!isFinishing()) {
+                    ToastUtils.showToast(SelectCategoriesActivity.this, R.string.category_refresh_error,
+                                         Duration.LONG);
                 }
-                break;
+            } else {
+                populateCategoryList();
+            }
+            break;
         }
     }
 

@@ -26,10 +26,10 @@ public class ProfileInputDialogFragment extends DialogFragment {
     private static final String CALLBACK_ID_TAG = "callback_id";
 
     public static ProfileInputDialogFragment newInstance(String title,
-                                                         String initialText,
-                                                         String hint,
-                                                         boolean isMultiline,
-                                                         int callbackId) {
+            String initialText,
+            String hint,
+            boolean isMultiline,
+            int callbackId) {
         ProfileInputDialogFragment profileInputDialogFragment = new ProfileInputDialogFragment();
         Bundle args = new Bundle();
 
@@ -49,7 +49,7 @@ public class ProfileInputDialogFragment extends DialogFragment {
         //noinspection InflateParams
         View promptView = layoutInflater.inflate(R.layout.my_profile_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         alertDialogBuilder.setView(promptView);
 
         final WPTextView textView = (WPTextView) promptView.findViewById(R.id.my_profile_dialog_label);
@@ -79,23 +79,23 @@ public class ProfileInputDialogFragment extends DialogFragment {
         }
 
         alertDialogBuilder.setCancelable(true)
-                          .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                              public void onClick(DialogInterface dialog, int id) {
-                                  if (getTargetFragment() instanceof Callback) {
-                                      ((Callback) getTargetFragment())
-                                              .onSuccessfulInput(editText.getText().toString(), callbackId);
-                                  } else {
-                                      AppLog.e(AppLog.T.UTILS,
-                                               "Target fragment doesn't implement ProfileInputDialogFragment.Callback");
-                                  }
-                              }
-                          })
-                          .setNegativeButton(R.string.cancel,
-                                             new DialogInterface.OnClickListener() {
-                                                 public void onClick(DialogInterface dialog, int id) {
-                                                     dialog.cancel();
-                                                 }
-                                             });
+        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (getTargetFragment() instanceof Callback) {
+                    ((Callback) getTargetFragment())
+                    .onSuccessfulInput(editText.getText().toString(), callbackId);
+                } else {
+                    AppLog.e(AppLog.T.UTILS,
+                             "Target fragment doesn't implement ProfileInputDialogFragment.Callback");
+                }
+            }
+        })
+        .setNegativeButton(R.string.cancel,
+        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
 
         return alertDialogBuilder.create();
     }

@@ -61,7 +61,7 @@ public class AutolinkUtils {
         PROVIDERS.add(Pattern.compile("(https?://www\\.facebook\\.com/\\S+/activity/\\S+)", Pattern.CASE_INSENSITIVE));
         PROVIDERS.add(Pattern.compile("(https?://www\\.facebook\\.com/\\S+/photos/\\S+)", Pattern.CASE_INSENSITIVE));
         PROVIDERS
-                .add(Pattern.compile("(https?://www\\.facebook\\.com/photo(s/|\\.php)\\S+)", Pattern.CASE_INSENSITIVE));
+        .add(Pattern.compile("(https?://www\\.facebook\\.com/photo(s/|\\.php)\\S+)", Pattern.CASE_INSENSITIVE));
         PROVIDERS.add(Pattern.compile("(https?://www\\.facebook\\.com/permalink\\.php\\S+)", Pattern.CASE_INSENSITIVE));
         PROVIDERS.add(Pattern.compile("(https?://www\\.facebook\\.com/media/\\S+)", Pattern.CASE_INSENSITIVE));
         PROVIDERS.add(Pattern.compile("(https?://www\\.facebook\\.com/questions/\\S+)", Pattern.CASE_INSENSITIVE));

@@ -55,8 +55,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GutenbergEditorFragment extends EditorFragmentAbstract implements
-        EditorMediaUploadListener,
-        IHistoryListener {
+    EditorMediaUploadListener,
+    IHistoryListener {
     private static final String KEY_HTML_MODE_ENABLED = "KEY_HTML_MODE_ENABLED";
     private static final String KEY_EDITOR_DID_MOUNT = "KEY_EDITOR_DID_MOUNT";
     private static final String ARG_IS_NEW_POST = "param_is_new_post";
@@ -87,9 +87,9 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
     private ProgressDialog mSavingContentProgressDialog;
 
     public static GutenbergEditorFragment newInstance(String title,
-                                                      String content,
-                                                      boolean isNewPost,
-                                                      String localeSlug) {
+            String content,
+            boolean isNewPost,
+            String localeSlug) {
         GutenbergEditorFragment fragment = new GutenbergEditorFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM_TITLE, title);
@@ -103,7 +103,7 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
     private GutenbergContainerFragment getGutenbergContainerFragment() {
         if (mRetainedGutenbergContainerFragment == null) {
             mRetainedGutenbergContainerFragment = (GutenbergContainerFragment) getChildFragmentManager()
-                    .findFragmentByTag(GutenbergContainerFragment.TAG);
+                                                  .findFragmentByTag(GutenbergContainerFragment.TAG);
         } else {
             // Noop. Just use the cached reference. The container fragment might not be attached yet so, getting it from
             // the fragment manager is not reliable. No need either; it's retained and outlives this EditorFragment.
@@ -122,7 +122,7 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
         Locale defaultLocale = new Locale("en");
         Resources currentResources = getActivity().getResources();
         Context localizedContextCurrent = getActivity()
-                .createConfigurationContext(currentResources.getConfiguration());
+                                          .createConfigurationContext(currentResources.getConfiguration());
         // if the current locale of the app is english stop here and return an empty map
         Configuration currentConfiguration = localizedContextCurrent.getResources().getConfiguration();
         if (currentConfiguration.locale.equals(defaultLocale)) {
@@ -133,7 +133,7 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
         Configuration defaultLocaleConfiguration = new Configuration(currentConfiguration);
         defaultLocaleConfiguration.setLocale(defaultLocale);
         Context localizedContextDefault = getActivity()
-                .createConfigurationContext(defaultLocaleConfiguration);
+                                          .createConfigurationContext(defaultLocaleConfiguration);
         Resources defaultResources = localizedContextDefault.getResources();
 
         // Strings are only being translated in the WordPress package
@@ -174,8 +174,8 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
             String defaultResourceString = defaultResources.getString(resourceId);
             if (currentResourceString.length() > 0 && defaultResourceString.length() > 0) {
                 translations.putStringArrayList(
-                        defaultResourceString,
-                        new ArrayList<>(Arrays.asList(currentResourceString))
+                    defaultResourceString,
+                    new ArrayList<>(Arrays.asList(currentResourceString))
                 );
             }
         }
@@ -193,7 +193,7 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
             FragmentManager fragmentManager = getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             GutenbergContainerFragment gutenbergContainerFragment =
-                    GutenbergContainerFragment.newInstance(isNewPost, localeSlug, this.getTranslations());
+                GutenbergContainerFragment.newInstance(isNewPost, localeSlug, this.getTranslations());
             gutenbergContainerFragment.setRetainInstance(true);
             fragmentTransaction.add(gutenbergContainerFragment, GutenbergContainerFragment.TAG);
             fragmentTransaction.commitNow();
@@ -218,84 +218,84 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
 
         ViewGroup gutenbergContainer = view.findViewById(R.id.gutenberg_container);
         getGutenbergContainerFragment().attachToContainer(gutenbergContainer,
-                new OnMediaLibraryButtonListener() {
-                    @Override public void onMediaLibraryImageButtonClicked() {
-                        mEditorFragmentListener.onTrackableEvent(TrackableEvent.MEDIA_BUTTON_TAPPED);
-                        mEditorFragmentListener.onAddMediaImageClicked();
-                    }
+        new OnMediaLibraryButtonListener() {
+            @Override public void onMediaLibraryImageButtonClicked() {
+                mEditorFragmentListener.onTrackableEvent(TrackableEvent.MEDIA_BUTTON_TAPPED);
+                mEditorFragmentListener.onAddMediaImageClicked();
+            }
 
+            @Override
+            public void onMediaLibraryVideoButtonClicked() {
+                mEditorFragmentListener.onTrackableEvent(TrackableEvent.MEDIA_BUTTON_TAPPED);
+                mEditorFragmentListener.onAddMediaVideoClicked();
+            }
+
+            @Override
+            public void onUploadPhotoButtonClicked() {
+                mEditorFragmentListener.onAddPhotoClicked();
+            }
+
+            @Override
+            public void onUploadVideoButtonClicked() {
+                mEditorFragmentListener.onAddVideoClicked();
+            }
+
+            @Override
+            public void onCaptureVideoButtonClicked() {
+                checkAndRequestCameraAndStoragePermissions(CAPTURE_VIDEO_PERMISSION_REQUEST_CODE);
+            }
+
+            @Override
+            public void onCapturePhotoButtonClicked() {
+                checkAndRequestCameraAndStoragePermissions(CAPTURE_PHOTO_PERMISSION_REQUEST_CODE);
+            }
+
+            @Override public void onRetryUploadForMediaClicked(int mediaId) {
+                showRetryMediaUploadDialog(mediaId);
+            }
+
+            @Override public void onCancelUploadForMediaClicked(int mediaId) {
+                showCancelMediaUploadDialog(mediaId);
+            }
+
+            @Override public void onCancelUploadForMediaDueToDeletedBlock(int mediaId) {
+                cancelMediaUploadForDeletedBlock(mediaId);
+            }
+        },
+        new OnReattachQueryListener() {
+            @Override
+            public void onQueryCurrentProgressForUploadingMedia() {
+                updateFailedMediaState();
+                updateMediaProgress();
+            }
+        },
+        new OnEditorMountListener() {
+            @Override
+            public void onEditorDidMount(ArrayList<Object> unsupportedBlocks) {
+                mEditorDidMount = true;
+                mEditorFragmentListener.onEditorFragmentContentReady(unsupportedBlocks);
+
+                // Hide the progress bar when editor is ready
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
-                    public void onMediaLibraryVideoButtonClicked() {
-                        mEditorFragmentListener.onTrackableEvent(TrackableEvent.MEDIA_BUTTON_TAPPED);
-                        mEditorFragmentListener.onAddMediaVideoClicked();
-                    }
-
-                    @Override
-                    public void onUploadPhotoButtonClicked() {
-                        mEditorFragmentListener.onAddPhotoClicked();
-                    }
-
-                    @Override
-                    public void onUploadVideoButtonClicked() {
-                        mEditorFragmentListener.onAddVideoClicked();
-                    }
-
-                    @Override
-                    public void onCaptureVideoButtonClicked() {
-                        checkAndRequestCameraAndStoragePermissions(CAPTURE_VIDEO_PERMISSION_REQUEST_CODE);
-                    }
-
-                    @Override
-                    public void onCapturePhotoButtonClicked() {
-                        checkAndRequestCameraAndStoragePermissions(CAPTURE_PHOTO_PERMISSION_REQUEST_CODE);
-                    }
-
-                    @Override public void onRetryUploadForMediaClicked(int mediaId) {
-                        showRetryMediaUploadDialog(mediaId);
-                    }
-
-                    @Override public void onCancelUploadForMediaClicked(int mediaId) {
-                        showCancelMediaUploadDialog(mediaId);
-                    }
-
-                    @Override public void onCancelUploadForMediaDueToDeletedBlock(int mediaId) {
-                        cancelMediaUploadForDeletedBlock(mediaId);
-                    }
-                },
-                new OnReattachQueryListener() {
-                    @Override
-                    public void onQueryCurrentProgressForUploadingMedia() {
-                        updateFailedMediaState();
-                        updateMediaProgress();
-                    }
-                },
-                new OnEditorMountListener() {
-                    @Override
-                    public void onEditorDidMount(ArrayList<Object> unsupportedBlocks) {
-                        mEditorDidMount = true;
-                        mEditorFragmentListener.onEditorFragmentContentReady(unsupportedBlocks);
-
-                        // Hide the progress bar when editor is ready
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                setEditorProgressBarVisibility(!mEditorDidMount);
-                            }
-                        });
-                    }
-                },
-                new OnEditorAutosaveListener() {
-                    @Override public void onEditorAutosave() {
-                        // FIXME the Editable field passed to postTextChanged is never used later, and also nullable,
-                        //  but in theory we should be able to pass either the content field or the title field.
-                        mTextWatcher.postTextChanged(null);
-                    }
-                },
-                new OnAuthHeaderRequestedListener() {
-                    @Override public String onAuthHeaderRequested(String url) {
-                        return mEditorFragmentListener.onAuthHeaderRequested(url);
+                    public void run() {
+                        setEditorProgressBarVisibility(!mEditorDidMount);
                     }
                 });
+            }
+        },
+        new OnEditorAutosaveListener() {
+            @Override public void onEditorAutosave() {
+                // FIXME the Editable field passed to postTextChanged is never used later, and also nullable,
+                //  but in theory we should be able to pass either the content field or the title field.
+                mTextWatcher.postTextChanged(null);
+            }
+        },
+        new OnAuthHeaderRequestedListener() {
+            @Override public String onAuthHeaderRequested(String url) {
+                return mEditorFragmentListener.onAuthHeaderRequested(url);
+            }
+        });
 
         // request dependency injection. Do this after setting min/max dimensions
         if (getActivity() instanceof EditorFragmentActivity) {
@@ -399,23 +399,23 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
     private void showCancelMediaUploadDialog(final int localMediaId) {
         // Display 'cancel upload' dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         builder.setTitle(getString(R.string.stop_upload_dialog_title));
         builder.setPositiveButton(R.string.stop_upload_dialog_button_yes,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (mUploadingMediaProgressMax.containsKey(String.valueOf(localMediaId))) {
-                            mEditorFragmentListener.onMediaUploadCancelClicked(String.valueOf(localMediaId));
-                            // remove from editor
-                            mEditorFragmentListener.onMediaDeleted(String.valueOf(localMediaId));
-                            getGutenbergContainerFragment().clearMediaFileURL(localMediaId);
-                            mUploadingMediaProgressMax.remove(localMediaId);
-                        } else {
-                            ToastUtils.showToast(getActivity(), R.string.upload_finished_toast).show();
-                        }
-                        dialog.dismiss();
-                    }
-                });
+        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (mUploadingMediaProgressMax.containsKey(String.valueOf(localMediaId))) {
+                    mEditorFragmentListener.onMediaUploadCancelClicked(String.valueOf(localMediaId));
+                    // remove from editor
+                    mEditorFragmentListener.onMediaDeleted(String.valueOf(localMediaId));
+                    getGutenbergContainerFragment().clearMediaFileURL(localMediaId);
+                    mUploadingMediaProgressMax.remove(localMediaId);
+                } else {
+                    ToastUtils.showToast(getActivity(), R.string.upload_finished_toast).show();
+                }
+                dialog.dismiss();
+            }
+        });
 
         builder.setNegativeButton(R.string.stop_upload_dialog_button_no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -430,24 +430,24 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
     private void showRetryMediaUploadDialog(final int mediaId) {
         // Display 'retry upload' dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         builder.setTitle(getString(R.string.retry_failed_upload_title));
         builder.setPositiveButton(R.string.retry_failed_upload_yes,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        boolean successfullyRetried = true;
-                        if (mFailedMediaIds.contains(String.valueOf(mediaId))) {
-                            successfullyRetried = mEditorFragmentListener.onMediaRetryClicked(String.valueOf(mediaId));
-                        }
-                        if (successfullyRetried) {
-                            mFailedMediaIds.remove(String.valueOf(mediaId));
-                            mUploadingMediaProgressMax.put(String.valueOf(mediaId), 0f);
-                            getGutenbergContainerFragment().mediaFileUploadProgress(mediaId,
-                                    mUploadingMediaProgressMax.get(String.valueOf(mediaId)));
-                        }
-                    }
-                });
+        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+                boolean successfullyRetried = true;
+                if (mFailedMediaIds.contains(String.valueOf(mediaId))) {
+                    successfullyRetried = mEditorFragmentListener.onMediaRetryClicked(String.valueOf(mediaId));
+                }
+                if (successfullyRetried) {
+                    mFailedMediaIds.remove(String.valueOf(mediaId));
+                    mUploadingMediaProgressMax.put(String.valueOf(mediaId), 0f);
+                    getGutenbergContainerFragment().mediaFileUploadProgress(mediaId,
+                            mUploadingMediaProgressMax.get(String.valueOf(mediaId)));
+                }
+            }
+        });
 
         builder.setNeutralButton(R.string.retry_failed_upload_retry_all, new OnClickListener() {
             @Override public void onClick(DialogInterface dialog, int which) {
@@ -674,14 +674,14 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
 
         if (URLUtil.isNetworkUrl(mediaUrl)) {
             getGutenbergContainerFragment().appendMediaFile(
-                    Integer.valueOf(mediaFile.getMediaId()),
-                    mediaUrl,
-                    mediaFile.isVideo());
+                Integer.valueOf(mediaFile.getMediaId()),
+                mediaUrl,
+                mediaFile.isVideo());
         } else {
             getGutenbergContainerFragment().appendUploadMediaFile(
-                    mediaFile.getId(),
-                    "file://" + mediaUrl,
-                    mediaFile.isVideo());
+                mediaFile.getId(),
+                "file://" + mediaUrl,
+                mediaFile.isVideo());
             mUploadingMediaProgressMax.put(String.valueOf(mediaFile.getId()), 0f);
         }
     }
@@ -742,7 +742,7 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
             mSavingContentProgressDialog.setMessage(getActivity().getString(R.string.long_post_dlg_saving));
         }
         mSavingContentProgressDialog.show();
-       return true;
+        return true;
     }
 
     @Override
@@ -785,7 +785,7 @@ public class GutenbergEditorFragment extends EditorFragmentAbstract implements
 
     @Override
     public void onMediaUploadFailed(final String localMediaId, final MediaType
-            mediaType, final String errorMessage) {
+                                    mediaType, final String errorMessage) {
         getGutenbergContainerFragment().mediaFileUploadFailed(Integer.valueOf(localMediaId));
         mFailedMediaIds.add(localMediaId);
         mUploadingMediaProgressMax.remove(localMediaId);

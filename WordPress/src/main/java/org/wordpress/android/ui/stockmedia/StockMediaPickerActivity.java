@@ -615,7 +615,7 @@ public class StockMediaPickerActivity extends AppCompatActivity implements Searc
                 }
             } else {
                 holder.mSelectionCountTextView.setVisibility(
-                        isSelected || enableMultiselect() ? View.VISIBLE : View.GONE);
+                    isSelected || enableMultiselect() ? View.VISIBLE : View.GONE);
             }
 
             float scale = isSelected ? SCALE_SELECTED : SCALE_NORMAL;

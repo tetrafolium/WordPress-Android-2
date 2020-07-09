@@ -30,20 +30,20 @@ public class NotificationsActions {
     // If `note.getTimestamp()` is not the most recent seen note, the server will discard the value.
     public static void updateSeenTimestamp(Note note) {
         WordPress.getRestClientUtilsV1_1().markNotificationsSeen(
-                String.valueOf(note.getTimestamp()),
-                new RestRequest.Listener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Assuming that we've marked the most recent notification as seen. (Beware, seen != read).
-                        EventBus.getDefault().post(new NotificationEvents.NotificationsUnseenStatus(false));
-                    }
-                },
-                new RestRequest.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AppLog.e(AppLog.T.NOTIFS, "Could not mark notifications/seen' value via API.", error);
-                    }
-                }
+            String.valueOf(note.getTimestamp()),
+        new RestRequest.Listener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                // Assuming that we've marked the most recent notification as seen. (Beware, seen != read).
+                EventBus.getDefault().post(new NotificationEvents.NotificationsUnseenStatus(false));
+            }
+        },
+        new RestRequest.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AppLog.e(AppLog.T.NOTIFS, "Could not mark notifications/seen' value via API.", error);
+            }
+        }
         );
     }
 
@@ -81,41 +81,41 @@ public class NotificationsActions {
     }
 
     public static void downloadNoteAndUpdateDB(final String noteID, final RestRequest.Listener respoListener,
-                                               final RestRequest.ErrorListener errorListener) {
+            final RestRequest.ErrorListener errorListener) {
         WordPress.getRestClientUtilsV1_1().getNotification(
-                noteID,
-                new RestRequest.Listener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (response == null) {
-                            // Not sure this could ever happen, but make sure we're catching all response types
-                            AppLog.w(AppLog.T.NOTIFS, "Success, but did not receive any notes");
-                        }
-                        try {
-                            List<Note> notes = NotificationsActions.parseNotes(response);
-                            if (notes.size() > 0) {
-                                NotificationsTable.saveNote(notes.get(0));
-                                EventBus.getDefault()
-                                        .post(new NotificationEvents.NotificationsChanged(notes.get(0).isUnread()));
-                            } else {
-                                AppLog.e(AppLog.T.NOTIFS, "Success, but no note!!!???");
-                            }
-                        } catch (JSONException e) {
-                            AppLog.e(AppLog.T.NOTIFS, "Success, but can't parse the response for the note_id " + noteID,
-                                     e);
-                        }
-                        if (respoListener != null) {
-                            respoListener.onResponse(response);
-                        }
+            noteID,
+        new RestRequest.Listener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response == null) {
+                    // Not sure this could ever happen, but make sure we're catching all response types
+                    AppLog.w(AppLog.T.NOTIFS, "Success, but did not receive any notes");
+                }
+                try {
+                    List<Note> notes = NotificationsActions.parseNotes(response);
+                    if (notes.size() > 0) {
+                        NotificationsTable.saveNote(notes.get(0));
+                        EventBus.getDefault()
+                        .post(new NotificationEvents.NotificationsChanged(notes.get(0).isUnread()));
+                    } else {
+                        AppLog.e(AppLog.T.NOTIFS, "Success, but no note!!!???");
                     }
-                }, new RestRequest.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AppLog.e(AppLog.T.NOTIFS, "Error retrieving note with ID " + noteID, error);
-                        if (errorListener != null) {
-                            errorListener.onErrorResponse(error);
-                        }
-                    }
-                });
+                } catch (JSONException e) {
+                    AppLog.e(AppLog.T.NOTIFS, "Success, but can't parse the response for the note_id " + noteID,
+                             e);
+                }
+                if (respoListener != null) {
+                    respoListener.onResponse(response);
+                }
+            }
+        }, new RestRequest.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AppLog.e(AppLog.T.NOTIFS, "Error retrieving note with ID " + noteID, error);
+                if (errorListener != null) {
+                    errorListener.onErrorResponse(error);
+                }
+            }
+        });
     }
 }

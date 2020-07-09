@@ -46,13 +46,13 @@ public class MyProfileActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         MyProfileFragment myProfileFragment =
-                (MyProfileFragment) fragmentManager.findFragmentByTag(KEY_MY_PROFILE_FRAGMENT);
+            (MyProfileFragment) fragmentManager.findFragmentByTag(KEY_MY_PROFILE_FRAGMENT);
         if (myProfileFragment == null) {
             myProfileFragment = MyProfileFragment.newInstance();
 
             fragmentManager.beginTransaction()
-                           .add(android.R.id.content, myProfileFragment, KEY_MY_PROFILE_FRAGMENT)
-                           .commit();
+            .add(android.R.id.content, myProfileFragment, KEY_MY_PROFILE_FRAGMENT)
+            .commit();
         }
     }
 

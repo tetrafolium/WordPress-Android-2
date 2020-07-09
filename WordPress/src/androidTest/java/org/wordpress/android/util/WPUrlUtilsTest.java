@@ -15,7 +15,7 @@ public class WPUrlUtilsTest extends InstrumentationTestCase {
     private static final String WPCOM_ADDRESS_5 = "https://wordpress.com/test#test";
     private static final String WPCOM_ADDRESS_6 = "https://developer.wordpress.com";
     private static final String NOT_WPCOM_ADDRESS_1 =
-            "http://i2.wp.com.eritreo.it#.files.wordpress.com/testpicture.gif?strip=all&quality=100&resize=1024,768";
+        "http://i2.wp.com.eritreo.it#.files.wordpress.com/testpicture.gif?strip=all&quality=100&resize=1024,768";
     private static final String NOT_WPCOM_ADDRESS_2 = "wordpress.com";
     private static final String NOT_WPCOM_ADDRESS_3 = "https://thisisnotwordpress.com";
 

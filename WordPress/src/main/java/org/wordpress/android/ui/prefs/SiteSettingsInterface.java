@@ -226,12 +226,12 @@ public abstract class SiteSettingsInterface {
     public @NonNull String getPrivacyDescription() {
         if (mContext != null) {
             switch (getPrivacy()) {
-                case -1:
-                    return mContext.getString(R.string.site_settings_privacy_private_summary);
-                case 0:
-                    return mContext.getString(R.string.site_settings_privacy_hidden_summary);
-                case 1:
-                    return mContext.getString(R.string.site_settings_privacy_public_summary);
+            case -1:
+                return mContext.getString(R.string.site_settings_privacy_private_summary);
+            case 0:
+                return mContext.getString(R.string.site_settings_privacy_hidden_summary);
+            case 1:
+                return mContext.getString(R.string.site_settings_privacy_public_summary);
             }
         }
         return "";
@@ -393,12 +393,12 @@ public abstract class SiteSettingsInterface {
 
         int order = getCommentSorting();
         switch (order) {
-            case SiteSettingsInterface.ASCENDING_SORT:
-                return mContext.getString(R.string.oldest_first);
-            case SiteSettingsInterface.DESCENDING_SORT:
-                return mContext.getString(R.string.newest_first);
-            default:
-                return mContext.getString(R.string.unknown);
+        case SiteSettingsInterface.ASCENDING_SORT:
+            return mContext.getString(R.string.oldest_first);
+        case SiteSettingsInterface.DESCENDING_SORT:
+            return mContext.getString(R.string.newest_first);
+        default:
+            return mContext.getString(R.string.unknown);
         }
     }
 
@@ -759,7 +759,7 @@ public abstract class SiteSettingsInterface {
 
     public boolean setLanguageCode(String languageCode) {
         if (!mLanguageCodes.containsKey(languageCode)
-            || TextUtils.isEmpty(mLanguageCodes.get(languageCode))) {
+                || TextUtils.isEmpty(mLanguageCodes.get(languageCode))) {
             return false;
         }
         mSettings.language = languageCode;
@@ -1063,20 +1063,21 @@ public abstract class SiteSettingsInterface {
         if (mSite.hasDiskSpaceQuotaInformation()) {
             String percentage = FormatUtils.formatPercentage(mSite.getSpacePercentUsed() / 100);
             final String[] units = new String[] {mContext.getString(R.string.file_size_in_bytes),
-                    mContext.getString(R.string.file_size_in_kilobytes),
-                    mContext.getString(R.string.file_size_in_megabytes),
-                    mContext.getString(R.string.file_size_in_gigabytes),
-                    mContext.getString(R.string.file_size_in_terabytes) };
+                                                 mContext.getString(R.string.file_size_in_kilobytes),
+                                                 mContext.getString(R.string.file_size_in_megabytes),
+                                                 mContext.getString(R.string.file_size_in_gigabytes),
+                                                 mContext.getString(R.string.file_size_in_terabytes)
+                                                };
 
             String quotaAvailableSentence;
             if (mSite.getPlanId() == PlansConstants.BUSINESS_PLAN_ID) {
                 String usedSpace = FormatUtils.formatFileSize(mSite.getSpaceUsed(), units);
                 quotaAvailableSentence = String.format(mContext.getString(R.string.site_settings_quota_space_unlimited),
-                        usedSpace);
+                                                       usedSpace);
             } else {
                 String spaceAllowed = FormatUtils.formatFileSize(mSite.getSpaceAllowed(), units);
                 quotaAvailableSentence = String.format(mContext.getString(R.string.site_settings_quota_space_value),
-                        percentage, spaceAllowed);
+                                                       percentage, spaceAllowed);
             }
             setQuotaDiskSpace(quotaAvailableSentence);
         }

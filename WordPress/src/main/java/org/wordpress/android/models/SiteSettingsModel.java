@@ -73,74 +73,74 @@ public class SiteSettingsModel {
     public static final String SETTINGS_TABLE_NAME = "site_settings";
 
     public static final String ADD_SHARING_LABEL = "alter table " + SETTINGS_TABLE_NAME
-                                                   + " add " + SHARING_LABEL_COLUMN_NAME + " TEXT;";
+            + " add " + SHARING_LABEL_COLUMN_NAME + " TEXT;";
     public static final String ADD_SHARING_BUTTON_STYLE = "alter table " + SETTINGS_TABLE_NAME
-                                                          + " add " + SHARING_BUTTON_STYLE_COLUMN_NAME + " TEXT;";
+            + " add " + SHARING_BUTTON_STYLE_COLUMN_NAME + " TEXT;";
     public static final String ADD_ALLOW_REBLOG_BUTTON = "alter table " + SETTINGS_TABLE_NAME
-                                                         + " add " + ALLOW_REBLOG_BUTTON_COLUMN_NAME + " BOOLEAN;";
+            + " add " + ALLOW_REBLOG_BUTTON_COLUMN_NAME + " BOOLEAN;";
     public static final String ADD_ALLOW_LIKE_BUTTON = "alter table " + SETTINGS_TABLE_NAME
-                                                       + " add " + ALLOW_LIKE_BUTTON_COLUMN_NAME + " BOOLEAN;";
+            + " add " + ALLOW_LIKE_BUTTON_COLUMN_NAME + " BOOLEAN;";
     public static final String ADD_ALLOW_COMMENT_LIKES = "alter table " + SETTINGS_TABLE_NAME
-                                                         + " add " + ALLOW_COMMENT_LIKES_COLUMN_NAME + " BOOLEAN;";
+            + " add " + ALLOW_COMMENT_LIKES_COLUMN_NAME + " BOOLEAN;";
     public static final String ADD_TWITTER_USERNAME = "alter table " + SETTINGS_TABLE_NAME
-                                                      + " add " + TWITTER_USERNAME_COLUMN_NAME + " TEXT;";
+            + " add " + TWITTER_USERNAME_COLUMN_NAME + " TEXT;";
     public static final String ADD_START_OF_WEEK = "alter table " + SETTINGS_TABLE_NAME
-                                                   + " add " + START_OF_WEEK_COLUMN_NAME + " TEXT;";
+            + " add " + START_OF_WEEK_COLUMN_NAME + " TEXT;";
     public static final String ADD_TIME_FORMAT = "alter table " + SETTINGS_TABLE_NAME
-                                                 + " add " + TIME_FORMAT_COLUMN_NAME + " TEXT;";
+            + " add " + TIME_FORMAT_COLUMN_NAME + " TEXT;";
     public static final String ADD_DATE_FORMAT = "alter table " + SETTINGS_TABLE_NAME
-                                                 + " add " + DATE_FORMAT_COLUMN_NAME + " TEXT;";
+            + " add " + DATE_FORMAT_COLUMN_NAME + " TEXT;";
     public static final String ADD_TIMEZONE = "alter table " + SETTINGS_TABLE_NAME
-                                              + " add " + TIMEZONE_COLUMN_NAME + " TEXT;";
+            + " add " + TIMEZONE_COLUMN_NAME + " TEXT;";
     public static final String ADD_POSTS_PER_PAGE = "alter table " + SETTINGS_TABLE_NAME
-                                                    + " add " + POSTS_PER_PAGE_COLUMN_NAME + " INTEGER;";
+            + " add " + POSTS_PER_PAGE_COLUMN_NAME + " INTEGER;";
     public static final String ADD_AMP_ENABLED = "alter table " + SETTINGS_TABLE_NAME
-                                                 + " add " + AMP_ENABLED_COLUMN_NAME + " BOOLEAN;";
+            + " add " + AMP_ENABLED_COLUMN_NAME + " BOOLEAN;";
     public static final String ADD_AMP_SUPPORTED = "alter table " + SETTINGS_TABLE_NAME
-                                                   + " add " + AMP_SUPPORTED_COLUMN_NAME + " BOOLEAN;";
+            + " add " + AMP_SUPPORTED_COLUMN_NAME + " BOOLEAN;";
     public static final String ADD_JETPACK_SEARCH_ENABLED = "alter table " + SETTINGS_TABLE_NAME
-                                                 + " add " + JETPACK_SEARCH_ENABLED_COLUMN_NAME + " BOOLEAN;";
+            + " add " + JETPACK_SEARCH_ENABLED_COLUMN_NAME + " BOOLEAN;";
     public static final String ADD_JETPACK_SEARCH_SUPPORTED = "alter table " + SETTINGS_TABLE_NAME
-                                                   + " add " + JETPACK_SEARCH_SUPPORTED_COLUMN_NAME + " BOOLEAN;";
+            + " add " + JETPACK_SEARCH_SUPPORTED_COLUMN_NAME + " BOOLEAN;";
     public static final String ADD_SITE_ICON = "alter table " + SETTINGS_TABLE_NAME
-                                               + " add " + SITE_ICON_COLUMN_NAME + " INTEGER;";
+            + " add " + SITE_ICON_COLUMN_NAME + " INTEGER;";
 
     public static final String CREATE_SETTINGS_TABLE_SQL =
-            "CREATE TABLE IF NOT EXISTS "
-            + SETTINGS_TABLE_NAME
-            + " ("
-            + ID_COLUMN_NAME + " INTEGER PRIMARY KEY, "
-            + ADDRESS_COLUMN_NAME + " TEXT, "
-            + USERNAME_COLUMN_NAME + " TEXT, "
-            + PASSWORD_COLUMN_NAME + " TEXT, "
-            + TITLE_COLUMN_NAME + " TEXT, "
-            + TAGLINE_COLUMN_NAME + " TEXT, "
-            + LANGUAGE_COLUMN_NAME + " INTEGER, "
-            + PRIVACY_COLUMN_NAME + " INTEGER, "
-            + LOCATION_COLUMN_NAME + " BOOLEAN, "
-            + DEF_CATEGORY_COLUMN_NAME + " TEXT, "
-            + DEF_POST_FORMAT_COLUMN_NAME + " TEXT, "
-            + CATEGORIES_COLUMN_NAME + " TEXT, "
-            + POST_FORMATS_COLUMN_NAME + " TEXT, "
-            + CREDS_VERIFIED_COLUMN_NAME + " BOOLEAN, "
-            + RELATED_POSTS_COLUMN_NAME + " INTEGER, "
-            + ALLOW_COMMENTS_COLUMN_NAME + " BOOLEAN, "
-            + SEND_PINGBACKS_COLUMN_NAME + " BOOLEAN, "
-            + RECEIVE_PINGBACKS_COLUMN_NAME + " BOOLEAN, "
-            + SHOULD_CLOSE_AFTER_COLUMN_NAME + " BOOLEAN, "
-            + CLOSE_AFTER_COLUMN_NAME + " INTEGER, "
-            + SORT_BY_COLUMN_NAME + " INTEGER, "
-            + SHOULD_THREAD_COLUMN_NAME + " BOOLEAN, "
-            + THREADING_COLUMN_NAME + " INTEGER, "
-            + SHOULD_PAGE_COLUMN_NAME + " BOOLEAN, "
-            + PAGING_COLUMN_NAME + " INTEGER, "
-            + MANUAL_APPROVAL_COLUMN_NAME + " BOOLEAN, "
-            + IDENTITY_REQUIRED_COLUMN_NAME + " BOOLEAN, "
-            + USER_ACCOUNT_REQUIRED_COLUMN_NAME + " BOOLEAN, "
-            + WHITELIST_COLUMN_NAME + " BOOLEAN, "
-            + MODERATION_KEYS_COLUMN_NAME + " TEXT, "
-            + BLACKLIST_KEYS_COLUMN_NAME + " TEXT"
-            + ");";
+        "CREATE TABLE IF NOT EXISTS "
+        + SETTINGS_TABLE_NAME
+        + " ("
+        + ID_COLUMN_NAME + " INTEGER PRIMARY KEY, "
+        + ADDRESS_COLUMN_NAME + " TEXT, "
+        + USERNAME_COLUMN_NAME + " TEXT, "
+        + PASSWORD_COLUMN_NAME + " TEXT, "
+        + TITLE_COLUMN_NAME + " TEXT, "
+        + TAGLINE_COLUMN_NAME + " TEXT, "
+        + LANGUAGE_COLUMN_NAME + " INTEGER, "
+        + PRIVACY_COLUMN_NAME + " INTEGER, "
+        + LOCATION_COLUMN_NAME + " BOOLEAN, "
+        + DEF_CATEGORY_COLUMN_NAME + " TEXT, "
+        + DEF_POST_FORMAT_COLUMN_NAME + " TEXT, "
+        + CATEGORIES_COLUMN_NAME + " TEXT, "
+        + POST_FORMATS_COLUMN_NAME + " TEXT, "
+        + CREDS_VERIFIED_COLUMN_NAME + " BOOLEAN, "
+        + RELATED_POSTS_COLUMN_NAME + " INTEGER, "
+        + ALLOW_COMMENTS_COLUMN_NAME + " BOOLEAN, "
+        + SEND_PINGBACKS_COLUMN_NAME + " BOOLEAN, "
+        + RECEIVE_PINGBACKS_COLUMN_NAME + " BOOLEAN, "
+        + SHOULD_CLOSE_AFTER_COLUMN_NAME + " BOOLEAN, "
+        + CLOSE_AFTER_COLUMN_NAME + " INTEGER, "
+        + SORT_BY_COLUMN_NAME + " INTEGER, "
+        + SHOULD_THREAD_COLUMN_NAME + " BOOLEAN, "
+        + THREADING_COLUMN_NAME + " INTEGER, "
+        + SHOULD_PAGE_COLUMN_NAME + " BOOLEAN, "
+        + PAGING_COLUMN_NAME + " INTEGER, "
+        + MANUAL_APPROVAL_COLUMN_NAME + " BOOLEAN, "
+        + IDENTITY_REQUIRED_COLUMN_NAME + " BOOLEAN, "
+        + USER_ACCOUNT_REQUIRED_COLUMN_NAME + " BOOLEAN, "
+        + WHITELIST_COLUMN_NAME + " BOOLEAN, "
+        + MODERATION_KEYS_COLUMN_NAME + " TEXT, "
+        + BLACKLIST_KEYS_COLUMN_NAME + " TEXT"
+        + ");";
 
     public boolean isInLocalTable;
     public boolean hasVerifiedCredentials;

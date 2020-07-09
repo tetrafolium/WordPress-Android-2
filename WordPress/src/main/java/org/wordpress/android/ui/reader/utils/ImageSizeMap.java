@@ -37,7 +37,7 @@ public class ImageSizeMap extends HashMap<String, ImageSizeMap.ImageSize> {
                 JSONObject jsonAttach = json.optJSONObject(it.next());
                 if (jsonAttach != null && JSONUtils.getString(jsonAttach, "mime_type").startsWith("image")) {
                     String normUrl =
-                            UrlUtils.normalizeUrl(UrlUtils.removeQuery(JSONUtils.getString(jsonAttach, "URL")));
+                        UrlUtils.normalizeUrl(UrlUtils.removeQuery(JSONUtils.getString(jsonAttach, "URL")));
 
                     // make sure this image actually appears in the post content - it's possible for
                     // an image to be in the attachments but not in the post itself

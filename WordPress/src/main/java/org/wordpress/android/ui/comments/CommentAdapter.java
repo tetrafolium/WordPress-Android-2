@@ -227,19 +227,19 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         final boolean showStatus;
         CommentStatus commentStatus = CommentStatus.fromString(comment.getStatus());
         switch (commentStatus) {
-            case SPAM:
-                showStatus = true;
-                holder.mTxtStatus.setText(mStatusTextSpam);
-                holder.mTxtStatus.setTextColor(mStatusColorSpam);
-                break;
-            case UNAPPROVED:
-                showStatus = true;
-                holder.mTxtStatus.setText(mStatusTextUnapproved);
-                holder.mTxtStatus.setTextColor(mStatusColorUnapproved);
-                break;
-            default:
-                showStatus = false;
-                break;
+        case SPAM:
+            showStatus = true;
+            holder.mTxtStatus.setText(mStatusTextSpam);
+            holder.mTxtStatus.setTextColor(mStatusColorSpam);
+            break;
+        case UNAPPROVED:
+            showStatus = true;
+            holder.mTxtStatus.setText(mStatusTextUnapproved);
+            holder.mTxtStatus.setTextColor(mStatusColorUnapproved);
+            break;
+        default:
+            showStatus = false;
+            break;
         }
         holder.mTxtStatus.setVisibility(showStatus ? View.VISIBLE : View.GONE);
 
@@ -251,7 +251,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else {
             checkmarkVisibility = View.GONE;
             mImageManager.loadIntoCircle(holder.mImgAvatar, ImageType.AVATAR_WITH_BACKGROUND,
-                    getAvatarForDisplay(comment, mAvatarSz));
+                                         getAvatarForDisplay(comment, mAvatarSz));
             holder.mContainerView.setBackgroundColor(mUnselectedColor);
         }
 
@@ -273,7 +273,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         // request to load more comments when we near the end
         if (mOnLoadMoreListener != null && position >= getItemCount() - 1
-            && position >= CommentsListFragment.COMMENTS_PER_PAGE - 1) {
+                && position >= CommentsListFragment.COMMENTS_PER_PAGE - 1) {
             mOnLoadMoreListener.onLoadMore();
         }
     }
@@ -431,7 +431,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (mStatusFilter == null || mStatusFilter == CommentStatus.ALL) {
                 // The "all" filter actually means "approved" + "unapproved" (but not "spam", "trash" or "deleted")
                 comments = mCommentStore.getCommentsForSite(mSite, false,
-                        CommentStatus.APPROVED, CommentStatus.UNAPPROVED);
+                           CommentStatus.APPROVED, CommentStatus.UNAPPROVED);
             } else {
                 comments = mCommentStore.getCommentsForSite(mSite, false, mStatusFilter);
             }

@@ -79,8 +79,8 @@ import javax.inject.Inject;
  * Will also handle jumping to the comments section, liking a commend and liking a post directly
  */
 public class ReaderPostPagerActivity extends AppCompatActivity
-        implements ReaderInterfaces.AutoHideToolbarListener,
-        BasicFragmentDialog.BasicDialogPositiveClickInterface {
+    implements ReaderInterfaces.AutoHideToolbarListener,
+    BasicFragmentDialog.BasicDialogPositiveClickInterface {
     /**
      * Type of URL intercepted
      */
@@ -154,20 +154,20 @@ public class ReaderPostPagerActivity extends AppCompatActivity
             mBlogId = savedInstanceState.getLong(ReaderConstants.ARG_BLOG_ID);
             mPostId = savedInstanceState.getLong(ReaderConstants.ARG_POST_ID);
             mDirectOperation = (DirectOperation) savedInstanceState
-                    .getSerializable(ReaderConstants.ARG_DIRECT_OPERATION);
+                               .getSerializable(ReaderConstants.ARG_DIRECT_OPERATION);
             mCommentId = savedInstanceState.getInt(ReaderConstants.ARG_COMMENT_ID);
             mIsSinglePostView = savedInstanceState.getBoolean(ReaderConstants.ARG_IS_SINGLE_POST);
             mIsRelatedPostView = savedInstanceState.getBoolean(ReaderConstants.ARG_IS_RELATED_POST);
             mInterceptedUri = savedInstanceState.getString(ReaderConstants.ARG_INTERCEPTED_URI);
             if (savedInstanceState.containsKey(ReaderConstants.ARG_POST_LIST_TYPE)) {
                 mPostListType =
-                        (ReaderPostListType) savedInstanceState.getSerializable(ReaderConstants.ARG_POST_LIST_TYPE);
+                    (ReaderPostListType) savedInstanceState.getSerializable(ReaderConstants.ARG_POST_LIST_TYPE);
             }
             if (savedInstanceState.containsKey(ReaderConstants.ARG_TAG)) {
                 mCurrentTag = (ReaderTag) savedInstanceState.getSerializable(ReaderConstants.ARG_TAG);
             }
             mPostSlugsResolutionUnderway =
-                    savedInstanceState.getBoolean(ReaderConstants.KEY_POST_SLUGS_RESOLUTION_UNDERWAY);
+                savedInstanceState.getBoolean(ReaderConstants.KEY_POST_SLUGS_RESOLUTION_UNDERWAY);
             if (savedInstanceState.containsKey(ReaderConstants.KEY_TRACKED_POSITIONS)) {
                 Serializable positions = savedInstanceState.getSerializable(ReaderConstants.KEY_TRACKED_POSITIONS);
                 if (positions instanceof HashSet) {
@@ -179,14 +179,14 @@ public class ReaderPostPagerActivity extends AppCompatActivity
             mBlogId = getIntent().getLongExtra(ReaderConstants.ARG_BLOG_ID, 0);
             mPostId = getIntent().getLongExtra(ReaderConstants.ARG_POST_ID, 0);
             mDirectOperation = (DirectOperation) getIntent()
-                    .getSerializableExtra(ReaderConstants.ARG_DIRECT_OPERATION);
+                               .getSerializableExtra(ReaderConstants.ARG_DIRECT_OPERATION);
             mCommentId = getIntent().getIntExtra(ReaderConstants.ARG_COMMENT_ID, 0);
             mIsSinglePostView = getIntent().getBooleanExtra(ReaderConstants.ARG_IS_SINGLE_POST, false);
             mIsRelatedPostView = getIntent().getBooleanExtra(ReaderConstants.ARG_IS_RELATED_POST, false);
             mInterceptedUri = getIntent().getStringExtra(ReaderConstants.ARG_INTERCEPTED_URI);
             if (getIntent().hasExtra(ReaderConstants.ARG_POST_LIST_TYPE)) {
                 mPostListType =
-                        (ReaderPostListType) getIntent().getSerializableExtra(ReaderConstants.ARG_POST_LIST_TYPE);
+                    (ReaderPostListType) getIntent().getSerializableExtra(ReaderConstants.ARG_POST_LIST_TYPE);
             }
             if (getIntent().hasExtra(ReaderConstants.ARG_TAG)) {
                 mCurrentTag = (ReaderTag) getIntent().getSerializableExtra(ReaderConstants.ARG_TAG);
@@ -262,7 +262,7 @@ public class ReaderPostPagerActivity extends AppCompatActivity
 
         // default when post hasn't been retrieved yet
         setTitle(ActivityUtils.isDeepLinking(getIntent()) ? R.string.reader_title_post_detail_wpcom
-                : R.string.reader_title_post_detail);
+                 : R.string.reader_title_post_detail);
     }
 
     /*
@@ -352,75 +352,75 @@ public class ReaderPostPagerActivity extends AppCompatActivity
     }
 
     private void showPost(@NonNull InterceptType interceptType, final String blogIdentifier, final String
-            postIdentifier) {
+                          postIdentifier) {
         if (!TextUtils.isEmpty(blogIdentifier) && !TextUtils.isEmpty(postIdentifier)) {
             mIsSinglePostView = true;
             mIsRelatedPostView = false;
 
             switch (interceptType) {
-                case READER_BLOG:
-                    if (parseIds(blogIdentifier, postIdentifier)) {
-                        AnalyticsUtils.trackWithBlogPostDetails(AnalyticsTracker.Stat.READER_BLOG_POST_INTERCEPTED,
-                                                                mBlogId, mPostId);
-                        // IDs have now been set so, let ReaderPostPagerActivity normally display the post
-                    } else {
-                        ToastUtils.showToast(this, R.string.error_generic);
-                    }
-                    break;
-                case READER_FEED:
-                    if (parseIds(blogIdentifier, postIdentifier)) {
-                        AnalyticsUtils.trackWithFeedPostDetails(AnalyticsTracker.Stat.READER_FEED_POST_INTERCEPTED,
-                                                                mBlogId, mPostId);
-                        // IDs have now been set so, let ReaderPostPagerActivity normally display the post
-                    } else {
-                        ToastUtils.showToast(this, R.string.error_generic);
-                    }
-                    break;
-                case WPCOM_POST_SLUG:
-                    AnalyticsUtils.trackWithBlogPostDetails(
-                            AnalyticsTracker.Stat.READER_WPCOM_BLOG_POST_INTERCEPTED, blogIdentifier,
-                            postIdentifier, mCommentId);
+            case READER_BLOG:
+                if (parseIds(blogIdentifier, postIdentifier)) {
+                    AnalyticsUtils.trackWithBlogPostDetails(AnalyticsTracker.Stat.READER_BLOG_POST_INTERCEPTED,
+                                                            mBlogId, mPostId);
+                    // IDs have now been set so, let ReaderPostPagerActivity normally display the post
+                } else {
+                    ToastUtils.showToast(this, R.string.error_generic);
+                }
+                break;
+            case READER_FEED:
+                if (parseIds(blogIdentifier, postIdentifier)) {
+                    AnalyticsUtils.trackWithFeedPostDetails(AnalyticsTracker.Stat.READER_FEED_POST_INTERCEPTED,
+                                                            mBlogId, mPostId);
+                    // IDs have now been set so, let ReaderPostPagerActivity normally display the post
+                } else {
+                    ToastUtils.showToast(this, R.string.error_generic);
+                }
+                break;
+            case WPCOM_POST_SLUG:
+                AnalyticsUtils.trackWithBlogPostDetails(
+                    AnalyticsTracker.Stat.READER_WPCOM_BLOG_POST_INTERCEPTED, blogIdentifier,
+                    postIdentifier, mCommentId);
 
-                    // try to get the post from the local db
-                    ReaderPost post = ReaderPostTable.getBlogPost(blogIdentifier, postIdentifier, true);
-                    if (post != null) {
-                        // set the IDs and let ReaderPostPagerActivity normally display the post
-                        mBlogId = post.blogId;
-                        mPostId = post.postId;
-                    } else {
-                        // not stored locally, so request it
-                        ReaderPostActions.requestBlogPost(
-                            blogIdentifier, postIdentifier,
-                            new ReaderActions.OnRequestListener() {
-                                @Override
-                                public void onSuccess() {
-                                    mPostSlugsResolutionUnderway = false;
-                                    ReaderPost post = ReaderPostTable.getBlogPost(blogIdentifier, postIdentifier,
-                                                                                  true);
-                                    ReaderEvents.PostSlugsRequestCompleted slugsResolved = (post != null)
-                                            ? new ReaderEvents.PostSlugsRequestCompleted(200, post.blogId, post.postId)
-                                            : new ReaderEvents.PostSlugsRequestCompleted(200, 0, 0);
-                                    // notify that the slug resolution request has completed
-                                    EventBus.getDefault().post(slugsResolved);
+                // try to get the post from the local db
+                ReaderPost post = ReaderPostTable.getBlogPost(blogIdentifier, postIdentifier, true);
+                if (post != null) {
+                    // set the IDs and let ReaderPostPagerActivity normally display the post
+                    mBlogId = post.blogId;
+                    mPostId = post.postId;
+                } else {
+                    // not stored locally, so request it
+                    ReaderPostActions.requestBlogPost(
+                        blogIdentifier, postIdentifier,
+                    new ReaderActions.OnRequestListener() {
+                        @Override
+                        public void onSuccess() {
+                            mPostSlugsResolutionUnderway = false;
+                            ReaderPost post = ReaderPostTable.getBlogPost(blogIdentifier, postIdentifier,
+                                              true);
+                            ReaderEvents.PostSlugsRequestCompleted slugsResolved = (post != null)
+                                    ? new ReaderEvents.PostSlugsRequestCompleted(200, post.blogId, post.postId)
+                                    : new ReaderEvents.PostSlugsRequestCompleted(200, 0, 0);
+                            // notify that the slug resolution request has completed
+                            EventBus.getDefault().post(slugsResolved);
 
-                                    // post wasn't available locally earlier so, track it now
-                                    if (post != null) {
-                                        trackPost(post.blogId, post.postId);
-                                    }
-                                }
+                            // post wasn't available locally earlier so, track it now
+                            if (post != null) {
+                                trackPost(post.blogId, post.postId);
+                            }
+                        }
 
-                                @Override
-                                public void onFailure(int statusCode) {
-                                    mPostSlugsResolutionUnderway = false;
-                                    // notify that the slug resolution request has completed
-                                    EventBus.getDefault()
-                                            .post(new ReaderEvents.PostSlugsRequestCompleted(statusCode, 0, 0));
-                                }
-                            });
-                        mPostSlugsResolutionUnderway = true;
-                    }
+                        @Override
+                        public void onFailure(int statusCode) {
+                            mPostSlugsResolutionUnderway = false;
+                            // notify that the slug resolution request has completed
+                            EventBus.getDefault()
+                            .post(new ReaderEvents.PostSlugsRequestCompleted(statusCode, 0, 0));
+                        }
+                    });
+                    mPostSlugsResolutionUnderway = true;
+                }
 
-                    break;
+                break;
             }
         } else {
             ToastUtils.showToast(this, R.string.error_generic);
@@ -619,10 +619,10 @@ public class ReaderPostPagerActivity extends AppCompatActivity
             fragment.hideCustomView();
         } else //noinspection StatementWithEmptyBody
             if (fragment != null && fragment.goBackInPostHistory()) {
-            // noop - fragment moved back to a previous post
-        } else {
-            super.onBackPressed();
-        }
+                // noop - fragment moved back to a previous post
+            } else {
+                super.onBackPressed();
+            }
     }
 
     /*
@@ -654,8 +654,8 @@ public class ReaderPostPagerActivity extends AppCompatActivity
 
         // analytics tracking
         AnalyticsUtils.trackWithReaderPostDetails(
-                AnalyticsTracker.Stat.READER_ARTICLE_OPENED,
-                ReaderPostTable.getBlogPost(blogId, postId, true));
+            AnalyticsTracker.Stat.READER_ARTICLE_OPENED,
+            ReaderPostTable.getBlogPost(blogId, postId, true));
     }
 
     /*
@@ -674,16 +674,16 @@ public class ReaderPostPagerActivity extends AppCompatActivity
                 } else {
                     int maxPosts = ReaderConstants.READER_MAX_POSTS_TO_DISPLAY;
                     switch (getPostListType()) {
-                        case TAG_FOLLOWED:
-                        case TAG_PREVIEW:
-                            idList = ReaderPostTable.getBlogIdPostIdsWithTag(getCurrentTag(), maxPosts);
-                            break;
-                        case BLOG_PREVIEW:
-                            idList = ReaderPostTable.getBlogIdPostIdsInBlog(blogId, maxPosts);
-                            break;
-                        case SEARCH_RESULTS:
-                        default:
-                            return;
+                    case TAG_FOLLOWED:
+                    case TAG_PREVIEW:
+                        idList = ReaderPostTable.getBlogIdPostIdsWithTag(getCurrentTag(), maxPosts);
+                        break;
+                    case BLOG_PREVIEW:
+                        idList = ReaderPostTable.getBlogIdPostIdsInBlog(blogId, maxPosts);
+                        break;
+                    case SEARCH_RESULTS:
+                    default:
+                        return;
                     }
                 }
 
@@ -699,7 +699,7 @@ public class ReaderPostPagerActivity extends AppCompatActivity
 
                         AppLog.d(AppLog.T.READER, "reader pager > creating adapter");
                         PostPagerAdapter adapter =
-                                new PostPagerAdapter(getSupportFragmentManager(), idList);
+                            new PostPagerAdapter(getSupportFragmentManager(), idList);
                         mViewPager.setAdapter(adapter);
                         if (adapter.isValidPosition(newPosition)) {
                             mViewPager.setCurrentItem(newPosition);
@@ -719,7 +719,7 @@ public class ReaderPostPagerActivity extends AppCompatActivity
                     }
                 });
             }
-        }.start();
+        } .start();
     }
 
     private ReaderTag getCurrentTag() {
@@ -779,20 +779,20 @@ public class ReaderPostPagerActivity extends AppCompatActivity
 
         AppLog.d(AppLog.T.READER, "reader pager > requesting older posts");
         switch (getPostListType()) {
-            case TAG_PREVIEW:
-            case TAG_FOLLOWED:
-                ReaderPostServiceStarter.startServiceForTag(
-                        this,
-                        getCurrentTag(),
-                        ReaderPostServiceStarter.UpdateAction.REQUEST_OLDER);
-                break;
+        case TAG_PREVIEW:
+        case TAG_FOLLOWED:
+            ReaderPostServiceStarter.startServiceForTag(
+                this,
+                getCurrentTag(),
+                ReaderPostServiceStarter.UpdateAction.REQUEST_OLDER);
+            break;
 
-            case BLOG_PREVIEW:
-                ReaderPostServiceStarter.startServiceForBlog(
-                        this,
-                        mBlogId,
-                        ReaderPostServiceStarter.UpdateAction.REQUEST_OLDER);
-                break;
+        case BLOG_PREVIEW:
+            ReaderPostServiceStarter.startServiceForBlog(
+                this,
+                mBlogId,
+                ReaderPostServiceStarter.UpdateAction.REQUEST_OLDER);
+            break;
         }
     }
 
@@ -917,15 +917,15 @@ public class ReaderPostPagerActivity extends AppCompatActivity
             }
 
             return ReaderPostDetailFragment.newInstance(
-                    mIsFeed,
-                    mIdList.get(position).getBlogId(),
-                    mIdList.get(position).getPostId(),
-                    mDirectOperation,
-                    mCommentId,
-                    mIsRelatedPostView,
-                    mInterceptedUri,
-                    getPostListType(),
-                    mPostSlugsResolutionUnderway);
+                       mIsFeed,
+                       mIdList.get(position).getBlogId(),
+                       mIdList.get(position).getPostId(),
+                       mDirectOperation,
+                       mCommentId,
+                       mIsRelatedPostView,
+                       mInterceptedUri,
+                       getPostListType(),
+                       mPostSlugsResolutionUnderway);
         }
 
         @Override

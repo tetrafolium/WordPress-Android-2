@@ -59,7 +59,7 @@ public class ReaderPostListActivity extends AppCompatActivity {
         }
 
         if (getPostListType() == ReaderPostListType.TAG_PREVIEW
-            || getPostListType() == ReaderPostListType.BLOG_PREVIEW) {
+                || getPostListType() == ReaderPostListType.BLOG_PREVIEW) {
             // show an X in the toolbar which closes the activity - if this is tag preview, then
             // using the back button will navigate through tags if the user explores beyond a single tag
             toolbar.setNavigationIcon(R.drawable.ic_cross_white_24dp);
@@ -141,7 +141,7 @@ public class ReaderPostListActivity extends AppCompatActivity {
 
         // store the title for blog/tag preview so we can restore it upon recreation
         if (getPostListType() == ReaderPostListType.BLOG_PREVIEW
-            || getPostListType() == ReaderPostListType.TAG_PREVIEW) {
+                || getPostListType() == ReaderPostListType.TAG_PREVIEW) {
             outState.putString(ReaderConstants.KEY_ACTIVITY_TITLE, getTitle().toString());
             outState.putLong(ReaderConstants.KEY_SITE_ID, mSiteId);
         }
@@ -169,12 +169,12 @@ public class ReaderPostListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            case R.id.menu_share:
-                shareSite();
-                return true;
+        case android.R.id.home:
+            onBackPressed();
+            return true;
+        case R.id.menu_share:
+            shareSite();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -212,9 +212,9 @@ public class ReaderPostListActivity extends AppCompatActivity {
         }
         Fragment fragment = ReaderPostListFragment.newInstanceForTag(tag, listType);
         getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment, getString(R.string.fragment_tag_reader_post_list))
-                .commit();
+        .beginTransaction()
+        .replace(R.id.fragment_container, fragment, getString(R.string.fragment_tag_reader_post_list))
+        .commit();
 
         setTitle(tag.getTagDisplayName());
     }
@@ -228,9 +228,9 @@ public class ReaderPostListActivity extends AppCompatActivity {
         }
         Fragment fragment = ReaderPostListFragment.newInstanceForBlog(blogId);
         getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment, getString(R.string.fragment_tag_reader_post_list))
-                .commit();
+        .beginTransaction()
+        .replace(R.id.fragment_container, fragment, getString(R.string.fragment_tag_reader_post_list))
+        .commit();
 
         String title = ReaderBlogTable.getBlogName(blogId);
         if (title.isEmpty()) {
@@ -245,9 +245,9 @@ public class ReaderPostListActivity extends AppCompatActivity {
         }
         Fragment fragment = ReaderPostListFragment.newInstanceForFeed(feedId);
         getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment, getString(R.string.fragment_tag_reader_post_list))
-                .commit();
+        .beginTransaction()
+        .replace(R.id.fragment_container, fragment, getString(R.string.fragment_tag_reader_post_list))
+        .commit();
 
         String title = ReaderBlogTable.getFeedName(feedId);
         if (title.isEmpty()) {
@@ -258,7 +258,7 @@ public class ReaderPostListActivity extends AppCompatActivity {
 
     private ReaderPostListFragment getListFragment() {
         Fragment fragment =
-                getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_tag_reader_post_list));
+            getSupportFragmentManager().findFragmentByTag(getString(R.string.fragment_tag_reader_post_list));
         if (fragment == null) {
             return null;
         }

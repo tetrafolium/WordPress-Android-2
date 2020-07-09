@@ -90,7 +90,7 @@ public class SuggestionService extends Service {
                     EventBus.getDefault().post(new SuggestionEvents.SuggestionNameListUpdated(siteId));
                 }
             }
-        }.start();
+        } .start();
     }
 
     private void removeSiteIdFromSuggestionRequestsAndStopServiceIfNecessary(long siteId) {
@@ -143,7 +143,7 @@ public class SuggestionService extends Service {
                     EventBus.getDefault().post(new SuggestionEvents.SuggestionTagListUpdated(siteId));
                 }
             }
-        }.start();
+        } .start();
     }
 
     private void removeSiteIdFromTagRequestsAndStopServiceIfNecessary(long siteId) {

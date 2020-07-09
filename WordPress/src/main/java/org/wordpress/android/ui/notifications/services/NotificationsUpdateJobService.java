@@ -12,7 +12,7 @@ import org.wordpress.android.util.LocaleManager;
 import static org.wordpress.android.ui.notifications.services.NotificationsUpdateServiceStarter.IS_TAPPED_ON_NOTIFICATION;
 
 public class NotificationsUpdateJobService extends JobService
-        implements NotificationsUpdateLogic.ServiceCompletionListener {
+    implements NotificationsUpdateLogic.ServiceCompletionListener {
     private NotificationsUpdateLogic mNotificationsUpdateLogic;
 
     @Override
@@ -28,7 +28,7 @@ public class NotificationsUpdateJobService extends JobService
         if (params.getExtras() != null && params.getExtras().containsKey(NotificationsListFragment.NOTE_ID_EXTRA)) {
             noteId = params.getExtras().getString(NotificationsListFragment.NOTE_ID_EXTRA);
             isStartedByTappingOnNotification = params.getExtras().getBoolean(
-                    IS_TAPPED_ON_NOTIFICATION, false);
+                                                   IS_TAPPED_ON_NOTIFICATION, false);
         }
         mNotificationsUpdateLogic.performRefresh(noteId, isStartedByTappingOnNotification, params);
         return true;

@@ -144,20 +144,20 @@ public class ReaderPostDetailHeaderView extends LinearLayout {
             imgBlavatar.getLayoutParams().height = blavatarSz;
             imgBlavatar.getLayoutParams().width = blavatarSz;
             imageManager.load(imgBlavatar, ImageType.BLAVATAR,
-                    PhotonUtils.getPhotonImageUrl(blavatarUrl, blavatarSz, blavatarSz));
+                              PhotonUtils.getPhotonImageUrl(blavatarUrl, blavatarSz, blavatarSz));
             imgBlavatar.setVisibility(View.VISIBLE);
 
             int avatarSz = getResources().getDimensionPixelSize(R.dimen.reader_detail_header_avatar);
             imgAvatar.getLayoutParams().height = avatarSz;
             imgAvatar.getLayoutParams().width = avatarSz;
             imageManager.loadIntoCircle(imgAvatar, ImageType.AVATAR,
-                    GravatarUtils.fixGravatarUrl(avatarUrl, avatarSz));
+                                        GravatarUtils.fixGravatarUrl(avatarUrl, avatarSz));
             imgAvatar.setVisibility(View.VISIBLE);
         } else if (hasBlavatar) {
             imgBlavatar.getLayoutParams().height = frameSize;
             imgBlavatar.getLayoutParams().width = frameSize;
             imageManager.load(imgBlavatar, ImageType.BLAVATAR,
-                    PhotonUtils.getPhotonImageUrl(blavatarUrl, frameSize, frameSize));
+                              PhotonUtils.getPhotonImageUrl(blavatarUrl, frameSize, frameSize));
             imgBlavatar.setVisibility(View.VISIBLE);
 
             imgAvatar.setVisibility(View.GONE);
@@ -167,7 +167,7 @@ public class ReaderPostDetailHeaderView extends LinearLayout {
             imgAvatar.getLayoutParams().height = frameSize;
             imgAvatar.getLayoutParams().width = frameSize;
             imageManager.loadIntoCircle(imgAvatar, ImageType.AVATAR,
-                    GravatarUtils.fixGravatarUrl(avatarUrl, frameSize));
+                                        GravatarUtils.fixGravatarUrl(avatarUrl, frameSize));
             imgAvatar.setVisibility(View.VISIBLE);
         } else {
             imgBlavatar.setVisibility(View.GONE);
@@ -221,7 +221,7 @@ public class ReaderPostDetailHeaderView extends LinearLayout {
                     mPost.isFollowedByCurrentUser = isAskingToFollow;
                 } else {
                     int errResId = isAskingToFollow ? R.string.reader_toast_err_follow_blog
-                            : R.string.reader_toast_err_unfollow_blog;
+                                   : R.string.reader_toast_err_unfollow_blog;
                     ToastUtils.showToast(getContext(), errResId);
                     mFollowButton.setIsFollowed(!isAskingToFollow);
                 }

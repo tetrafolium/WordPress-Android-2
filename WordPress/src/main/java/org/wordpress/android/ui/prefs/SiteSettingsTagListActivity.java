@@ -61,8 +61,8 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 public class SiteSettingsTagListActivity extends AppCompatActivity
-        implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener,
-        SiteSettingsTagDetailFragment.OnTagDetailListener {
+    implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener,
+    SiteSettingsTagDetailFragment.OnTagDetailListener {
     @Inject Dispatcher mDispatcher;
     @Inject SiteStore mSiteStore;
     @Inject TaxonomyStore mTaxonomyStore;
@@ -267,7 +267,7 @@ public class SiteSettingsTagListActivity extends AppCompatActivity
                 @Override
                 public void run() {
                     if (!mIsSearching && !isDetailFragmentShowing()
-                        && mActionableEmptyView.getVisibility() != View.VISIBLE) {
+                            && mActionableEmptyView.getVisibility() != View.VISIBLE) {
                         showFabIfHidden();
                     }
                 }
@@ -288,19 +288,19 @@ public class SiteSettingsTagListActivity extends AppCompatActivity
             AppLog.e(AppLog.T.SETTINGS, event.error.message);
         }
         switch (event.causeOfChange) {
-            case FETCH_TAGS:
-                if (!event.isError()) {
-                    loadTags();
-                }
-                break;
-            case REMOVE_TERM:
-            case UPDATE_TERM:
-                hideProgressDialog();
-                hideDetailFragment();
-                if (!event.isError()) {
-                    loadTags();
-                }
-                break;
+        case FETCH_TAGS:
+            if (!event.isError()) {
+                loadTags();
+            }
+            break;
+        case REMOVE_TERM:
+        case UPDATE_TERM:
+            hideProgressDialog();
+            hideDetailFragment();
+            if (!event.isError()) {
+                loadTags();
+            }
+            break;
         }
     }
 
@@ -317,7 +317,7 @@ public class SiteSettingsTagListActivity extends AppCompatActivity
 
     private SiteSettingsTagDetailFragment getDetailFragment() {
         return (SiteSettingsTagDetailFragment) getFragmentManager()
-                .findFragmentByTag(SiteSettingsTagDetailFragment.TAG);
+               .findFragmentByTag(SiteSettingsTagDetailFragment.TAG);
     }
 
     /*
@@ -328,10 +328,10 @@ public class SiteSettingsTagListActivity extends AppCompatActivity
         fragment.setOnTagDetailListener(this);
 
         getFragmentManager().beginTransaction()
-                            .add(R.id.container, fragment, SiteSettingsTagDetailFragment.TAG)
-                            .addToBackStack(null)
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                            .commitAllowingStateLoss();
+        .add(R.id.container, fragment, SiteSettingsTagDetailFragment.TAG)
+        .addToBackStack(null)
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        .commitAllowingStateLoss();
 
         mSearchMenuItem.collapseActionView();
         mFabView.setVisibility(View.GONE);
@@ -421,18 +421,18 @@ public class SiteSettingsTagListActivity extends AppCompatActivity
     private void confirmDeleteTag(@NonNull final TermModel term) {
         String message = String.format(getString(R.string.dlg_confirm_delete_tag), term.getName());
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
         dialogBuilder.setMessage(message);
         dialogBuilder.setPositiveButton(
-                getResources().getText(R.string.delete_yes),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        showProgressDialog(R.string.dlg_deleting_tag);
-                        Action action = TaxonomyActionBuilder.newDeleteTermAction(
-                                new TaxonomyStore.RemoteTermPayload(term, mSite));
-                        mDispatcher.dispatch(action);
-                    }
-                });
+            getResources().getText(R.string.delete_yes),
+        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                showProgressDialog(R.string.dlg_deleting_tag);
+                Action action = TaxonomyActionBuilder.newDeleteTermAction(
+                                    new TaxonomyStore.RemoteTermPayload(term, mSite));
+                mDispatcher.dispatch(action);
+            }
+        });
         dialogBuilder.setNegativeButton(R.string.cancel, null);
         dialogBuilder.setCancelable(true);
         dialogBuilder.create().show();
@@ -472,7 +472,7 @@ public class SiteSettingsTagListActivity extends AppCompatActivity
         @Override
         public TagViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                                      .inflate(R.layout.site_settings_tag_list_row, parent, false);
+                        .inflate(R.layout.site_settings_tag_list_row, parent, false);
             return new TagListAdapter.TagViewHolder(view);
         }
 
@@ -500,7 +500,7 @@ public class SiteSettingsTagListActivity extends AppCompatActivity
             } else {
                 for (TermModel tag : mAllTags) {
                     if (tag.getName().toLowerCase(Locale.getDefault())
-                           .contains(text.toLowerCase(Locale.getDefault()))) {
+                            .contains(text.toLowerCase(Locale.getDefault()))) {
                         mFilteredTags.add(tag);
                     }
                 }

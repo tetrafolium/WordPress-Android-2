@@ -159,26 +159,26 @@ public class NoteBlock {
             noteBlockHolder.getImageView().setVisibility(View.VISIBLE);
             // Request image, and animate it when loaded
             mImageManager
-                    .loadWithResultListener(noteBlockHolder.getImageView(), ImageType.IMAGE,
-                            StringUtils.notNullStr(getNoteMediaItem().getUrl()), ScaleType.CENTER, null,
-                            new ImageManager.RequestListener<Drawable>() {
-                                @Override
-                                public void onLoadFailed(@Nullable Exception e) {
-                                    if (e != null) {
-                                        AppLog.e(T.NOTIFS, e);
-                                    }
-                                    noteBlockHolder.hideImageView();
-                                }
+            .loadWithResultListener(noteBlockHolder.getImageView(), ImageType.IMAGE,
+                                    StringUtils.notNullStr(getNoteMediaItem().getUrl()), ScaleType.CENTER, null,
+            new ImageManager.RequestListener<Drawable>() {
+                @Override
+                public void onLoadFailed(@Nullable Exception e) {
+                    if (e != null) {
+                        AppLog.e(T.NOTIFS, e);
+                    }
+                    noteBlockHolder.hideImageView();
+                }
 
-                                @Override
-                                public void onResourceReady(@Nullable Drawable resource) {
-                                    if (!mHasAnimatedBadge && view.getContext() != null && resource != null) {
-                                        mHasAnimatedBadge = true;
-                                        Animation pop = AnimationUtils.loadAnimation(view.getContext(), R.anim.pop);
-                                        noteBlockHolder.getImageView().startAnimation(pop);
-                                    }
-                                }
-                            });
+                @Override
+                public void onResourceReady(@Nullable Drawable resource) {
+                    if (!mHasAnimatedBadge && view.getContext() != null && resource != null) {
+                        mHasAnimatedBadge = true;
+                        Animation pop = AnimationUtils.loadAnimation(view.getContext(), R.anim.pop);
+                        noteBlockHolder.getImageView().startAnimation(pop);
+                    }
+                }
+            });
 
             if (mIsBadge) {
                 noteBlockHolder.getImageView().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -215,8 +215,8 @@ public class NoteBlock {
             } else {
                 if (mIsBadge) {
                     LinearLayout.LayoutParams params =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.MATCH_PARENT);
+                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                                                      LinearLayout.LayoutParams.MATCH_PARENT);
                     params.gravity = Gravity.CENTER_HORIZONTAL;
                     noteBlockHolder.getTextView().setLayoutParams(params);
                     noteBlockHolder.getTextView().setGravity(Gravity.CENTER_HORIZONTAL);
@@ -300,8 +300,8 @@ public class NoteBlock {
             if (mVideoView == null) {
                 mVideoView = new VideoView(mRootLayout.getContext());
                 FrameLayout.LayoutParams layoutParams =
-                        new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                DisplayUtils.dpToPx(mRootLayout.getContext(), 220));
+                    new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                                 DisplayUtils.dpToPx(mRootLayout.getContext(), 220));
                 mVideoView.setLayoutParams(layoutParams);
                 mRootLayout.addView(mVideoView, 0);
 

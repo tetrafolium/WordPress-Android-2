@@ -112,9 +112,9 @@ public class ShareIntentReceiverActivity extends AppCompatActivity implements Sh
         ShareIntentReceiverFragment shareIntentReceiverFragment = ShareIntentReceiverFragment
                 .newInstance(!isSharingText(), loadLastUsedBlogLocalId(), afterLogin);
         getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, shareIntentReceiverFragment, ShareIntentReceiverFragment.TAG)
-                .commit();
+        .beginTransaction()
+        .replace(R.id.fragment_container, shareIntentReceiverFragment, ShareIntentReceiverFragment.TAG)
+        .commit();
     }
 
     private void loadState(Bundle savedInstanceState) {
@@ -152,7 +152,7 @@ public class ShareIntentReceiverActivity extends AppCompatActivity implements Sh
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         boolean allGranted = WPPermissionUtils.setPermissionListAsked(
-                this, requestCode, permissions, grantResults, true);
+                                 this, requestCode, permissions, grantResults, true);
         if (allGranted && requestCode == WPPermissionUtils.SHARE_MEDIA_PERMISSION_REQUEST_CODE) {
             // permissions granted
             share(ShareAction.valueOf(mShareActionName), mClickedSiteLocalId);
@@ -209,9 +209,9 @@ public class ShareIntentReceiverActivity extends AppCompatActivity implements Sh
 
         // save preferences
         PreferenceManager.getDefaultSharedPreferences(this)
-                         .edit()
-                         .putInt(SHARE_LAST_USED_BLOG_ID_KEY, mSelectedSiteLocalId)
-                         .apply();
+        .edit()
+        .putInt(SHARE_LAST_USED_BLOG_ID_KEY, mSelectedSiteLocalId)
+        .apply();
 
         startActivityWithSyntheticBackstack(intent);
         finish();
@@ -259,7 +259,7 @@ public class ShareIntentReceiverActivity extends AppCompatActivity implements Sh
                 Map<String, Object> properties = AnalyticsUtils.getMediaProperties(this, isVideo, uri, null);
 
                 AnalyticsTracker.Stat mediaTypeTrack = isVideo ? AnalyticsTracker.Stat.MEDIA_LIBRARY_ADDED_VIDEO
-                        : AnalyticsTracker.Stat.MEDIA_LIBRARY_ADDED_PHOTO;
+                                                       : AnalyticsTracker.Stat.MEDIA_LIBRARY_ADDED_PHOTO;
                 AnalyticsUtils.trackWithSiteDetails(mediaTypeTrack, selectedSite, properties);
             }
         }

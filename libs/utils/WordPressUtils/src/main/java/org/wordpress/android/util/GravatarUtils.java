@@ -22,20 +22,20 @@ public class GravatarUtils {
         @Override
         public String toString() {
             switch (this) {
-                case MYSTERY_MAN:
-                    return "mm";
-                case STATUS_404:
-                    return "404";
-                case IDENTICON:
-                    return "identicon";
-                case MONSTER:
-                    return "monsterid";
-                case WAVATAR:
-                    return "wavatar";
-                case RETRO:
-                    return "retro";
-                default:
-                    return "blank";
+            case MYSTERY_MAN:
+                return "mm";
+            case STATUS_404:
+                return "404";
+            case IDENTICON:
+                return "identicon";
+            case MONSTER:
+                return "monsterid";
+            case WAVATAR:
+                return "wavatar";
+            case RETRO:
+                return "retro";
+            default:
+                return "blank";
             }
         }
     }

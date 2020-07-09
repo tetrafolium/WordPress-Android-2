@@ -30,7 +30,7 @@ import org.wordpress.android.util.ToastUtils;
 import java.util.ArrayList;
 
 public class PublicizeAccountChooserDialogFragment extends DialogFragment
-        implements PublicizeAccountChooserListAdapter.OnPublicizeAccountChooserListener {
+    implements PublicizeAccountChooserListAdapter.OnPublicizeAccountChooserListener {
     public static final String TAG = "publicize-account-chooser-dialog-fragment";
     private RecyclerView mNotConnectedRecyclerView;
     private ArrayList<PublicizeConnection> mNotConnectedAccounts;
@@ -51,7 +51,7 @@ public class PublicizeAccountChooserDialogFragment extends DialogFragment
         View view = inflater.inflate(R.layout.publicize_account_chooser_dialog, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         configureAlertDialog(view, builder);
         configureRecyclerViews(view);
 
@@ -69,7 +69,7 @@ public class PublicizeAccountChooserDialogFragment extends DialogFragment
 
     private void configureRecyclerViews(View view) {
         PublicizeAccountChooserListAdapter notConnectedAdapter =
-                new PublicizeAccountChooserListAdapter(getActivity(), mNotConnectedAccounts, this, false);
+            new PublicizeAccountChooserListAdapter(getActivity(), mNotConnectedAccounts, this, false);
         notConnectedAdapter.setHasStableIds(true);
         mNotConnectedRecyclerView = (RecyclerView) view.findViewById(R.id.not_connected_recyclerview);
         mNotConnectedRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -90,7 +90,7 @@ public class PublicizeAccountChooserDialogFragment extends DialogFragment
     private void populateConnectedListView(View view) {
         RecyclerView listViewConnected = (RecyclerView) view.findViewById(R.id.connected_recyclerview);
         PublicizeAccountChooserListAdapter connectedAdapter =
-                new PublicizeAccountChooserListAdapter(getActivity(), mConnectedAccounts, null, true);
+            new PublicizeAccountChooserListAdapter(getActivity(), mConnectedAccounts, null, true);
 
         listViewConnected.setLayoutManager(new LinearLayoutManager(getActivity()));
         listViewConnected.setAdapter(connectedAdapter);
@@ -108,7 +108,7 @@ public class PublicizeAccountChooserDialogFragment extends DialogFragment
                 String service = mNotConnectedAccounts.get(mSelectedIndex).getService();
                 String externalUserId = mNotConnectedAccounts.get(mSelectedIndex).getExternalId();
                 EventBus.getDefault().post(new PublicizeEvents.ActionAccountChosen(mSite.getSiteId(), keychainId,
-                        service, externalUserId));
+                                           service, externalUserId));
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

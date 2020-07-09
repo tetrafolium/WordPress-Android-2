@@ -104,13 +104,13 @@ import static org.wordpress.android.util.WPPermissionUtils.READER_FILE_DOWNLOAD_
 import static org.wordpress.android.util.WPSwipeToRefreshHelper.buildSwipeToRefreshHelper;
 
 public class ReaderPostDetailFragment extends Fragment
-        implements WPMainActivity.OnActivityBackPressedListener,
-        ScrollDirectionListener,
-        ReaderCustomViewListener,
-        ReaderInterfaces.OnFollowListener,
-        ReaderWebViewPageFinishedListener,
-        ReaderWebViewUrlClickListener,
-        BasicFragmentDialog.BasicDialogPositiveClickInterface {
+    implements WPMainActivity.OnActivityBackPressedListener,
+    ScrollDirectionListener,
+    ReaderCustomViewListener,
+    ReaderInterfaces.OnFollowListener,
+    ReaderWebViewPageFinishedListener,
+    ReaderWebViewUrlClickListener,
+    BasicFragmentDialog.BasicDialogPositiveClickInterface {
     private static final String BOOKMARKS_SAVED_LOCALLY_DIALOG = "bookmarks_saved_locally_dialog";
     private long mPostId;
     private long mBlogId;
@@ -166,14 +166,14 @@ public class ReaderPostDetailFragment extends Fragment
     }
 
     public static ReaderPostDetailFragment newInstance(boolean isFeed,
-                                                       long blogId,
-                                                       long postId,
-                                                       DirectOperation directOperation,
-                                                       int commentId,
-                                                       boolean isRelatedPost,
-                                                       String interceptedUri,
-                                                       ReaderPostListType postListType,
-                                                       boolean postSlugsResolutionUnderway) {
+            long blogId,
+            long postId,
+            DirectOperation directOperation,
+            int commentId,
+            boolean isRelatedPost,
+            String interceptedUri,
+            ReaderPostListType postListType,
+            boolean postSlugsResolutionUnderway) {
         AppLog.d(T.READER, "reader post detail > newInstance");
 
         Bundle args = new Bundle();
@@ -244,18 +244,18 @@ public class ReaderPostDetailFragment extends Fragment
         swipeRefreshLayout.setProgressViewOffset(false, 0, swipeToRefreshOffset);
 
         mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-                swipeRefreshLayout,
-                new SwipeToRefreshHelper.RefreshListener() {
-                    @Override
-                    public void onRefreshStarted() {
-                        if (!isAdded()) {
-                            return;
-                        }
-
-                        updatePost();
-                    }
+                                    swipeRefreshLayout,
+        new SwipeToRefreshHelper.RefreshListener() {
+            @Override
+            public void onRefreshStarted() {
+                if (!isAdded()) {
+                    return;
                 }
-        );
+
+                updatePost();
+            }
+        }
+                                );
 
         mScrollView = view.findViewById(R.id.scroll_view_reader);
         mScrollView.setScrollDirectionListener(this);
@@ -404,21 +404,21 @@ public class ReaderPostDetailFragment extends Fragment
             mBlogId = savedInstanceState.getLong(ReaderConstants.ARG_BLOG_ID);
             mPostId = savedInstanceState.getLong(ReaderConstants.ARG_POST_ID);
             mDirectOperation = (DirectOperation) savedInstanceState
-                    .getSerializable(ReaderConstants.ARG_DIRECT_OPERATION);
+                               .getSerializable(ReaderConstants.ARG_DIRECT_OPERATION);
             mCommentId = savedInstanceState.getInt(ReaderConstants.ARG_COMMENT_ID);
             mIsRelatedPost = savedInstanceState.getBoolean(ReaderConstants.ARG_IS_RELATED_POST);
             mInterceptedUri = savedInstanceState.getString(ReaderConstants.ARG_INTERCEPTED_URI);
             mPostSlugsResolutionUnderway =
-                    savedInstanceState.getBoolean(ReaderConstants.KEY_POST_SLUGS_RESOLUTION_UNDERWAY);
+                savedInstanceState.getBoolean(ReaderConstants.KEY_POST_SLUGS_RESOLUTION_UNDERWAY);
             mHasAlreadyUpdatedPost = savedInstanceState.getBoolean(ReaderConstants.KEY_ALREADY_UPDATED);
             mHasAlreadyRequestedPost = savedInstanceState.getBoolean(ReaderConstants.KEY_ALREADY_REQUESTED);
             mHasTrackedGlobalRelatedPosts =
-                    savedInstanceState.getBoolean(ReaderConstants.KEY_ALREADY_TRACKED_GLOBAL_RELATED_POSTS);
+                savedInstanceState.getBoolean(ReaderConstants.KEY_ALREADY_TRACKED_GLOBAL_RELATED_POSTS);
             mHasTrackedLocalRelatedPosts =
-                    savedInstanceState.getBoolean(ReaderConstants.KEY_ALREADY_TRACKED_LOCAL_RELATED_POSTS);
+                savedInstanceState.getBoolean(ReaderConstants.KEY_ALREADY_TRACKED_LOCAL_RELATED_POSTS);
             if (savedInstanceState.containsKey(ReaderConstants.ARG_POST_LIST_TYPE)) {
                 mPostListType =
-                        (ReaderPostListType) savedInstanceState.getSerializable(ReaderConstants.ARG_POST_LIST_TYPE);
+                    (ReaderPostListType) savedInstanceState.getSerializable(ReaderConstants.ARG_POST_LIST_TYPE);
             }
             if (savedInstanceState.containsKey(ReaderConstants.KEY_ERROR_MESSAGE)) {
                 mErrorMessage = savedInstanceState.getString(ReaderConstants.KEY_ERROR_MESSAGE);
@@ -455,22 +455,22 @@ public class ReaderPostDetailFragment extends Fragment
 
         if (isAdded()) {
             String blog = TextUtils.isEmpty(blogName)
-                    ? getString(R.string.reader_followed_blog_notifications_this)
-                    : blogName;
+                          ? getString(R.string.reader_followed_blog_notifications_this)
+                          : blogName;
 
             WPSnackbar.make(view, Html.fromHtml(getString(R.string.reader_followed_blog_notifications,
-                    "<b>", blog, "</b>")), Snackbar.LENGTH_LONG)
-                    .setAction(getString(R.string.reader_followed_blog_notifications_action),
-                        new View.OnClickListener() {
-                            @Override public void onClick(View view) {
-                                AnalyticsUtils.trackWithSiteId(Stat.FOLLOWED_BLOG_NOTIFICATIONS_READER_ENABLED, blogId);
-                                AddOrDeleteSubscriptionPayload payload = new AddOrDeleteSubscriptionPayload(
-                                        String.valueOf(blogId), SubscriptionAction.NEW);
-                                mDispatcher.dispatch(newUpdateSubscriptionNotificationPostAction(payload));
-                                ReaderBlogTable.setNotificationsEnabledByBlogId(blogId, true);
-                            }
-                        })
-                    .show();
+                                                "<b>", blog, "</b>")), Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.reader_followed_blog_notifications_action),
+            new View.OnClickListener() {
+                @Override public void onClick(View view) {
+                    AnalyticsUtils.trackWithSiteId(Stat.FOLLOWED_BLOG_NOTIFICATIONS_READER_ENABLED, blogId);
+                    AddOrDeleteSubscriptionPayload payload = new AddOrDeleteSubscriptionPayload(
+                        String.valueOf(blogId), SubscriptionAction.NEW);
+                    mDispatcher.dispatch(newUpdateSubscriptionNotificationPostAction(payload));
+                    ReaderBlogTable.setNotificationsEnabledByBlogId(blogId, true);
+                }
+            })
+            .show();
         }
     }
 
@@ -484,7 +484,7 @@ public class ReaderPostDetailFragment extends Fragment
     public void onSubscriptionUpdated(OnSubscriptionUpdated event) {
         if (event.isError()) {
             AppLog.e(T.API, ReaderPostDetailFragment.class.getSimpleName() + ".onSubscriptionUpdated: "
-                          + event.error.type + " - " + event.error.message);
+                     + event.error.type + " - " + event.error.message);
         } else {
             mDispatcher.dispatch(AccountActionBuilder.newFetchSubscriptionsAction());
         }
@@ -556,17 +556,17 @@ public class ReaderPostDetailFragment extends Fragment
     private void showBookmarksSavedLocallyDialog() {
         BasicFragmentDialog basicFragmentDialog = new BasicFragmentDialog();
         basicFragmentDialog.initialize(BOOKMARKS_SAVED_LOCALLY_DIALOG,
-                getString(R.string.reader_save_posts_locally_dialog_title),
-                getString(R.string.reader_save_posts_locally_dialog_message),
-                getString(R.string.dialog_button_ok),
-                null, null);
+                                       getString(R.string.reader_save_posts_locally_dialog_title),
+                                       getString(R.string.reader_save_posts_locally_dialog_message),
+                                       getString(R.string.dialog_button_ok),
+                                       null, null);
         basicFragmentDialog.show(getFragmentManager(), BOOKMARKS_SAVED_LOCALLY_DIALOG);
     }
 
     @Override
     public void onPositiveClicked(@NotNull String instanceTag) {
         switch (instanceTag) {
-            case BOOKMARKS_SAVED_LOCALLY_DIALOG:
+        case BOOKMARKS_SAVED_LOCALLY_DIALOG:
             showBookmarkSnackbar();
             break;
         }
@@ -578,15 +578,15 @@ public class ReaderPostDetailFragment extends Fragment
         }
 
         WPSnackbar.make(getView(), R.string.reader_bookmark_snack_title, Snackbar.LENGTH_LONG)
-                .setAction(R.string.reader_bookmark_snack_btn,
-                    new View.OnClickListener() {
-                        @Override public void onClick(View view) {
-                            AnalyticsTracker
-                                    .track(AnalyticsTracker.Stat.READER_SAVED_LIST_VIEWED_FROM_POST_DETAILS_NOTICE);
-                            ActivityLauncher.viewSavedPostsListInReader(getActivity());
-                        }
-                    })
-                .show();
+        .setAction(R.string.reader_bookmark_snack_btn,
+        new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                AnalyticsTracker
+                .track(AnalyticsTracker.Stat.READER_SAVED_LIST_VIEWED_FROM_POST_DETAILS_NOTICE);
+                ActivityLauncher.viewSavedPostsListInReader(getActivity());
+            }
+        })
+        .show();
     }
 
     /*
@@ -603,7 +603,7 @@ public class ReaderPostDetailFragment extends Fragment
             ReaderAnim.animateLikeButton(likeCount.getImageView(), isAskingToLike);
 
             boolean success = ReaderPostActions.performLikeAction(mPost, isAskingToLike,
-                    mAccountStore.getAccount().getUserId());
+                              mAccountStore.getAccount().getUserId());
             if (!success) {
                 likeCount.setSelected(!isAskingToLike);
                 return;
@@ -774,8 +774,8 @@ public class ReaderPostDetailFragment extends Fragment
      */
     private void showRelatedPostDetail(long blogId, long postId, boolean isGlobal) {
         AnalyticsTracker.Stat stat = isGlobal
-                ? AnalyticsTracker.Stat.READER_GLOBAL_RELATED_POST_CLICKED
-                : AnalyticsTracker.Stat.READER_LOCAL_RELATED_POST_CLICKED;
+                                     ? AnalyticsTracker.Stat.READER_GLOBAL_RELATED_POST_CLICKED
+                                     : AnalyticsTracker.Stat.READER_LOCAL_RELATED_POST_CLICKED;
         AnalyticsUtils.trackWithReaderPostDetails(stat, blogId, postId);
 
         if (mIsRelatedPost) {
@@ -783,14 +783,14 @@ public class ReaderPostDetailFragment extends Fragment
             replacePost(blogId, postId, true);
         } else {
             ReaderActivityLauncher.showReaderPostDetail(
-                    getActivity(),
-                    false,
-                    blogId,
-                    postId,
-                    null,
-                    0,
-                    true,
-                    null);
+                getActivity(),
+                false,
+                blogId,
+                postId,
+                null,
+                0,
+                true,
+                null);
         }
     }
 
@@ -832,7 +832,7 @@ public class ReaderPostDetailFragment extends Fragment
                 // refresh likes if necessary - done regardless of whether the post has changed
                 // since it's possible likes weren't stored until the post was updated
                 if (result != ReaderActions.UpdateResult.FAILED
-                    && numLikesBefore != ReaderLikeTable.getNumLikesForPost(mPost)) {
+                        && numLikesBefore != ReaderLikeTable.getNumLikesForPost(mPost)) {
                     refreshLikes();
                 }
 
@@ -871,7 +871,7 @@ public class ReaderPostDetailFragment extends Fragment
         if (canShowLikeCount()) {
             countLikes.setCount(mPost.numLikes);
             countLikes.setContentDescription(
-                    ReaderUtils.getLongLikeLabelText(getActivity(), mPost.numLikes, mPost.isLikedByCurrentUser));
+                ReaderUtils.getLongLikeLabelText(getActivity(), mPost.numLikes, mPost.isLikedByCurrentUser));
             countLikes.setVisibility(View.VISIBLE);
             countLikes.setSelected(mPost.isLikedByCurrentUser);
             if (!mAccountStore.hasAccessToken()) {
@@ -904,8 +904,8 @@ public class ReaderPostDetailFragment extends Fragment
 
         if (!mAccountStore.hasAccessToken()) {
             WPSnackbar.make(getView(), R.string.reader_snackbar_err_cannot_like_post_logged_out,
-                    Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.sign_in, mSignInClickListener).show();
+                            Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.sign_in, mSignInClickListener).show();
             return;
         }
 
@@ -965,13 +965,13 @@ public class ReaderPostDetailFragment extends Fragment
         }
 
         ReaderActivityLauncher.showReaderPhotoViewer(
-                getActivity(),
-                imageUrl,
-                postContent,
-                sourceView,
-                options,
-                startX,
-                startY);
+            getActivity(),
+            imageUrl,
+            postContent,
+            sourceView,
+            options,
+            startX,
+            startY);
 
         return true;
     }
@@ -1040,32 +1040,32 @@ public class ReaderPostDetailFragment extends Fragment
             errMsgResId = R.string.no_network_message;
         } else {
             switch (statusCode) {
-                case 401:
-                case 403:
-                    final boolean offerSignIn = WPUrlUtils.isWordPressCom(mInterceptedUri)
-                                                && !mAccountStore.hasAccessToken();
+            case 401:
+            case 403:
+                final boolean offerSignIn = WPUrlUtils.isWordPressCom(mInterceptedUri)
+                                            && !mAccountStore.hasAccessToken();
 
-                    if (!offerSignIn) {
-                        errMsgResId = (mInterceptedUri == null)
-                                ? R.string.reader_err_get_post_not_authorized
-                                : R.string.reader_err_get_post_not_authorized_fallback;
-                        mSignInButton.setVisibility(View.GONE);
-                    } else {
-                        errMsgResId = (mInterceptedUri == null)
-                                ? R.string.reader_err_get_post_not_authorized_signin
-                                : R.string.reader_err_get_post_not_authorized_signin_fallback;
-                        mSignInButton.setVisibility(View.VISIBLE);
-                        AnalyticsUtils.trackWithReaderPostDetails(AnalyticsTracker.Stat.READER_WPCOM_SIGN_IN_NEEDED,
-                                mPost);
-                    }
-                    AnalyticsUtils.trackWithReaderPostDetails(AnalyticsTracker.Stat.READER_USER_UNAUTHORIZED, mPost);
-                    break;
-                case 404:
-                    errMsgResId = R.string.reader_err_get_post_not_found;
-                    break;
-                default:
-                    errMsgResId = R.string.reader_err_get_post_generic;
-                    break;
+                if (!offerSignIn) {
+                    errMsgResId = (mInterceptedUri == null)
+                                  ? R.string.reader_err_get_post_not_authorized
+                                  : R.string.reader_err_get_post_not_authorized_fallback;
+                    mSignInButton.setVisibility(View.GONE);
+                } else {
+                    errMsgResId = (mInterceptedUri == null)
+                                  ? R.string.reader_err_get_post_not_authorized_signin
+                                  : R.string.reader_err_get_post_not_authorized_signin_fallback;
+                    mSignInButton.setVisibility(View.VISIBLE);
+                    AnalyticsUtils.trackWithReaderPostDetails(AnalyticsTracker.Stat.READER_WPCOM_SIGN_IN_NEEDED,
+                            mPost);
+                }
+                AnalyticsUtils.trackWithReaderPostDetails(AnalyticsTracker.Stat.READER_USER_UNAUTHORIZED, mPost);
+                break;
+            case 404:
+                errMsgResId = R.string.reader_err_get_post_not_found;
+                break;
+            default:
+                errMsgResId = R.string.reader_err_get_post_generic;
+                break;
             }
         }
         showError(getString(errMsgResId));
@@ -1131,9 +1131,9 @@ public class ReaderPostDetailFragment extends Fragment
             if (mPost.isDiscoverPost()) {
                 ReaderPostDiscoverData discoverData = mPost.getDiscoverData();
                 if (discoverData != null
-                    && discoverData.getDiscoverType() == ReaderPostDiscoverData.DiscoverType.EDITOR_PICK
-                    && discoverData.getBlogId() != 0
-                    && discoverData.getPostId() != 0) {
+                        && discoverData.getDiscoverType() == ReaderPostDiscoverData.DiscoverType.EDITOR_PICK
+                        && discoverData.getBlogId() != 0
+                        && discoverData.getPostId() != 0) {
                     mIsFeed = false;
                     mBlogId = discoverData.getBlogId();
                     mPostId = discoverData.getPostId();
@@ -1175,18 +1175,18 @@ public class ReaderPostDetailFragment extends Fragment
 
             if (mDirectOperation != null) {
                 switch (mDirectOperation) {
-                    case COMMENT_JUMP:
-                    case COMMENT_REPLY:
-                    case COMMENT_LIKE:
-                        ReaderActivityLauncher.showReaderComments(getActivity(), mPost.blogId, mPost.postId,
-                                mDirectOperation, mCommentId, mInterceptedUri);
-                        getActivity().finish();
-                        getActivity().overridePendingTransition(0, 0);
-                        return;
-                    case POST_LIKE:
-                        // Liking needs to be handled "later" after the post has been updated from the server so,
-                        // nothing special to do here
-                        break;
+                case COMMENT_JUMP:
+                case COMMENT_REPLY:
+                case COMMENT_LIKE:
+                    ReaderActivityLauncher.showReaderComments(getActivity(), mPost.blogId, mPost.postId,
+                            mDirectOperation, mCommentId, mInterceptedUri);
+                    getActivity().finish();
+                    getActivity().overridePendingTransition(0, 0);
+                    return;
+                case POST_LIKE:
+                    // Liking needs to be handled "later" after the post has been updated from the server so,
+                    // nothing special to do here
+                    break;
                 }
             }
 
@@ -1224,9 +1224,9 @@ public class ReaderPostDetailFragment extends Fragment
                 excerptFooter.setVisibility(View.VISIBLE);
 
                 String blogName = "<font color='" + HtmlUtils.colorResToHtmlColor(getActivity(), R.color
-                        .link_reader) + "'>" + mPost.getBlogName() + "</font>";
+                                  .link_reader) + "'>" + mPost.getBlogName() + "</font>";
                 String linkText = String.format(WordPress.getContext().
-                        getString(R.string.reader_excerpt_link), blogName);
+                                                getString(R.string.reader_excerpt_link), blogName);
 
                 TextView txtExcerptFooter = excerptFooter.findViewById(R.id.text_excerpt_footer);
                 txtExcerptFooter.setText(Html.fromHtml(linkText));
@@ -1386,8 +1386,8 @@ public class ReaderPostDetailFragment extends Fragment
     public boolean onFileDownloadClick(String fileUrl) {
         FragmentActivity activity = getActivity();
         if (activity != null
-            && fileUrl != null
-            && PermissionUtils.checkAndRequestStoragePermission(this, READER_FILE_DOWNLOAD_PERMISSION_REQUEST_CODE)) {
+                && fileUrl != null
+                && PermissionUtils.checkAndRequestStoragePermission(this, READER_FILE_DOWNLOAD_PERMISSION_REQUEST_CODE)) {
             downloadFile(fileUrl, activity);
             return true;
         } else {
@@ -1401,8 +1401,8 @@ public class ReaderPostDetailFragment extends Fragment
                                            @NonNull int[] grantResults) {
         FragmentActivity activity = getActivity();
         if (activity != null
-            && requestCode == READER_FILE_DOWNLOAD_PERMISSION_REQUEST_CODE
-            && (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                && requestCode == READER_FILE_DOWNLOAD_PERMISSION_REQUEST_CODE
+                && (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             downloadFile(mFileForDownload, activity);
             mFileForDownload = null;
         } else {
@@ -1453,7 +1453,7 @@ public class ReaderPostDetailFragment extends Fragment
     @Override
     public void onScrollUp(float distanceY) {
         if (!mIsToolbarShowing
-            && -distanceY >= MIN_SCROLL_DISTANCE_Y) {
+                && -distanceY >= MIN_SCROLL_DISTANCE_Y) {
             showToolbar(true);
             showFooter(true);
         }
@@ -1462,10 +1462,10 @@ public class ReaderPostDetailFragment extends Fragment
     @Override
     public void onScrollDown(float distanceY) {
         if (mIsToolbarShowing
-            && distanceY >= MIN_SCROLL_DISTANCE_Y
-            && mScrollView.canScrollDown()
-            && mScrollView.canScrollUp()
-            && mScrollView.getScrollY() > mToolbarHeight) {
+                && distanceY >= MIN_SCROLL_DISTANCE_Y
+                && mScrollView.canScrollDown()
+                && mScrollView.canScrollUp()
+                && mScrollView.getScrollY() > mToolbarHeight) {
             showToolbar(false);
             showFooter(false);
         }
@@ -1474,7 +1474,7 @@ public class ReaderPostDetailFragment extends Fragment
     @Override
     public void onScrollCompleted() {
         if (!mIsToolbarShowing
-            && (!mScrollView.canScrollDown() || !mScrollView.canScrollUp())) {
+                && (!mScrollView.canScrollDown() || !mScrollView.canScrollUp())) {
             showToolbar(true);
             showFooter(true);
         }

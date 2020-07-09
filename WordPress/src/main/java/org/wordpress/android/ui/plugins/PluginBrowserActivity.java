@@ -57,8 +57,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 public class PluginBrowserActivity extends AppCompatActivity
-        implements SearchView.OnQueryTextListener,
-        MenuItem.OnActionExpandListener {
+    implements SearchView.OnQueryTextListener,
+    MenuItem.OnActionExpandListener {
     @Inject ViewModelProvider.Factory mViewModelFactory;
     @Inject ImageManager mImageManager;
     private PluginBrowserViewModel mViewModel;
@@ -175,55 +175,55 @@ public class PluginBrowserActivity extends AppCompatActivity
         });
 
         mViewModel.getSitePluginsLiveData()
-                  .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
-                      @Override
-                      public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
-                          if (listState != null) {
-                              reloadPluginAdapterAndVisibility(PluginListType.SITE, listState);
+        .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
+            @Override
+            public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
+                if (listState != null) {
+                    reloadPluginAdapterAndVisibility(PluginListType.SITE, listState);
 
-                              showProgress(listState.isFetchingFirstPage() && listState.getData().isEmpty());
+                    showProgress(listState.isFetchingFirstPage() && listState.getData().isEmpty());
 
-                              // We should ignore the errors due to network condition, unless this is the first
-                              // fetch, the user
-                              // can use the cached data and showing the error while the data is loaded might cause
-                              // confusion
-                              if (listState instanceof ListState.Error
-                                  && NetworkUtils.isNetworkAvailable(PluginBrowserActivity.this)) {
-                                  ToastUtils.showToast(PluginBrowserActivity.this, R.string.plugin_fetch_error);
-                              }
-                          }
-                      }
-                  });
+                    // We should ignore the errors due to network condition, unless this is the first
+                    // fetch, the user
+                    // can use the cached data and showing the error while the data is loaded might cause
+                    // confusion
+                    if (listState instanceof ListState.Error
+                            && NetworkUtils.isNetworkAvailable(PluginBrowserActivity.this)) {
+                        ToastUtils.showToast(PluginBrowserActivity.this, R.string.plugin_fetch_error);
+                    }
+                }
+            }
+        });
 
         mViewModel.getFeaturedPluginsLiveData()
-                  .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
-                      @Override
-                      public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
-                          if (listState != null) {
-                              reloadPluginAdapterAndVisibility(PluginListType.FEATURED, listState);
-                          }
-                      }
-                  });
+        .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
+            @Override
+            public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
+                if (listState != null) {
+                    reloadPluginAdapterAndVisibility(PluginListType.FEATURED, listState);
+                }
+            }
+        });
 
         mViewModel.getPopularPluginsLiveData()
-                  .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
-                      @Override
-                      public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
-                          if (listState != null) {
-                              reloadPluginAdapterAndVisibility(PluginListType.POPULAR, listState);
-                          }
-                      }
-                  });
+        .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
+            @Override
+            public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
+                if (listState != null) {
+                    reloadPluginAdapterAndVisibility(PluginListType.POPULAR, listState);
+                }
+            }
+        });
 
         mViewModel.getNewPluginsLiveData()
-                  .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
-                      @Override
-                      public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
-                          if (listState != null) {
-                              reloadPluginAdapterAndVisibility(PluginListType.NEW, listState);
-                          }
-                      }
-                  });
+        .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
+            @Override
+            public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
+                if (listState != null) {
+                    reloadPluginAdapterAndVisibility(PluginListType.NEW, listState);
+                }
+            }
+        });
     }
 
     private void configureRecycler(@NonNull RecyclerView recycler) {
@@ -272,31 +272,31 @@ public class PluginBrowserActivity extends AppCompatActivity
     }
 
     private void reloadPluginAdapterAndVisibility(@NonNull PluginListType pluginType,
-                                                  @Nullable ListState<ImmutablePluginModel> listState) {
+            @Nullable ListState<ImmutablePluginModel> listState) {
         if (listState == null) {
             return;
         }
         PluginBrowserAdapter adapter = null;
         View cardView = null;
         switch (pluginType) {
-            case SITE:
-                adapter = (PluginBrowserAdapter) mSitePluginsRecycler.getAdapter();
-                cardView = findViewById(R.id.installed_plugins_cardview);
-                break;
-            case FEATURED:
-                adapter = (PluginBrowserAdapter) mFeaturedPluginsRecycler.getAdapter();
-                cardView = findViewById(R.id.featured_plugins_cardview);
-                break;
-            case POPULAR:
-                adapter = (PluginBrowserAdapter) mPopularPluginsRecycler.getAdapter();
-                cardView = findViewById(R.id.popular_plugins_cardview);
-                break;
-            case NEW:
-                adapter = (PluginBrowserAdapter) mNewPluginsRecycler.getAdapter();
-                cardView = findViewById(R.id.new_plugins_cardview);
-                break;
-            case SEARCH:
-                return;
+        case SITE:
+            adapter = (PluginBrowserAdapter) mSitePluginsRecycler.getAdapter();
+            cardView = findViewById(R.id.installed_plugins_cardview);
+            break;
+        case FEATURED:
+            adapter = (PluginBrowserAdapter) mFeaturedPluginsRecycler.getAdapter();
+            cardView = findViewById(R.id.featured_plugins_cardview);
+            break;
+        case POPULAR:
+            adapter = (PluginBrowserAdapter) mPopularPluginsRecycler.getAdapter();
+            cardView = findViewById(R.id.popular_plugins_cardview);
+            break;
+        case NEW:
+            adapter = (PluginBrowserAdapter) mNewPluginsRecycler.getAdapter();
+            cardView = findViewById(R.id.new_plugins_cardview);
+            break;
+        case SEARCH:
+            return;
         }
         if (adapter == null || cardView == null) {
             return;
@@ -331,10 +331,10 @@ public class PluginBrowserActivity extends AppCompatActivity
     private void showListFragment(@NonNull PluginListType listType) {
         PluginListFragment listFragment = PluginListFragment.newInstance(mViewModel.getSite(), listType);
         getSupportFragmentManager().beginTransaction()
-                                   .add(R.id.fragment_container, listFragment, PluginListFragment.TAG)
-                                   .addToBackStack(null)
-                                   .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                   .commit();
+        .add(R.id.fragment_container, listFragment, PluginListFragment.TAG)
+        .addToBackStack(null)
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        .commit();
         mViewModel.setTitle(getTitleForListType(listType));
         trackPluginListOpened(listType);
     }
@@ -481,7 +481,7 @@ public class PluginBrowserActivity extends AppCompatActivity
                         }
 
                         ActivityLauncher.viewPluginDetail(PluginBrowserActivity.this, mViewModel.getSite(),
-                                plugin.getSlug());
+                                                          plugin.getSlug());
                     }
                 });
             }
@@ -490,16 +490,16 @@ public class PluginBrowserActivity extends AppCompatActivity
 
     private String getTitleForListType(@NonNull PluginListType pluginListType) {
         switch (pluginListType) {
-            case FEATURED:
-                return getString(R.string.plugin_caption_featured);
-            case POPULAR:
-                return getString(R.string.plugin_caption_popular);
-            case NEW:
-                return getString(R.string.plugin_caption_new);
-            case SEARCH:
-                return getString(R.string.plugin_caption_search);
-            case SITE:
-                return getString(R.string.plugin_caption_installed);
+        case FEATURED:
+            return getString(R.string.plugin_caption_featured);
+        case POPULAR:
+            return getString(R.string.plugin_caption_popular);
+        case NEW:
+            return getString(R.string.plugin_caption_new);
+        case SEARCH:
+            return getString(R.string.plugin_caption_search);
+        case SITE:
+            return getString(R.string.plugin_caption_installed);
         }
         return getString(R.string.plugins);
     }
@@ -513,18 +513,18 @@ public class PluginBrowserActivity extends AppCompatActivity
         Map<String, Object> properties = new HashMap<>();
         String type = null;
         switch (listType) {
-            case SITE:
-                type = "installed";
-                break;
-            case FEATURED:
-                type = "featured";
-                break;
-            case POPULAR:
-                type = "popular";
-                break;
-            case NEW:
-                type = "newest";
-                break;
+        case SITE:
+            type = "installed";
+            break;
+        case FEATURED:
+            type = "featured";
+            break;
+        case POPULAR:
+            type = "popular";
+            break;
+        case NEW:
+            type = "newest";
+            break;
         }
         properties.put("type", type);
         AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.OPENED_PLUGIN_LIST, mViewModel.getSite(), properties);

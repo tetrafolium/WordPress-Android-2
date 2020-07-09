@@ -100,22 +100,22 @@ public class PeopleTable {
         values.put("avatar_url", person.getAvatarUrl());
 
         switch (table) {
-            case TEAM_TABLE:
-                values.put("user_name", person.getUsername());
-                if (person.getRole() != null) {
-                    values.put("role", person.getRole());
-                }
-                break;
-            case FOLLOWERS_TABLE:
-                values.put("user_name", person.getUsername());
-                values.put("subscribed", person.getSubscribed());
-                break;
-            case EMAIL_FOLLOWERS_TABLE:
-                values.put("subscribed", person.getSubscribed());
-                break;
-            case VIEWERS_TABLE:
-                values.put("user_name", person.getUsername());
-                break;
+        case TEAM_TABLE:
+            values.put("user_name", person.getUsername());
+            if (person.getRole() != null) {
+                values.put("role", person.getRole());
+            }
+            break;
+        case FOLLOWERS_TABLE:
+            values.put("user_name", person.getUsername());
+            values.put("subscribed", person.getSubscribed());
+            break;
+        case EMAIL_FOLLOWERS_TABLE:
+            values.put("subscribed", person.getSubscribed());
+            break;
+        case VIEWERS_TABLE:
+            values.put("user_name", person.getUsername());
+            break;
         }
 
         database.insertWithOnConflict(table, null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -162,7 +162,7 @@ public class PeopleTable {
     }
 
     private static void deletePeople(String table, int localTableBlogId) {
-        String[] args = new String[]{Integer.toString(localTableBlogId)};
+        String[] args = new String[] {Integer.toString(localTableBlogId)};
         getWritableDb().delete(table, "local_blog_id=?1", args);
     }
 
@@ -192,9 +192,9 @@ public class PeopleTable {
                         orderBy = "ROWID DESC";
                     }
                     String inQuery = SQLiteQueryBuilder.buildQueryString(false, table, columns, where, null, null,
-                                                                         orderBy, limit);
+                                     orderBy, limit);
 
-                    String[] args = new String[]{Integer.toString(localTableBlogId)};
+                    String[] args = new String[] {Integer.toString(localTableBlogId)};
                     getWritableDb().delete(table, "local_blog_id=?1 AND person_id IN (" + inQuery + ")", args);
                 }
             }
@@ -213,7 +213,7 @@ public class PeopleTable {
     }
 
     private static int getPeopleCountForLocalBlogId(String table, int localTableBlogId) {
-        String[] args = new String[]{Integer.toString(localTableBlogId)};
+        String[] args = new String[] {Integer.toString(localTableBlogId)};
         String sql = "SELECT COUNT(*) FROM " + table + " WHERE local_blog_id=?";
         return SqlUtils.intForQuery(getReadableDb(), sql, args);
     }
@@ -226,7 +226,7 @@ public class PeopleTable {
     }
 
     private static void deletePerson(String table, long personID, int localTableBlogId) {
-        String[] args = new String[]{Long.toString(personID), Integer.toString(localTableBlogId)};
+        String[] args = new String[] {Long.toString(personID), Integer.toString(localTableBlogId)};
         getWritableDb().delete(table, "person_id=? AND local_blog_id=?", args);
     }
 
@@ -311,25 +311,25 @@ public class PeopleTable {
         person.setDisplayName(c.getString(c.getColumnIndex("display_name")));
         person.setAvatarUrl(c.getString(c.getColumnIndex("avatar_url")));
         switch (table) {
-            case TEAM_TABLE:
-                person.setUsername(c.getString(c.getColumnIndex("user_name")));
-                String role = c.getString(c.getColumnIndex("role"));
-                person.setRole(role);
-                person.setPersonType(Person.PersonType.USER);
-                break;
-            case FOLLOWERS_TABLE:
-                person.setUsername(c.getString(c.getColumnIndex("user_name")));
-                person.setSubscribed(c.getString(c.getColumnIndex("subscribed")));
-                person.setPersonType(Person.PersonType.FOLLOWER);
-                break;
-            case EMAIL_FOLLOWERS_TABLE:
-                person.setSubscribed(c.getString(c.getColumnIndex("subscribed")));
-                person.setPersonType(Person.PersonType.EMAIL_FOLLOWER);
-                break;
-            case VIEWERS_TABLE:
-                person.setUsername(c.getString(c.getColumnIndex("user_name")));
-                person.setPersonType(Person.PersonType.VIEWER);
-                break;
+        case TEAM_TABLE:
+            person.setUsername(c.getString(c.getColumnIndex("user_name")));
+            String role = c.getString(c.getColumnIndex("role"));
+            person.setRole(role);
+            person.setPersonType(Person.PersonType.USER);
+            break;
+        case FOLLOWERS_TABLE:
+            person.setUsername(c.getString(c.getColumnIndex("user_name")));
+            person.setSubscribed(c.getString(c.getColumnIndex("subscribed")));
+            person.setPersonType(Person.PersonType.FOLLOWER);
+            break;
+        case EMAIL_FOLLOWERS_TABLE:
+            person.setSubscribed(c.getString(c.getColumnIndex("subscribed")));
+            person.setPersonType(Person.PersonType.EMAIL_FOLLOWER);
+            break;
+        case VIEWERS_TABLE:
+            person.setUsername(c.getString(c.getColumnIndex("user_name")));
+            person.setPersonType(Person.PersonType.VIEWER);
+            break;
         }
 
         return person;
@@ -343,14 +343,14 @@ public class PeopleTable {
     @Nullable
     private static String getTableForPersonType(Person.PersonType personType) {
         switch (personType) {
-            case USER:
-                return TEAM_TABLE;
-            case FOLLOWER:
-                return FOLLOWERS_TABLE;
-            case EMAIL_FOLLOWER:
-                return EMAIL_FOLLOWERS_TABLE;
-            case VIEWER:
-                return VIEWERS_TABLE;
+        case USER:
+            return TEAM_TABLE;
+        case FOLLOWER:
+            return FOLLOWERS_TABLE;
+        case EMAIL_FOLLOWER:
+            return EMAIL_FOLLOWERS_TABLE;
+        case VIEWER:
+            return VIEWERS_TABLE;
         }
         return null;
     }

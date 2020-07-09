@@ -17,7 +17,7 @@ public class TypefaceCache {
     protected static Typeface getTypefaceForTypefaceName(Context context, String typefaceName) {
         if (!TYPEFACE_CACHE.containsKey(typefaceName)) {
             Typeface typeface = Typeface.createFromAsset(context.getApplicationContext().getAssets(),
-                                                         "fonts/" + typefaceName);
+                                "fonts/" + typefaceName);
             if (typeface != null) {
                 TYPEFACE_CACHE.put(typefaceName, typeface);
             }

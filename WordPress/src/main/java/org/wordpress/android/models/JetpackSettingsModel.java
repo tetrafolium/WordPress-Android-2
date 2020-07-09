@@ -58,20 +58,20 @@ public class JetpackSettingsModel {
         if (!(other instanceof JetpackSettingsModel)) return false;
         JetpackSettingsModel otherModel = (JetpackSettingsModel) other;
         return monitorActive == otherModel.monitorActive
-                && emailNotifications == otherModel.emailNotifications
-                && wpNotifications == otherModel.wpNotifications
-                && jetpackProtectEnabled == otherModel.jetpackProtectEnabled
-                && ssoActive == otherModel.ssoActive
-                && ssoMatchEmail == otherModel.ssoMatchEmail
-                && ssoRequireTwoFactor == otherModel.ssoRequireTwoFactor
-                && serveImagesFromOurServers == otherModel.serveImagesFromOurServers
-                && serveStaticFilesFromOurServers == otherModel.serveStaticFilesFromOurServers
-                && lazyLoadImages == otherModel.lazyLoadImages
-                && commentLikes == otherModel.commentLikes
-                && sharingEnabled == otherModel.sharingEnabled
-                && improvedSearch == otherModel.improvedSearch
-                && adFreeVideoHosting == otherModel.adFreeVideoHosting
-                && whitelistMatches(otherModel.jetpackProtectWhitelist);
+               && emailNotifications == otherModel.emailNotifications
+               && wpNotifications == otherModel.wpNotifications
+               && jetpackProtectEnabled == otherModel.jetpackProtectEnabled
+               && ssoActive == otherModel.ssoActive
+               && ssoMatchEmail == otherModel.ssoMatchEmail
+               && ssoRequireTwoFactor == otherModel.ssoRequireTwoFactor
+               && serveImagesFromOurServers == otherModel.serveImagesFromOurServers
+               && serveStaticFilesFromOurServers == otherModel.serveStaticFilesFromOurServers
+               && lazyLoadImages == otherModel.lazyLoadImages
+               && commentLikes == otherModel.commentLikes
+               && sharingEnabled == otherModel.sharingEnabled
+               && improvedSearch == otherModel.improvedSearch
+               && adFreeVideoHosting == otherModel.adFreeVideoHosting
+               && whitelistMatches(otherModel.jetpackProtectWhitelist);
     }
 
     public boolean whitelistMatches(List<String> otherWhitelist) {

@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RelatedPostsDialog extends DialogFragment
-        implements DialogInterface.OnClickListener,
-        CompoundButton.OnCheckedChangeListener {
+    implements DialogInterface.OnClickListener,
+    CompoundButton.OnCheckedChangeListener {
     /**
      * boolean
      * <p>
@@ -94,13 +94,13 @@ public class RelatedPostsDialog extends DialogFragment
         toggleViews(mShowRelatedPosts.isChecked());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         //noinspection InflateParams
         View titleView = inflater.inflate(R.layout.detail_list_preference_title, null);
         TextView titleText = titleView.findViewById(R.id.title);
         titleText.setText(R.string.site_settings_related_posts_title);
         titleText.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                                                                  RelativeLayout.LayoutParams.WRAP_CONTENT));
+                                  RelativeLayout.LayoutParams.WRAP_CONTENT));
         builder.setCustomTitle(titleView);
         builder.setPositiveButton(android.R.string.ok, this);
         builder.setNegativeButton(R.string.cancel, this);
@@ -172,9 +172,9 @@ public class RelatedPostsDialog extends DialogFragment
     private Intent getResultIntent() {
         if (mConfirmed) {
             return new Intent()
-                    .putExtra(SHOW_RELATED_POSTS_KEY, mShowRelatedPosts.isChecked())
-                    .putExtra(SHOW_HEADER_KEY, mShowHeader.isChecked())
-                    .putExtra(SHOW_IMAGES_KEY, mShowImages.isChecked());
+                   .putExtra(SHOW_RELATED_POSTS_KEY, mShowRelatedPosts.isChecked())
+                   .putExtra(SHOW_HEADER_KEY, mShowHeader.isChecked())
+                   .putExtra(SHOW_IMAGES_KEY, mShowImages.isChecked());
         }
 
         return null;

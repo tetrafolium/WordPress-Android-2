@@ -76,15 +76,15 @@ public class LoginFlow {
         // Follow the magic link to continue login
         // Intent is invoked directly rather than through a browser as WireMock is unavailable once in the background
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("wordpress://magic-login?token=valid_token"))
-                .setPackage(getApplicationContext().getPackageName());
+        .setPackage(getApplicationContext().getPackageName());
         magicLinkActivityTestRule.launchActivity(intent);
     }
 
     private void enterUsernameAndPassword(String username, String password) {
         ViewInteraction usernameElement = onView(allOf(isDescendantOfA(withId(R.id.login_username_row)),
-                Matchers.<View>instanceOf(EditText.class)));
+                                          Matchers.<View>instanceOf(EditText.class)));
         ViewInteraction passwordElement = onView(allOf(isDescendantOfA(withId(R.id.login_password_row)),
-                Matchers.<View>instanceOf(EditText.class)));
+                                          Matchers.<View>instanceOf(EditText.class)));
         populateTextField(usernameElement, username + "\n");
         populateTextField(passwordElement, password + "\n");
         clickOn(R.id.primary_button);

@@ -250,7 +250,7 @@ public class LoginAnalyticsTracker implements LoginAnalyticsListener {
 
     @Override
     public void trackConnectedSiteInfoFailed(String url, String errorContext, String errorType,
-                                             String errorDescription) {
+            String errorDescription) {
         // Not used in WordPress app
     }
 

@@ -35,11 +35,11 @@ public class InstallationReferrerServiceStarter {
             }
 
             JobInfo jobInfo = new JobInfo.Builder(JOB_INSTALL_REFERRER_SERVICE_ID, componentName)
-                    .setRequiresCharging(false)
-                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                    .setOverrideDeadline(0) // if possible, try to run right away
-                    .setExtras(extras)
-                    .build();
+            .setRequiresCharging(false)
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+            .setOverrideDeadline(0) // if possible, try to run right away
+            .setExtras(extras)
+            .build();
 
             JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
             int resultCode = jobScheduler.schedule(jobInfo);

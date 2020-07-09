@@ -58,8 +58,8 @@ public class NotificationsSettingsActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
-                           .add(R.id.fragment_container, new NotificationsSettingsFragment())
-                           .commit();
+            .add(R.id.fragment_container, new NotificationsSettingsFragment())
+            .commit();
         }
 
         mMessageContainer = findViewById(R.id.notifications_settings_message_container);
@@ -81,9 +81,9 @@ public class NotificationsSettingsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        case android.R.id.home:
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -124,8 +124,8 @@ public class NotificationsSettingsActivity extends AppCompatActivity {
         mToolbarSwitch = findViewById(R.id.toolbar_with_switch);
         mToolbarSwitch.inflateMenu(R.menu.notifications_settings_secondary);
         mToolbarSwitch.setTitle(isMasterChecked
-                                        ? getString(R.string.notification_settings_master_status_on)
-                                        : getString(R.string.notification_settings_master_status_off));
+                                ? getString(R.string.notification_settings_master_status_on)
+                                : getString(R.string.notification_settings_master_status_off));
 
         MenuItem menuItem = mToolbarSwitch.getMenu().findItem(R.id.master_switch);
         mMasterSwitch = (SwitchCompat) menuItem.getActionView();
@@ -140,10 +140,10 @@ public class NotificationsSettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 hideDisabledView(isChecked);
                 mToolbarSwitch.setTitle(isChecked
-                                                ? getString(R.string.notification_settings_master_status_on)
-                                                : getString(R.string.notification_settings_master_status_off));
+                                        ? getString(R.string.notification_settings_master_status_on)
+                                        : getString(R.string.notification_settings_master_status_off));
                 mSharedPreferences.edit().putBoolean(getString(R.string.wp_pref_notifications_master), isChecked)
-                                  .apply();
+                .apply();
 
                 if (isChecked) {
                     AnalyticsTracker.track(AnalyticsTracker.Stat.NOTIFICATION_SETTINGS_APP_NOTIFICATIONS_ENABLED);
@@ -163,8 +163,8 @@ public class NotificationsSettingsActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View view) {
                 Toast.makeText(NotificationsSettingsActivity.this, mMasterSwitch.isChecked()
-                                       ? getString(R.string.notification_settings_master_hint_on)
-                                       : getString(R.string.notification_settings_master_hint_off),
+                               ? getString(R.string.notification_settings_master_hint_on)
+                               : getString(R.string.notification_settings_master_hint_off),
                                Toast.LENGTH_SHORT).show();
                 return true;
             }
@@ -176,7 +176,7 @@ public class NotificationsSettingsActivity extends AppCompatActivity {
         for (int i = 0; i < mToolbarSwitch.getChildCount(); i++) {
             if (mToolbarSwitch.getChildAt(i) instanceof TextView) {
                 mToolbarSwitch.getChildAt(i).setContentDescription(
-                        getString(R.string.notification_settings_switch_desc));
+                    getString(R.string.notification_settings_switch_desc));
             }
         }
     }

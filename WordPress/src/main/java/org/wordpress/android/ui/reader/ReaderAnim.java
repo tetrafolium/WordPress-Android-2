@@ -36,18 +36,18 @@ public class ReaderAnim {
         AnimatorSet set = new AnimatorSet();
 
         switch (button) {
-            case LIKE_ON:
-            case LIKE_OFF:
-                // rotate like button +/- 72 degrees (72 = 360/5, 5 is the number of points in the star)
-                float endRotate = (button == ReaderButton.LIKE_ON ? 72f : -72f);
-                ObjectAnimator animRotate = ObjectAnimator.ofFloat(target, View.ROTATION, 0f, endRotate);
-                animRotate.setRepeatMode(ValueAnimator.REVERSE);
-                animRotate.setRepeatCount(1);
-                set.play(animX).with(animY).with(animRotate);
-                break;
-            default:
-                set.play(animX).with(animY);
-                break;
+        case LIKE_ON:
+        case LIKE_OFF:
+            // rotate like button +/- 72 degrees (72 = 360/5, 5 is the number of points in the star)
+            float endRotate = (button == ReaderButton.LIKE_ON ? 72f : -72f);
+            ObjectAnimator animRotate = ObjectAnimator.ofFloat(target, View.ROTATION, 0f, endRotate);
+            animRotate.setRepeatMode(ValueAnimator.REVERSE);
+            animRotate.setRepeatCount(1);
+            set.play(animX).with(animY).with(animRotate);
+            break;
+        default:
+            set.play(animX).with(animY);
+            break;
         }
 
         long durationMillis = AniUtils.Duration.SHORT.toMillis(target.getContext());

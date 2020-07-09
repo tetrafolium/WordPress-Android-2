@@ -204,17 +204,17 @@ public class AppLog {
 
         private String toHtmlColor() {
             switch (this) {
-                case v:
-                    return "grey";
-                case i:
-                    return "black";
-                case w:
-                    return "purple";
-                case e:
-                    return "red";
-                case d:
-                default:
-                    return "teal";
+            case v:
+                return "grey";
+            case i:
+                return "black";
+            case w:
+                return "purple";
+            case e:
+                return "red";
+            case d:
+            default:
+                return "teal";
             }
         }
     }
@@ -313,7 +313,7 @@ public class AppLog {
             appName = "Unknown";
         }
         sb.append(appName).append(" - ").append(PackageUtils.getVersionName(context))
-          .append(" - Version code: ").append(PackageUtils.getVersionCode(context));
+        .append(" - Version code: ").append(PackageUtils.getVersionCode(context));
         return sb.toString();
     }
 
@@ -350,19 +350,19 @@ public class AppLog {
 
         // add version & device info
         sb.append(getAppInfoHeaderText(context)).append("\n")
-          .append(getDeviceInfoHeaderText(context)).append("\n\n");
+        .append(getDeviceInfoHeaderText(context)).append("\n\n");
 
         Iterator<LogEntry> it = new ArrayList<>(mLogEntries).iterator();
         int lineNum = 1;
         while (it.hasNext()) {
             LogEntry entry = it.next();
             sb.append(format(Locale.US, "%02d - ", lineNum))
-              .append("[")
-              .append(entry.formatLogDate()).append(" ")
-              .append(entry.mLogTag.name())
-              .append("] ")
-              .append(entry.mLogText)
-              .append("\n");
+            .append("[")
+            .append(entry.formatLogDate()).append(" ")
+            .append(entry.mLogTag.name())
+            .append("] ")
+            .append(entry.mLogText)
+            .append("\n");
             lineNum++;
         }
         return sb.toString();

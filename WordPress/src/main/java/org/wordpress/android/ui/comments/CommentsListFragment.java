@@ -93,8 +93,9 @@ public class CommentsListFragment extends Fragment {
     boolean mHasAutoRefreshedComments = false;
 
     private final CommentStatusCriteria[] mCommentStatuses = {
-            CommentStatusCriteria.ALL, CommentStatusCriteria.UNAPPROVED, CommentStatusCriteria.APPROVED,
-            CommentStatusCriteria.TRASH, CommentStatusCriteria.SPAM};
+        CommentStatusCriteria.ALL, CommentStatusCriteria.UNAPPROVED, CommentStatusCriteria.APPROVED,
+        CommentStatusCriteria.TRASH, CommentStatusCriteria.SPAM
+    };
 
     private EmptyViewMessageType mEmptyViewMessageType = EmptyViewMessageType.NO_CONTENT;
     private FilteredRecyclerView mFilteredCommentsView;
@@ -176,20 +177,20 @@ public class CommentsListFragment extends Fragment {
 
             // adapter calls this when selected comments have changed (CAB)
             CommentAdapter.OnSelectedItemsChangeListener changeListener =
-                    new CommentAdapter.OnSelectedItemsChangeListener() {
-                        @Override
-                        public void onSelectedItemsChanged() {
-                            if (mActionMode != null) {
-                                if (getSelectedCommentCount() == 0) {
-                                    mActionMode.finish();
-                                } else {
-                                    updateActionModeTitle();
-                                    // must invalidate to ensure onPrepareActionMode is called
-                                    mActionMode.invalidate();
-                                }
-                            }
+            new CommentAdapter.OnSelectedItemsChangeListener() {
+                @Override
+                public void onSelectedItemsChanged() {
+                    if (mActionMode != null) {
+                        if (getSelectedCommentCount() == 0) {
+                            mActionMode.finish();
+                        } else {
+                            updateActionModeTitle();
+                            // must invalidate to ensure onPrepareActionMode is called
+                            mActionMode.invalidate();
                         }
-                    };
+                    }
+                }
+            };
 
             CommentAdapter.OnCommentPressedListener pressedListener = new CommentAdapter.OnCommentPressedListener() {
                 @Override
@@ -202,8 +203,8 @@ public class CommentsListFragment extends Fragment {
                         mFilteredCommentsView.invalidate();
                         if (getActivity() instanceof OnCommentSelectedListener) {
                             ((OnCommentSelectedListener) getActivity()).onCommentSelected(comment.getRemoteCommentId(),
-                                                                                          mCommentStatusFilter
-                                                                                                  .toCommentStatus());
+                                    mCommentStatusFilter
+                                    .toCommentStatus());
                         }
                     } else {
                         getAdapter().toggleItemSelected(position, view);
@@ -259,7 +260,7 @@ public class CommentsListFragment extends Fragment {
         if (extras != null) {
             mHasAutoRefreshedComments = extras.getBoolean(CommentsActivity.KEY_AUTO_REFRESHED);
             mEmptyViewMessageType = EmptyViewMessageType.getEnumFromString(extras.getString(
-                    CommentsActivity.KEY_EMPTY_VIEW_MESSAGE));
+                                        CommentsActivity.KEY_EMPTY_VIEW_MESSAGE));
         } else {
             mHasAutoRefreshedComments = false;
             mEmptyViewMessageType = EmptyViewMessageType.NO_CONTENT;
@@ -297,8 +298,8 @@ public class CommentsListFragment extends Fragment {
 
             @Override
             public void onLoadFilterCriteriaOptionsAsync(
-                    FilteredRecyclerView.FilterCriteriaAsyncLoaderListener listener,
-                    boolean refresh) {
+                FilteredRecyclerView.FilterCriteriaAsyncLoaderListener listener,
+                boolean refresh) {
             }
 
             @Override
@@ -328,20 +329,20 @@ public class CommentsListFragment extends Fragment {
                         title = getString(R.string.comments_empty_list);
                     } else {
                         switch (mCommentStatusFilter) {
-                            case APPROVED:
-                                title = getString(R.string.comments_empty_list_filtered_approved);
-                                break;
-                            case UNAPPROVED:
-                                title = getString(R.string.comments_empty_list_filtered_pending);
-                                break;
-                            case SPAM:
-                                title = getString(R.string.comments_empty_list_filtered_spam);
-                                break;
-                            case TRASH:
-                                title = getString(R.string.comments_empty_list_filtered_trashed);
-                                break;
-                            default:
-                                title = getString(R.string.comments_empty_list);
+                        case APPROVED:
+                            title = getString(R.string.comments_empty_list_filtered_approved);
+                            break;
+                        case UNAPPROVED:
+                            title = getString(R.string.comments_empty_list_filtered_pending);
+                            break;
+                        case SPAM:
+                            title = getString(R.string.comments_empty_list_filtered_spam);
+                            break;
+                        case TRASH:
+                            title = getString(R.string.comments_empty_list_filtered_trashed);
+                            break;
+                        default:
+                            title = getString(R.string.comments_empty_list);
                         }
                     }
 
@@ -352,18 +353,18 @@ public class CommentsListFragment extends Fragment {
                 } else {
                     int stringId = 0;
                     switch (emptyViewMsgType) {
-                        case LOADING:
-                            stringId = R.string.comments_fetching;
-                            break;
-                        case NETWORK_ERROR:
-                            stringId = R.string.no_network_message;
-                            break;
-                        case PERMISSION_ERROR:
-                            stringId = R.string.error_refresh_unauthorized_comments;
-                            break;
-                        case GENERIC_ERROR:
-                            stringId = R.string.error_refresh_comments;
-                            break;
+                    case LOADING:
+                        stringId = R.string.comments_fetching;
+                        break;
+                    case NETWORK_ERROR:
+                        stringId = R.string.no_network_message;
+                        break;
+                    case PERMISSION_ERROR:
+                        stringId = R.string.error_refresh_unauthorized_comments;
+                        break;
+                    case GENERIC_ERROR:
+                        stringId = R.string.error_refresh_comments;
+                        break;
                     }
 
                     mActionableEmptyView.setVisibility(View.GONE);
@@ -383,8 +384,8 @@ public class CommentsListFragment extends Fragment {
         mFilteredCommentsView.setToolbarSpinnerTextColor(ContextCompat.getColor(getActivity(), android.R.color.white));
         mFilteredCommentsView.setToolbarSpinnerDrawable(R.drawable.ic_dropdown_primary_30_24dp);
         mFilteredCommentsView.setToolbarLeftAndRightPadding(
-                getResources().getDimensionPixelSize(R.dimen.margin_filter_spinner),
-                getResources().getDimensionPixelSize(R.dimen.margin_none));
+            getResources().getDimensionPixelSize(R.dimen.margin_filter_spinner),
+            getResources().getDimensionPixelSize(R.dimen.margin_none));
 
         return view;
     }
@@ -443,23 +444,23 @@ public class CommentsListFragment extends Fragment {
     private void confirmDeleteComments() {
         if (mCommentStatusFilter == CommentStatusCriteria.TRASH) {
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                    new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
             dialogBuilder.setTitle(getResources().getText(R.string.delete));
             int resId = getAdapter().getSelectedCommentCount() > 1 ? R.string.dlg_sure_to_delete_comments
-                    : R.string.dlg_sure_to_delete_comment;
+                        : R.string.dlg_sure_to_delete_comment;
             dialogBuilder.setMessage(getResources().getText(resId));
             dialogBuilder.setPositiveButton(getResources().getText(R.string.yes),
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int whichButton) {
-                                                    deleteSelectedComments(true);
-                                                }
-                                            });
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    deleteSelectedComments(true);
+                }
+            });
             dialogBuilder.setNegativeButton(getResources().getText(R.string.no), null);
             dialogBuilder.setCancelable(true);
             dialogBuilder.create().show();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(
-                    new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
             builder.setMessage(R.string.dlg_confirm_trash_comments);
             builder.setTitle(R.string.trash);
             builder.setCancelable(true);
@@ -485,7 +486,7 @@ public class CommentsListFragment extends Fragment {
             return;
         }
         final int dlgId = deletePermanently ? CommentDialogs.ID_COMMENT_DLG_DELETING
-                : CommentDialogs.ID_COMMENT_DLG_TRASHING;
+                          : CommentDialogs.ID_COMMENT_DLG_TRASHING;
         final CommentList selectedComments = getAdapter().getSelectedComments();
         CommentStatus newStatus = CommentStatus.TRASH;
         if (deletePermanently) {
@@ -499,19 +500,19 @@ public class CommentsListFragment extends Fragment {
     private boolean shouldRemoveCommentFromList(CommentModel comment) {
         CommentStatus status = CommentStatus.fromString(comment.getStatus());
         switch (mCommentStatusFilter) {
-            case ALL:
-                return status != CommentStatus.APPROVED && status != CommentStatus.UNAPPROVED;
-            case UNAPPROVED:
-                return status != CommentStatus.UNAPPROVED;
-            case APPROVED:
-                return status != CommentStatus.APPROVED;
-            case TRASH:
-                return status != CommentStatus.TRASH;
-            case SPAM:
-                return status != CommentStatus.SPAM;
-            case DELETE:
-            default:
-                return true;
+        case ALL:
+            return status != CommentStatus.APPROVED && status != CommentStatus.UNAPPROVED;
+        case UNAPPROVED:
+            return status != CommentStatus.UNAPPROVED;
+        case APPROVED:
+            return status != CommentStatus.APPROVED;
+        case TRASH:
+            return status != CommentStatus.TRASH;
+        case SPAM:
+            return status != CommentStatus.SPAM;
+        case DELETE:
+        default:
+            return true;
         }
     }
 
@@ -525,11 +526,11 @@ public class CommentsListFragment extends Fragment {
             if (status == CommentStatus.DELETED) {
                 // For deletion, we need to dispatch a specific action.
                 mDispatcher.dispatch(CommentActionBuilder.newDeleteCommentAction(
-                        new RemoteCommentPayload(mSite, comment)));
+                                         new RemoteCommentPayload(mSite, comment)));
             } else {
                 // Dispatch the update
                 mDispatcher.dispatch(CommentActionBuilder.newPushCommentAction(
-                        new RemoteCommentPayload(mSite, comment)));
+                                         new RemoteCommentPayload(mSite, comment)));
             }
         }
     }
@@ -582,7 +583,7 @@ public class CommentsListFragment extends Fragment {
         mFilteredCommentsView.setRefreshing(true);
 
         mDispatcher.dispatch(CommentActionBuilder.newFetchCommentsAction(
-                 new FetchCommentsPayload(mSite, mCommentStatusFilter.toCommentStatus(), COMMENTS_PER_PAGE, offset)));
+                                 new FetchCommentsPayload(mSite, mCommentStatusFilter.toCommentStatus(), COMMENTS_PER_PAGE, offset)));
     }
 
 

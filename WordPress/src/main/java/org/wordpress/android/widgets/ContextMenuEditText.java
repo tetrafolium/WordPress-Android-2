@@ -48,15 +48,15 @@ public class ContextMenuEditText extends AppCompatEditText {
         boolean consumed = super.onTextContextMenuItem(id);
 
         switch (id) {
-            case android.R.id.cut:
-                onCut();
-                break;
-            case android.R.id.copy:
-                onCopy();
-                break;
-            case android.R.id.paste:
-                onPaste();
-                break;
+        case android.R.id.cut:
+            onCut();
+            break;
+        case android.R.id.copy:
+            onCopy();
+            break;
+        case android.R.id.paste:
+            onPaste();
+            break;
         }
 
         return consumed;

@@ -130,15 +130,15 @@ public class FilteredRecyclerView extends RelativeLayout {
 
         if (attrs != null) {
             TypedArray a = context.getTheme().obtainStyledAttributes(
-                    attrs,
-                    R.styleable.FilteredRecyclerView,
-                    0, 0);
+                               attrs,
+                               R.styleable.FilteredRecyclerView,
+                               0, 0);
             try {
                 mToolbarDisableScrollGestures = a.getBoolean(
-                        R.styleable.FilteredRecyclerView_wpToolbarDisableScrollGestures, false);
+                                                    R.styleable.FilteredRecyclerView_wpToolbarDisableScrollGestures, false);
                 mSpinnerItemView = a.getResourceId(R.styleable.FilteredRecyclerView_wpSpinnerItemView, 0);
                 mSpinnerDropDownItemView = a.getResourceId(
-                        R.styleable.FilteredRecyclerView_wpSpinnerDropDownItemView, 0);
+                                               R.styleable.FilteredRecyclerView_wpSpinnerDropDownItemView, 0);
             } finally {
                 a.recycle();
             }
@@ -168,26 +168,26 @@ public class FilteredRecyclerView extends RelativeLayout {
         mProgressLoadMore.setVisibility(View.GONE);
 
         mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-                (CustomSwipeRefreshLayout) findViewById(R.id.ptr_layout),
-                new SwipeToRefreshHelper.RefreshListener() {
+                                    (CustomSwipeRefreshLayout) findViewById(R.id.ptr_layout),
+        new SwipeToRefreshHelper.RefreshListener() {
+            @Override
+            public void onRefreshStarted() {
+                post(new Runnable() {
                     @Override
-                    public void onRefreshStarted() {
-                        post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!NetworkUtils.checkConnection(getContext())) {
-                                    mSwipeToRefreshHelper.setRefreshing(false);
-                                    updateEmptyView(EmptyViewMessageType.NETWORK_ERROR);
-                                    return;
-                                }
-                                if (mFilterListener != null) {
-                                    mFilterListener.onLoadData();
-                                }
-                            }
-                        });
+                    public void run() {
+                        if (!NetworkUtils.checkConnection(getContext())) {
+                            mSwipeToRefreshHelper.setRefreshing(false);
+                            updateEmptyView(EmptyViewMessageType.NETWORK_ERROR);
+                            return;
+                        }
+                        if (mFilterListener != null) {
+                            mFilterListener.onLoadData();
+                        }
                     }
-                }
-        );
+                });
+            }
+        }
+                                );
 
         if (mSpinner == null) {
             mSpinner = findViewById(R.id.filter_spinner);
@@ -219,7 +219,7 @@ public class FilteredRecyclerView extends RelativeLayout {
 
     private void initSpinnerAdapter() {
         mSpinnerAdapter = new SpinnerAdapter(getContext(),
-                mFilterCriteriaOptions, mSpinnerItemView, mSpinnerDropDownItemView);
+                                             mFilterCriteriaOptions, mSpinnerItemView, mSpinnerDropDownItemView);
 
         mSelectingRememberedFilterOnCreate = true;
         mSpinner.setAdapter(mSpinnerAdapter);
@@ -232,11 +232,11 @@ public class FilteredRecyclerView extends RelativeLayout {
                 }
 
                 FilterCriteria selectedCriteria =
-                        (FilterCriteria) mSpinnerAdapter.getItem(position);
+                    (FilterCriteria) mSpinnerAdapter.getItem(position);
 
                 if (mCurrentFilter == selectedCriteria) {
                     AppLog.d(mTAG, "The selected STATUS is already active: "
-                            + selectedCriteria.getLabel());
+                             + selectedCriteria.getLabel());
                     return;
                 }
 

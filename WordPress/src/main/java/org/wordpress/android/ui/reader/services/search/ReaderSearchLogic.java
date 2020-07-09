@@ -65,6 +65,6 @@ public class ReaderSearchLogic {
                 EventBus.getDefault().post(new ReaderEvents.SearchPostsEnded(query, offset, true));
                 mCompletionListener.onCompleted(mListenerCompanion);
             }
-        }.start();
+        } .start();
     }
 }

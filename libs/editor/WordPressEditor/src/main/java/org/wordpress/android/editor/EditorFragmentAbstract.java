@@ -161,7 +161,7 @@ public abstract class EditorFragmentAbstract extends Fragment {
             return MediaType.IMAGE;
         }
         return mediaFile.isVideo() ? MediaType.VIDEO
-                : MediaType.IMAGE;
+               : MediaType.IMAGE;
     }
 
     /**

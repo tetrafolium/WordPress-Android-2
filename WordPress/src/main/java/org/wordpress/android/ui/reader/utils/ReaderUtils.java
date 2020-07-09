@@ -74,11 +74,11 @@ public class ReaderUtils {
         }
 
         return title.trim()
-                    .replaceAll("&[^\\s]*;", "") // remove html entities
-                    .replaceAll("[\\.\\s]+", "-") // replace periods and whitespace with a dash
-                    .replaceAll("[^\\p{L}\\p{Nd}\\-]+",
-                            "") // remove remaining non-alphanum/non-dash chars (Unicode aware)
-                    .replaceAll("--", "-"); // reduce double dashes potentially added above
+               .replaceAll("&[^\\s]*;", "") // remove html entities
+               .replaceAll("[\\.\\s]+", "-") // replace periods and whitespace with a dash
+               .replaceAll("[^\\p{L}\\p{Nd}\\-]+",
+                           "") // remove remaining non-alphanum/non-dash chars (Unicode aware)
+               .replaceAll("--", "-"); // reduce double dashes potentially added above
     }
 
     /*
@@ -87,14 +87,14 @@ public class ReaderUtils {
     public static String getLongLikeLabelText(Context context, int numLikes, boolean isLikedByCurrentUser) {
         if (isLikedByCurrentUser) {
             switch (numLikes) {
-                case 1:
-                    return context.getString(R.string.reader_likes_only_you);
-                case 2:
-                    return context.getString(R.string.reader_likes_you_and_one);
-                default:
-                    String youAndMultiLikes = context.getString(R.string.reader_likes_you_and_multi);
-                    return String.format(
-                            LocaleManager.getSafeLocale(context), youAndMultiLikes, numLikes - 1);
+            case 1:
+                return context.getString(R.string.reader_likes_only_you);
+            case 2:
+                return context.getString(R.string.reader_likes_you_and_one);
+            default:
+                String youAndMultiLikes = context.getString(R.string.reader_likes_you_and_multi);
+                return String.format(
+                           LocaleManager.getSafeLocale(context), youAndMultiLikes, numLikes - 1);
             }
         } else {
             if (numLikes == 1) {
@@ -111,23 +111,23 @@ public class ReaderUtils {
      */
     public static String getShortLikeLabelText(Context context, int numLikes) {
         switch (numLikes) {
-            case 0:
-                return context.getString(R.string.reader_short_like_count_none);
-            case 1:
-                return context.getString(R.string.reader_short_like_count_one);
-            default:
-                String count = FormatUtils.formatInt(numLikes);
-                return String.format(context.getString(R.string.reader_short_like_count_multi), count);
+        case 0:
+            return context.getString(R.string.reader_short_like_count_none);
+        case 1:
+            return context.getString(R.string.reader_short_like_count_one);
+        default:
+            String count = FormatUtils.formatInt(numLikes);
+            return String.format(context.getString(R.string.reader_short_like_count_multi), count);
         }
     }
 
     public static String getShortCommentLabelText(Context context, int numComments) {
         switch (numComments) {
-            case 1:
-                return context.getString(R.string.reader_short_comment_count_one);
-            default:
-                String count = FormatUtils.formatInt(numComments);
-                return String.format(context.getString(R.string.reader_short_comment_count_multi), count);
+        case 1:
+            return context.getString(R.string.reader_short_comment_count_one);
+        default:
+            String count = FormatUtils.formatInt(numComments);
+            return String.format(context.getString(R.string.reader_short_comment_count_multi), count);
         }
     }
 

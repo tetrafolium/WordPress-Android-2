@@ -40,11 +40,11 @@ public class AuthenticatorRequest {
         }
 
         final String sitePrefix = restEndpointUrl.endsWith("/")
-                ? restEndpointUrl + "sites/"
-                : restEndpointUrl + "/sites/";
+                                  ? restEndpointUrl + "sites/"
+                                  : restEndpointUrl + "/sites/";
         final String batchCallPrefix = restEndpointUrl.endsWith("/")
-                ? restEndpointUrl + "batch/?urls%5B%5D=%2Fsites%2F"
-                : restEndpointUrl + "/batch/?urls%5B%5D=%2Fsites%2F";
+                                       ? restEndpointUrl + "batch/?urls%5B%5D=%2Fsites%2F"
+                                       : restEndpointUrl + "/batch/?urls%5B%5D=%2Fsites%2F";
 
         if (url.startsWith(sitePrefix) && !sitePrefix.equals(url)) {
             int marker = sitePrefix.length();

@@ -153,33 +153,33 @@ public class ReaderPostDiscoverData {
             Context context = WordPress.getContext();
 
             switch (getDiscoverType()) {
-                case EDITOR_PICK:
-                    if (hasBlogName() && hasAuthorName()) {
-                        // "Originally posted by [AuthorName] on [BlogName]"
-                        html = String.format(context.getString(R.string.reader_discover_attribution_author_and_blog),
-                                             author, blog);
-                    } else if (hasBlogName()) {
-                        // "Originally posted on [BlogName]"
-                        html = String.format(context.getString(R.string.reader_discover_attribution_blog), blog);
-                    } else if (hasAuthorName()) {
-                        // "Originally posted by [AuthorName]"
-                        html = String.format(context.getString(R.string.reader_discover_attribution_author), author);
-                    } else {
-                        return null;
-                    }
-                    break;
-
-                case SITE_PICK:
-                    if (mBlogId != 0 && hasBlogName()) {
-                        // "Visit [BlogName]" - opens blog preview when tapped
-                        html = String.format(context.getString(R.string.reader_discover_visit_blog), blog);
-                    } else {
-                        return null;
-                    }
-                    break;
-
-                default:
+            case EDITOR_PICK:
+                if (hasBlogName() && hasAuthorName()) {
+                    // "Originally posted by [AuthorName] on [BlogName]"
+                    html = String.format(context.getString(R.string.reader_discover_attribution_author_and_blog),
+                                         author, blog);
+                } else if (hasBlogName()) {
+                    // "Originally posted on [BlogName]"
+                    html = String.format(context.getString(R.string.reader_discover_attribution_blog), blog);
+                } else if (hasAuthorName()) {
+                    // "Originally posted by [AuthorName]"
+                    html = String.format(context.getString(R.string.reader_discover_attribution_author), author);
+                } else {
                     return null;
+                }
+                break;
+
+            case SITE_PICK:
+                if (mBlogId != 0 && hasBlogName()) {
+                    // "Visit [BlogName]" - opens blog preview when tapped
+                    html = String.format(context.getString(R.string.reader_discover_visit_blog), blog);
+                } else {
+                    return null;
+                }
+                break;
+
+            default:
+                return null;
             }
 
             mAttributionHtml = Html.fromHtml(html);

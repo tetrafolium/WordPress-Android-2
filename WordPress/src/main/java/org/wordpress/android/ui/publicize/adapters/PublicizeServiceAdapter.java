@@ -105,7 +105,7 @@ public class PublicizeServiceAdapter extends RecyclerView.Adapter<PublicizeServi
     @Override
     public SharingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view =
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.publicize_listitem_service, parent, false);
+            LayoutInflater.from(parent.getContext()).inflate(R.layout.publicize_listitem_service, parent, false);
         return new SharingViewHolder(view);
     }
 
@@ -113,7 +113,7 @@ public class PublicizeServiceAdapter extends RecyclerView.Adapter<PublicizeServi
     public void onBindViewHolder(final SharingViewHolder holder, int position) {
         final PublicizeService service = mServices.get(position);
         final PublicizeConnectionList connections =
-                mConnections.getServiceConnectionsForUser(mCurrentUserId, service.getId());
+            mConnections.getServiceConnectionsForUser(mCurrentUserId, service.getId());
 
         holder.mTxtService.setText(service.getLabel());
         String iconUrl = PhotonUtils.getPhotonImageUrl(service.getIconUrl(), mBlavatarSz, mBlavatarSz);

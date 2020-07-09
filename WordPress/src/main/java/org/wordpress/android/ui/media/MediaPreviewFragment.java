@@ -82,8 +82,8 @@ public class MediaPreviewFragment extends Fragment implements MediaController.Me
      * @param contentUri URI of media - can be local or remote
      */
     public static MediaPreviewFragment newInstance(
-            @Nullable SiteModel site,
-            @NonNull String contentUri) {
+        @Nullable SiteModel site,
+        @NonNull String contentUri) {
         Bundle args = new Bundle();
         args.putString(ARG_MEDIA_CONTENT_URI, contentUri);
         if (site != null) {
@@ -101,9 +101,9 @@ public class MediaPreviewFragment extends Fragment implements MediaController.Me
      * @param autoPlay true = play video/audio after fragment is created
      */
     public static MediaPreviewFragment newInstance(
-            @Nullable SiteModel site,
-            @NonNull MediaModel media,
-            boolean autoPlay) {
+        @Nullable SiteModel site,
+        @NonNull MediaModel media,
+        boolean autoPlay) {
         Bundle args = new Bundle();
         args.putString(ARG_MEDIA_CONTENT_URI, media.getUrl());
         args.putString(ARG_TITLE, media.getTitle());
@@ -280,41 +280,41 @@ public class MediaPreviewFragment extends Fragment implements MediaController.Me
         mImageView.setVisibility(View.VISIBLE);
         if (mSite == null || SiteUtils.isPhotonCapable(mSite)) {
             int maxWidth = Math.max(DisplayUtils.getDisplayPixelWidth(getActivity()),
-                    DisplayUtils.getDisplayPixelHeight(getActivity()));
+                                    DisplayUtils.getDisplayPixelHeight(getActivity()));
             mediaUri = PhotonUtils.getPhotonImageUrl(mediaUri, maxWidth, 0);
         }
         showProgress(true);
         mImageManager.loadWithResultListener(mImageView, ImageType.IMAGE, mediaUri, ScaleType.CENTER, null,
-                new RequestListener<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NotNull Drawable resource) {
-                        if (isAdded()) {
-                            // assign the photo attacher to enable pinch/zoom - must come before setImageBitmap
-                            // for it to be correctly resized upon loading
-                            PhotoViewAttacher attacher = new PhotoViewAttacher(mImageView);
-                            attacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
-                                @Override
-                                public void onViewTap(View view, float x, float y) {
-                                    if (mMediaTapListener != null) {
-                                        mMediaTapListener.onMediaTapped();
-                                    }
-                                }
-                            });
-                            showProgress(false);
-                        }
-                    }
-
-                    @Override
-                    public void onLoadFailed(@Nullable Exception e) {
-                        if (isAdded()) {
-                            if (e != null) {
-                                AppLog.e(T.MEDIA, e);
+        new RequestListener<Drawable>() {
+            @Override
+            public void onResourceReady(@NotNull Drawable resource) {
+                if (isAdded()) {
+                    // assign the photo attacher to enable pinch/zoom - must come before setImageBitmap
+                    // for it to be correctly resized upon loading
+                    PhotoViewAttacher attacher = new PhotoViewAttacher(mImageView);
+                    attacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+                        @Override
+                        public void onViewTap(View view, float x, float y) {
+                            if (mMediaTapListener != null) {
+                                mMediaTapListener.onMediaTapped();
                             }
-                            showProgress(false);
-                            showLoadingError();
                         }
+                    });
+                    showProgress(false);
+                }
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Exception e) {
+                if (isAdded()) {
+                    if (e != null) {
+                        AppLog.e(T.MEDIA, e);
                     }
-                });
+                    showProgress(false);
+                    showLoadingError();
+                }
+            }
+        });
     }
 
     /*

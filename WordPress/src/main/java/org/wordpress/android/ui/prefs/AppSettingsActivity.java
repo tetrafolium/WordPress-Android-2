@@ -37,17 +37,17 @@ public class AppSettingsActivity extends AppCompatActivity {
             mAppSettingsFragment = new AppSettingsFragment();
 
             fragmentManager.beginTransaction()
-                           .add(android.R.id.content, mAppSettingsFragment, KEY_APP_SETTINGS_FRAGMENT)
-                           .commit();
+            .add(android.R.id.content, mAppSettingsFragment, KEY_APP_SETTINGS_FRAGMENT)
+            .commit();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        case android.R.id.home:
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

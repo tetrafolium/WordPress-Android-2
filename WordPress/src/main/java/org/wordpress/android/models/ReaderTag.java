@@ -114,7 +114,7 @@ public class ReaderTag implements Serializable, FilterCriteria {
      * used to ensure a tag name is valid before adding it
      */
     @SuppressWarnings("RegExpRedundantEscape") private static final Pattern INVALID_CHARS =
-            Pattern.compile("^.*[~#@*+%{}<>\\[\\]|\"\\_].*$");
+        Pattern.compile("^.*[~#@*+%{}<>\\[\\]|\"\\_].*$");
 
     public static boolean isValidTagName(String tagName) {
         return !TextUtils.isEmpty(tagName)
@@ -150,7 +150,7 @@ public class ReaderTag implements Serializable, FilterCriteria {
 
     public static boolean isSameTag(ReaderTag tag1, ReaderTag tag2) {
         return tag1 != null && tag2 != null && tag1.tagType == tag2.tagType && tag1.getTagSlug()
-                                                                                   .equalsIgnoreCase(tag2.getTagSlug());
+               .equalsIgnoreCase(tag2.getTagSlug());
     }
 
     public boolean isPostsILike() {

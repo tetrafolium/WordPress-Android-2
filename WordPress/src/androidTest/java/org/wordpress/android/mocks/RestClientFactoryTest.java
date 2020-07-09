@@ -44,21 +44,21 @@ public class RestClientFactoryTest implements RestClientFactoryAbstract {
 
     public RestClient make(RequestQueue queue) {
         switch (sMode) {
-            case CUSTOMIZABLE:
-                RestClientCustomizableMock client = new RestClientCustomizableMock(queue);
-                if (sContext != null) {
-                    client.setContextAndPrefix(sContext, sPrefix);
-                } else {
-                    AppLog.e(T.TESTS, "You have to set RestClientFactoryTest.sContext field before running tests");
-                    throw new IllegalStateException();
-                }
-                AppLog.v(T.TESTS, "make: RestClientCustomizableMock");
-                sInstances.add(client);
-                return client;
-            case EMPTY:
-            default:
-                AppLog.v(T.TESTS, "make: RestClientEmptyMock");
-                return new RestClientEmptyMock(queue);
+        case CUSTOMIZABLE:
+            RestClientCustomizableMock client = new RestClientCustomizableMock(queue);
+            if (sContext != null) {
+                client.setContextAndPrefix(sContext, sPrefix);
+            } else {
+                AppLog.e(T.TESTS, "You have to set RestClientFactoryTest.sContext field before running tests");
+                throw new IllegalStateException();
+            }
+            AppLog.v(T.TESTS, "make: RestClientCustomizableMock");
+            sInstances.add(client);
+            return client;
+        case EMPTY:
+        default:
+            AppLog.v(T.TESTS, "make: RestClientEmptyMock");
+            return new RestClientEmptyMock(queue);
         }
     }
 

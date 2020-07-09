@@ -163,8 +163,8 @@ public class ReaderBlogTable {
      */
     public static ReaderBlogList getFollowedBlogs() {
         Cursor c = ReaderDatabase.getReadableDb().rawQuery(
-                "SELECT * FROM tbl_blog_info WHERE is_following!=0 ORDER BY name COLLATE NOCASE, blog_url",
-                null);
+                       "SELECT * FROM tbl_blog_info WHERE is_following!=0 ORDER BY name COLLATE NOCASE, blog_url",
+                       null);
         try {
             ReaderBlogList blogs = new ReaderBlogList();
             if (c.moveToFirst()) {
@@ -207,7 +207,7 @@ public class ReaderBlogTable {
      */
     public static ReaderUrlList getFollowedBlogUrls() {
         Cursor c = ReaderDatabase.getReadableDb()
-                                 .rawQuery("SELECT DISTINCT blog_url FROM tbl_blog_info WHERE is_following!=0", null);
+                   .rawQuery("SELECT DISTINCT blog_url FROM tbl_blog_info WHERE is_following!=0", null);
         try {
             ReaderUrlList urls = new ReaderUrlList();
             if (c.moveToFirst()) {
@@ -226,18 +226,18 @@ public class ReaderBlogTable {
      */
     public static void setIsFollowedBlogId(long blogId, boolean isFollowed) {
         ReaderDatabase.getWritableDb().execSQL(
-                "UPDATE tbl_blog_info SET is_following="
-                + SqlUtils.boolToSql(isFollowed)
-                + " WHERE blog_id=?",
-                new String[]{Long.toString(blogId)});
+            "UPDATE tbl_blog_info SET is_following="
+            + SqlUtils.boolToSql(isFollowed)
+            + " WHERE blog_id=?",
+            new String[] {Long.toString(blogId)});
     }
 
     public static void setIsFollowedFeedId(long feedId, boolean isFollowed) {
         ReaderDatabase.getWritableDb().execSQL(
-                "UPDATE tbl_blog_info SET is_following="
-                + SqlUtils.boolToSql(isFollowed)
-                + " WHERE feed_id=?",
-                new String[]{Long.toString(feedId)});
+            "UPDATE tbl_blog_info SET is_following="
+            + SqlUtils.boolToSql(isFollowed)
+            + " WHERE feed_id=?",
+            new String[] {Long.toString(feedId)});
     }
 
     public static boolean hasFollowedBlogs() {
@@ -283,10 +283,10 @@ public class ReaderBlogTable {
 
     public static void setNotificationsEnabledByBlogId(long blogId, boolean isEnabled) {
         ReaderDatabase.getWritableDb().execSQL(
-                "UPDATE tbl_blog_info SET is_notifications_enabled="
-                + SqlUtils.boolToSql(isEnabled)
-                + " WHERE blog_id=?",
-                new String[]{Long.toString(blogId)});
+            "UPDATE tbl_blog_info SET is_notifications_enabled="
+            + SqlUtils.boolToSql(isEnabled)
+            + " WHERE blog_id=?",
+            new String[] {Long.toString(blogId)});
     }
 
     public static String getBlogName(long blogId) {
@@ -337,9 +337,9 @@ public class ReaderBlogTable {
     public static void setRecommendedBlogs(ReaderRecommendBlogList blogs) {
         SQLiteDatabase db = ReaderDatabase.getWritableDb();
         SQLiteStatement stmt = db.compileStatement(
-                "INSERT INTO tbl_recommended_blogs"
-                + " (blog_id, follow_reco_id, score, title, blog_url, image_url, reason)"
-                + " VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)");
+                                   "INSERT INTO tbl_recommended_blogs"
+                                   + " (blog_id, follow_reco_id, score, title, blog_url, image_url, reason)"
+                                   + " VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)");
         db.beginTransaction();
         try {
             try {

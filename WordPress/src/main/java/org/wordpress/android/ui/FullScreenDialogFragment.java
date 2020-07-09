@@ -109,11 +109,11 @@ public class FullScreenDialogFragment extends DialogFragment {
 
         if (savedInstanceState == null) {
             getChildFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.full_screen_dialog_fragment_none, 0, 0,
-                            R.anim.full_screen_dialog_fragment_none)
-                    .add(R.id.full_screen_dialog_fragment_content, mFragment)
-                    .commitNow();
+            .beginTransaction()
+            .setCustomAnimations(R.anim.full_screen_dialog_fragment_none, 0, 0,
+                                 R.anim.full_screen_dialog_fragment_none)
+            .add(R.id.full_screen_dialog_fragment_content, mFragment)
+            .commitNow();
         }
     }
 
@@ -207,7 +207,7 @@ public class FullScreenDialogFragment extends DialogFragment {
     public int show(FragmentTransaction transaction, String tag) {
         initBuilderArguments();
         transaction.setCustomAnimations(R.anim.full_screen_dialog_fragment_slide_up, 0, 0,
-                R.anim.full_screen_dialog_fragment_slide_down);
+                                        R.anim.full_screen_dialog_fragment_slide_down);
         return transaction.add(android.R.id.content, this, tag).addToBackStack(null).commit();
     }
 
@@ -280,17 +280,17 @@ public class FullScreenDialogFragment extends DialogFragment {
             mActionItem = menu.add(0, ID_ACTION, 0, this.mAction);
             mActionItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             mActionItem.setOnMenuItemClickListener(
-                    new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (item.getItemId() == ID_ACTION) {
-                                onConfirmClicked();
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
+            new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == ID_ACTION) {
+                        onConfirmClicked();
+                        return true;
+                    } else {
+                        return false;
                     }
+                }
+            }
             );
         }
     }
@@ -389,7 +389,7 @@ public class FullScreenDialogFragment extends DialogFragment {
         } else {
             try {
                 Drawable drawable = ResourcesCompat
-                        .getDrawable(getActivity().getResources(), value.resourceId, getActivity().getTheme());
+                                    .getDrawable(getActivity().getResources(), value.resourceId, getActivity().getTheme());
                 ViewCompat.setBackground(view, drawable);
             } catch (Resources.NotFoundException ignore) {
             }
@@ -473,7 +473,7 @@ public class FullScreenDialogFragment extends DialogFragment {
         public Builder setContent(Class<? extends Fragment> contentClass, @Nullable Bundle contentArguments) {
             if (!FullScreenDialogContent.class.isAssignableFrom(contentClass)) {
                 throw new IllegalArgumentException(
-                        "The fragment class must implement FullScreenDialogContent interface");
+                    "The fragment class must implement FullScreenDialogContent interface");
             }
 
             this.mClass = contentClass;

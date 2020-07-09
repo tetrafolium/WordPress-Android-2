@@ -32,7 +32,7 @@ public class URLFilteredWebViewClient extends ErrorManagedWebViewClient {
         super(listener);
         if (urls == null || urls.size() == 0) {
             AppLog.w(AppLog.T.UTILS, "No valid URLs passed to URLFilteredWebViewClient! HTTP Links in the"
-                                     + " page are NOT disabled, and ALL URLs could be loaded by the user!!");
+                     + " page are NOT disabled, and ALL URLs could be loaded by the user!!");
             return;
         }
         mAllowedURLs.addAll(urls);
@@ -52,10 +52,10 @@ public class URLFilteredWebViewClient extends ErrorManagedWebViewClient {
         }
 
         if (isAllURLsAllowed() || mAllowedURLs.contains(url)
-            // If a url is allowed without the trailing `/`, it should be allowed with it as well
-            || mAllowedURLs.contains(StringUtils.removeTrailingSlash(url))) {
+                // If a url is allowed without the trailing `/`, it should be allowed with it as well
+                || mAllowedURLs.contains(StringUtils.removeTrailingSlash(url))) {
             boolean isComingFromLoginUrl =
-                    view.getUrl().endsWith(WP_LOGIN_URL_SUFFIX) || view.getUrl().endsWith(REMOTE_LOGIN_URL_SUFFIX);
+                view.getUrl().endsWith(WP_LOGIN_URL_SUFFIX) || view.getUrl().endsWith(REMOTE_LOGIN_URL_SUFFIX);
 
             boolean isRemoteLoginUrl = url.endsWith(REMOTE_LOGIN_URL_SUFFIX);
             boolean isLoginUrl = url.endsWith(WP_LOGIN_URL_SUFFIX);
@@ -64,10 +64,10 @@ public class URLFilteredWebViewClient extends ErrorManagedWebViewClient {
             Uri incomingUri = Uri.parse(url);
 
             boolean newUrlIsOnTheSameHost =
-                    currentUri.getHost() != null && currentUri.getHost().equals(incomingUri.getHost());
+                currentUri.getHost() != null && currentUri.getHost().equals(incomingUri.getHost());
 
             boolean openInExternalBrowser =
-                    !isRemoteLoginUrl && !isLoginUrl && !isComingFromLoginUrl && !newUrlIsOnTheSameHost;
+                !isRemoteLoginUrl && !isLoginUrl && !isComingFromLoginUrl && !newUrlIsOnTheSameHost;
 
             if (openInExternalBrowser) {
                 ReaderActivityLauncher.openUrl(view.getContext(), url, ReaderActivityLauncher.OpenUrlType.EXTERNAL);

@@ -72,9 +72,9 @@ import javax.inject.Inject;
 import static org.wordpress.android.util.WPSwipeToRefreshHelper.buildSwipeToRefreshHelper;
 
 public class SitePickerActivity extends AppCompatActivity
-        implements SitePickerAdapter.OnSiteClickListener,
-        SitePickerAdapter.OnSelectedCountChangedListener,
-        SearchView.OnQueryTextListener {
+    implements SitePickerAdapter.OnSiteClickListener,
+    SitePickerAdapter.OnSelectedCountChangedListener,
+    SearchView.OnQueryTextListener {
     public static final String KEY_LOCAL_ID = "local_id";
     public static final String KEY_SITE_CREATED_BUT_NOT_FETCHED = "key_site_created_but_not_fetched";
     private static final String KEY_IS_IN_SEARCH_MODE = "is_in_search_mode";
@@ -196,37 +196,37 @@ public class SitePickerActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case RequestCodes.ADD_ACCOUNT:
-            case RequestCodes.CREATE_SITE:
-                if (resultCode == RESULT_OK) {
-                    debounceLoadSites();
-                    if (data == null) {
-                        data = new Intent();
-                    }
-                    if (data.getBooleanExtra(KEY_SITE_CREATED_BUT_NOT_FETCHED, false)) {
-                        showSiteCreatedButNotFetchedSnackbar();
-                    } else {
-                        data.putExtra(WPMainActivity.ARG_CREATE_SITE, RequestCodes.CREATE_SITE);
-                        setResult(resultCode, data);
-                        finish();
-                    }
+        case RequestCodes.ADD_ACCOUNT:
+        case RequestCodes.CREATE_SITE:
+            if (resultCode == RESULT_OK) {
+                debounceLoadSites();
+                if (data == null) {
+                    data = new Intent();
                 }
-                break;
+                if (data.getBooleanExtra(KEY_SITE_CREATED_BUT_NOT_FETCHED, false)) {
+                    showSiteCreatedButNotFetchedSnackbar();
+                } else {
+                    data.putExtra(WPMainActivity.ARG_CREATE_SITE, RequestCodes.CREATE_SITE);
+                    setResult(resultCode, data);
+                    finish();
+                }
+            }
+            break;
         }
 
         // Enable the block editor on sites created on mobile
         switch (requestCode) {
-            case RequestCodes.CREATE_SITE:
-                if (data != null) {
-                    int newSiteLocalID = data.getIntExtra(SitePickerActivity.KEY_LOCAL_ID, -1);
-                    SiteUtils.enableBlockEditorOnSiteCreation(mDispatcher, mSiteStore, newSiteLocalID);
-                    // Mark the site to show the GB popup at first editor run
-                    SiteModel newSiteModel = mSiteStore.getSiteByLocalId(newSiteLocalID);
-                    if (newSiteModel != null) {
-                        AppPrefs.setShowGutenbergInfoPopupForTheNewPosts(newSiteModel.getUrl(), true);
-                    }
+        case RequestCodes.CREATE_SITE:
+            if (data != null) {
+                int newSiteLocalID = data.getIntExtra(SitePickerActivity.KEY_LOCAL_ID, -1);
+                SiteUtils.enableBlockEditorOnSiteCreation(mDispatcher, mSiteStore, newSiteLocalID);
+                // Mark the site to show the GB popup at first editor run
+                SiteModel newSiteModel = mSiteStore.getSiteByLocalId(newSiteLocalID);
+                if (newSiteModel != null) {
+                    AppPrefs.setShowGutenbergInfoPopupForTheNewPosts(newSiteModel.getUrl(), true);
                 }
-                break;
+            }
+            break;
         }
     }
 
@@ -280,21 +280,21 @@ public class SitePickerActivity extends AppCompatActivity
             return;
         }
         mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-                (CustomSwipeRefreshLayout) view.findViewById(R.id.ptr_layout),
-                new SwipeToRefreshHelper.RefreshListener() {
-                    @Override
-                    public void onRefreshStarted() {
-                        if (isFinishing()) {
-                            return;
-                        }
-                        if (!NetworkUtils.checkConnection(SitePickerActivity.this) || !mAccountStore.hasAccessToken()) {
-                            mSwipeToRefreshHelper.setRefreshing(false);
-                            return;
-                        }
-                        mDispatcher.dispatch(SiteActionBuilder.newFetchSitesAction());
-                    }
+                                    (CustomSwipeRefreshLayout) view.findViewById(R.id.ptr_layout),
+        new SwipeToRefreshHelper.RefreshListener() {
+            @Override
+            public void onRefreshStarted() {
+                if (isFinishing()) {
+                    return;
                 }
-        );
+                if (!NetworkUtils.checkConnection(SitePickerActivity.this) || !mAccountStore.hasAccessToken()) {
+                    mSwipeToRefreshHelper.setRefreshing(false);
+                    return;
+                }
+                mDispatcher.dispatch(SiteActionBuilder.newFetchSitesAction());
+            }
+        }
+                                );
     }
 
     private void setupRecycleView() {
@@ -349,24 +349,24 @@ public class SitePickerActivity extends AppCompatActivity
 
     private void setNewAdapter(String lastSearch, boolean isInSearchMode) {
         mAdapter = new SitePickerAdapter(
-                this,
-                R.layout.site_picker_listitem,
-                mCurrentLocalId,
-                lastSearch,
-                isInSearchMode,
-                new SitePickerAdapter.OnDataLoadedListener() {
-                    @Override
-                    public void onBeforeLoad(boolean isEmpty) {
-                        if (isEmpty) {
-                            showProgress(true);
-                        }
-                    }
+            this,
+            R.layout.site_picker_listitem,
+            mCurrentLocalId,
+            lastSearch,
+            isInSearchMode,
+        new SitePickerAdapter.OnDataLoadedListener() {
+            @Override
+            public void onBeforeLoad(boolean isEmpty) {
+                if (isEmpty) {
+                    showProgress(true);
+                }
+            }
 
-                    @Override
-                    public void onAfterLoad() {
-                        showProgress(false);
-                    }
-                });
+            @Override
+            public void onAfterLoad() {
+                showProgress(false);
+            }
+        });
         mAdapter.setOnSiteClickListener(this);
         mAdapter.setOnSelectedCountChangedListener(this);
     }
@@ -655,23 +655,24 @@ public class SitePickerActivity extends AppCompatActivity
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             CharSequence[] items =
-                    {getString(R.string.site_picker_create_wpcom),
-                            getString(R.string.site_picker_add_self_hosted)};
+            {   getString(R.string.site_picker_create_wpcom),
+                getString(R.string.site_picker_add_self_hosted)
+            };
             AlertDialog.Builder builder = new AlertDialog.Builder(
-                    new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
             builder.setTitle(R.string.site_picker_add_site);
             builder.setAdapter(
-                    new ArrayAdapter<>(getActivity(), R.layout.add_new_site_dialog_item, R.id.text, items),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (which == 0) {
-                                ActivityLauncher.newBlogForResult(getActivity());
-                            } else {
-                                ActivityLauncher.addSelfHostedSiteForResult(getActivity());
-                            }
-                        }
-                    });
+                new ArrayAdapter<>(getActivity(), R.layout.add_new_site_dialog_item, R.id.text, items),
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == 0) {
+                        ActivityLauncher.newBlogForResult(getActivity());
+                    } else {
+                        ActivityLauncher.addSelfHostedSiteForResult(getActivity());
+                    }
+                }
+            });
             return builder.create();
         }
     }
@@ -684,7 +685,7 @@ public class SitePickerActivity extends AppCompatActivity
 
     private void showRemoveSelfHostedSiteDialog(@NonNull final SiteModel site) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
         dialogBuilder.setTitle(getResources().getText(R.string.remove_account));
         dialogBuilder.setMessage(getResources().getText(R.string.sure_to_remove_account));
         dialogBuilder.setPositiveButton(getResources().getText(R.string.yes), new DialogInterface.OnClickListener() {
@@ -699,7 +700,7 @@ public class SitePickerActivity extends AppCompatActivity
 
     private void showSiteCreatedButNotFetchedSnackbar() {
         int duration = AccessibilityUtils
-                .getSnackbarDuration(this, getResources().getInteger(R.integer.site_creation_snackbar_duration));
+                       .getSnackbarDuration(this, getResources().getInteger(R.integer.site_creation_snackbar_duration));
         String message = getString(R.string.site_created_but_not_fetched_snackbar_message);
         WPDialogSnackbar.make(findViewById(R.id.coordinatorLayout), message, duration).show();
     }

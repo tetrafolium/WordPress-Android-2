@@ -48,18 +48,18 @@ public class WPSwipeSnackbar {
 
         String text;
         switch (arrows) {
-            case LEFT:
-                text = arrowLeft + " " + swipeText;
-                break;
-            case RIGHT:
-                text = swipeText + " " + arrowRight;
-                break;
-            case BOTH:
-                text = arrowLeft + " " + swipeText + " " + arrowRight;
-                break;
-            default:
-                text = swipeText;
-                break;
+        case LEFT:
+            text = arrowLeft + " " + swipeText;
+            break;
+        case RIGHT:
+            text = swipeText + " " + arrowRight;
+            break;
+        case BOTH:
+            text = arrowLeft + " " + swipeText + " " + arrowRight;
+            break;
+        default:
+            text = swipeText;
+            break;
         }
 
         Snackbar snackbar = Snackbar.make(viewPager, text, Snackbar.LENGTH_LONG); // CHECKSTYLE IGNORE

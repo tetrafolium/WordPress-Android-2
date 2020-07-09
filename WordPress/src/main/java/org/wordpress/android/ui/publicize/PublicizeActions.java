@@ -51,14 +51,14 @@ public class PublicizeActions {
      */
     public static void disconnect(@NonNull final PublicizeConnection connection) {
         String path = String.format(Locale.ROOT,
-                "sites/%d/publicize-connections/%d/delete", connection.siteId, connection.connectionId);
+                                    "sites/%d/publicize-connections/%d/delete", connection.siteId, connection.connectionId);
 
         RestRequest.Listener listener = new RestRequest.Listener() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 AppLog.d(AppLog.T.SHARING, "disconnect succeeded");
                 EventBus.getDefault().post(new ActionCompleted(true, ConnectAction.DISCONNECT,
-                        connection.getService()));
+                                           connection.getService()));
             }
         };
         RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
@@ -67,7 +67,7 @@ public class PublicizeActions {
                 AppLog.e(AppLog.T.SHARING, volleyError);
                 PublicizeTable.addOrUpdateConnection(connection);
                 EventBus.getDefault().post(new ActionCompleted(false, ConnectAction.DISCONNECT,
-                        connection.getService()));
+                                           connection.getService()));
             }
         };
 
@@ -78,14 +78,14 @@ public class PublicizeActions {
 
     public static void reconnect(@NonNull final PublicizeConnection connection) {
         String path = String.format(Locale.ROOT,
-                "sites/%d/publicize-connections/%d/delete", connection.siteId, connection.connectionId);
+                                    "sites/%d/publicize-connections/%d/delete", connection.siteId, connection.connectionId);
 
         RestRequest.Listener listener = new RestRequest.Listener() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 AppLog.d(AppLog.T.SHARING, "disconnect succeeded");
                 EventBus.getDefault().post(new ActionCompleted(true, ConnectAction.RECONNECT,
-                        connection.getService()));
+                                           connection.getService()));
             }
         };
         RestRequest.ErrorListener errorListener = new RestRequest.ErrorListener() {
@@ -94,7 +94,7 @@ public class PublicizeActions {
                 AppLog.e(AppLog.T.SHARING, volleyError);
                 PublicizeTable.addOrUpdateConnection(connection);
                 EventBus.getDefault().post(new ActionCompleted(false, ConnectAction.RECONNECT,
-                        connection.getService()));
+                                           connection.getService()));
             }
         };
 
@@ -129,7 +129,7 @@ public class PublicizeActions {
                     showChooserDialog = shouldShowChooserDialog(siteId, serviceId, jsonObject);
                 } catch (PublicizeConnectionValidationException e) {
                     final ActionCompleted event =
-                            new ActionCompleted(false, ConnectAction.CONNECT, serviceId, e.mReasonResId);
+                        new ActionCompleted(false, ConnectAction.CONNECT, serviceId, e.mReasonResId);
                     EventBus.getDefault().post(event);
                     return;
                 }
@@ -137,7 +137,7 @@ public class PublicizeActions {
                 if (showChooserDialog) {
                     // show dialog showing multiple options
                     EventBus.getDefault()
-                            .post(new PublicizeEvents.ActionRequestChooseAccount(siteId, serviceId, jsonObject));
+                    .post(new PublicizeEvents.ActionRequestChooseAccount(siteId, serviceId, jsonObject));
                 } else {
                     long keyringConnectionId = parseServiceKeyringId(serviceId, currentUserId, jsonObject);
                     connectStepTwo(siteId, keyringConnectionId, serviceId, "");
@@ -190,7 +190,7 @@ public class PublicizeActions {
     }
 
     private static boolean shouldShowChooserDialog(long siteId, String serviceId, JSONObject jsonObject)
-            throws PublicizeConnectionValidationException {
+    throws PublicizeConnectionValidationException {
         JSONArray jsonConnectionList = jsonObject.optJSONArray("connections");
 
         if (jsonConnectionList == null || jsonConnectionList.length() <= 0) {
@@ -216,8 +216,8 @@ public class PublicizeActions {
             if (PublicizeTable.onlyExternalConnections(serviceId)) {
                 if (!hasExternalAccounts && serviceId.equals(PublicizeService.FACEBOOK_SERVICE_ID)) {
                     AppLog.i(T.SHARING,
-                            "The Facebook account cannot be linked because either there was no Page selected or the "
-                            + "Page is set as not published.");
+                             "The Facebook account cannot be linked because either there was no Page selected or the "
+                             + "Page is set as not published.");
                     throw new PublicizeConnectionValidationException(R.string.sharing_facebook_account_must_have_pages);
                 } else {
                     return hasExternalAccounts;

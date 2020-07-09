@@ -49,7 +49,7 @@ public class CommentUserNoteBlock extends UserNoteBlock {
                                 OnGravatarClickedListener onGravatarClickedListener,
                                 ImageManager imageManager, NotificationsUtilsWrapper notificationsUtilsWrapper) {
         super(context, noteObject, onNoteBlockTextClickListener, onGravatarClickedListener, imageManager,
-                notificationsUtilsWrapper);
+              notificationsUtilsWrapper);
 
         mCommentData = commentTextBlock;
         mTimestamp = timestamp;
@@ -75,9 +75,9 @@ public class CommentUserNoteBlock extends UserNoteBlock {
         final CommentUserNoteBlockHolder noteBlockHolder = (CommentUserNoteBlockHolder) view.getTag();
 
         noteBlockHolder.mNameTextView
-                .setText(Html.fromHtml("<strong>" + getNoteText().toString() + "</strong>"));
+        .setText(Html.fromHtml("<strong>" + getNoteText().toString() + "</strong>"));
         noteBlockHolder.mAgoTextView.setText(DateTimeUtils.timeSpanFromTimestamp(getTimestamp(),
-                WordPress.getContext()));
+                                             WordPress.getContext()));
         if (!TextUtils.isEmpty(getMetaHomeTitle()) || !TextUtils.isEmpty(getMetaSiteUrl())) {
             noteBlockHolder.mBulletTextView.setVisibility(View.VISIBLE);
             noteBlockHolder.mSiteTextView.setVisibility(View.VISIBLE);
@@ -97,8 +97,8 @@ public class CommentUserNoteBlock extends UserNoteBlock {
         if (hasImageMediaItem()) {
             imageUrl = GravatarUtils.fixGravatarUrl(getNoteMediaItem().getUrl(), getAvatarSize());
             noteBlockHolder.mAvatarImageView.setContentDescription(
-                    view.getContext()
-                        .getString(R.string.profile_picture, getNoteText().toString()));
+                view.getContext()
+                .getString(R.string.profile_picture, getNoteText().toString()));
             if (!TextUtils.isEmpty(getUserUrl())) {
                 noteBlockHolder.mAvatarImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -182,8 +182,8 @@ public class CommentUserNoteBlock extends UserNoteBlock {
 
     private Spannable getCommentTextOfNotification(CommentUserNoteBlockHolder noteBlockHolder) {
         SpannableStringBuilder builder = mNotificationsUtilsWrapper
-                .getSpannableContentForRanges(mCommentData,
-                        noteBlockHolder.mCommentTextView, getOnNoteBlockTextClickListener(), false);
+                                         .getSpannableContentForRanges(mCommentData,
+                                                 noteBlockHolder.mCommentTextView, getOnNoteBlockTextClickListener(), false);
         return removeNewLineInList(builder);
     }
 

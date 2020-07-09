@@ -26,7 +26,7 @@ import org.wordpress.android.util.WPPrefUtils;
  * A {@link DialogFragment} displaying notification settings for followed blogs.
  */
 public class NotificationSettingsFollowedDialog extends DialogFragment implements DialogInterface.OnClickListener,
-        CompoundButton.OnCheckedChangeListener {
+    CompoundButton.OnCheckedChangeListener {
     public static final String ARG_EMAIL_COMMENTS = "EXTRA_EMAIL_COMMENTS";
     public static final String ARG_EMAIL_POSTS = "EXTRA_EMAIL_POSTS";
     public static final String ARG_EMAIL_POSTS_FREQUENCY = "EXTRA_EMAIL_POSTS_FREQUENCY";
@@ -90,7 +90,7 @@ public class NotificationSettingsFollowedDialog extends DialogFragment implement
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         builder.setTitle(getString(R.string.notification_settings_followed_dialog_title));
         builder.setPositiveButton(android.R.string.ok, this);
         builder.setNegativeButton(R.string.cancel, this);

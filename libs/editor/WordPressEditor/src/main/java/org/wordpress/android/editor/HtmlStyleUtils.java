@@ -112,22 +112,22 @@ public class HtmlStyleUtils {
             int matchStart = matcher.start() + start;
             int matchEnd = matcher.end() + start;
             switch (regex) {
-                case REGEX_HTML_TAGS:
-                    content.setSpan(new ForegroundColorSpan(TAG_COLOR), matchStart, matchEnd, SPANNABLE_FLAGS);
-                    break;
-                case REGEX_HTML_ATTRIBUTES:
-                    content.setSpan(new ForegroundColorSpan(ATTRIBUTE_COLOR), matchStart, matchEnd, SPANNABLE_FLAGS);
-                    break;
-                case REGEX_HTML_COMMENTS:
-                    content.setSpan(new ForegroundColorSpan(ATTRIBUTE_COLOR), matchStart, matchEnd, SPANNABLE_FLAGS);
-                    content.setSpan(new StyleSpan(Typeface.ITALIC), matchStart, matchEnd, SPANNABLE_FLAGS);
-                    content.setSpan(new RelativeSizeSpan(0.75f), matchStart, matchEnd, SPANNABLE_FLAGS);
-                    break;
-                case REGEX_HTML_ENTITIES:
-                    content.setSpan(new ForegroundColorSpan(TAG_COLOR), matchStart, matchEnd, SPANNABLE_FLAGS);
-                    content.setSpan(new StyleSpan(Typeface.BOLD), matchStart, matchEnd, SPANNABLE_FLAGS);
-                    content.setSpan(new RelativeSizeSpan(0.75f), matchStart, matchEnd, SPANNABLE_FLAGS);
-                    break;
+            case REGEX_HTML_TAGS:
+                content.setSpan(new ForegroundColorSpan(TAG_COLOR), matchStart, matchEnd, SPANNABLE_FLAGS);
+                break;
+            case REGEX_HTML_ATTRIBUTES:
+                content.setSpan(new ForegroundColorSpan(ATTRIBUTE_COLOR), matchStart, matchEnd, SPANNABLE_FLAGS);
+                break;
+            case REGEX_HTML_COMMENTS:
+                content.setSpan(new ForegroundColorSpan(ATTRIBUTE_COLOR), matchStart, matchEnd, SPANNABLE_FLAGS);
+                content.setSpan(new StyleSpan(Typeface.ITALIC), matchStart, matchEnd, SPANNABLE_FLAGS);
+                content.setSpan(new RelativeSizeSpan(0.75f), matchStart, matchEnd, SPANNABLE_FLAGS);
+                break;
+            case REGEX_HTML_ENTITIES:
+                content.setSpan(new ForegroundColorSpan(TAG_COLOR), matchStart, matchEnd, SPANNABLE_FLAGS);
+                content.setSpan(new StyleSpan(Typeface.BOLD), matchStart, matchEnd, SPANNABLE_FLAGS);
+                content.setSpan(new RelativeSizeSpan(0.75f), matchStart, matchEnd, SPANNABLE_FLAGS);
+                break;
             }
         }
     }

@@ -80,8 +80,8 @@ public class WPSwitchPreference extends SwitchPreference implements PreferenceHi
             titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX, res.getDimensionPixelSize(R.dimen.text_sz_large));
             if (mTextColor == 0) {
                 coloredTitleView.setTextColor(res.getColor(
-                        isEnabled() ? ContextExtensionsKt.getColorResIdFromAttribute(getContext(), R.attr.wpColorText)
-                                : R.color.neutral_20));
+                                                  isEnabled() ? ContextExtensionsKt.getColorResIdFromAttribute(getContext(), R.attr.wpColorText)
+                                                  : R.color.neutral_20));
             } else {
                 coloredTitleView.setTextColor(ContextCompat.getColor(this.getContext(), R.color.white));
             }
@@ -99,13 +99,13 @@ public class WPSwitchPreference extends SwitchPreference implements PreferenceHi
             if (switchControl != null) {
                 if (mThumbTint == null) {
                     switchControl.setThumbTintList(ContextCompat.getColorStateList(this.getContext(),
-                            R.color.primary_40_gray_20_gray_40_selector));
+                                                   R.color.primary_40_gray_20_gray_40_selector));
                 } else {
                     switchControl.setThumbTintList(mThumbTint);
                 }
                 if (mTrackTint == null) {
                     switchControl.setTrackTintList(ContextCompat.getColorStateList(this.getContext(),
-                            R.color.primary_40_gray_90_gray_50_selector));
+                                                   R.color.primary_40_gray_90_gray_50_selector));
                 } else {
                     switchControl.setTrackTintList(mTrackTint);
                 }
@@ -115,7 +115,7 @@ public class WPSwitchPreference extends SwitchPreference implements PreferenceHi
 
         // Add padding to start of switch.
         ViewCompat.setPaddingRelative(getSwitch((ViewGroup) view),
-                getContext().getResources().getDimensionPixelSize(R.dimen.margin_extra_large), 0, 0, 0);
+                                      getContext().getResources().getDimensionPixelSize(R.dimen.margin_extra_large), 0, 0, 0);
     }
 
     private void setBackground(boolean checked) {

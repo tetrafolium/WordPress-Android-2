@@ -63,7 +63,7 @@ import java.util.List;
  * followed tags, followed blogs, and recommended blogs
  */
 public class ReaderSubsActivity extends AppCompatActivity
-        implements ReaderTagAdapter.TagDeletedListener {
+    implements ReaderTagAdapter.TagDeletedListener {
     private EditText mEditAdd;
     private ImageButton mBtnAdd;
     private WPViewPager mViewPager;
@@ -198,9 +198,9 @@ public class ReaderSubsActivity extends AppCompatActivity
 
     private void performUpdate() {
         performUpdate(EnumSet.of(
-                UpdateTask.TAGS,
-                UpdateTask.FOLLOWED_BLOGS,
-                UpdateTask.RECOMMENDED_BLOGS));
+                          UpdateTask.TAGS,
+                          UpdateTask.FOLLOWED_BLOGS,
+                          UpdateTask.RECOMMENDED_BLOGS));
     }
 
     private void performUpdate(EnumSet<UpdateTask> tasks) {
@@ -391,17 +391,17 @@ public class ReaderSubsActivity extends AppCompatActivity
                     hideProgress();
                     String errMsg;
                     switch (statusCode) {
-                        case 401:
-                            errMsg = getString(R.string.reader_toast_err_follow_blog_not_authorized);
-                            break;
-                        case 0: // can happen when host name not found
-                        case 404:
-                            errMsg = getString(R.string.reader_toast_err_follow_blog_not_found);
-                            break;
-                        default:
-                            errMsg = getString(R.string.reader_toast_err_follow_blog) + " (" + Integer
-                                    .toString(statusCode) + ")";
-                            break;
+                    case 401:
+                        errMsg = getString(R.string.reader_toast_err_follow_blog_not_authorized);
+                        break;
+                    case 0: // can happen when host name not found
+                    case 404:
+                        errMsg = getString(R.string.reader_toast_err_follow_blog_not_found);
+                        break;
+                    default:
+                        errMsg = getString(R.string.reader_toast_err_follow_blog) + " (" + Integer
+                                 .toString(statusCode) + ")";
+                        break;
                     }
                     ToastUtils.showToast(ReaderSubsActivity.this, errMsg);
                 }
@@ -512,14 +512,14 @@ public class ReaderSubsActivity extends AppCompatActivity
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case TAB_IDX_FOLLOWED_TAGS:
-                    return getString(R.string.reader_page_followed_tags);
-                case TAB_IDX_RECOMMENDED_BLOGS:
-                    return getString(R.string.reader_page_recommended_blogs);
-                case TAB_IDX_FOLLOWED_BLOGS:
-                    return getString(R.string.reader_page_followed_blogs);
-                default:
-                    return super.getPageTitle(position);
+            case TAB_IDX_FOLLOWED_TAGS:
+                return getString(R.string.reader_page_followed_tags);
+            case TAB_IDX_RECOMMENDED_BLOGS:
+                return getString(R.string.reader_page_recommended_blogs);
+            case TAB_IDX_FOLLOWED_BLOGS:
+                return getString(R.string.reader_page_followed_blogs);
+            default:
+                return super.getPageTitle(position);
             }
         }
 

@@ -25,7 +25,7 @@ public class LoginPrologueAnimationFragment extends Fragment {
     private Boolean mLightBackground;
 
     static LoginPrologueAnimationFragment newInstance(String animationFilename, @StringRes int promoText,
-                                                      boolean lightBackground) {
+            boolean lightBackground) {
         LoginPrologueAnimationFragment fragment = new LoginPrologueAnimationFragment();
         Bundle bundle = new Bundle();
         bundle.putString(KEY_ANIMATION_FILENAME, animationFilename);

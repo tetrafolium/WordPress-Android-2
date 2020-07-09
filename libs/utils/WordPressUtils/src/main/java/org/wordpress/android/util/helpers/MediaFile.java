@@ -294,18 +294,18 @@ public class MediaFile {
     public String getImageHtmlForUrls(String fullSizeUrl, String resizedPictureURL, boolean shouldAddImageWidthCSS) {
         String alignment = "";
         switch (getHorizontalAlignment()) {
-            case 0:
-                alignment = "alignnone";
-                break;
-            case 1:
-                alignment = "alignleft";
-                break;
-            case 2:
-                alignment = "aligncenter";
-                break;
-            case 3:
-                alignment = "alignright";
-                break;
+        case 0:
+            alignment = "alignnone";
+            break;
+        case 1:
+            alignment = "alignleft";
+            break;
+        case 2:
+            alignment = "aligncenter";
+            break;
+        case 3:
+            alignment = "alignright";
+            break;
         }
 
         String alignmentCSS = "class=\"" + alignment + " size-full\" ";
@@ -316,7 +316,7 @@ public class MediaFile {
 
         // Check if we uploaded a featured picture that is not added to the Post content (normal case)
         if ((fullSizeUrl != null && fullSizeUrl.equalsIgnoreCase(""))
-            || (resizedPictureURL != null && resizedPictureURL.equalsIgnoreCase(""))) {
+                || (resizedPictureURL != null && resizedPictureURL.equalsIgnoreCase(""))) {
             return ""; // Not featured in Post. Do not add to the content.
         }
 

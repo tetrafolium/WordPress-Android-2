@@ -32,17 +32,17 @@ public class BaseTest {
     public void setup() {
         mAppContext = ApplicationProvider.getApplicationContext();
         mMockedAppComponent = DaggerAppComponentTest.builder()
-                                                    .application(mAppContext)
-                                                    .build();
+                              .application(mAppContext)
+                              .build();
     }
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(
-            options().port(WIREMOCK_PORT)
-                     .fileSource(new AssetFileSource(
-                             InstrumentationRegistry.getInstrumentation().getContext().getAssets()))
-                     .extensions(new ResponseTemplateTransformer(true))
-                     .notifier(new AndroidNotifier()));
+        options().port(WIREMOCK_PORT)
+        .fileSource(new AssetFileSource(
+                        InstrumentationRegistry.getInstrumentation().getContext().getAssets()))
+        .extensions(new ResponseTemplateTransformer(true))
+        .notifier(new AndroidNotifier()));
 
     private void logout() {
         boolean isSelfHosted = new MePage().go().isSelfHosted();

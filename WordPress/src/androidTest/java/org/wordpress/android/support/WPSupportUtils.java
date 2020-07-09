@@ -80,7 +80,7 @@ public class WPSupportUtils {
     public static void scrollToThenClickOn(Integer elementID) {
         waitForElementToBeDisplayed(elementID);
         onView(withId(elementID))
-                .perform(scrollTo());
+        .perform(scrollTo());
         clickOn(elementID);
     }
 
@@ -118,11 +118,11 @@ public class WPSupportUtils {
     public static ViewAction click(ViewAction rollbackAction) {
         checkNotNull(rollbackAction);
         return new GeneralClickAction(Tap.SINGLE,
-                GeneralLocation.CENTER,
-                Press.PINPOINT,
-                InputDevice.SOURCE_MOUSE,
-                MotionEvent.ACTION_DOWN,
-                rollbackAction);
+                                      GeneralLocation.CENTER,
+                                      Press.PINPOINT,
+                                      InputDevice.SOURCE_MOUSE,
+                                      MotionEvent.ACTION_DOWN,
+                                      rollbackAction);
     }
 
 
@@ -140,7 +140,7 @@ public class WPSupportUtils {
         try {
             if (isResourceId(locator)) {
                 UiDevice.getInstance(getInstrumentation()).findObject(new UiSelector().resourceId(
-                        "org.wordpress.android:" + locator)).click();
+                            "org.wordpress.android:" + locator)).click();
             } else {
                 UiDevice.getInstance(getInstrumentation()).findObject(new UiSelector().text(locator)).click();
             }
@@ -162,21 +162,21 @@ public class WPSupportUtils {
     public static void clickOnChildAtIndex(int index, int parentElementID, int childElementID) {
         final ViewInteraction childElement = onView(
                 allOf(
-                        withId(childElementID),
-                        childAtPosition(withId(parentElementID), index)
+                    withId(childElementID),
+                    childAtPosition(withId(parentElementID), index)
                 )
-        );
+                                             );
         waitForElementToBeDisplayed(childElement);
         clickOn(childElement);
     }
 
     public static void clickOnSpinnerItemAtIndex(int index) {
         final ViewInteraction spinnerItem = onView(
-                allOf(
-                        withId(R.id.text),
-                        childAtPosition(withClassName(is("android.widget.DropDownListView")), index)
-                )
-        );
+                                                allOf(
+                                                        withId(R.id.text),
+                                                        childAtPosition(withClassName(is("android.widget.DropDownListView")), index)
+                                                )
+                                            );
         waitForElementToBeDisplayed(spinnerItem);
         clickOn(spinnerItem);
     }
@@ -184,14 +184,14 @@ public class WPSupportUtils {
     public static void populateTextField(Integer elementID, String text) {
         waitForElementToBeDisplayed(elementID);
         onView(withId(elementID))
-                .perform(replaceText(text))
-                .perform(closeSoftKeyboard());
+        .perform(replaceText(text))
+        .perform(closeSoftKeyboard());
     }
 
     public static void populateTextField(ViewInteraction element, String text) {
         waitForElementToBeDisplayed(element);
         element.perform(replaceText(text))
-               .perform(closeSoftKeyboard());
+        .perform(closeSoftKeyboard());
     }
 
     public static void checkViewHasText(ViewInteraction element, String text) {
@@ -201,11 +201,11 @@ public class WPSupportUtils {
 
     public static void focusEditPostTitle() {
         ViewInteraction postTitle = onView(
-                allOf(
-                        withId(R.id.title),
-                        childAtPosition(withClassName(is("android.widget.RelativeLayout")), 0)
-                     )
-                                          );
+                                        allOf(
+                                            withId(R.id.title),
+                                            childAtPosition(withClassName(is("android.widget.RelativeLayout")), 0)
+                                        )
+                                    );
         scrollToThenClickOn(postTitle);
         moveCaretToEndAndDisplayIn(postTitle);
     }
@@ -231,7 +231,7 @@ public class WPSupportUtils {
 
         // Let the layout settle down before attempting to scroll
         idleFor(100);
-        
+
         while (recyclerView.getLayoutManager().canScrollVertically() && !isElementCompletelyDisplayed(view)) {
             getCurrentActivity().runOnUiThread(new Runnable() {
                 @Override public void run() {
@@ -256,11 +256,11 @@ public class WPSupportUtils {
 
     public static void selectItemWithTitleInTabLayout(String string, Integer elementID) {
         clickOn(onView(
-                allOf(
+                    allOf(
                         withText(string),
                         isDescendantOfA(withId(R.id.tabLayout))
-                     )
-              ));
+                    )
+                ));
     }
 
     // WAITERS
@@ -437,10 +437,10 @@ public class WPSupportUtils {
     public static Boolean atLeastOneElementOfTypeIsDisplayed(Class c) {
         try {
             onView(
-                    allOf(
-                            Matchers.<View>instanceOf(c),
-                            first()
-                    )
+                allOf(
+                    Matchers.<View>instanceOf(c),
+                    first()
+                )
             ).check(matches(isDisplayed()));
 
             return true;
@@ -452,10 +452,10 @@ public class WPSupportUtils {
     public static Boolean atLeastOneElementWithIdIsDisplayed(int elementID) {
         try {
             onView(
-                    allOf(
-                            withId(elementID),
-                            first()
-                    )
+                allOf(
+                    withId(elementID),
+                    first()
+                )
             ).check(matches(isDisplayed()));
 
             return true;
@@ -467,12 +467,12 @@ public class WPSupportUtils {
     public static Boolean hasLoadedAllImagesOfTypeWithPlaceholder(Integer elementID, ImageType imageType) {
         try {
             onView(
-                    allOf(
-                            withId(elementID),
-                            isDisplayed(),
-                            anyOf(isEmptyImage(), isPlaceholderImage(imageType)),
-                            first()
-                    )
+                allOf(
+                    withId(elementID),
+                    isDisplayed(),
+                    anyOf(isEmptyImage(), isPlaceholderImage(imageType)),
+                    first()
+                )
             ).check(doesNotExist());
 
             return true;
@@ -484,10 +484,10 @@ public class WPSupportUtils {
     public static boolean hasLoadedRecyclerView() {
         try {
             onView(
-                    allOf(
-                            new RefreshingRecyclerViewMatcher(false),
-                            first()
-                    )
+                allOf(
+                    new RefreshingRecyclerViewMatcher(false),
+                    first()
+                )
             ).check(matches(isDisplayed()));
 
             return true;
@@ -499,10 +499,10 @@ public class WPSupportUtils {
     public static boolean hasLoadedSwipeRefreshLayout() {
         try {
             onView(
-                    allOf(
-                            new SwipeRefreshLayoutMatcher(false),
-                            first()
-                    )
+                allOf(
+                    new SwipeRefreshLayoutMatcher(false),
+                    first()
+                )
             ).check(matches(isDisplayed()));
 
             return true;
@@ -512,7 +512,7 @@ public class WPSupportUtils {
     }
 
     public static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
+        final Matcher<View> parentMatcher, final int position) {
         return new TypeSafeMatcher<View>() {
             @Override
             public void describeTo(Description description) {
@@ -524,7 +524,7 @@ public class WPSupportUtils {
             public boolean matchesSafely(View view) {
                 ViewParent parent = view.getParent();
                 return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
+                       && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
     }
@@ -553,8 +553,8 @@ public class WPSupportUtils {
             @Override
             public void run() {
                 Collection resumedActivities = ActivityLifecycleMonitorRegistry
-                        .getInstance()
-                        .getActivitiesInStage(RESUMED);
+                                               .getInstance()
+                                               .getActivitiesInStage(RESUMED);
 
                 if (resumedActivities.iterator().hasNext()) {
                     mCurrentActivity = (Activity) resumedActivities.iterator().next();

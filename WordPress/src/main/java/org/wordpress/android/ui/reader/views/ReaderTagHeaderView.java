@@ -99,7 +99,7 @@ public class ReaderTagHeaderView extends RelativeLayout {
                 @Override
                 public void onClick(View view) {
                     ReaderActivityLauncher
-                            .showReaderPostDetail(view.getContext(), info.getSourceBlogId(), info.getSourcePostId());
+                    .showReaderPostDetail(view.getContext(), info.getSourceBlogId(), info.getSourcePostId());
                 }
             });
         } else {

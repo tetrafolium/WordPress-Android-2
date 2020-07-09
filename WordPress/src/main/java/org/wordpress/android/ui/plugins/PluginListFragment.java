@@ -92,60 +92,60 @@ public class PluginListFragment extends Fragment {
 
     private void setupObservers() {
         mViewModel.getSitePluginsLiveData()
-                  .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
-                      @Override
-                      public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
-                          if (mListType == PluginListType.SITE) {
-                              refreshPluginsAndProgressBars(listState);
-                          }
-                      }
-                  });
+        .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
+            @Override
+            public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
+                if (mListType == PluginListType.SITE) {
+                    refreshPluginsAndProgressBars(listState);
+                }
+            }
+        });
 
         mViewModel.getFeaturedPluginsLiveData()
-                  .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
-                      @Override
-                      public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
-                          if (mListType == PluginListType.FEATURED) {
-                              refreshPluginsAndProgressBars(listState);
-                          }
-                      }
-                  });
+        .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
+            @Override
+            public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
+                if (mListType == PluginListType.FEATURED) {
+                    refreshPluginsAndProgressBars(listState);
+                }
+            }
+        });
 
         mViewModel.getPopularPluginsLiveData()
-                  .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
-                      @Override
-                      public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
-                          if (mListType == PluginListType.POPULAR) {
-                              refreshPluginsAndProgressBars(listState);
-                          }
-                      }
-                  });
+        .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
+            @Override
+            public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
+                if (mListType == PluginListType.POPULAR) {
+                    refreshPluginsAndProgressBars(listState);
+                }
+            }
+        });
 
         mViewModel.getNewPluginsLiveData()
-                  .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
-                      @Override
-                      public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
-                          if (mListType == PluginListType.NEW) {
-                              refreshPluginsAndProgressBars(listState);
-                          }
-                      }
-                  });
+        .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
+            @Override
+            public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
+                if (mListType == PluginListType.NEW) {
+                    refreshPluginsAndProgressBars(listState);
+                }
+            }
+        });
 
         mViewModel.getSearchResultsLiveData()
-                  .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
-                      @Override
-                      public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
-                          if (mListType == PluginListType.SEARCH) {
-                              refreshPluginsAndProgressBars(listState);
+        .observe(this, new Observer<ListState<ImmutablePluginModel>>() {
+            @Override
+            public void onChanged(@Nullable ListState<ImmutablePluginModel> listState) {
+                if (mListType == PluginListType.SEARCH) {
+                    refreshPluginsAndProgressBars(listState);
 
-                              if (listState instanceof ListState.Error) {
-                                  ToastUtils.showToast(getActivity(), R.string.plugin_search_error);
-                              }
+                    if (listState instanceof ListState.Error) {
+                        ToastUtils.showToast(getActivity(), R.string.plugin_search_error);
+                    }
 
-                              showEmptyView(mViewModel.shouldShowEmptySearchResultsView());
-                          }
-                      }
-                  });
+                    showEmptyView(mViewModel.shouldShowEmptySearchResultsView());
+                }
+            }
+        });
     }
 
     @Override
@@ -157,17 +157,17 @@ public class PluginListFragment extends Fragment {
         mRecycler.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
         mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-                (CustomSwipeRefreshLayout) view.findViewById(R.id.ptr_layout),
-                new SwipeToRefreshHelper.RefreshListener() {
-                    @Override
-                    public void onRefreshStarted() {
-                        if (NetworkUtils.checkConnection(getActivity())) {
-                            mViewModel.pullToRefresh(mListType);
-                        } else {
-                            mSwipeToRefreshHelper.setRefreshing(false);
-                        }
-                    }
-                });
+                                    (CustomSwipeRefreshLayout) view.findViewById(R.id.ptr_layout),
+        new SwipeToRefreshHelper.RefreshListener() {
+            @Override
+            public void onRefreshStarted() {
+                if (NetworkUtils.checkConnection(getActivity())) {
+                    mViewModel.pullToRefresh(mListType);
+                } else {
+                    mSwipeToRefreshHelper.setRefreshing(false);
+                }
+            }
+        });
         return view;
     }
 
@@ -204,7 +204,7 @@ public class PluginListFragment extends Fragment {
         mSwipeToRefreshHelper.setRefreshing(listState.isFetchingFirstPage());
         // We want to show the progress bar at the bottom while loading more but not for initial fetch
         getView().findViewById(R.id.progress).setVisibility(
-                listState.isLoadingMore() ? View.VISIBLE : View.GONE);
+            listState.isLoadingMore() ? View.VISIBLE : View.GONE);
     }
 
     private void showEmptyView(boolean show) {
@@ -328,7 +328,7 @@ public class PluginListFragment extends Fragment {
                         }
 
                         ActivityLauncher.viewPluginDetail(getActivity(), mViewModel.getSite(),
-                                plugin.getSlug());
+                                                          plugin.getSlug());
                     }
                 });
             }

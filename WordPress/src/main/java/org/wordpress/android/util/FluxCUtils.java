@@ -89,10 +89,10 @@ public class FluxCUtils {
      * @return MediaModel or null in case of problems reading the URI
      */
     public static MediaModel mediaModelFromLocalUri(@NonNull Context context,
-                                                    @NonNull Uri uri,
-                                                    @Nullable String mimeType,
-                                                    @NonNull org.wordpress.android.fluxc.store.MediaStore mediaStore,
-                                                    int localSiteId) {
+            @NonNull Uri uri,
+            @Nullable String mimeType,
+            @NonNull org.wordpress.android.fluxc.store.MediaStore mediaStore,
+            int localSiteId) {
         String path = MediaUtils.getRealPathFromURI(context, uri);
 
         if (TextUtils.isEmpty(path)) {
@@ -100,17 +100,17 @@ public class FluxCUtils {
             // of information not travelling to our Crash Logging Service.
             // For more info: http://bit.ly/2oJHMG7 and http://bit.ly/2oPOtFX
             CrashLoggingUtils.logException(
-                    new FluxCUtilsLoggingException("The input URI " + uri.toString() + " can't be read."),
-                    T.UTILS);
+                new FluxCUtilsLoggingException("The input URI " + uri.toString() + " can't be read."),
+                T.UTILS);
             return null;
         }
 
         File file = new File(path);
         if (!file.exists()) {
             CrashLoggingUtils.logException(
-                    new FluxCUtilsLoggingException("The input URI " + uri.toString() + ", converted locally to " + path
-                                                   + " doesn't exist."),
-                    T.UTILS);
+                new FluxCUtilsLoggingException("The input URI " + uri.toString() + ", converted locally to " + path
+                                               + " doesn't exist."),
+                T.UTILS);
             return null;
         }
 

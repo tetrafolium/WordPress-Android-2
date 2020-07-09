@@ -85,8 +85,8 @@ public class PhotoPickerFragment extends Fragment {
     private ArrayList<Integer> mSelectedPositions;
 
     public static PhotoPickerFragment newInstance(@NonNull PhotoPickerListener listener,
-                                                  @NonNull MediaBrowserType browserType,
-                                                  @Nullable SiteModel site) {
+            @NonNull MediaBrowserType browserType,
+            @Nullable SiteModel site) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_BROWSER_TYPE, browserType);
         if (site != null) {
@@ -163,7 +163,7 @@ public class PhotoPickerFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (mBrowserType == MediaBrowserType.GRAVATAR_IMAGE_PICKER
-                        || mBrowserType == MediaBrowserType.SITE_ICON_PICKER) {
+                            || mBrowserType == MediaBrowserType.SITE_ICON_PICKER) {
                         doIconClicked(PhotoPickerIcon.ANDROID_CHOOSE_PHOTO);
                     } else {
                         showPickerPopupMenu(v);
@@ -223,32 +223,32 @@ public class PhotoPickerFragment extends Fragment {
 
         if (icon == PhotoPickerIcon.ANDROID_CAPTURE_PHOTO || icon == PhotoPickerIcon.ANDROID_CAPTURE_VIDEO) {
             if (ContextCompat.checkSelfPermission(
-                    getActivity(), permission.CAMERA) != PackageManager.PERMISSION_GRANTED || !hasStoragePermission()) {
+                        getActivity(), permission.CAMERA) != PackageManager.PERMISSION_GRANTED || !hasStoragePermission()) {
                 requestCameraPermission();
                 return;
             }
         }
 
         switch (icon) {
-            case ANDROID_CAPTURE_PHOTO:
-                trackSelectedOtherSourceEvents(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_CAPTURE_MEDIA, false);
-                break;
-            case ANDROID_CAPTURE_VIDEO:
-                trackSelectedOtherSourceEvents(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_CAPTURE_MEDIA, true);
-                break;
-            case ANDROID_CHOOSE_PHOTO:
-                trackSelectedOtherSourceEvents(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_DEVICE_LIBRARY, false);
-                break;
-            case ANDROID_CHOOSE_VIDEO:
-                trackSelectedOtherSourceEvents(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_DEVICE_LIBRARY, true);
-                break;
-            case WP_MEDIA:
-                AnalyticsTracker.track(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_WP_MEDIA);
-                break;
-            case STOCK_MEDIA:
-                break;
-            case GIPHY:
-                break;
+        case ANDROID_CAPTURE_PHOTO:
+            trackSelectedOtherSourceEvents(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_CAPTURE_MEDIA, false);
+            break;
+        case ANDROID_CAPTURE_VIDEO:
+            trackSelectedOtherSourceEvents(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_CAPTURE_MEDIA, true);
+            break;
+        case ANDROID_CHOOSE_PHOTO:
+            trackSelectedOtherSourceEvents(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_DEVICE_LIBRARY, false);
+            break;
+        case ANDROID_CHOOSE_VIDEO:
+            trackSelectedOtherSourceEvents(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_DEVICE_LIBRARY, true);
+            break;
+        case WP_MEDIA:
+            AnalyticsTracker.track(AnalyticsTracker.Stat.MEDIA_PICKER_OPEN_WP_MEDIA);
+            break;
+        case STOCK_MEDIA:
+            break;
+        case GIPHY:
+            break;
         }
 
         if (mListener != null) {
@@ -486,12 +486,12 @@ public class PhotoPickerFragment extends Fragment {
 
     private boolean hasStoragePermission() {
         return ContextCompat.checkSelfPermission(
-                getActivity(), permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+                   getActivity(), permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     private boolean isStoragePermissionAlwaysDenied() {
         return WPPermissionUtils.isPermissionAlwaysDenied(
-                getActivity(), permission.WRITE_EXTERNAL_STORAGE);
+                   getActivity(), permission.WRITE_EXTERNAL_STORAGE);
     }
 
     /*
@@ -514,14 +514,14 @@ public class PhotoPickerFragment extends Fragment {
     }
 
     private void requestStoragePermission() {
-        String[] permissions = new String[]{permission.WRITE_EXTERNAL_STORAGE};
+        String[] permissions = new String[] {permission.WRITE_EXTERNAL_STORAGE};
         requestPermissions(
-                permissions, WPPermissionUtils.PHOTO_PICKER_STORAGE_PERMISSION_REQUEST_CODE);
+            permissions, WPPermissionUtils.PHOTO_PICKER_STORAGE_PERMISSION_REQUEST_CODE);
     }
 
     private void requestCameraPermission() {
         // in addition to CAMERA permission we also need a storage permission, to store media from the camera
-        String[] permissions = new String[]{permission.CAMERA, permission.WRITE_EXTERNAL_STORAGE};
+        String[] permissions = new String[] {permission.CAMERA, permission.WRITE_EXTERNAL_STORAGE};
         requestPermissions(permissions, WPPermissionUtils.PHOTO_PICKER_CAMERA_PERMISSION_REQUEST_CODE);
     }
 
@@ -529,19 +529,19 @@ public class PhotoPickerFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         boolean checkForAlwaysDenied =
-                requestCode == WPPermissionUtils.PHOTO_PICKER_CAMERA_PERMISSION_REQUEST_CODE;
+            requestCode == WPPermissionUtils.PHOTO_PICKER_CAMERA_PERMISSION_REQUEST_CODE;
         boolean allGranted = WPPermissionUtils.setPermissionListAsked(
-                getActivity(), requestCode, permissions, grantResults, checkForAlwaysDenied);
+                                 getActivity(), requestCode, permissions, grantResults, checkForAlwaysDenied);
 
         switch (requestCode) {
-            case WPPermissionUtils.PHOTO_PICKER_STORAGE_PERMISSION_REQUEST_CODE:
-                checkStoragePermission();
-                break;
-            case WPPermissionUtils.PHOTO_PICKER_CAMERA_PERMISSION_REQUEST_CODE:
-                if (allGranted) {
-                    doIconClicked(mLastTappedIcon);
-                }
-                break;
+        case WPPermissionUtils.PHOTO_PICKER_STORAGE_PERMISSION_REQUEST_CODE:
+            checkStoragePermission();
+            break;
+        case WPPermissionUtils.PHOTO_PICKER_CAMERA_PERMISSION_REQUEST_CODE:
+            if (allGranted) {
+                doIconClicked(mLastTappedIcon);
+            }
+            break;
         }
     }
 
@@ -565,7 +565,7 @@ public class PhotoPickerFragment extends Fragment {
                                                 permission.WRITE_EXTERNAL_STORAGE)
                                         + "</strong>";
                 label = String.format(getString(R.string.photo_picker_soft_ask_permissions_denied), appName,
-                        permissionName);
+                                      permissionName);
             } else {
                 label = String.format(getString(R.string.photo_picker_soft_ask_label), appName);
             }
@@ -608,7 +608,7 @@ public class PhotoPickerFragment extends Fragment {
             if (mediaUri != null) {
                 boolean isVideo = MediaUtils.isVideo(mediaUri.toString());
                 Map<String, Object> properties =
-                        AnalyticsUtils.getMediaProperties(getActivity(), isVideo, mediaUri, null);
+                    AnalyticsUtils.getMediaProperties(getActivity(), isVideo, mediaUri, null);
                 properties.put("is_part_of_multiselection", isMultiselection);
                 if (isMultiselection) {
                     properties.put("number_of_media_selected", uriList.size());

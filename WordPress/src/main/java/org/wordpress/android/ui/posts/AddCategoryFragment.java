@@ -48,7 +48,7 @@ public class AddCategoryFragment extends AppCompatDialogFragment {
         initSite(savedInstanceState);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -61,8 +61,8 @@ public class AddCategoryFragment extends AppCompatDialogFragment {
         loadCategories();
 
         builder.setView(view)
-               .setPositiveButton(android.R.string.ok, null)
-               .setNegativeButton(android.R.string.cancel, null);
+        .setPositiveButton(android.R.string.ok, null)
+        .setNegativeButton(android.R.string.cancel, null);
 
         return builder.create();
     }
@@ -123,7 +123,7 @@ public class AddCategoryFragment extends AppCompatDialogFragment {
         categoryLevels.add(0, new CategoryNode(0, 0, getString(R.string.top_level_category_name)));
         if (categoryLevels.size() > 0) {
             ParentCategorySpinnerAdapter categoryAdapter =
-                    new ParentCategorySpinnerAdapter(getActivity(), R.layout.categories_row_parent, categoryLevels);
+                new ParentCategorySpinnerAdapter(getActivity(), R.layout.categories_row_parent, categoryLevels);
             mParentSpinner.setAdapter(categoryAdapter);
         }
     }

@@ -19,7 +19,7 @@ public class WPLocaleTestRule implements TestRule {
 
     public WPLocaleTestRule() {
         this(localeCodeFromInstrumentation(FASTLANE_TEST_LOCALE_KEY),
-                localeCodeFromInstrumentation(FASTLANE_ENDING_LOCALE_KEY));
+             localeCodeFromInstrumentation(FASTLANE_ENDING_LOCALE_KEY));
     }
 
     public WPLocaleTestRule(String testLocaleCode, String endLocaleCode) {

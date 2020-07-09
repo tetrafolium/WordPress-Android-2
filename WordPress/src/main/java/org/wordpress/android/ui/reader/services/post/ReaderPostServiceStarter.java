@@ -30,7 +30,7 @@ public class ReaderPostServiceStarter {
         REQUEST_NEWER, // request the newest posts for this tag/blog/feed
         REQUEST_OLDER, // request posts older than the oldest existing one for this tag/blog/feed
         REQUEST_OLDER_THAN_GAP // request posts older than the one with the gap marker for this tag
-                               // (not supported for blog/feed)
+        // (not supported for blog/feed)
     }
 
     /*
@@ -90,11 +90,11 @@ public class ReaderPostServiceStarter {
         ComponentName componentName = new ComponentName(context, ReaderPostJobService.class);
 
         JobInfo jobInfo = new JobInfo.Builder(jobId, componentName)
-                .setRequiresCharging(false)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setOverrideDeadline(0) // if possible, try to run right away
-                .setExtras(extras)
-                .build();
+        .setRequiresCharging(false)
+        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+        .setOverrideDeadline(0) // if possible, try to run right away
+        .setExtras(extras)
+        .build();
 
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         int resultCode = jobScheduler.schedule(jobInfo);

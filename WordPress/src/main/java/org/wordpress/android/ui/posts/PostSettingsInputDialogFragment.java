@@ -60,7 +60,7 @@ public class PostSettingsInputDialogFragment extends DialogFragment implements T
     }
 
     public static PostSettingsInputDialogFragment newInstance(String currentText, String title, String hint,
-                                                              boolean disableEmptyInput) {
+            boolean disableEmptyInput) {
         PostSettingsInputDialogFragment dialogFragment = new PostSettingsInputDialogFragment();
         Bundle args = new Bundle();
         args.putString(INPUT_TAG, currentText);
@@ -80,7 +80,7 @@ public class PostSettingsInputDialogFragment extends DialogFragment implements T
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         //noinspection InflateParams
         View dialogView = layoutInflater.inflate(R.layout.post_settings_input_dialog, null);

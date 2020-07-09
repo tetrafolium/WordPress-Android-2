@@ -26,23 +26,23 @@ public class RestClientEmptyMock extends RestClient {
     }
 
     public com.wordpress.rest.RestRequest get(java.lang.String path, com.wordpress.rest.RestRequest.Listener listener,
-                                              com.wordpress.rest.RestRequest.ErrorListener errorListener) {
+            com.wordpress.rest.RestRequest.ErrorListener errorListener) {
         AppLog.v(T.TESTS, this.getClass() + ": get(" + path + ")");
         return new RestRequest(Method.GET, path, null, listener, errorListener);
     }
 
     public com.wordpress.rest.RestRequest post(java.lang.String path,
-                                               java.util.Map<java.lang.String, java.lang.String> body,
-                                               com.wordpress.rest.RestRequest.Listener listener,
-                                               com.wordpress.rest.RestRequest.ErrorListener errorListener) {
+            java.util.Map<java.lang.String, java.lang.String> body,
+            com.wordpress.rest.RestRequest.Listener listener,
+            com.wordpress.rest.RestRequest.ErrorListener errorListener) {
         AppLog.v(T.TESTS, this.getClass() + ": post(" + path + ")");
         return new RestRequest(Method.POST, path, body, listener, errorListener);
     }
 
     public com.wordpress.rest.RestRequest makeRequest(int method, java.lang.String url,
-                                                      java.util.Map<java.lang.String, java.lang.String> params,
-                                                      com.wordpress.rest.RestRequest.Listener listener,
-                                                      com.wordpress.rest.RestRequest.ErrorListener errorListener) {
+            java.util.Map<java.lang.String, java.lang.String> params,
+            com.wordpress.rest.RestRequest.Listener listener,
+            com.wordpress.rest.RestRequest.ErrorListener errorListener) {
         AppLog.v(T.TESTS, this.getClass() + ": makeRequest(" + url + ")");
         return new RestRequest(method, url, params, listener, errorListener);
     }

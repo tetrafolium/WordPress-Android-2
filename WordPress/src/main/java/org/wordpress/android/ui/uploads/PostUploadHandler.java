@@ -207,21 +207,21 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
         @Override
         protected void onPostExecute(UploadPostTaskResult result) {
             switch (result) {
-                case ERROR:
-                    mPostUploadNotifier.incrementUploadedPostCountFromForegroundNotification(mPost);
-                    mPostUploadNotifier.updateNotificationErrorForPost(mPost, mSite, mErrorMessage, 0);
-                    finishUpload();
-                    break;
-                case NOTHING_TO_UPLOAD:
-                    // we need to force increment the uploaded count as we know the post was enqueued twice. If we
-                    // didn't force incremented it, the `PostUploadNotifier.isPostAlreadyInPostCount()` would return
-                    // true and we'd end up with a dangling upload notification.
-                    mPostUploadNotifier.incrementUploadedPostCountFromForegroundNotification(mPost, true);
-                    finishUpload();
-                    break;
-                case PUSH_POST_DISPATCHED:
-                    // will be handled in OnPostChanged
-                    break;
+            case ERROR:
+                mPostUploadNotifier.incrementUploadedPostCountFromForegroundNotification(mPost);
+                mPostUploadNotifier.updateNotificationErrorForPost(mPost, mSite, mErrorMessage, 0);
+                finishUpload();
+                break;
+            case NOTHING_TO_UPLOAD:
+                // we need to force increment the uploaded count as we know the post was enqueued twice. If we
+                // didn't force incremented it, the `PostUploadNotifier.isPostAlreadyInPostCount()` would return
+                // true and we'd end up with a dangling upload notification.
+                mPostUploadNotifier.incrementUploadedPostCountFromForegroundNotification(mPost, true);
+                finishUpload();
+                break;
+            case PUSH_POST_DISPATCHED:
+                // will be handled in OnPostChanged
+                break;
             }
         }
 
@@ -270,28 +270,28 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
             RemotePostPayload payload = new RemotePostPayload(mPost, mSite);
 
             switch (mUploadActionUseCase.getUploadAction(mPost)) {
-                case UPLOAD:
-                    AppLog.d(T.POSTS, "PostUploadHandler - UPLOAD. Post: " + mPost.getTitle());
-                    mDispatcher.dispatch(PostActionBuilder.newPushPostAction(payload));
-                    break;
-                case UPLOAD_AS_DRAFT:
-                    mPost.setStatus(PostStatus.DRAFT.toString());
-                    AppLog.d(T.POSTS, "PostUploadHandler - UPLOAD_AS_DRAFT. Post: " + mPost.getTitle());
-                    mDispatcher.dispatch(PostActionBuilder.newPushPostAction(payload));
-                    break;
-                case REMOTE_AUTO_SAVE:
-                    AppLog.d(T.POSTS, "PostUploadHandler - REMOTE_AUTO_SAVE. Post: " + mPost.getTitle());
-                    mDispatcher.dispatch(PostActionBuilder.newRemoteAutoSavePostAction(payload));
-                    break;
-                case DO_NOTHING:
-                    AppLog.d(T.POSTS, "PostUploadHandler - DO_NOTHING. Post: " + mPost.getTitle());
-                    // A single post might be enqueued twice for upload. It might cause some side-effects when the
-                    // post is a local draft.
-                    // The first upload request pushes the post to the server and sets `isLocalDraft` to `false`.
-                    // The second request would have invoked `Remote_auto_save` on a post which didn't contain any local
-                    // changes - they were uploaded during the first upload request.
-                    // This branch takes care of this situations and simply ignores the second request.
-                    return UploadPostTaskResult.NOTHING_TO_UPLOAD;
+            case UPLOAD:
+                AppLog.d(T.POSTS, "PostUploadHandler - UPLOAD. Post: " + mPost.getTitle());
+                mDispatcher.dispatch(PostActionBuilder.newPushPostAction(payload));
+                break;
+            case UPLOAD_AS_DRAFT:
+                mPost.setStatus(PostStatus.DRAFT.toString());
+                AppLog.d(T.POSTS, "PostUploadHandler - UPLOAD_AS_DRAFT. Post: " + mPost.getTitle());
+                mDispatcher.dispatch(PostActionBuilder.newPushPostAction(payload));
+                break;
+            case REMOTE_AUTO_SAVE:
+                AppLog.d(T.POSTS, "PostUploadHandler - REMOTE_AUTO_SAVE. Post: " + mPost.getTitle());
+                mDispatcher.dispatch(PostActionBuilder.newRemoteAutoSavePostAction(payload));
+                break;
+            case DO_NOTHING:
+                AppLog.d(T.POSTS, "PostUploadHandler - DO_NOTHING. Post: " + mPost.getTitle());
+                // A single post might be enqueued twice for upload. It might cause some side-effects when the
+                // post is a local draft.
+                // The first upload request pushes the post to the server and sets `isLocalDraft` to `false`.
+                // The second request would have invoked `Remote_auto_save` on a post which didn't contain any local
+                // changes - they were uploaded during the first upload request.
+                // This branch takes care of this situations and simply ignores the second request.
+                return UploadPostTaskResult.NOTHING_TO_UPLOAD;
             }
             return UploadPostTaskResult.PUSH_POST_DISPATCHED;
         }
@@ -311,7 +311,7 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
                 // Calculate the words count
                 sCurrentUploadingPostAnalyticsProperties = new HashMap<>();
                 sCurrentUploadingPostAnalyticsProperties
-                        .put("word_count", AnalyticsUtils.getWordCount(mPost.getContent()));
+                .put("word_count", AnalyticsUtils.getWordCount(mPost.getContent()));
                 // Add the editor source
                 int siteLocalId = mPost.getLocalSiteId();
                 if (siteLocalId != -1) {
@@ -327,7 +327,7 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
                                 // As a proxy to mIsNewPost, we're using postModel.isLocalDraft(). The choice is
                                 // loosely made knowing the other check ("contains blocks") is in place.
                                 PostUtils.shouldShowGutenbergEditor(mPost.isLocalDraft(), mPost, selectedSite)
-                                        ? SiteUtils.GB_EDITOR_NAME : SiteUtils.AZTEC_EDITOR_NAME);
+                                ? SiteUtils.GB_EDITOR_NAME : SiteUtils.AZTEC_EDITOR_NAME);
                     }
                 }
                 if (hasGallery()) {
@@ -346,7 +346,7 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
                 if (!mHasVideo) {
                     // Check if there is a video tag in the post. Media added in any editor other than legacy.
                     String videoTagsPattern =
-                            "<video[^>]+src\\s*=\\s*[\"]([^\"]+)[\"][^>]*>|\\[wpvideo\\s+([^\\]]+)\\]";
+                        "<video[^>]+src\\s*=\\s*[\"]([^\"]+)[\"][^>]*>|\\[wpvideo\\s+([^\\]]+)\\]";
                     Pattern pattern = Pattern.compile(videoTagsPattern);
                     Matcher matcher = pattern.matcher(postContent);
                     mHasVideo = matcher.find();
@@ -427,7 +427,7 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
             File imageFile = null;
 
             if (imageUri.toString().contains("content:")) {
-                String[] projection = new String[]{Images.Media._ID, Images.Media.DATA, Images.Media.MIME_TYPE};
+                String[] projection = new String[] {Images.Media._ID, Images.Media.DATA, Images.Media.MIME_TYPE};
 
                 Cursor cur = mContext.getContentResolver().query(imageUri, projection, null, null, null);
                 if (cur != null && cur.moveToFirst()) {
@@ -479,8 +479,9 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
             String mimeType = "", xRes = "", yRes = "";
 
             if (videoUri.toString().contains("content:")) {
-                String[] projection = new String[]{Video.Media._ID, Video.Media.DATA, Video.Media.MIME_TYPE,
-                        Video.Media.RESOLUTION};
+                String[] projection = new String[] {Video.Media._ID, Video.Media.DATA, Video.Media.MIME_TYPE,
+                                                    Video.Media.RESOLUTION
+                                                   };
                 Cursor cur = mContext.getContentResolver().query(videoUri, projection, null, null, null);
 
                 if (cur != null && cur.moveToFirst()) {
@@ -526,9 +527,9 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
 
             CountDownLatch countDownLatch = new CountDownLatch(1);
             UploadMediaPayload payload = new UploadMediaPayload(
-                    mSite,
-                    FluxCUtils.mediaModelFromMediaFile(mediaFile),
-                    AppPrefs.isStripImageLocation()
+                mSite,
+                FluxCUtils.mediaModelFromMediaFile(mediaFile),
+                AppPrefs.isStripImageLocation()
             );
             mDispatcher.dispatch(MediaActionBuilder.newUploadMediaAction(payload));
 
@@ -537,14 +538,14 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
                 countDownLatch.await();
             } catch (InterruptedException e) {
                 AppLog.e(T.POSTS, "PostUploadHandler > CountDownLatch await interrupted for media file: "
-                                  + mediaFile.getId() + " - " + e);
+                         + mediaFile.getId() + " - " + e);
                 mIsMediaError = true;
             }
 
             MediaModel finishedMedia = mMediaStore.getMediaWithLocalId(mediaFile.getId());
 
             if (finishedMedia == null || finishedMedia.getUploadState() == null
-                || !finishedMedia.getUploadState().equals(MediaUploadState.UPLOADED.toString())) {
+                    || !finishedMedia.getUploadState().equals(MediaUploadState.UPLOADED.toString())) {
                 mIsMediaError = true;
                 return null;
             }
@@ -553,18 +554,18 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
                 return "[wpvideo " + finishedMedia.getVideoPressGuid() + "]\n";
             } else {
                 return String.format(
-                        "<video width=\"%s\" height=\"%s\" controls=\"controls\"><source src=\"%s\" type=\"%s\" />"
-                        + "<a href=\"%s\">Click to view video</a>.</video>",
-                        xRes, yRes, finishedMedia.getUrl(), mimeType, finishedMedia.getUrl());
+                           "<video width=\"%s\" height=\"%s\" controls=\"controls\"><source src=\"%s\" type=\"%s\" />"
+                           + "<a href=\"%s\">Click to view video</a>.</video>",
+                           xRes, yRes, finishedMedia.getUrl(), mimeType, finishedMedia.getUrl());
             }
         }
 
         private String uploadImageFile(MediaFile mediaFile, SiteModel site) {
             CountDownLatch countDownLatch = new CountDownLatch(1);
             UploadMediaPayload payload = new UploadMediaPayload(
-                    site,
-                    FluxCUtils.mediaModelFromMediaFile(mediaFile),
-                    AppPrefs.isStripImageLocation()
+                site,
+                FluxCUtils.mediaModelFromMediaFile(mediaFile),
+                AppPrefs.isStripImageLocation()
             );
             mDispatcher.dispatch(MediaActionBuilder.newUploadMediaAction(payload));
 
@@ -573,14 +574,14 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
                 countDownLatch.await();
             } catch (InterruptedException e) {
                 AppLog.e(T.POSTS, "PostUploadHandler > CountDownLatch await interrupted for media file: "
-                                  + mediaFile.getId() + " - " + e);
+                         + mediaFile.getId() + " - " + e);
                 mIsMediaError = true;
             }
 
             MediaModel finishedMedia = mMediaStore.getMediaWithLocalId(mediaFile.getId());
 
             if (finishedMedia == null || finishedMedia.getUploadState() == null
-                || !finishedMedia.getUploadState().equals(MediaUploadState.UPLOADED.toString())) {
+                    || !finishedMedia.getUploadState().equals(MediaUploadState.UPLOADED.toString())) {
                 mIsMediaError = true;
                 return null;
             }
@@ -609,11 +610,11 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
 
         if (event.isError()) {
             AppLog.w(T.POSTS, "PostUploadHandler > Post upload failed. " + event.error.type + ": "
-                              + event.error.message);
+                     + event.error.message);
             Context context = WordPress.getContext();
             String errorMessage = mUiHelpers.getTextOfUiString(context,
-                    UploadUtils.getErrorMessageResIdFromPostError(PostStatus.fromPost(event.post), event.post.isPage(),
-                            event.error, mUploadActionUseCase.isEligibleForAutoUpload(site, event.post)));
+                                  UploadUtils.getErrorMessageResIdFromPostError(PostStatus.fromPost(event.post), event.post.isPage(),
+                                          event.error, mUploadActionUseCase.isEligibleForAutoUpload(site, event.post)));
             String notificationMessage = UploadUtils.getErrorMessage(context, event.post, errorMessage, false);
             mPostUploadNotifier.removePostInfoFromForegroundNotification(event.post,
                     mMediaStore.getMediaForPost(event.post));
@@ -634,8 +635,8 @@ public class PostUploadHandler implements UploadHandler<PostModel> {
                 sCurrentUploadingPostAnalyticsProperties.put(AnalyticsUtils.HAS_GUTENBERG_BLOCKS_KEY,
                         PostUtils.contentContainsGutenbergBlocks(event.post.getContent()));
                 AnalyticsUtils.trackWithSiteDetails(Stat.EDITOR_PUBLISHED_POST,
-                        mSiteStore.getSiteByLocalId(event.post.getLocalSiteId()),
-                        sCurrentUploadingPostAnalyticsProperties);
+                                                    mSiteStore.getSiteByLocalId(event.post.getLocalSiteId()),
+                                                    sCurrentUploadingPostAnalyticsProperties);
             }
             synchronized (sQueuedPostsList) {
                 for (PostModel post : sQueuedPostsList) {

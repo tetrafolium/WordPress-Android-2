@@ -37,7 +37,7 @@ public class GravatarApiTest extends InstrumentationTestCase {
         assertTrue(body.contains(email));
 
         assertTrue(body.contains(
-                "Content-Disposition: form-data; name=\"filedata\"; filename=\"" + tempFile.getName() + "\""));
+                       "Content-Disposition: form-data; name=\"filedata\"; filename=\"" + tempFile.getName() + "\""));
         assertTrue(body.contains("Content-Type: multipart/form-data"));
         assertTrue(body.contains(fileContent));
     }

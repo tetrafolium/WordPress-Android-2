@@ -21,7 +21,7 @@ public class PlaceholderImageMatcher extends TypeSafeMatcher<View> {
         if (item instanceof ImageView) {
             ImageView view = (ImageView) item;
             return new PlaceholderComparison(mImageType)
-                    .matches(view);
+                   .matches(view);
         }
 
         return false;

@@ -298,9 +298,9 @@ public class AppPrefs {
             setInt(DeletablePrefKey.READER_TAG_TYPE, tag.tagType.toInt());
         } else {
             prefs().edit()
-                   .remove(DeletablePrefKey.READER_TAG_NAME.name())
-                   .remove(DeletablePrefKey.READER_TAG_TYPE.name())
-                   .apply();
+            .remove(DeletablePrefKey.READER_TAG_NAME.name())
+            .remove(DeletablePrefKey.READER_TAG_TYPE.name())
+            .apply();
         }
     }
 
@@ -331,8 +331,8 @@ public class AppPrefs {
             setInt(DeletablePrefKey.COMMENTS_STATUS_TYPE_INDEX, commentStatus.ordinal());
         } else {
             prefs().edit()
-                   .remove(DeletablePrefKey.COMMENTS_STATUS_TYPE_INDEX.name())
-                   .apply();
+            .remove(DeletablePrefKey.COMMENTS_STATUS_TYPE_INDEX.name())
+            .apply();
         }
     }
 
@@ -351,8 +351,8 @@ public class AppPrefs {
             setInt(DeletablePrefKey.PEOPLE_LIST_FILTER_INDEX, peopleListFilter.ordinal());
         } else {
             prefs().edit()
-                   .remove(DeletablePrefKey.PEOPLE_LIST_FILTER_INDEX.name())
-                   .apply();
+            .remove(DeletablePrefKey.PEOPLE_LIST_FILTER_INDEX.name())
+            .apply();
         }
     }
 
@@ -893,7 +893,7 @@ public class AppPrefs {
 
     @NonNull public static PostListViewLayoutType getPostsListViewLayoutType() {
         long id = getLong(DeletablePrefKey.POST_LIST_VIEW_LAYOUT_TYPE,
-                PostListViewLayoutType.getDefaultValue().getId());
+                          PostListViewLayoutType.getDefaultValue().getId());
         return PostListViewLayoutType.fromId(id);
     }
 

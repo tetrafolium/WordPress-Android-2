@@ -103,11 +103,11 @@ public class ReaderWebView extends WebView {
             // we need third-party cookies to support authenticated images
             CookieManager.getInstance().setAcceptThirdPartyCookies(this, true);
             this.setDownloadListener(
-                    (url, userAgent, contentDisposition, mimetype, contentLength) -> {
-                        if (hasUrlClickListener()) {
-                            mUrlClickListener.onFileDownloadClick(url);
-                        }
-                    });
+            (url, userAgent, contentDisposition, mimetype, contentLength) -> {
+                if (hasUrlClickListener()) {
+                    mUrlClickListener.onFileDownloadClick(url);
+                }
+            });
         }
     }
 
@@ -196,10 +196,10 @@ public class ReaderWebView extends WebView {
             if (hr != null && isValidClickedUrl(hr.getExtra())) {
                 if (UrlUtils.isImageUrl(hr.getExtra())) {
                     return mUrlClickListener.onImageUrlClick(
-                            hr.getExtra(),
-                            this,
-                            (int) event.getX(),
-                            (int) event.getY());
+                               hr.getExtra(),
+                               this,
+                               (int) event.getX(),
+                               (int) event.getY());
                 } else {
                     return mUrlClickListener.onUrlClick(hr.getExtra());
                 }
@@ -250,7 +250,7 @@ public class ReaderWebView extends WebView {
             }
             // Intercept requests for private images and add the WP.com authorization header
             if (imageUrl != null && WPUrlUtils.safeToAddWordPressComAuthToken(imageUrl)
-                && !TextUtils.isEmpty(mToken)) {
+                    && !TextUtils.isEmpty(mToken)) {
                 try {
                     HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
                     conn.setRequestProperty("Authorization", "Bearer " + mToken);

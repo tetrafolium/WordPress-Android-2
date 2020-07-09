@@ -96,31 +96,31 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
 
         private String toMimeType() {
             switch (this) {
-                case FILTER_AUDIO:
-                    return MediaUtils.MIME_TYPE_AUDIO;
-                case FILTER_DOCUMENTS:
-                    return MediaUtils.MIME_TYPE_APPLICATION;
-                case FILTER_IMAGES:
-                    return MediaUtils.MIME_TYPE_IMAGE;
-                case FILTER_VIDEOS:
-                    return MediaUtils.MIME_TYPE_VIDEO;
-                default:
-                    return null;
+            case FILTER_AUDIO:
+                return MediaUtils.MIME_TYPE_AUDIO;
+            case FILTER_DOCUMENTS:
+                return MediaUtils.MIME_TYPE_APPLICATION;
+            case FILTER_IMAGES:
+                return MediaUtils.MIME_TYPE_IMAGE;
+            case FILTER_VIDEOS:
+                return MediaUtils.MIME_TYPE_VIDEO;
+            default:
+                return null;
             }
         }
 
         private static MediaFilter fromMimeType(@NonNull String mimeType) {
             switch (mimeType) {
-                case MediaUtils.MIME_TYPE_APPLICATION:
-                    return MediaFilter.FILTER_DOCUMENTS;
-                case MediaUtils.MIME_TYPE_AUDIO:
-                    return MediaFilter.FILTER_AUDIO;
-                case MediaUtils.MIME_TYPE_IMAGE:
-                    return MediaFilter.FILTER_IMAGES;
-                case MediaUtils.MIME_TYPE_VIDEO:
-                    return MediaFilter.FILTER_VIDEOS;
-                default:
-                    return MediaFilter.FILTER_ALL;
+            case MediaUtils.MIME_TYPE_APPLICATION:
+                return MediaFilter.FILTER_DOCUMENTS;
+            case MediaUtils.MIME_TYPE_AUDIO:
+                return MediaFilter.FILTER_AUDIO;
+            case MediaUtils.MIME_TYPE_IMAGE:
+                return MediaFilter.FILTER_IMAGES;
+            case MediaUtils.MIME_TYPE_VIDEO:
+                return MediaFilter.FILTER_VIDEOS;
+            default:
+                return MediaFilter.FILTER_ALL;
             }
         }
     }
@@ -163,8 +163,8 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
     }
 
     public static MediaGridFragment newInstance(@NonNull SiteModel site,
-                                                @NonNull MediaBrowserType browserType,
-                                                @NonNull MediaFilter filter) {
+            @NonNull MediaBrowserType browserType,
+            @NonNull MediaFilter filter) {
         Bundle args = new Bundle();
         args.putSerializable(WordPress.SITE, site);
         args.putSerializable(MediaBrowserActivity.ARG_BROWSER_TYPE, browserType);
@@ -256,21 +256,21 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
 
         // swipe to refresh setup
         mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-                (CustomSwipeRefreshLayout) view.findViewById(R.id.ptr_layout), new RefreshListener() {
-                    @Override
-                    public void onRefreshStarted() {
-                        if (!isAdded()) {
-                            return;
-                        }
-                        if (!NetworkUtils.checkConnection(getActivity())) {
-                            updateEmptyView(EmptyViewMessageType.NETWORK_ERROR);
-                            setRefreshing(false);
-                            return;
-                        }
-                        fetchMediaList(false);
-                    }
+        (CustomSwipeRefreshLayout) view.findViewById(R.id.ptr_layout), new RefreshListener() {
+            @Override
+            public void onRefreshStarted() {
+                if (!isAdded()) {
+                    return;
                 }
-        );
+                if (!NetworkUtils.checkConnection(getActivity())) {
+                    updateEmptyView(EmptyViewMessageType.NETWORK_ERROR);
+                    setRefreshing(false);
+                    return;
+                }
+                fetchMediaList(false);
+            }
+        }
+                                );
 
         if (savedInstanceState != null) {
             restoreState(savedInstanceState);
@@ -343,7 +343,7 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
 
                 // remove local media that no longer exists
                 if (media.getFilePath() != null
-                    && org.wordpress.android.util.MediaUtils.isLocalFile(media.getUploadState())) {
+                        && org.wordpress.android.util.MediaUtils.isLocalFile(media.getUploadState())) {
                     File file = new File(media.getFilePath());
                     if (!file.exists()) {
                         AppLog.w(AppLog.T.MEDIA, "removing nonexistent local media " + media.getFilePath());
@@ -361,21 +361,21 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
         List<MediaModel> mediaList;
         if (!TextUtils.isEmpty(mSearchTerm)) {
             switch (mFilter) {
-                case FILTER_IMAGES:
-                    mediaList = mMediaStore.searchSiteImages(mSite, mSearchTerm);
-                    break;
-                case FILTER_DOCUMENTS:
-                    mediaList = mMediaStore.searchSiteDocuments(mSite, mSearchTerm);
-                    break;
-                case FILTER_VIDEOS:
-                    mediaList = mMediaStore.searchSiteVideos(mSite, mSearchTerm);
-                    break;
-                case FILTER_AUDIO:
-                    mediaList = mMediaStore.searchSiteAudio(mSite, mSearchTerm);
-                    break;
-                default:
-                    mediaList = mMediaStore.searchSiteMedia(mSite, mSearchTerm);
-                    break;
+            case FILTER_IMAGES:
+                mediaList = mMediaStore.searchSiteImages(mSite, mSearchTerm);
+                break;
+            case FILTER_DOCUMENTS:
+                mediaList = mMediaStore.searchSiteDocuments(mSite, mSearchTerm);
+                break;
+            case FILTER_VIDEOS:
+                mediaList = mMediaStore.searchSiteVideos(mSite, mSearchTerm);
+                break;
+            case FILTER_AUDIO:
+                mediaList = mMediaStore.searchSiteAudio(mSite, mSearchTerm);
+                break;
+            default:
+                mediaList = mMediaStore.searchSiteMedia(mSite, mSearchTerm);
+                break;
             }
         } else if (mBrowserType.isSingleImagePicker()) {
             mediaList = mMediaStore.getSiteImages(mSite);
@@ -398,16 +398,16 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
 
     private List<MediaModel> getMediaList() {
         switch (mFilter) {
-            case FILTER_IMAGES:
-                return mMediaStore.getSiteImages(mSite);
-            case FILTER_DOCUMENTS:
-                return mMediaStore.getSiteDocuments(mSite);
-            case FILTER_VIDEOS:
-                return mMediaStore.getSiteVideos(mSite);
-            case FILTER_AUDIO:
-                return mMediaStore.getSiteAudio(mSite);
-            default:
-                return mMediaStore.getAllSiteMedia(mSite);
+        case FILTER_IMAGES:
+            return mMediaStore.getSiteImages(mSite);
+        case FILTER_DOCUMENTS:
+            return mMediaStore.getSiteDocuments(mSite);
+        case FILTER_VIDEOS:
+            return mMediaStore.getSiteVideos(mSite);
+        case FILTER_AUDIO:
+            return mMediaStore.getSiteAudio(mSite);
+        default:
+            return mMediaStore.getAllSiteMedia(mSite);
         }
     }
 
@@ -550,8 +550,8 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
 
     public void removeFromMultiSelect(int localMediaId) {
         if (hasAdapter()
-            && getAdapter().isInMultiSelect()
-            && getAdapter().isItemSelected(localMediaId)) {
+                && getAdapter().isInMultiSelect()
+                && getAdapter().isItemSelected(localMediaId)) {
             getAdapter().removeSelectionByLocalId(localMediaId);
         }
     }
@@ -579,46 +579,46 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
         if (isEmpty()) {
             int stringId;
             switch (emptyViewMessageType) {
-                case LOADING:
-                    stringId = R.string.media_fetching;
-                    break;
-                case NO_CONTENT:
-                    if (!TextUtils.isEmpty(mSearchTerm)) {
-                        mActionableEmptyView.updateLayoutForSearch(true, 0);
-                        stringId = R.string.media_empty_search_list;
-                    } else {
-                        mActionableEmptyView.updateLayoutForSearch(false, 0);
-                        mActionableEmptyView.image.setVisibility(View.VISIBLE);
+            case LOADING:
+                stringId = R.string.media_fetching;
+                break;
+            case NO_CONTENT:
+                if (!TextUtils.isEmpty(mSearchTerm)) {
+                    mActionableEmptyView.updateLayoutForSearch(true, 0);
+                    stringId = R.string.media_empty_search_list;
+                } else {
+                    mActionableEmptyView.updateLayoutForSearch(false, 0);
+                    mActionableEmptyView.image.setVisibility(View.VISIBLE);
 
-                        switch (mFilter) {
-                            case FILTER_IMAGES:
-                                stringId = R.string.media_empty_image_list;
-                                break;
-                            case FILTER_VIDEOS:
-                                stringId = R.string.media_empty_videos_list;
-                                break;
-                            case FILTER_DOCUMENTS:
-                                stringId = R.string.media_empty_documents_list;
-                                break;
-                            case FILTER_AUDIO:
-                                stringId = R.string.media_empty_audio_list;
-                                break;
-                            default:
-                                stringId = R.string.media_empty_list;
-                                break;
-                        }
+                    switch (mFilter) {
+                    case FILTER_IMAGES:
+                        stringId = R.string.media_empty_image_list;
+                        break;
+                    case FILTER_VIDEOS:
+                        stringId = R.string.media_empty_videos_list;
+                        break;
+                    case FILTER_DOCUMENTS:
+                        stringId = R.string.media_empty_documents_list;
+                        break;
+                    case FILTER_AUDIO:
+                        stringId = R.string.media_empty_audio_list;
+                        break;
+                    default:
+                        stringId = R.string.media_empty_list;
+                        break;
                     }
+                }
 
-                    break;
-                case NETWORK_ERROR:
-                    stringId = R.string.no_network_message;
-                    break;
-                case PERMISSION_ERROR:
-                    stringId = R.string.media_error_no_permission;
-                    break;
-                default:
-                    stringId = R.string.error_refresh_media;
-                    break;
+                break;
+            case NETWORK_ERROR:
+                stringId = R.string.no_network_message;
+                break;
+            case PERMISSION_ERROR:
+                stringId = R.string.media_error_no_permission;
+                break;
+            default:
+                stringId = R.string.error_refresh_media;
+                break;
             }
 
             mActionableEmptyView.title.setText(stringId);
@@ -655,7 +655,7 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
             getAdapter().setInMultiSelect(true);
             if (savedInstanceState.containsKey(BUNDLE_SELECTED_STATES)) {
                 ArrayList<Integer> selectedItems =
-                        ListUtils.fromIntArray(savedInstanceState.getIntArray(BUNDLE_SELECTED_STATES));
+                    ListUtils.fromIntArray(savedInstanceState.getIntArray(BUNDLE_SELECTED_STATES));
                 getAdapter().setSelectedItems(selectedItems);
                 setSwipeToRefreshEnabled(false);
             }
@@ -665,7 +665,7 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
         mFetchedAllFilters = savedInstanceState.getBooleanArray(BUNDLE_RETRIEVED_ALL_FILTERS);
 
         EmptyViewMessageType emptyType = EmptyViewMessageType.getEnumFromString(
-                savedInstanceState.getString(BUNDLE_EMPTY_VIEW_MESSAGE));
+                                             savedInstanceState.getString(BUNDLE_EMPTY_VIEW_MESSAGE));
         updateEmptyView(emptyType);
     }
 
@@ -691,7 +691,7 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
             }
 
             FetchMediaListPayload payload =
-                    new FetchMediaListPayload(mSite, NUM_MEDIA_PER_FETCH, loadMore, mFilter.toMimeType());
+                new FetchMediaListPayload(mSite, NUM_MEDIA_PER_FETCH, loadMore, mFilter.toMimeType());
             mDispatcher.dispatch(MediaActionBuilder.newFetchMediaListAction(payload));
 
             if (!loadMore) {
@@ -708,7 +708,7 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
 
         // make sure this request was for the current filter
         if (!TextUtils.isEmpty(event.mimeType)
-            && MediaFilter.fromMimeType(event.mimeType) != mFilter) {
+                && MediaFilter.fromMimeType(event.mimeType) != mFilter) {
             return;
         }
 
@@ -742,7 +742,7 @@ public class MediaGridFragment extends Fragment implements MediaGridAdapterCallb
         }
 
         if (!TextUtils.isEmpty(event.mimeType)
-            && MediaFilter.fromMimeType(event.mimeType) != mFilter) {
+                && MediaFilter.fromMimeType(event.mimeType) != mFilter) {
             return;
         }
 

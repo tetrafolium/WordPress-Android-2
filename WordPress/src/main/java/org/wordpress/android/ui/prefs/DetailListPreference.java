@@ -32,7 +32,7 @@ import java.util.Locale;
  */
 
 public class DetailListPreference extends ListPreference
-        implements PreferenceHint {
+    implements PreferenceHint {
     private DetailListAdapter mListAdapter;
     private String[] mDetails;
     private String mStartingValue;
@@ -68,13 +68,13 @@ public class DetailListPreference extends ListPreference
         super.onBindView(view);
 
         setupView((TextView) view.findViewById(android.R.id.title),
-                R.dimen.text_sz_large,
-                ContextExtensionsKt.getColorResIdFromAttribute(getContext(), R.attr.wpColorText),
-                R.color.neutral_20);
+                  R.dimen.text_sz_large,
+                  ContextExtensionsKt.getColorResIdFromAttribute(getContext(), R.attr.wpColorText),
+                  R.color.neutral_20);
         setupView((TextView) view.findViewById(android.R.id.summary),
-                R.dimen.text_sz_medium,
-                ContextExtensionsKt.getColorResIdFromAttribute(getContext(), R.attr.wpColorTextSubtle),
-                R.color.neutral_20);
+                  R.dimen.text_sz_medium,
+                  ContextExtensionsKt.getColorResIdFromAttribute(getContext(), R.attr.wpColorTextSubtle),
+                  R.color.neutral_20);
     }
 
     @Override
@@ -107,11 +107,11 @@ public class DetailListPreference extends ListPreference
         mSelectedIndex = findIndexOfValue(mStartingValue);
 
         builder.setSingleChoiceItems(mListAdapter, mSelectedIndex,
-                                     new DialogInterface.OnClickListener() {
-                                         public void onClick(DialogInterface dialog, int which) {
-                                             mSelectedIndex = which;
-                                         }
-                                     });
+        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                mSelectedIndex = which;
+            }
+        });
 
         View titleView = View.inflate(getContext(), R.layout.detail_list_preference_title, null);
 

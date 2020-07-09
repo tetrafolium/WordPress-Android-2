@@ -40,10 +40,10 @@ public class ReaderXPostUtils {
 
         String name = post.hasAuthorFirstName() ? post.getAuthorFirstName() : post.getAuthorName();
         String subtitle = String.format(
-                isCommentXPost ? FMT_COMMENT_XPOST : FMT_SITE_XPOST,
-                "<strong>" + name + "</strong>",
-                getFromSiteName(post),
-                getToSiteName(post));
+                              isCommentXPost ? FMT_COMMENT_XPOST : FMT_SITE_XPOST,
+                              "<strong>" + name + "</strong>",
+                              getFromSiteName(post),
+                              getToSiteName(post));
 
         return Html.fromHtml(subtitle);
     }

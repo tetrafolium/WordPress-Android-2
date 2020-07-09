@@ -192,7 +192,7 @@ public class ImageSettingsDialogFragment extends DialogFragment {
                 mLinkTo.setText(mImageMeta.getString(ATTR_URL_LINK));
 
                 mMaxImageWidth = MediaUtils.getMaximumImageSize(mImageMeta.getInt("naturalWidth"),
-                        bundle.getString(EXTRA_MAX_WIDTH));
+                                 bundle.getString(EXTRA_MAX_WIDTH));
 
                 setupWidthSeekBar(widthSeekBar, mWidthText, mImageMeta.getInt(ATTR_DIMEN_WIDTH));
 
@@ -323,7 +323,7 @@ public class ImageSettingsDialogFragment extends DialogFragment {
      */
     private void showDiscardChangesDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         builder.setTitle(getString(R.string.image_settings_dismiss_dialog_title));
         builder.setPositiveButton(getString(R.string.discard), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -383,9 +383,9 @@ public class ImageSettingsDialogFragment extends DialogFragment {
 
         if (MediaUtils.isValidImage(filepath)) {
             int size = DisplayUtils.dpToPx(
-                    getActivity(),
-                    getResources().getDimensionPixelSize(R.dimen.image_settings_dialog_thumbnail_size)
-            );
+                           getActivity(),
+                           getResources().getDimensionPixelSize(R.dimen.image_settings_dialog_thumbnail_size)
+                       );
             mImageView.setVisibility(View.GONE);
             mProgress.setVisibility(View.VISIBLE);
 
@@ -424,7 +424,7 @@ public class ImageSettingsDialogFragment extends DialogFragment {
         mProgress.setVisibility(View.GONE);
         mImageView.setVisibility(View.VISIBLE);
         mImageView.setImageDrawable(
-                new ColorDrawable(ContextCompat.getColor(getActivity(), R.color.grey_lighten_30))
+            new ColorDrawable(ContextCompat.getColor(getActivity(), R.color.grey_lighten_30))
         );
     }
 
@@ -483,9 +483,9 @@ public class ImageSettingsDialogFragment extends DialogFragment {
                 widthText.setSelection((String.valueOf(width).length()));
 
                 InputMethodManager imm = (InputMethodManager) getActivity()
-                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                                         .getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(widthText.getWindowToken(),
-                        InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                                            InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
                 return true;
             }

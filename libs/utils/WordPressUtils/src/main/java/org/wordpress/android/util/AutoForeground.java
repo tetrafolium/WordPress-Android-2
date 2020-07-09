@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AutoForeground<StateClass extends ServiceState>
-        extends Service {
+    extends Service {
     public static final int NOTIFICATION_ID_PROGRESS = 1;
     public static final int NOTIFICATION_ID_SUCCESS = 2;
     public static final int NOTIFICATION_ID_FAILURE = 3;
@@ -217,7 +217,7 @@ public abstract class AutoForeground<StateClass extends ServiceState>
 
         // put out a simple success/failure notification
         NotificationManagerCompat.from(this).notify(
-                state.isError() ? NOTIFICATION_ID_FAILURE : NOTIFICATION_ID_SUCCESS,
-                getNotification(state));
+            state.isError() ? NOTIFICATION_ID_FAILURE : NOTIFICATION_ID_SUCCESS,
+            getNotification(state));
     }
 }

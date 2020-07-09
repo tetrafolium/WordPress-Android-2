@@ -34,8 +34,8 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 public class PublicizeButtonPrefsFragment extends PublicizeBaseFragment implements
-        SiteSettingsInterface.SiteSettingsListener,
-        WPPrefView.OnPrefChangedListener {
+    SiteSettingsInterface.SiteSettingsListener,
+    WPPrefView.OnPrefChangedListener {
     private static final String TWITTER_PREFIX = "@";
     private static final String SHARING_BUTTONS_KEY = "sharing_buttons";
     private static final String SHARING_BUTTONS_UPDATED_KEY = "updated";
@@ -202,17 +202,17 @@ public class PublicizeButtonPrefsFragment extends PublicizeBaseFragment implemen
         }
 
         WordPress.getRestClientUtilsV1_1()
-                 .setSharingButtons(Long.toString(mSite.getSiteId()), jsonObject, new RestRequest.Listener() {
-                     @Override
-                     public void onResponse(JSONObject response) {
-                         configureSharingButtonsFromResponse(response);
-                     }
-                 }, new RestRequest.ErrorListener() {
-                     @Override
-                     public void onErrorResponse(VolleyError error) {
-                         AppLog.e(AppLog.T.SETTINGS, error.getMessage());
-                     }
-                 });
+        .setSharingButtons(Long.toString(mSite.getSiteId()), jsonObject, new RestRequest.Listener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                configureSharingButtonsFromResponse(response);
+            }
+        }, new RestRequest.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AppLog.e(AppLog.T.SETTINGS, error.getMessage());
+            }
+        });
     }
 
     /*
@@ -242,17 +242,17 @@ public class PublicizeButtonPrefsFragment extends PublicizeBaseFragment implemen
      */
     private void configureSharingButtons() {
         WordPress.getRestClientUtilsV1_1()
-                 .getSharingButtons(Long.toString(mSite.getSiteId()), new RestRequest.Listener() {
-                     @Override
-                     public void onResponse(JSONObject response) {
-                         configureSharingButtonsFromResponse(response);
-                     }
-                 }, new RestRequest.ErrorListener() {
-                     @Override
-                     public void onErrorResponse(VolleyError error) {
-                         AppLog.e(AppLog.T.SETTINGS, error);
-                     }
-                 });
+        .getSharingButtons(Long.toString(mSite.getSiteId()), new RestRequest.Listener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                configureSharingButtonsFromResponse(response);
+            }
+        }, new RestRequest.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AppLog.e(AppLog.T.SETTINGS, error);
+            }
+        });
     }
 
     private void configureSharingButtonsFromResponse(JSONObject response) {

@@ -51,15 +51,15 @@ public class ReaderPostLogic {
 
     private void updatePostsWithTag(final ReaderTag tag, final UpdateAction action) {
         requestPostsWithTag(
-                tag,
-                action,
-                new ReaderActions.UpdateResultListener() {
-                    @Override
-                    public void onUpdateResult(ReaderActions.UpdateResult result) {
-                        EventBus.getDefault().post(new ReaderEvents.UpdatePostsEnded(tag, result, action));
-                        mCompletionListener.onCompleted(mListenerCompanion);
-                    }
-                });
+            tag,
+            action,
+        new ReaderActions.UpdateResultListener() {
+            @Override
+            public void onUpdateResult(ReaderActions.UpdateResult result) {
+                EventBus.getDefault().post(new ReaderEvents.UpdatePostsEnded(tag, result, action));
+                mCompletionListener.onCompleted(mListenerCompanion);
+            }
+        });
     }
 
     private void updatePostsInBlog(long blogId, final UpdateAction action) {
@@ -103,18 +103,18 @@ public class ReaderPostLogic {
 
         String beforeDate;
         switch (updateAction) {
-            case REQUEST_OLDER:
-                // request posts older than the oldest existing post with this tag
-                beforeDate = ReaderPostTable.getOldestDateWithTag(tag);
-                break;
-            case REQUEST_OLDER_THAN_GAP:
-                // request posts older than the post with the gap marker for this tag
-                beforeDate = ReaderPostTable.getGapMarkerDateForTag(tag);
-                break;
-            case REQUEST_NEWER:
-            default:
-                beforeDate = null;
-                break;
+        case REQUEST_OLDER:
+            // request posts older than the oldest existing post with this tag
+            beforeDate = ReaderPostTable.getOldestDateWithTag(tag);
+            break;
+        case REQUEST_OLDER_THAN_GAP:
+            // request posts older than the post with the gap marker for this tag
+            beforeDate = ReaderPostTable.getGapMarkerDateForTag(tag);
+            break;
+        case REQUEST_NEWER:
+        default:
+            beforeDate = null;
+            break;
         }
         if (!TextUtils.isEmpty(beforeDate)) {
             sb.append("&before=").append(UrlUtils.urlEncode(beforeDate));
@@ -206,9 +206,9 @@ public class ReaderPostLogic {
      * called after requesting posts with a specific tag or in a specific blog/feed
      */
     private static void handleUpdatePostsResponse(final ReaderTag tag,
-                                                  final JSONObject jsonObject,
-                                                  final UpdateAction updateAction,
-                                                  final ReaderActions.UpdateResultListener resultListener) {
+            final JSONObject jsonObject,
+            final UpdateAction updateAction,
+            final ReaderActions.UpdateResultListener resultListener) {
         if (jsonObject == null) {
             resultListener.onUpdateResult(ReaderActions.UpdateResult.FAILED);
             return;
@@ -224,37 +224,37 @@ public class ReaderPostLogic {
                     ReaderPost postWithGap = null;
                     if (tag != null) {
                         switch (updateAction) {
-                            case REQUEST_NEWER:
-                                // if there's no overlap between server and local (ie: all server
-                                // posts are new), assume there's a gap between server and local
-                                // provided that local posts exist
-                                int numServerPosts = serverPosts.size();
-                                if (numServerPosts >= 2
+                        case REQUEST_NEWER:
+                            // if there's no overlap between server and local (ie: all server
+                            // posts are new), assume there's a gap between server and local
+                            // provided that local posts exist
+                            int numServerPosts = serverPosts.size();
+                            if (numServerPosts >= 2
                                     && ReaderPostTable.getNumPostsWithTag(tag) > 0
                                     && !ReaderPostTable.hasOverlap(serverPosts, tag)) {
-                                    // treat the second to last server post as having a gap
-                                    postWithGap = serverPosts.get(numServerPosts - 2);
-                                    // remove the last server post to deal with the edge case of
-                                    // there actually not being a gap between local & server
-                                    serverPosts.remove(numServerPosts - 1);
-                                    ReaderBlogIdPostId gapMarker = ReaderPostTable.getGapMarkerIdsForTag(tag);
-                                    if (gapMarker != null) {
-                                        // We mustn't have two gapMarkers at the same time. Therefor we need to
-                                        // delete all posts before the current gapMarker and clear the gapMarker flag.
-                                        ReaderPostTable.deletePostsBeforeGapMarkerForTag(tag);
-                                        ReaderPostTable.removeGapMarkerForTag(tag);
-                                    }
+                                // treat the second to last server post as having a gap
+                                postWithGap = serverPosts.get(numServerPosts - 2);
+                                // remove the last server post to deal with the edge case of
+                                // there actually not being a gap between local & server
+                                serverPosts.remove(numServerPosts - 1);
+                                ReaderBlogIdPostId gapMarker = ReaderPostTable.getGapMarkerIdsForTag(tag);
+                                if (gapMarker != null) {
+                                    // We mustn't have two gapMarkers at the same time. Therefor we need to
+                                    // delete all posts before the current gapMarker and clear the gapMarker flag.
+                                    ReaderPostTable.deletePostsBeforeGapMarkerForTag(tag);
+                                    ReaderPostTable.removeGapMarkerForTag(tag);
                                 }
-                                break;
-                            case REQUEST_OLDER_THAN_GAP:
-                                // if service was started as a request to fill a gap, delete existing posts
-                                // before the one with the gap marker, then remove the existing gap marker
-                                ReaderPostTable.deletePostsBeforeGapMarkerForTag(tag);
-                                ReaderPostTable.removeGapMarkerForTag(tag);
-                                break;
-                            case REQUEST_OLDER:
-                                // no-op
-                                break;
+                            }
+                            break;
+                        case REQUEST_OLDER_THAN_GAP:
+                            // if service was started as a request to fill a gap, delete existing posts
+                            // before the one with the gap marker, then remove the existing gap marker
+                            ReaderPostTable.deletePostsBeforeGapMarkerForTag(tag);
+                            ReaderPostTable.removeGapMarkerForTag(tag);
+                            break;
+                        case REQUEST_OLDER:
+                            // no-op
+                            break;
                         }
                     }
                     ReaderPostTable.addOrUpdatePosts(tag, serverPosts);
@@ -273,7 +273,7 @@ public class ReaderPostLogic {
                 AppLog.d(AppLog.T.READER, "requested posts response = " + updateResult.toString());
                 resultListener.onUpdateResult(updateResult);
             }
-        }.start();
+        } .start();
     }
 
     /*

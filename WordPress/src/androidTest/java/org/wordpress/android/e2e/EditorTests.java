@@ -49,7 +49,7 @@ public class EditorTests extends BaseTest {
         mb.clickBlogPosts();
 
         new MySitesPage()
-                .startNewPost();
+        .startNewPost();
 
         EditorPage editorPage = new EditorPage();
         editorPage.enterTitle(title);
@@ -73,7 +73,7 @@ public class EditorTests extends BaseTest {
         mb.clickBlogPosts();
 
         new MySitesPage()
-                .startNewPost();
+        .startNewPost();
 
         EditorPage editorPage = new EditorPage();
         editorPage.enterTitle(title);

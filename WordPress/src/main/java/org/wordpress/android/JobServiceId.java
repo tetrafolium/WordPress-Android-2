@@ -30,7 +30,7 @@ public class JobServiceId {
      */
 
     public static boolean isJobServiceWithSameParamsPending(Context context, ComponentName componentName,
-                                                            PersistableBundle bundleCompare, String exceptKey) {
+            PersistableBundle bundleCompare, String exceptKey) {
         JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         boolean jobAlreadyScheduled = false;
 
@@ -49,8 +49,8 @@ public class JobServiceId {
 
                     // don't check `exceptKey` if it's null
                     if ((exceptKey == null && (keySetOne.size() == keySetTwo.size()))
-                        || ((exceptKey != null && (keySetOne.size() - 1 == keySetTwo.size()))
-                        && extras.keySet().containsAll(bundleCompare.keySet()))) {
+                            || ((exceptKey != null && (keySetOne.size() - 1 == keySetTwo.size()))
+                                && extras.keySet().containsAll(bundleCompare.keySet()))) {
                         // compare all parameters
                         jobAlreadyScheduled = true;
                         for (String key : bundleCompare.keySet()) {

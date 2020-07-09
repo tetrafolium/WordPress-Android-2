@@ -35,21 +35,21 @@ import org.wordpress.android.util.ToastUtils;
 
 public class LearnMorePreference extends Preference implements View.OnClickListener {
     private static final String SUPPORT_CONTENT_JS =
-            "javascript:(function(){"
-            + "var mobileSupport = document.getElementById('mobile-only-usage');"
-            + "mobileSupport.style.display = 'inline';"
-            + "var newHtml = '<' + mobileSupport.tagName + '>'"
-            + " + mobileSupport.innerHTML + '</' + mobileSupport.tagName + '>';"
-            + "document.body.innerHTML = newHtml;"
-            + "document.body.setAttribute('style', 'padding:24px 24px 0px 24px !important');"
+        "javascript:(function(){"
+        + "var mobileSupport = document.getElementById('mobile-only-usage');"
+        + "mobileSupport.style.display = 'inline';"
+        + "var newHtml = '<' + mobileSupport.tagName + '>'"
+        + " + mobileSupport.innerHTML + '</' + mobileSupport.tagName + '>';"
+        + "document.body.innerHTML = newHtml;"
+        + "document.body.setAttribute('style', 'padding:24px 24px 0px 24px !important');"
 
-            + "}) ();";
+        + "}) ();";
     private static final String CONTENT_PADDING_JS =
-            "javascript:(function(){"
-            + "document.body.setAttribute('style', 'padding:24px 24px 0px 24px !important');"
-            + "document.getElementById('mobilenav-toggle').style.display = 'none';"
-            + "document.getElementById('actionbar').style.display = 'none';"
-            + "}) ();";
+        "javascript:(function(){"
+        + "document.body.setAttribute('style', 'padding:24px 24px 0px 24px !important');"
+        + "document.getElementById('mobilenav-toggle').style.display = 'none';"
+        + "document.getElementById('actionbar').style.display = 'none';"
+        + "}) ();";
 
     private Dialog mDialog;
     private String mUrl;
@@ -201,15 +201,15 @@ public class LearnMorePreference extends Preference implements View.OnClickListe
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
-                    public SavedState createFromParcel(Parcel in) {
-                        return new SavedState(in);
-                    }
+        new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
 
-                    public SavedState[] newArray(int size) {
-                        return new SavedState[size];
-                    }
-                };
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 
     private class LearnMoreClient extends WebViewClient {

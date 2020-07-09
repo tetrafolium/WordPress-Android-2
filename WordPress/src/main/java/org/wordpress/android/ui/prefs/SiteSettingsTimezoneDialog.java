@@ -126,7 +126,7 @@ public class SiteSettingsTimezoneDialog extends DialogFragment implements Dialog
         mProgressView = view.findViewById(R.id.progress_view);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         builder.setPositiveButton(android.R.string.ok, this);
         builder.setNegativeButton(R.string.cancel, this);
         builder.setView(view);
@@ -195,8 +195,8 @@ public class SiteSettingsTimezoneDialog extends DialogFragment implements Dialog
             for (int i = 0; i < jsonTimezones.length(); i++) {
                 JSONObject json = jsonTimezones.getJSONObject(i);
                 timezones.add(
-                        new Timezone(json.getString("label"), json.getString("value"))
-                             );
+                    new Timezone(json.getString("label"), json.getString("value"))
+                );
             }
 
             // sort by label

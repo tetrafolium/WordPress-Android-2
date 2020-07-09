@@ -30,27 +30,27 @@ public class SelfSignedSSLUtils {
                                             @NonNull final MemorizingTrustManager memorizingTrustManager,
                                             @Nullable final Callback callback) {
         AlertDialog.Builder alert = new AlertDialog.Builder(
-                new ContextThemeWrapper(context, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(context, R.style.Calypso_Dialog_Alert));
         alert.setTitle(context.getString(org.wordpress.android.R.string.ssl_certificate_error));
         alert.setMessage(context.getString(org.wordpress.android.R.string.ssl_certificate_ask_trust));
         alert.setPositiveButton(org.wordpress.android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // Add the certificate to our list
-                                        memorizingTrustManager.storeLastFailure();
-                                        // Retry login action
-                                        if (callback != null) {
-                                            callback.certificateTrusted();
-                                        }
-                                    }
-                                }
+            public void onClick(DialogInterface dialog, int which) {
+                // Add the certificate to our list
+                memorizingTrustManager.storeLastFailure();
+                // Retry login action
+                if (callback != null) {
+                    callback.certificateTrusted();
+                }
+            }
+        }
                                );
         alert.setNeutralButton(org.wordpress.android.R.string.ssl_certificate_details,
-                               new DialogInterface.OnClickListener() {
-                                   public void onClick(DialogInterface dialog, int which) {
-                                       ActivityLauncher.viewSSLCerts(context, memorizingTrustManager.getLastFailure()
-                                                                                                    .toString());
-                                   }
-                               });
+        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                ActivityLauncher.viewSSLCerts(context, memorizingTrustManager.getLastFailure()
+                                              .toString());
+            }
+        });
         alert.show();
     }
 

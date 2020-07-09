@@ -126,24 +126,24 @@ public class NotificationsListFragment extends Fragment implements MainToolbarFr
                 Map<String, String> properties = new HashMap<>(1);
 
                 switch (tab.getPosition()) {
-                    case TAB_POSITION_ALL:
-                        properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_ALL.toString());
-                        break;
-                    case TAB_POSITION_COMMENT:
-                        properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_COMMENT.toString());
-                        break;
-                    case TAB_POSITION_FOLLOW:
-                        properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_FOLLOW.toString());
-                        break;
-                    case TAB_POSITION_LIKE:
-                        properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_LIKE.toString());
-                        break;
-                    case TAB_POSITION_UNREAD:
-                        properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_UNREAD.toString());
-                        break;
-                    default:
-                        properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_ALL.toString());
-                        break;
+                case TAB_POSITION_ALL:
+                    properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_ALL.toString());
+                    break;
+                case TAB_POSITION_COMMENT:
+                    properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_COMMENT.toString());
+                    break;
+                case TAB_POSITION_FOLLOW:
+                    properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_FOLLOW.toString());
+                    break;
+                case TAB_POSITION_LIKE:
+                    properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_LIKE.toString());
+                    break;
+                case TAB_POSITION_UNREAD:
+                    properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_UNREAD.toString());
+                    break;
+                default:
+                    properties.put(NOTIFICATIONS_SELECTED_FILTER, FILTERS.FILTER_ALL.toString());
+                    break;
                 }
 
                 AnalyticsTracker.track(Stat.NOTIFICATION_TAPPED_SEGMENTED_CONTROL, properties);
@@ -166,7 +166,7 @@ public class NotificationsListFragment extends Fragment implements MainToolbarFr
 
         TextView jetpackTermsAndConditions = view.findViewById(R.id.jetpack_terms_and_conditions);
         jetpackTermsAndConditions.setText(Html.fromHtml(String.format(
-                getResources().getString(R.string.jetpack_connection_terms_and_conditions), "<u>", "</u>")));
+                                              getResources().getString(R.string.jetpack_connection_terms_and_conditions), "<u>", "</u>")));
         jetpackTermsAndConditions.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View view) {
                 WPWebViewActivity.openURL(requireContext(), WPUrlUtils.buildTermsOfServiceUrl(getContext()));
@@ -305,7 +305,7 @@ public class NotificationsListFragment extends Fragment implements MainToolbarFr
                 public void onClick(View v) {
                     SiteModel siteModel = getSelectedSite();
                     JetpackConnectionWebViewActivity
-                            .startJetpackConnectionFlow(getActivity(), NOTIFICATIONS, siteModel, false);
+                    .startJetpackConnectionFlow(getActivity(), NOTIFICATIONS, siteModel, false);
                 }
             });
         }
@@ -330,18 +330,18 @@ public class NotificationsListFragment extends Fragment implements MainToolbarFr
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case TAB_POSITION_ALL:
-                    return getString(R.string.notifications_tab_title_all);
-                case TAB_POSITION_COMMENT:
-                    return getString(R.string.notifications_tab_title_comments);
-                case TAB_POSITION_FOLLOW:
-                    return getString(R.string.notifications_tab_title_follows);
-                case TAB_POSITION_LIKE:
-                    return getString(R.string.notifications_tab_title_likes);
-                case TAB_POSITION_UNREAD:
-                    return getString(R.string.notifications_tab_title_unread);
-                default:
-                    return super.getPageTitle(position);
+            case TAB_POSITION_ALL:
+                return getString(R.string.notifications_tab_title_all);
+            case TAB_POSITION_COMMENT:
+                return getString(R.string.notifications_tab_title_comments);
+            case TAB_POSITION_FOLLOW:
+                return getString(R.string.notifications_tab_title_follows);
+            case TAB_POSITION_LIKE:
+                return getString(R.string.notifications_tab_title_likes);
+            case TAB_POSITION_UNREAD:
+                return getString(R.string.notifications_tab_title_unread);
+            default:
+                return super.getPageTitle(position);
             }
         }
 

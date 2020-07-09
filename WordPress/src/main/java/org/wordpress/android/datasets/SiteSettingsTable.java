@@ -17,16 +17,16 @@ import org.wordpress.android.util.SqlUtils;
 public final class SiteSettingsTable {
     private static final String CATEGORIES_TABLE_NAME = "site_categories";
     private static final String CREATE_CATEGORIES_TABLE_SQL =
-            "CREATE TABLE IF NOT EXISTS "
-            + CATEGORIES_TABLE_NAME
-            + " ("
-            + CategoryModel.ID_COLUMN_NAME + " INTEGER PRIMARY KEY, "
-            + CategoryModel.NAME_COLUMN_NAME + " TEXT, "
-            + CategoryModel.SLUG_COLUMN_NAME + " TEXT, "
-            + CategoryModel.DESC_COLUMN_NAME + " TEXT, "
-            + CategoryModel.PARENT_ID_COLUMN_NAME + " INTEGER, "
-            + CategoryModel.POST_COUNT_COLUMN_NAME + " INTEGER"
-            + ");";
+        "CREATE TABLE IF NOT EXISTS "
+        + CATEGORIES_TABLE_NAME
+        + " ("
+        + CategoryModel.ID_COLUMN_NAME + " INTEGER PRIMARY KEY, "
+        + CategoryModel.NAME_COLUMN_NAME + " TEXT, "
+        + CategoryModel.SLUG_COLUMN_NAME + " TEXT, "
+        + CategoryModel.DESC_COLUMN_NAME + " TEXT, "
+        + CategoryModel.PARENT_ID_COLUMN_NAME + " INTEGER, "
+        + CategoryModel.POST_COUNT_COLUMN_NAME + " INTEGER"
+        + ");";
 
     public static void createTable(SQLiteDatabase db) {
         if (db != null) {
@@ -91,7 +91,7 @@ public final class SiteSettingsTable {
 
         ContentValues values = category.serializeToDatabase();
         category.isInLocalTable = WordPress.wpDB.getDatabase().insertWithOnConflict(
-                CATEGORIES_TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE) != -1;
+                                      CATEGORIES_TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE) != -1;
     }
 
     public static void saveCategories(CategoryModel[] categories) {
@@ -111,7 +111,7 @@ public final class SiteSettingsTable {
 
         ContentValues values = settings.serializeToDatabase();
         settings.isInLocalTable = WordPress.wpDB.getDatabase().insertWithOnConflict(
-                SiteSettingsModel.SETTINGS_TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE) != -1;
+                                      SiteSettingsModel.SETTINGS_TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE) != -1;
 
         saveCategories(settings.categories);
     }
@@ -145,15 +145,15 @@ public final class SiteSettingsTable {
             int optimizeImageOldSettings = cursor.getInt(columnIndex);
             AppPrefs.setImageOptimize(optimizeImageOldSettings == 1);
             AppPrefs.setImageOptimizeMaxSize(
-                    cursor.getInt(cursor.getColumnIndex("maxImageWidth")));
+                cursor.getInt(cursor.getColumnIndex("maxImageWidth")));
             AppPrefs.setImageOptimizeQuality(
-                    cursor.getInt(cursor.getColumnIndex("imageEncoderQuality")));
+                cursor.getInt(cursor.getColumnIndex("imageEncoderQuality")));
             AppPrefs.setVideoOptimize(
-                    cursor.getInt(cursor.getColumnIndex("optimizedVideo")) == 1);
+                cursor.getInt(cursor.getColumnIndex("optimizedVideo")) == 1);
             AppPrefs.setVideoOptimizeWidth(
-                    cursor.getInt(cursor.getColumnIndex("maxVideoWidth")));
+                cursor.getInt(cursor.getColumnIndex("maxVideoWidth")));
             AppPrefs.setVideoOptimizeQuality(
-                    cursor.getInt(cursor.getColumnIndex("videoEncoderBitrate")));
+                cursor.getInt(cursor.getColumnIndex("videoEncoderBitrate")));
 
             // Delete the old columns? --> cannot drop a specific column in SQLite 3 ;(
 

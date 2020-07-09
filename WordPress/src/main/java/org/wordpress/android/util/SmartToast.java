@@ -19,7 +19,7 @@ import org.wordpress.android.ui.prefs.AppPrefs.UndeletablePrefKey;
 public class SmartToast {
     public enum SmartToastType {
         COMMENTS_LONG_PRESS(UndeletablePrefKey.SMART_TOAST_COMMENTS_LONG_PRESS_USAGE_COUNTER,
-                 UndeletablePrefKey.SMART_TOAST_COMMENTS_LONG_PRESS_TOAST_COUNTER);
+                            UndeletablePrefKey.SMART_TOAST_COMMENTS_LONG_PRESS_TOAST_COUNTER);
 
         // key which stores the number of times the feature associated with the smart toast has been used
         private final UndeletablePrefKey mUsageKey;
@@ -59,11 +59,11 @@ public class SmartToast {
 
         int stringResId;
         switch (type) {
-            case COMMENTS_LONG_PRESS:
-                stringResId = R.string.smart_toast_comments_long_press;
-                break;
-            default:
-                return false;
+        case COMMENTS_LONG_PRESS:
+            stringResId = R.string.smart_toast_comments_long_press;
+            break;
+        default:
+            return false;
         }
 
         int yOffset = context.getResources().getDimensionPixelOffset(R.dimen.smart_toast_offset_y);

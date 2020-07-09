@@ -79,7 +79,7 @@ public class NoteBlockClickableSpan extends ClickableSpan {
 
             // Apply grey color to some types
             if (mIsFooter || getRangeType() == FormattableRangeType.BLOCKQUOTE
-                || getRangeType() == FormattableRangeType.POST) {
+                    || getRangeType() == FormattableRangeType.POST) {
                 mTextColor = mLightTextColor;
             }
         }
@@ -97,7 +97,7 @@ public class NoteBlockClickableSpan extends ClickableSpan {
     public void updateDrawState(@NonNull TextPaint textPaint) {
         // Set background color
         textPaint.bgColor = mShouldLink && mPressed && !isBlockquoteType()
-                ? mBackgroundColor : Color.TRANSPARENT;
+                            ? mBackgroundColor : Color.TRANSPARENT;
         textPaint.setColor(mShouldLink && !mIsFooter ? mLinkColor : mTextColor);
         // No underlines
         textPaint.setUnderlineText(mIsFooter);
@@ -114,21 +114,21 @@ public class NoteBlockClickableSpan extends ClickableSpan {
         }
 
         switch (getRangeType()) {
-            case USER:
-            case MATCH:
-                return Typeface.BOLD;
-            case SITE:
-            case POST:
-            case COMMENT:
-            case BLOCKQUOTE:
-                return Typeface.ITALIC;
-            case STAT:
-            case FOLLOW:
-            case NOTICON:
-            case LIKE:
-            case UNKNOWN:
-            default:
-                return Typeface.NORMAL;
+        case USER:
+        case MATCH:
+            return Typeface.BOLD;
+        case SITE:
+        case POST:
+        case COMMENT:
+        case BLOCKQUOTE:
+            return Typeface.ITALIC;
+        case STAT:
+        case FOLLOW:
+        case NOTICON:
+        case LIKE:
+        case UNKNOWN:
+        default:
+            return Typeface.NORMAL;
         }
     }
 

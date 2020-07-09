@@ -68,10 +68,10 @@ public class StatsUtils {
     }
 
     public static void openPostInReaderOrInAppWebview(Context ctx,
-                                                      final long remoteBlogID,
-                                                      final String remoteItemID,
-                                                      @Nullable final String itemType,
-                                                      final String itemURL) {
+            final long remoteBlogID,
+            final String remoteItemID,
+            @Nullable final String itemType,
+            final String itemURL) {
         final long blogID = remoteBlogID;
         final long itemID = Long.parseLong(remoteItemID);
         if (itemType == null) {
@@ -83,20 +83,20 @@ public class StatsUtils {
             // otherwise 404 is returned if we try to show the post in the reader
             if (itemID == 0) {
                 ReaderActivityLauncher.showReaderBlogPreview(
-                        ctx,
-                        blogID
+                    ctx,
+                    blogID
                 );
             } else {
                 ReaderActivityLauncher.showReaderPostDetail(
-                        ctx,
-                        blogID,
-                        itemID
+                    ctx,
+                    blogID,
+                    itemID
                 );
             }
         } else if (itemType.equals(StatsConstants.ITEM_TYPE_HOME_PAGE)) {
             ReaderActivityLauncher.showReaderBlogPreview(
-                    ctx,
-                    blogID
+                ctx,
+                blogID
             );
         } else {
             AppLog.d(AppLog.T.UTILS, "Opening the in-app browser: " + itemURL);

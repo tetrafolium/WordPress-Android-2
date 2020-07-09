@@ -151,7 +151,7 @@ public class Note {
     public boolean canModerate() {
         EnumSet<EnabledActions> enabledActions = getEnabledActions();
         return enabledActions != null && (enabledActions.contains(EnabledActions.ACTION_APPROVE) || enabledActions
-                .contains(EnabledActions.ACTION_UNAPPROVE));
+                                          .contains(EnabledActions.ACTION_UNAPPROVE));
     }
 
     public boolean canMarkAsSpam() {
@@ -330,7 +330,7 @@ public class Note {
                 try {
                     JSONObject bodyItem = bodyArray.getJSONObject(i);
                     if (bodyItem.has("type") && bodyItem.optString("type").equals("comment")
-                        && commentId == JSONUtils.queryJSON(bodyItem, "meta.ids.comment", 0)) {
+                            && commentId == JSONUtils.queryJSON(bodyItem, "meta.ids.comment", 0)) {
                         mActions = JSONUtils.queryJSON(bodyItem, "actions", new JSONObject());
                         break;
                     }
@@ -497,7 +497,7 @@ public class Note {
         }
 
         if (this.getTimestampString().equalsIgnoreCase(note.getTimestampString())
-            && this.getJSON().length() == note.getJSON().length()) {
+                && this.getJSON().length() == note.getJSON().length()) {
             return true;
         }
         return false;

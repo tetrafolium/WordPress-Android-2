@@ -183,8 +183,8 @@ class ThemeBrowserAdapter extends BaseAdapter implements Filterable {
     private void configureImageView(ThemeViewHolder themeViewHolder, String screenshotURL, final String themeId,
                                     final boolean isCurrent) {
         mImageManager
-                .load(themeViewHolder.mImageView, ImageType.THEME, screenshotURL + THEME_IMAGE_PARAMETER + mViewWidth,
-                        ScaleType.FIT_CENTER);
+        .load(themeViewHolder.mImageView, ImageType.THEME, screenshotURL + THEME_IMAGE_PARAMETER + mViewWidth,
+              ScaleType.FIT_CENTER);
 
         themeViewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override

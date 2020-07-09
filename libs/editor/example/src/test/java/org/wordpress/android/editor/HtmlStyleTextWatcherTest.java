@@ -69,8 +69,9 @@ public class HtmlStyleTextWatcherTest {
     @Test
     public void testTypingInOpeningTag() {
         // Test with several different cases of pre-existing text
-        String[] previousTextCases = new String[]{"", "plain text", "<i>",
-                "<blockquote>some existing content</blockquote> "};
+        String[] previousTextCases = new String[] {"", "plain text", "<i>",
+                "<blockquote>some existing content</blockquote> "
+                                                  };
         for (String initialText : previousTextCases) {
             int offset = initialText.length();
             mUpdateSpansWasCalled = false;
@@ -109,8 +110,9 @@ public class HtmlStyleTextWatcherTest {
     @Test
     public void testTypingInClosingTag() {
         // Test with several different cases of pre-existing text
-        String[] previousTextCases = new String[]{"<b>stuff", "plain text <b>stuff", "<i><b>stuff",
-                "<blockquote>some existing content</blockquote> <b>stuff"};
+        String[] previousTextCases = new String[] {"<b>stuff", "plain text <b>stuff", "<i><b>stuff",
+                "<blockquote>some existing content</blockquote> <b>stuff"
+                                                  };
 
         for (String initialText : previousTextCases) {
             int offset = initialText.length();
@@ -216,8 +218,9 @@ public class HtmlStyleTextWatcherTest {
     @Test
     public void testTypingInEntity() {
         // Test with several different cases of pre-existing text
-        String[] previousTextCases = new String[]{"", "plain text", "&rho;",
-                "<blockquote>some existing content &dagger;</blockquote> "};
+        String[] previousTextCases = new String[] {"", "plain text", "&rho;",
+                "<blockquote>some existing content &dagger;</blockquote> "
+                                                  };
         for (String initialText : previousTextCases) {
             int offset = initialText.length();
             mUpdateSpansWasCalled = false;
@@ -339,9 +342,9 @@ public class HtmlStyleTextWatcherTest {
 
         // -- Test adding a closing list tag
         mContent = new SpannableStringBuilder("<ul>\n" + //5
-                "\t<li>list item</li>\n" + //20
-                "\t<li>another list item</li>\n" + //22
-                "</ul>");
+                                              "\t<li>list item</li>\n" + //20
+                                              "\t<li>another list item</li>\n" + //22
+                                              "</ul>");
 
         mWatcher.onTextChanged(mContent, 47, 0, 11); // Added "</li>\n</ul>"
         mWatcher.afterTextChanged(mContent);

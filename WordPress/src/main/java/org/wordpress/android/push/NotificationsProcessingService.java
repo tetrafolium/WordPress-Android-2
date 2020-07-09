@@ -198,11 +198,11 @@ public class NotificationsProcessingService extends Service {
                 if (mActionType.equals(ARG_ACTION_AUTH_IGNORE)) {
                     // dismiss notifs
                     NativeNotificationsUtils.dismissNotification(
-                            GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
+                        GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
                     NativeNotificationsUtils.dismissNotification(
-                            GCMMessageService.AUTH_PUSH_NOTIFICATION_ID, mContext);
+                        GCMMessageService.AUTH_PUSH_NOTIFICATION_ID, mContext);
                     NativeNotificationsUtils.dismissNotification(
-                            GCMMessageService.ACTIONS_PROGRESS_NOTIFICATION_ID, mContext);
+                        GCMMessageService.ACTIONS_PROGRESS_NOTIFICATION_ID, mContext);
                     GCMMessageService.removeNotification(GCMMessageService.AUTH_PUSH_NOTIFICATION_ID);
 
                     AnalyticsTracker.track(AnalyticsTracker.Stat.PUSH_AUTHENTICATION_IGNORED);
@@ -233,8 +233,8 @@ public class NotificationsProcessingService extends Service {
                     int postId = mIntent.getIntExtra(NotificationsPendingDraftsReceiver.POST_ID_EXTRA, 0);
                     if (postId != 0) {
                         NativeNotificationsUtils.dismissNotification(
-                                PendingDraftsNotificationsUtils.makePendingDraftNotificationId(postId),
-                                mContext
+                            PendingDraftsNotificationsUtils.makePendingDraftNotificationId(postId),
+                            mContext
                         );
                     }
                     AnalyticsTracker.track(AnalyticsTracker.Stat.NOTIFICATION_PENDING_DRAFTS_IGNORED);
@@ -253,30 +253,30 @@ public class NotificationsProcessingService extends Service {
                     // no op
                 } else {
                     NativeNotificationsUtils.showIntermediateMessageToUser(
-                            getProcessingTitleForAction(mActionType), mContext);
+                        getProcessingTitleForAction(mActionType), mContext);
                 }
 
                 // if we still don't have a Note, go get it from the REST API
                 if (mNote == null) {
                     RestRequest.Listener listener =
-                            new RestRequest.Listener() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    if (response != null && !response.optBoolean("success")) {
-                                        // build the Note object here
-                                        buildNoteFromJSONObject(response);
-                                        performRequestedAction();
-                                    }
-                                }
-                            };
+                    new RestRequest.Listener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            if (response != null && !response.optBoolean("success")) {
+                                // build the Note object here
+                                buildNoteFromJSONObject(response);
+                                performRequestedAction();
+                            }
+                        }
+                    };
 
                     RestRequest.ErrorListener errorListener =
-                            new RestRequest.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    requestFailed(mActionType);
-                                }
-                            };
+                    new RestRequest.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            requestFailed(mActionType);
+                        }
+                    };
 
                     getNoteFromNoteId(mNoteId, listener, errorListener);
                 } else {
@@ -327,15 +327,15 @@ public class NotificationsProcessingService extends Service {
         private String getProcessingTitleForAction(String actionType) {
             if (actionType != null) {
                 switch (actionType) {
-                    case ARG_ACTION_LIKE:
-                        return getString(R.string.comment_q_action_liking);
-                    case ARG_ACTION_APPROVE:
-                        return getString(R.string.comment_q_action_approving);
-                    case ARG_ACTION_REPLY:
-                        return getString(R.string.comment_q_action_replying);
-                    default:
-                        // default, generic "processing"
-                        return getString(R.string.comment_q_action_processing);
+                case ARG_ACTION_LIKE:
+                    return getString(R.string.comment_q_action_liking);
+                case ARG_ACTION_APPROVE:
+                    return getString(R.string.comment_q_action_approving);
+                case ARG_ACTION_REPLY:
+                    return getString(R.string.comment_q_action_replying);
+                default:
+                    // default, generic "processing"
+                    return getString(R.string.comment_q_action_processing);
                 }
             } else {
                 // default, generic "processing"
@@ -371,19 +371,19 @@ public class NotificationsProcessingService extends Service {
             if (mNote != null) {
                 if (mActionType != null) {
                     switch (mActionType) {
-                        case ARG_ACTION_LIKE:
-                            likeComment();
-                            break;
-                        case ARG_ACTION_APPROVE:
-                            approveComment();
-                            break;
-                        case ARG_ACTION_REPLY:
-                            replyToComment();
-                            break;
-                        default:
-                            // no op
-                            requestFailed(null);
-                            break;
+                    case ARG_ACTION_LIKE:
+                        likeComment();
+                        break;
+                    case ARG_ACTION_APPROVE:
+                        approveComment();
+                        break;
+                    case ARG_ACTION_REPLY:
+                        replyToComment();
+                        break;
+                    default:
+                        // no op
+                        requestFailed(null);
+                        break;
                     }
                 } else {
                     // add other actions here
@@ -417,11 +417,11 @@ public class NotificationsProcessingService extends Service {
 
             // dismiss any other pending result notification
             NativeNotificationsUtils.dismissNotification(
-                    GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
+                GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
             // update notification indicating the operation succeeded
             NativeNotificationsUtils.showFinalMessageToUser(successMessage,
-                                                            GCMMessageService.ACTIONS_PROGRESS_NOTIFICATION_ID,
-                                                            mContext);
+                    GCMMessageService.ACTIONS_PROGRESS_NOTIFICATION_ID,
+                    mContext);
             // remove the original notification from the system bar
             GCMMessageService.removeNotificationWithNoteIdFromSystemBar(mContext, mNoteId);
 
@@ -430,7 +430,7 @@ public class NotificationsProcessingService extends Service {
             handler.postDelayed(new Runnable() {
                 public void run() {
                     NativeNotificationsUtils.dismissNotification(
-                            GCMMessageService.ACTIONS_PROGRESS_NOTIFICATION_ID, mContext);
+                        GCMMessageService.ACTIONS_PROGRESS_NOTIFICATION_ID, mContext);
                 }
             }, 3000); // show the success message for 3 seconds, then dismiss
 
@@ -456,9 +456,9 @@ public class NotificationsProcessingService extends Service {
             }
             resetOriginalNotification();
             NativeNotificationsUtils.dismissNotification(
-                    GCMMessageService.ACTIONS_PROGRESS_NOTIFICATION_ID, mContext);
+                GCMMessageService.ACTIONS_PROGRESS_NOTIFICATION_ID, mContext);
             NativeNotificationsUtils.showFinalMessageToUser(errorMessage,
-                                                            GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
+                    GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
 
             // after 3 seconds, dismiss the error message notification
             Handler handler = new Handler(getMainLooper());
@@ -466,7 +466,7 @@ public class NotificationsProcessingService extends Service {
                 public void run() {
                     // remove the error notification from the system bar
                     NativeNotificationsUtils.dismissNotification(
-                            GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
+                        GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
                 }
             }, 3000); // show the success message for 3 seconds, then dismiss
 
@@ -480,7 +480,7 @@ public class NotificationsProcessingService extends Service {
             }
             resetOriginalNotification();
             NativeNotificationsUtils.showFinalMessageToUser(errorMessage,
-                                                            GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
+                    GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
 
             if (autoDismiss) {
                 // after 3 seconds, dismiss the error message notification
@@ -489,7 +489,7 @@ public class NotificationsProcessingService extends Service {
                     public void run() {
                         // remove the error notification from the system bar
                         NativeNotificationsUtils.dismissNotification(
-                                GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
+                            GCMMessageService.ACTIONS_RESULT_NOTIFICATION_ID, mContext);
                     }
                 }, 3000); // show the success message for 3 seconds, then dismiss
             }
@@ -523,16 +523,16 @@ public class NotificationsProcessingService extends Service {
 
             // Bump analytics
             AnalyticsUtils.trackWithBlogPostDetails(
-                    AnalyticsTracker.Stat.NOTIFICATION_QUICK_ACTIONS_LIKED, mNote.getSiteId(), mNote.getPostId());
+                AnalyticsTracker.Stat.NOTIFICATION_QUICK_ACTIONS_LIKED, mNote.getSiteId(), mNote.getPostId());
             AnalyticsUtils.trackQuickActionTouched(
-                    QuickActionTrackPropertyValue.LIKE,
-                    mSiteStore.getSiteBySiteId(mNote.getSiteId()),
-                    mNote.buildComment());
+                QuickActionTrackPropertyValue.LIKE,
+                mSiteStore.getSiteBySiteId(mNote.getSiteId()),
+                mNote.buildComment());
 
             SiteModel site = mSiteStore.getSiteBySiteId(mNote.getSiteId());
             if (site != null) {
                 mDispatcher.dispatch(CommentActionBuilder.newLikeCommentAction(
-                        new RemoteLikeCommentPayload(site, mNote.getCommentId(), true)));
+                                         new RemoteLikeCommentPayload(site, mNote.getCommentId(), true)));
             } else {
                 requestFailed(ARG_ACTION_LIKE);
                 AppLog.e(T.NOTIFS, "Site with id: " + mNote.getSiteId() + " doesn't exist in the Site store");
@@ -547,11 +547,11 @@ public class NotificationsProcessingService extends Service {
 
             // Bump analytics
             AnalyticsUtils.trackWithBlogPostDetails(
-                    AnalyticsTracker.Stat.NOTIFICATION_QUICK_ACTIONS_APPROVED, mNote.getSiteId(), mNote.getPostId());
+                AnalyticsTracker.Stat.NOTIFICATION_QUICK_ACTIONS_APPROVED, mNote.getSiteId(), mNote.getPostId());
             AnalyticsUtils.trackQuickActionTouched(
-                    QuickActionTrackPropertyValue.APPROVE,
-                    mSiteStore.getSiteBySiteId(mNote.getSiteId()),
-                    mNote.buildComment());
+                QuickActionTrackPropertyValue.APPROVE,
+                mSiteStore.getSiteBySiteId(mNote.getSiteId()),
+                mNote.buildComment());
 
             // Update pseudo comment (built from the note)
             CommentModel comment = mNote.buildComment();
@@ -559,7 +559,7 @@ public class NotificationsProcessingService extends Service {
             SiteModel site = mSiteStore.getSiteBySiteId(mNote.getSiteId());
             if (site == null) {
                 AppLog.e(T.NOTIFS, "Impossible to approve a comment on a site that is not in the App. SiteId: "
-                                   + mNote.getSiteId());
+                         + mNote.getSiteId());
                 requestFailed(ARG_ACTION_APPROVE);
                 return;
             }
@@ -582,7 +582,7 @@ public class NotificationsProcessingService extends Service {
                 SiteModel site = mSiteStore.getSiteBySiteId(mNote.getSiteId());
                 if (site == null) {
                     AppLog.e(T.NOTIFS, "Impossible to reply to a comment on a site that is not in the App. SiteId: "
-                                       + mNote.getSiteId());
+                             + mNote.getSiteId());
                     requestFailed(ARG_ACTION_APPROVE);
                     return;
                 }

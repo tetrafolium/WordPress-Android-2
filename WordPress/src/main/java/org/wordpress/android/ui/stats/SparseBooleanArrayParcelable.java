@@ -6,30 +6,30 @@ import android.util.SparseBooleanArray;
 
 public class SparseBooleanArrayParcelable extends SparseBooleanArray implements Parcelable {
     public static final Parcelable.Creator<SparseBooleanArrayParcelable> CREATOR =
-            new Parcelable.Creator<SparseBooleanArrayParcelable>() {
-                @Override
-                public SparseBooleanArrayParcelable createFromParcel(Parcel source) {
-                    SparseBooleanArrayParcelable read = new SparseBooleanArrayParcelable();
-                    int size = source.readInt();
+    new Parcelable.Creator<SparseBooleanArrayParcelable>() {
+        @Override
+        public SparseBooleanArrayParcelable createFromParcel(Parcel source) {
+            SparseBooleanArrayParcelable read = new SparseBooleanArrayParcelable();
+            int size = source.readInt();
 
-                    int[] keys = new int[size];
-                    boolean[] values = new boolean[size];
+            int[] keys = new int[size];
+            boolean[] values = new boolean[size];
 
-                    source.readIntArray(keys);
-                    source.readBooleanArray(values);
+            source.readIntArray(keys);
+            source.readBooleanArray(values);
 
-                    for (int i = 0; i < size; i++) {
-                        read.put(keys[i], values[i]);
-                    }
+            for (int i = 0; i < size; i++) {
+                read.put(keys[i], values[i]);
+            }
 
-                    return read;
-                }
+            return read;
+        }
 
-                @Override
-                public SparseBooleanArrayParcelable[] newArray(int size) {
-                    return new SparseBooleanArrayParcelable[size];
-                }
-            };
+        @Override
+        public SparseBooleanArrayParcelable[] newArray(int size) {
+            return new SparseBooleanArrayParcelable[size];
+        }
+    };
 
     public SparseBooleanArrayParcelable() {
     }

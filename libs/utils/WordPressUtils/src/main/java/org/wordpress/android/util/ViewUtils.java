@@ -56,8 +56,8 @@ public class ViewUtils {
     }
 
     public static void setButtonBackgroundColor(Context context, View button, @StyleRes int styleId,
-                                                @AttrRes int colorAttribute) {
-        TypedArray a = context.obtainStyledAttributes(styleId, new int[]{colorAttribute});
+            @AttrRes int colorAttribute) {
+        TypedArray a = context.obtainStyledAttributes(styleId, new int[] {colorAttribute});
         ColorStateList color = a.getColorStateList(0);
         a.recycle();
         ViewCompat.setBackgroundTintList(button, color);

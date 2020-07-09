@@ -53,7 +53,7 @@ import dagger.android.support.DaggerFragment;
  * the Account settings & sign-up flow to change the username.
  */
 public abstract class BaseUsernameChangerFullScreenDialogFragment extends DaggerFragment implements
-        FullScreenDialogContent, OnUsernameSelectedListener {
+    FullScreenDialogContent, OnUsernameSelectedListener {
     private ProgressBar mProgressBar;
 
     private FullScreenDialogController mDialogController;
@@ -217,7 +217,7 @@ public abstract class BaseUsernameChangerFullScreenDialogFragment extends Dagger
         ActivityUtils.hideKeyboard(getActivity());
 
         if (mUsernamesAdapter != null && mUsernamesAdapter.mItems != null) {
-           onUsernameConfirmed(controller, mUsernameSelected);
+            onUsernameConfirmed(controller, mUsernameSelected);
         } else {
             controller.dismiss();
         }
@@ -309,29 +309,29 @@ public abstract class BaseUsernameChangerFullScreenDialogFragment extends Dagger
         mIsShowingDismissDialog = true;
 
         new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.LoginTheme))
-                .setMessage(R.string.username_changer_dismiss_message)
-                .setPositiveButton(R.string.username_changer_dismiss_button_positive,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mDialogController.dismiss();
-                            }
-                        })
-                .setNegativeButton(android.R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mIsShowingDismissDialog = false;
-                            }
-                        })
-                .show();
+        .setMessage(R.string.username_changer_dismiss_message)
+        .setPositiveButton(R.string.username_changer_dismiss_button_positive,
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mDialogController.dismiss();
+            }
+        })
+        .setNegativeButton(android.R.string.cancel,
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mIsShowingDismissDialog = false;
+            }
+        })
+        .show();
     }
 
     protected void showErrorDialog(Spanned message) {
         AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginTheme))
-                .setMessage(message)
-                .setPositiveButton(R.string.login_error_button, null)
-                .create();
+        .setMessage(message)
+        .setPositiveButton(R.string.login_error_button, null)
+        .create();
         dialog.show();
     }
 
@@ -351,15 +351,15 @@ public abstract class BaseUsernameChangerFullScreenDialogFragment extends Dagger
             showErrorDialog(new SpannedString(getString(R.string.username_changer_error_generic)));
         } else if (event.suggestions.size() == 0) {
             showErrorDialog(
-                    Html.fromHtml(
-                            String.format(
-                                    getString(R.string.username_changer_error_none),
-                                    "<b>",
-                                    mUsernameSuggestionInput,
-                                    "</b>"
-                                         )
-                                 )
-                           );
+                Html.fromHtml(
+                    String.format(
+                        getString(R.string.username_changer_error_none),
+                        "<b>",
+                        mUsernameSuggestionInput,
+                        "</b>"
+                    )
+                )
+            );
         } else {
             populateUsernameSuggestions(event.suggestions);
         }

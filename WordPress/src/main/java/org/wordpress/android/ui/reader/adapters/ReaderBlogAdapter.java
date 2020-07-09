@@ -92,12 +92,12 @@ public class ReaderBlogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemCount() {
         switch (getBlogType()) {
-            case RECOMMENDED:
-                return mRecommendedBlogs.size();
-            case FOLLOWED:
-                return mFollowedBlogs.size();
-            default:
-                return 0;
+        case RECOMMENDED:
+            return mRecommendedBlogs.size();
+        case FOLLOWED:
+            return mFollowedBlogs.size();
+        default:
+            return 0;
         }
     }
 
@@ -114,12 +114,12 @@ public class ReaderBlogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case VIEW_TYPE_ITEM:
-                View itemView =
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.reader_listitem_blog, parent, false);
-                return new BlogViewHolder(itemView);
-            default:
-                return null;
+        case VIEW_TYPE_ITEM:
+            View itemView =
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.reader_listitem_blog, parent, false);
+            return new BlogViewHolder(itemView);
+        default:
+            return null;
         }
     }
 
@@ -128,30 +128,30 @@ public class ReaderBlogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (holder instanceof BlogViewHolder) {
             final BlogViewHolder blogHolder = (BlogViewHolder) holder;
             switch (getBlogType()) {
-                case RECOMMENDED:
-                    final ReaderRecommendedBlog blog = mRecommendedBlogs.get(position);
-                    blogHolder.mTxtTitle.setText(blog.getTitle());
-                    blogHolder.mTxtDescription.setText(blog.getReason());
-                    blogHolder.mTxtUrl.setText(UrlUtils.getHost(blog.getBlogUrl()));
-                    mImageManager.load(blogHolder.mImgBlog, ImageType.BLAVATAR, blog.getImageUrl());
-                    break;
+            case RECOMMENDED:
+                final ReaderRecommendedBlog blog = mRecommendedBlogs.get(position);
+                blogHolder.mTxtTitle.setText(blog.getTitle());
+                blogHolder.mTxtDescription.setText(blog.getReason());
+                blogHolder.mTxtUrl.setText(UrlUtils.getHost(blog.getBlogUrl()));
+                mImageManager.load(blogHolder.mImgBlog, ImageType.BLAVATAR, blog.getImageUrl());
+                break;
 
-                case FOLLOWED:
-                    final ReaderBlog blogInfo = mFollowedBlogs.get(position);
-                    if (blogInfo.hasName()) {
-                        blogHolder.mTxtTitle.setText(blogInfo.getName());
-                    } else {
-                        blogHolder.mTxtTitle.setText(R.string.reader_untitled_post);
-                    }
-                    if (blogInfo.hasUrl()) {
-                        blogHolder.mTxtUrl.setText(UrlUtils.getHost(blogInfo.getUrl()));
-                    } else if (blogInfo.hasFeedUrl()) {
-                        blogHolder.mTxtUrl.setText(UrlUtils.getHost(blogInfo.getFeedUrl()));
-                    } else {
-                        blogHolder.mTxtUrl.setText("");
-                    }
-                    mImageManager.load(blogHolder.mImgBlog, ImageType.BLAVATAR, blogInfo.getImageUrl());
-                    break;
+            case FOLLOWED:
+                final ReaderBlog blogInfo = mFollowedBlogs.get(position);
+                if (blogInfo.hasName()) {
+                    blogHolder.mTxtTitle.setText(blogInfo.getName());
+                } else {
+                    blogHolder.mTxtTitle.setText(R.string.reader_untitled_post);
+                }
+                if (blogInfo.hasUrl()) {
+                    blogHolder.mTxtUrl.setText(UrlUtils.getHost(blogInfo.getUrl()));
+                } else if (blogInfo.hasFeedUrl()) {
+                    blogHolder.mTxtUrl.setText(UrlUtils.getHost(blogInfo.getFeedUrl()));
+                } else {
+                    blogHolder.mTxtUrl.setText("");
+                }
+                mImageManager.load(blogHolder.mImgBlog, ImageType.BLAVATAR, blogInfo.getImageUrl());
+                break;
             }
 
             if (mClickListener != null) {
@@ -160,12 +160,12 @@ public class ReaderBlogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     public void onClick(View v) {
                         int clickedPosition = blogHolder.getAdapterPosition();
                         switch (getBlogType()) {
-                            case RECOMMENDED:
-                                mClickListener.onBlogClicked(mRecommendedBlogs.get(clickedPosition));
-                                break;
-                            case FOLLOWED:
-                                mClickListener.onBlogClicked(mFollowedBlogs.get(clickedPosition));
-                                break;
+                        case RECOMMENDED:
+                            mClickListener.onBlogClicked(mRecommendedBlogs.get(clickedPosition));
+                            break;
+                        case FOLLOWED:
+                            mClickListener.onBlogClicked(mFollowedBlogs.get(clickedPosition));
+                            break;
                         }
                     }
                 });
@@ -192,12 +192,12 @@ public class ReaderBlogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             // followed blogs don't have a description
             switch (getBlogType()) {
-                case FOLLOWED:
-                    mTxtDescription.setVisibility(View.GONE);
-                    break;
-                case RECOMMENDED:
-                    mTxtDescription.setVisibility(View.VISIBLE);
-                    break;
+            case FOLLOWED:
+                mTxtDescription.setVisibility(View.GONE);
+                break;
+            case RECOMMENDED:
+                mTxtDescription.setVisibility(View.VISIBLE);
+                break;
             }
         }
     }
@@ -221,38 +221,38 @@ public class ReaderBlogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         @Override
         protected Boolean doInBackground(Void... params) {
             switch (getBlogType()) {
-                case RECOMMENDED:
-                    mTmpRecommendedBlogs = ReaderBlogTable.getRecommendedBlogs();
-                    return !mRecommendedBlogs.isSameList(mTmpRecommendedBlogs);
+            case RECOMMENDED:
+                mTmpRecommendedBlogs = ReaderBlogTable.getRecommendedBlogs();
+                return !mRecommendedBlogs.isSameList(mTmpRecommendedBlogs);
 
-                case FOLLOWED:
-                    mTmpFollowedBlogs = new ReaderBlogList();
-                    ReaderBlogList allFollowedBlogs = ReaderBlogTable.getFollowedBlogs();
-                    if (hasSearchFilter()) {
-                        String query = mSearchFilter.toLowerCase(Locale.getDefault());
-                        for (ReaderBlog blog : allFollowedBlogs) {
-                            if (blog.getName().toLowerCase(Locale.getDefault()).contains(query)) {
-                                mTmpFollowedBlogs.add(blog);
-                            } else if (UrlUtils.getHost(blog.getUrl()).toLowerCase(Locale.ROOT).contains(query)) {
-                                mTmpFollowedBlogs.add(blog);
-                            }
+            case FOLLOWED:
+                mTmpFollowedBlogs = new ReaderBlogList();
+                ReaderBlogList allFollowedBlogs = ReaderBlogTable.getFollowedBlogs();
+                if (hasSearchFilter()) {
+                    String query = mSearchFilter.toLowerCase(Locale.getDefault());
+                    for (ReaderBlog blog : allFollowedBlogs) {
+                        if (blog.getName().toLowerCase(Locale.getDefault()).contains(query)) {
+                            mTmpFollowedBlogs.add(blog);
+                        } else if (UrlUtils.getHost(blog.getUrl()).toLowerCase(Locale.ROOT).contains(query)) {
+                            mTmpFollowedBlogs.add(blog);
                         }
-                    } else {
-                        mTmpFollowedBlogs.addAll(allFollowedBlogs);
                     }
-                    // sort followed blogs by name/domain to match display
-                    Collections.sort(mTmpFollowedBlogs, new Comparator<ReaderBlog>() {
-                        @Override
-                        public int compare(ReaderBlog thisBlog, ReaderBlog thatBlog) {
-                            String thisName = getBlogNameForComparison(thisBlog);
-                            String thatName = getBlogNameForComparison(thatBlog);
-                            return thisName.compareToIgnoreCase(thatName);
-                        }
-                    });
-                    return !mFollowedBlogs.isSameList(mTmpFollowedBlogs);
+                } else {
+                    mTmpFollowedBlogs.addAll(allFollowedBlogs);
+                }
+                // sort followed blogs by name/domain to match display
+                Collections.sort(mTmpFollowedBlogs, new Comparator<ReaderBlog>() {
+                    @Override
+                    public int compare(ReaderBlog thisBlog, ReaderBlog thatBlog) {
+                        String thisName = getBlogNameForComparison(thisBlog);
+                        String thatName = getBlogNameForComparison(thatBlog);
+                        return thisName.compareToIgnoreCase(thatName);
+                    }
+                });
+                return !mFollowedBlogs.isSameList(mTmpFollowedBlogs);
 
-                default:
-                    return false;
+            default:
+                return false;
             }
         }
 
@@ -260,12 +260,12 @@ public class ReaderBlogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         protected void onPostExecute(Boolean result) {
             if (result) {
                 switch (getBlogType()) {
-                    case RECOMMENDED:
-                        mRecommendedBlogs = (ReaderRecommendBlogList) mTmpRecommendedBlogs.clone();
-                        break;
-                    case FOLLOWED:
-                        mFollowedBlogs = (ReaderBlogList) mTmpFollowedBlogs.clone();
-                        break;
+                case RECOMMENDED:
+                    mRecommendedBlogs = (ReaderRecommendBlogList) mTmpRecommendedBlogs.clone();
+                    break;
+                case FOLLOWED:
+                    mFollowedBlogs = (ReaderBlogList) mTmpFollowedBlogs.clone();
+                    break;
                 }
                 notifyDataSetChanged();
             }

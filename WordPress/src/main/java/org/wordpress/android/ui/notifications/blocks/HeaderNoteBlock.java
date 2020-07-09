@@ -84,7 +84,7 @@ public class HeaderNoteBlock extends NoteBlock {
 
 
             noteBlockHolder.mAvatarImageView.setContentDescription(
-                    view.getContext().getString(R.string.profile_picture, spannable));
+                view.getContext().getString(R.string.profile_picture, spannable));
             //noinspection AndroidLintClickableViewAccessibility
             noteBlockHolder.mAvatarImageView.setOnTouchListener(mOnGravatarTouchListener);
 
@@ -164,19 +164,19 @@ public class HeaderNoteBlock extends NoteBlock {
 
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 v.animate()
-                 .scaleX(0.9f)
-                 .scaleY(0.9f)
-                 .alpha(0.5f)
-                 .setDuration(animationDuration)
-                 .setInterpolator(new DecelerateInterpolator());
+                .scaleX(0.9f)
+                .scaleY(0.9f)
+                .alpha(0.5f)
+                .setDuration(animationDuration)
+                .setInterpolator(new DecelerateInterpolator());
             } else if (event.getActionMasked() == MotionEvent.ACTION_UP
                        || event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
                 v.animate()
-                 .scaleX(1.0f)
-                 .scaleY(1.0f)
-                 .alpha(1.0f)
-                 .setDuration(animationDuration)
-                 .setInterpolator(new DecelerateInterpolator());
+                .scaleX(1.0f)
+                .scaleY(1.0f)
+                .alpha(1.0f)
+                .setDuration(animationDuration)
+                .setInterpolator(new DecelerateInterpolator());
 
                 if (event.getActionMasked() == MotionEvent.ACTION_UP && mGravatarClickedListener != null) {
                     // Fire the listener, which will load the site preview for the user's site

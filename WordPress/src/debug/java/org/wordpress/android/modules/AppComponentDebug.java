@@ -18,23 +18,23 @@ import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
 @Component(modules = {
-        ApplicationModule.class,
-        AppConfigModule.class,
-        ReleaseBaseModule.class,
-        DebugOkHttpClientModule.class,
-        InterceptorModule.class,
-        ReleaseNetworkModule.class,
-        LegacyModule.class,
-        ReleaseToolsModule.class,
-        AndroidSupportInjectionModule.class,
-        ViewModelModule.class,
-        StatsModule.class,
-        // Login flow library
-        LoginAnalyticsModule.class,
-        LoginFragmentModule.class,
-        LoginServiceModule.class,
-        SupportModule.class,
-        ThreadModule.class
+    ApplicationModule.class,
+    AppConfigModule.class,
+    ReleaseBaseModule.class,
+    DebugOkHttpClientModule.class,
+    InterceptorModule.class,
+    ReleaseNetworkModule.class,
+    LegacyModule.class,
+    ReleaseToolsModule.class,
+    AndroidSupportInjectionModule.class,
+    ViewModelModule.class,
+    StatsModule.class,
+    // Login flow library
+    LoginAnalyticsModule.class,
+    LoginFragmentModule.class,
+    LoginServiceModule.class,
+    SupportModule.class,
+    ThreadModule.class
 })
 public interface AppComponentDebug extends AppComponent {
     @Component.Builder

@@ -41,9 +41,9 @@ public class SignupEpilogueActivity extends AppCompatActivity implements SignupE
     }
 
     protected void addSignupEpilogueFragment(String name, String email, String photoUrl, String username,
-                                             boolean isEmail) {
+            boolean isEmail) {
         SignupEpilogueFragment signupEpilogueSocialFragment = SignupEpilogueFragment.newInstance(
-                name, email, photoUrl, username, isEmail);
+                    name, email, photoUrl, username, isEmail);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, signupEpilogueSocialFragment, SignupEpilogueFragment.TAG);
         fragmentTransaction.commit();

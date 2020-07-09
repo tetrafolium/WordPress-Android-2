@@ -61,7 +61,7 @@ public class PublicizeConnectionAdapter extends RecyclerView.Adapter<PublicizeCo
     public void refresh() {
         PublicizeConnectionList siteConnections = PublicizeTable.getConnectionsForSite(mSiteId);
         PublicizeConnectionList serviceConnections =
-                siteConnections.getServiceConnectionsForUser(mCurrentUserId, mService.getId());
+            siteConnections.getServiceConnectionsForUser(mCurrentUserId, mService.getId());
 
         if (!mConnections.isSameAs(serviceConnections)) {
             mConnections.clear();
@@ -91,7 +91,7 @@ public class PublicizeConnectionAdapter extends RecyclerView.Adapter<PublicizeCo
     @Override
     public ConnectionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view =
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.publicize_listitem_connection, parent, false);
+            LayoutInflater.from(parent.getContext()).inflate(R.layout.publicize_listitem_connection, parent, false);
         return new ConnectionViewHolder(view);
     }
 
@@ -103,7 +103,7 @@ public class PublicizeConnectionAdapter extends RecyclerView.Adapter<PublicizeCo
         holder.mDivider.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
 
         mImageManager.loadIntoCircle(holder.mImgAvatar, ImageType.AVATAR_WITH_BACKGROUND,
-                connection.getExternalProfilePictureUrl());
+                                     connection.getExternalProfilePictureUrl());
 
         bindButton(holder.mBtnConnect, connection);
     }
@@ -111,28 +111,28 @@ public class PublicizeConnectionAdapter extends RecyclerView.Adapter<PublicizeCo
     private void bindButton(ConnectButton btnConnect, final PublicizeConnection connection) {
         ConnectStatus status = connection.getStatusEnum();
         switch (status) {
-            case OK:
-            case MUST_DISCONNECT:
-                btnConnect.setAction(PublicizeConstants.ConnectAction.DISCONNECT);
-                btnConnect.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mActionListener != null) {
-                            mActionListener.onRequestDisconnect(connection);
-                        }
+        case OK:
+        case MUST_DISCONNECT:
+            btnConnect.setAction(PublicizeConstants.ConnectAction.DISCONNECT);
+            btnConnect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mActionListener != null) {
+                        mActionListener.onRequestDisconnect(connection);
                     }
-                });
-                break;
-            case BROKEN:
-            default:
-                btnConnect.setAction(ConnectAction.RECONNECT);
-                btnConnect.setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View view) {
-                        if (mActionListener != null) {
-                            mActionListener.onRequestReconnect(mService, connection);
-                        }
+                }
+            });
+            break;
+        case BROKEN:
+        default:
+            btnConnect.setAction(ConnectAction.RECONNECT);
+            btnConnect.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View view) {
+                    if (mActionListener != null) {
+                        mActionListener.onRequestReconnect(mService, connection);
                     }
-                });
+                }
+            });
         }
     }
 

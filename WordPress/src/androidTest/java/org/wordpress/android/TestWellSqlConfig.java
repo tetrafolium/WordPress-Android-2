@@ -14,9 +14,9 @@ import org.wordpress.android.fluxc.persistence.WellSqlConfig;
 
 public class TestWellSqlConfig extends WellSqlConfig {
     private static final Class[] TABLES = {
-            AccountModel.class,
-            SiteModel.class,
-            PostModel.class,
+        AccountModel.class,
+        SiteModel.class,
+        PostModel.class,
     };
 
     public TestWellSqlConfig(Context context) {

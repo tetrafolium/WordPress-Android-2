@@ -134,10 +134,10 @@ public class PublicizeListFragment extends PublicizeBaseFragment {
             showQuickStartFocusPoint();
 
             Spannable title = QuickStartUtils.stylizeQuickStartPrompt(getActivity(),
-                    R.string.quick_start_dialog_enable_sharing_message_short_connections);
+                              R.string.quick_start_dialog_enable_sharing_message_short_connections);
 
             WPDialogSnackbar.make(getView(), title,
-                    getResources().getInteger(R.integer.quick_start_snackbar_duration_ms)).show();
+                                  getResources().getInteger(R.integer.quick_start_snackbar_duration_ms)).show();
         }
     }
 
@@ -156,7 +156,7 @@ public class PublicizeListFragment extends PublicizeBaseFragment {
                             }
                             ViewGroup focusPointContainer = getView().findViewById(R.id.publicize_scroll_view_child);
                             int focusPointSize =
-                                    getResources().getDimensionPixelOffset(R.dimen.quick_start_focus_point_size);
+                                getResources().getDimensionPixelOffset(R.dimen.quick_start_focus_point_size);
 
                             int verticalOffset = (((quickStartTarget.getHeight()) - focusPointSize) / 2);
 
@@ -214,9 +214,9 @@ public class PublicizeListFragment extends PublicizeBaseFragment {
     private PublicizeServiceAdapter getAdapter() {
         if (mAdapter == null) {
             mAdapter = new PublicizeServiceAdapter(
-                    getActivity(),
-                    mSite.getSiteId(),
-                    mAccountStore.getAccount().getUserId());
+                getActivity(),
+                mSite.getSiteId(),
+                mAccountStore.getAccount().getUserId());
             mAdapter.setOnAdapterLoadedListener(mAdapterLoadedListener);
             if (getActivity() instanceof OnServiceClickListener) {
                 mAdapter.setOnServiceClickListener(new OnServiceClickListener() {

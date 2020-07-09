@@ -59,18 +59,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
         public String toString() {
             switch (this) {
-                case FILTER_ALL:
-                    return "all";
-                case FILTER_COMMENT:
-                    return "comment";
-                case FILTER_FOLLOW:
-                    return "follow";
-                case FILTER_LIKE:
-                    return "like";
-                case FILTER_UNREAD:
-                    return "unread";
-                default:
-                    return "all";
+            case FILTER_ALL:
+                return "all";
+            case FILTER_COMMENT:
+                return "comment";
+            case FILTER_FOLLOW:
+                return "follow";
+            case FILTER_LIKE:
+                return "like";
+            case FILTER_UNREAD:
+                return "unread";
+            default:
+                return "all";
             }
         }
     }
@@ -150,26 +150,26 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         }
         for (Note currentNote : notes) {
             switch (filter) {
-                case FILTER_COMMENT:
-                    if (currentNote.isCommentType()) {
-                        filteredNotes.add(currentNote);
-                    }
-                    break;
-                case FILTER_FOLLOW:
-                    if (currentNote.isFollowType()) {
-                        filteredNotes.add(currentNote);
-                    }
-                    break;
-                case FILTER_UNREAD:
-                    if (currentNote.isUnread()) {
-                        filteredNotes.add(currentNote);
-                    }
-                    break;
-                case FILTER_LIKE:
-                    if (currentNote.isLikeType()) {
-                        filteredNotes.add(currentNote);
-                    }
-                    break;
+            case FILTER_COMMENT:
+                if (currentNote.isCommentType()) {
+                    filteredNotes.add(currentNote);
+                }
+                break;
+            case FILTER_FOLLOW:
+                if (currentNote.isFollowType()) {
+                    filteredNotes.add(currentNote);
+                }
+                break;
+            case FILTER_UNREAD:
+                if (currentNote.isUnread()) {
+                    filteredNotes.add(currentNote);
+                }
+                break;
+            case FILTER_LIKE:
+                if (currentNote.isLikeType()) {
+                    filteredNotes.add(currentNote);
+                }
+                break;
             }
         }
     }
@@ -248,10 +248,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         Spanned noteSubjectSpanned = note.getFormattedSubject(mNotificationsUtilsWrapper);
         // Trim the '\n\n' added by Html.fromHtml()
         noteSubjectSpanned =
-                (Spanned) noteSubjectSpanned.subSequence(0, TextUtils.getTrimmedLength(noteSubjectSpanned));
+            (Spanned) noteSubjectSpanned.subSequence(0, TextUtils.getTrimmedLength(noteSubjectSpanned));
 
         NoteBlockClickableSpan[] spans =
-                noteSubjectSpanned.getSpans(0, noteSubjectSpanned.length(), NoteBlockClickableSpan.class);
+            noteSubjectSpanned.getSpans(0, noteSubjectSpanned.length(), NoteBlockClickableSpan.class);
         for (NoteBlockClickableSpan span : spans) {
             span.enableColors(noteViewHolder.mContentView.getContext());
         }
@@ -264,7 +264,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             // Fix position of the subject noticon in the RtL mode
             if (parent instanceof ViewGroup) {
                 int textDirection = BidiFormatter.getInstance().isRtl(noteViewHolder.mTxtSubject.getText())
-                        ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR;
+                                    ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR;
                 ViewCompat.setLayoutDirection((ViewGroup) parent, textDirection);
             }
             // mirror noticon in the rtl mode

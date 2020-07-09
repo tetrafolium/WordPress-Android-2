@@ -97,11 +97,11 @@ public class CollapseFullScreenDialogFragment extends DialogFragment {
 
         if (savedInstanceState == null) {
             getChildFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.full_screen_dialog_fragment_none, 0, 0,
-                                         R.anim.full_screen_dialog_fragment_none)
-                    .add(R.id.full_screen_dialog_fragment_content, mFragment)
-                    .commitNow();
+            .beginTransaction()
+            .setCustomAnimations(R.anim.full_screen_dialog_fragment_none, 0, 0,
+                                 R.anim.full_screen_dialog_fragment_none)
+            .add(R.id.full_screen_dialog_fragment_content, mFragment)
+            .commitNow();
         }
     }
 
@@ -274,17 +274,17 @@ public class CollapseFullScreenDialogFragment extends DialogFragment {
             mMenuAction.setEnabled(false);
             mMenuAction.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             mMenuAction.setOnMenuItemClickListener(
-                new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == ID_ACTION) {
-                            onConfirmClicked();
-                            return true;
-                        } else {
-                            return false;
-                        }
+            new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == ID_ACTION) {
+                        onConfirmClicked();
+                        return true;
+                    } else {
+                        return false;
                     }
                 }
+            }
             );
         }
     }
@@ -361,7 +361,7 @@ public class CollapseFullScreenDialogFragment extends DialogFragment {
         } else {
             try {
                 Drawable drawable = ResourcesCompat.getDrawable(requireActivity().getResources(), value.resourceId,
-                        requireActivity().getTheme());
+                                    requireActivity().getTheme());
                 ViewCompat.setBackground(view, drawable);
             } catch (Resources.NotFoundException ignore) {
             }
@@ -443,7 +443,7 @@ public class CollapseFullScreenDialogFragment extends DialogFragment {
         public Builder setContent(Class<? extends Fragment> contentClass, @Nullable Bundle contentArguments) {
             if (!CollapseFullScreenDialogContent.class.isAssignableFrom(contentClass)) {
                 throw new IllegalArgumentException(
-                        "The fragment class must implement CollapseFullScreenDialogContent interface");
+                    "The fragment class must implement CollapseFullScreenDialogContent interface");
             }
 
             this.mClass = contentClass;

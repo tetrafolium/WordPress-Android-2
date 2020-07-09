@@ -49,7 +49,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 public class PeopleInviteFragment extends Fragment implements RoleSelectDialogFragment.OnRoleSelectListener,
-        PeopleManagementActivity.InvitationSender {
+    PeopleManagementActivity.InvitationSender {
     private static final String URL_USER_ROLES_DOCUMENTATION = "https://en.support.wordpress.com/user-roles/";
     private static final String FLAG_SUCCESS = "SUCCESS";
     private static final String KEY_USERNAMES = "usernames";
@@ -333,11 +333,11 @@ public class PeopleInviteFragment extends Fragment implements RoleSelectDialogFr
 
     private void updateRemainingCharsView(TextView remainingCharsTextView, String currentString, int limit) {
         remainingCharsTextView.setText(StringUtils.getQuantityString(getActivity(),
-                                                                     R.string.invite_message_remaining_zero,
-                                                                     R.string.invite_message_remaining_one,
-                                                                     R.string.invite_message_remaining_other,
-                                                                     limit - (currentString == null ? 0
-                                                                             : currentString.length())));
+                                       R.string.invite_message_remaining_zero,
+                                       R.string.invite_message_remaining_one,
+                                       R.string.invite_message_remaining_other,
+                                       limit - (currentString == null ? 0
+                                                : currentString.length())));
     }
 
     private void populateUsernameButtons(Collection<String> usernames) {
@@ -356,7 +356,7 @@ public class PeopleInviteFragment extends Fragment implements RoleSelectDialogFr
         }
 
         final ViewGroup usernameButton = (ViewGroup) LayoutInflater.from(
-                getActivity()).inflate(R.layout.invite_username_button, mUsernamesContainer, false);
+                                             getActivity()).inflate(R.layout.invite_username_button, mUsernamesContainer, false);
         final TextView usernameTextView = (TextView) usernameButton.findViewById(R.id.username);
         usernameTextView.setText(username);
 
@@ -467,39 +467,39 @@ public class PeopleInviteFragment extends Fragment implements RoleSelectDialogFr
         if (usernamesToCheck.size() > 0) {
             long wpcomBlogId = mSite.getSiteId();
             PeopleUtils.validateUsernames(usernamesToCheck, mCurrentRole, wpcomBlogId,
-                                          new PeopleUtils.ValidateUsernameCallback() {
-                                              @Override
-                                              public void onUsernameValidation(String username,
-                                                                               ValidationResult validationResult) {
-                                                  if (!isAdded()) {
-                                                      return;
-                                                  }
+            new PeopleUtils.ValidateUsernameCallback() {
+                @Override
+                public void onUsernameValidation(String username,
+                                                 ValidationResult validationResult) {
+                    if (!isAdded()) {
+                        return;
+                    }
 
-                                                  if (!isUserInInvitees(username)) {
-                                                      // user is removed from invitees before validation
-                                                      return;
-                                                  }
+                    if (!isUserInInvitees(username)) {
+                        // user is removed from invitees before validation
+                        return;
+                    }
 
-                                                  final String usernameResultString =
-                                                          getValidationErrorString(username, validationResult);
-                                                  mUsernameResults.put(username, usernameResultString);
+                    final String usernameResultString =
+                        getValidationErrorString(username, validationResult);
+                    mUsernameResults.put(username, usernameResultString);
 
-                                                  styleButton(username, usernameResultString);
-                                                  updateUsernameError(username, usernameResultString);
-                                              }
+                    styleButton(username, usernameResultString);
+                    updateUsernameError(username, usernameResultString);
+                }
 
-                                              @Override
-                                              public void onValidationFinished() {
-                                                  if (validationEndListener != null) {
-                                                      validationEndListener.onValidationEnd();
-                                                  }
-                                              }
+                @Override
+                public void onValidationFinished() {
+                    if (validationEndListener != null) {
+                        validationEndListener.onValidationEnd();
+                    }
+                }
 
-                                              @Override
-                                              public void onError() {
-                                                  // properly style the button
-                                              }
-                                          });
+                @Override
+                public void onError() {
+                    // properly style the button
+                }
+            });
         } else {
             if (validationEndListener != null) {
                 validationEndListener.onValidationEnd();
@@ -514,27 +514,27 @@ public class PeopleInviteFragment extends Fragment implements RoleSelectDialogFr
 
         TextView textView = (TextView) mUsernameButtons.get(username).findViewById(R.id.username);
         textView.setTextColor(ContextCompat.getColor(getActivity(),
-                validationResultMessage == null ? ContextExtensionsKt
-                        .getColorResIdFromAttribute(getActivity(), R.attr.wpColorText)
-                        : (validationResultMessage.equals(FLAG_SUCCESS) ? R.color.primary_50 : R.color.error_50)));
+                              validationResultMessage == null ? ContextExtensionsKt
+                              .getColorResIdFromAttribute(getActivity(), R.attr.wpColorText)
+                              : (validationResultMessage.equals(FLAG_SUCCESS) ? R.color.primary_50 : R.color.error_50)));
     }
 
     private
     @Nullable
     String getValidationErrorString(String username, ValidationResult validationResult) {
         switch (validationResult) {
-            case USER_NOT_FOUND:
-                return getString(R.string.invite_username_not_found, username);
-            case ALREADY_MEMBER:
-                return getString(R.string.invite_already_a_member, username);
-            case ALREADY_FOLLOWING:
-                return getString(R.string.invite_already_following, username);
-            case BLOCKED_INVITES:
-                return getString(R.string.invite_user_blocked_invites, username);
-            case INVALID_EMAIL:
-                return getString(R.string.invite_invalid_email, username);
-            case USER_FOUND:
-                return FLAG_SUCCESS;
+        case USER_NOT_FOUND:
+            return getString(R.string.invite_username_not_found, username);
+        case ALREADY_MEMBER:
+            return getString(R.string.invite_already_a_member, username);
+        case ALREADY_FOLLOWING:
+            return getString(R.string.invite_already_following, username);
+        case BLOCKED_INVITES:
+            return getString(R.string.invite_user_blocked_invites, username);
+        case INVALID_EMAIL:
+            return getString(R.string.invite_invalid_email, username);
+        case USER_FOUND:
+            return FLAG_SUCCESS;
         }
 
         return null;
@@ -565,8 +565,8 @@ public class PeopleInviteFragment extends Fragment implements RoleSelectDialogFr
                     .findViewById(R.id.username_errors_container);
 
             usernameErrorTextView = (TextView) LayoutInflater.from(getActivity())
-                                                             .inflate(R.layout.people_invite_error_view,
-                                                                      usernameErrorsContainer, false);
+                                    .inflate(R.layout.people_invite_error_view,
+                                             usernameErrorsContainer, false);
 
             usernameErrorsContainer.addView(usernameErrorTextView);
 
@@ -644,9 +644,9 @@ public class PeopleInviteFragment extends Fragment implements RoleSelectDialogFr
         if (invalidCount > 0) {
             ToastUtils.showToast(getActivity(),
                                  StringUtils.getQuantityString(getActivity(), 0,
-                                                               R.string.invite_error_invalid_usernames_one,
-                                                               R.string.invite_error_invalid_usernames_multiple,
-                                                               invalidCount));
+                                         R.string.invite_error_invalid_usernames_one,
+                                         R.string.invite_error_invalid_usernames_multiple,
+                                         invalidCount));
             return false;
         }
 
@@ -655,49 +655,49 @@ public class PeopleInviteFragment extends Fragment implements RoleSelectDialogFr
 
         long wpcomBlogId = mSite.getSiteId();
         PeopleUtils.sendInvitations(
-                new ArrayList<>(mUsernameButtons.keySet()), mCurrentRole, mCustomMessage, wpcomBlogId,
-                new PeopleUtils.InvitationsSendCallback() {
-                    @Override
-                    public void onSent(List<String> succeededUsernames, Map<String, String> failedUsernameErrors) {
-                        if (!isAdded()) {
-                            return;
-                        }
+            new ArrayList<>(mUsernameButtons.keySet()), mCurrentRole, mCustomMessage, wpcomBlogId,
+        new PeopleUtils.InvitationsSendCallback() {
+            @Override
+            public void onSent(List<String> succeededUsernames, Map<String, String> failedUsernameErrors) {
+                if (!isAdded()) {
+                    return;
+                }
 
-                        clearUsernames(succeededUsernames);
+                clearUsernames(succeededUsernames);
 
-                        if (failedUsernameErrors.size() != 0) {
-                            clearUsernames(failedUsernameErrors.keySet());
+                if (failedUsernameErrors.size() != 0) {
+                    clearUsernames(failedUsernameErrors.keySet());
 
-                            for (Map.Entry<String, String> error : failedUsernameErrors.entrySet()) {
-                                final String username = error.getKey();
-                                final String errorMessage = error.getValue();
-                                mUsernameResults.put(username, getString(R.string.invite_error_for_username,
-                                                                         username, errorMessage));
-                            }
-
-                            populateUsernameButtons(failedUsernameErrors.keySet());
-
-                            ToastUtils.showToast(getActivity(), succeededUsernames.isEmpty()
-                                    ? R.string.invite_error_sending
-                                    : R.string.invite_error_some_failed);
-                        } else {
-                            ToastUtils.showToast(getActivity(), R.string.invite_sent, ToastUtils.Duration.LONG);
-                        }
-
-                        // set the "SEND" option enabled again
-                        enableSendButton(true);
+                    for (Map.Entry<String, String> error : failedUsernameErrors.entrySet()) {
+                        final String username = error.getKey();
+                        final String errorMessage = error.getValue();
+                        mUsernameResults.put(username, getString(R.string.invite_error_for_username,
+                                             username, errorMessage));
                     }
 
-                    @Override
-                    public void onError() {
-                        if (!isAdded()) {
-                            return;
-                        }
-                        ToastUtils.showToast(getActivity(), R.string.invite_error_sending);
-                        // set the "SEND" option enabled again
-                        enableSendButton(true);
-                    }
-                });
+                    populateUsernameButtons(failedUsernameErrors.keySet());
+
+                    ToastUtils.showToast(getActivity(), succeededUsernames.isEmpty()
+                                         ? R.string.invite_error_sending
+                                         : R.string.invite_error_some_failed);
+                } else {
+                    ToastUtils.showToast(getActivity(), R.string.invite_sent, ToastUtils.Duration.LONG);
+                }
+
+                // set the "SEND" option enabled again
+                enableSendButton(true);
+            }
+
+            @Override
+            public void onError() {
+                if (!isAdded()) {
+                    return;
+                }
+                ToastUtils.showToast(getActivity(), R.string.invite_error_sending);
+                // set the "SEND" option enabled again
+                enableSendButton(true);
+            }
+        });
 
         return true;
     }

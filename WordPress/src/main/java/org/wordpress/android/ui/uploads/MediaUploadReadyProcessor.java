@@ -20,10 +20,10 @@ public class MediaUploadReadyProcessor implements MediaUploadReadyListener {
 
             if (showGutenbergEditor && PostUtils.contentContainsGutenbergBlocks(post.getContent())) {
                 post.setContent(
-                        PostUtils.replaceMediaFileWithUrlInGutenbergPost(post.getContent(), localMediaId, mediaFile));
+                    PostUtils.replaceMediaFileWithUrlInGutenbergPost(post.getContent(), localMediaId, mediaFile));
             } else if (showAztecEditor) {
                 post.setContent(AztecEditorFragment.replaceMediaFileWithUrl(WordPress.getContext(), post.getContent(),
-                                                                            localMediaId, mediaFile));
+                                localMediaId, mediaFile));
             }
         }
 
@@ -32,7 +32,7 @@ public class MediaUploadReadyProcessor implements MediaUploadReadyListener {
 
     @Override
     public PostModel markMediaUploadFailedInPost(@Nullable PostModel post, String localMediaId,
-                                                 final MediaFile mediaFile) {
+            final MediaFile mediaFile) {
         if (post != null) {
             boolean showAztecEditor = AppPrefs.isAztecEditorEnabled();
             boolean showGutenbergEditor = AppPrefs.isGutenbergEditorEnabled();
@@ -41,7 +41,7 @@ public class MediaUploadReadyProcessor implements MediaUploadReadyListener {
                 // TODO check if anything needs be done in Gutenberg
             } else if (showAztecEditor) {
                 post.setContent(AztecEditorFragment.markMediaFailed(WordPress.getContext(), post.getContent(),
-                                                                    localMediaId, mediaFile));
+                                localMediaId, mediaFile));
             }
         }
 

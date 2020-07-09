@@ -71,34 +71,35 @@ public class PermissionUtils {
 
     public static boolean checkCameraAndStoragePermissions(Activity activity) {
         return checkPermissions(activity,
-                                new String[]{
-                                        permission.WRITE_EXTERNAL_STORAGE,
-                                        permission.CAMERA});
+                                new String[] {
+                                    permission.WRITE_EXTERNAL_STORAGE,
+                                    permission.CAMERA
+                                });
     }
 
     public static boolean checkAndRequestCameraAndStoragePermissions(Fragment fragment, int requestCode) {
-        return checkAndRequestPermissions(fragment, requestCode, new String[]{
-                permission.WRITE_EXTERNAL_STORAGE,
-                permission.CAMERA
-        });
+        return checkAndRequestPermissions(fragment, requestCode, new String[] {
+                                              permission.WRITE_EXTERNAL_STORAGE,
+                                              permission.CAMERA
+                                          });
     }
 
     public static boolean checkAndRequestCameraAndStoragePermissions(Activity activity, int requestCode) {
-        return checkAndRequestPermissions(activity, requestCode, new String[]{
-                permission.WRITE_EXTERNAL_STORAGE,
-                permission.CAMERA
-        });
+        return checkAndRequestPermissions(activity, requestCode, new String[] {
+                                              permission.WRITE_EXTERNAL_STORAGE,
+                                              permission.CAMERA
+                                          });
     }
 
     public static boolean checkAndRequestStoragePermission(Activity activity, int requestCode) {
-        return checkAndRequestPermissions(activity, requestCode, new String[]{
-                permission.WRITE_EXTERNAL_STORAGE
-        });
+        return checkAndRequestPermissions(activity, requestCode, new String[] {
+                                              permission.WRITE_EXTERNAL_STORAGE
+                                          });
     }
 
     public static boolean checkAndRequestStoragePermission(Fragment fragment, int requestCode) {
-        return checkAndRequestPermissions(fragment, requestCode, new String[]{
-                permission.WRITE_EXTERNAL_STORAGE
-        });
+        return checkAndRequestPermissions(fragment, requestCode, new String[] {
+                                              permission.WRITE_EXTERNAL_STORAGE
+                                          });
     }
 }

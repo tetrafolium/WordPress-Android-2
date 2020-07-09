@@ -45,16 +45,16 @@ public class InsertMediaDialog extends AppCompatDialogFragment {
         @Override
         public String toString() {
             switch (this) {
-                case CIRCLES:
-                    return "circle";
-                case SLIDESHOW:
-                    return "slideshow";
-                case SQUARES:
-                    return "square";
-                case TILED:
-                    return "rectangular";
-                default:
-                    return "";
+            case CIRCLES:
+                return "circle";
+            case SLIDESHOW:
+                return "slideshow";
+            case SQUARES:
+                return "square";
+            case TILED:
+                return "rectangular";
+            default:
+                return "";
             }
         }
     }
@@ -136,21 +136,21 @@ public class InsertMediaDialog extends AppCompatDialogFragment {
                 public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                     GalleryType galleryType;
                     switch (checkedId) {
-                        case R.id.radio_circles:
-                            galleryType = GalleryType.CIRCLES;
-                            break;
-                        case R.id.radio_slideshow:
-                            galleryType = GalleryType.SLIDESHOW;
-                            break;
-                        case R.id.radio_squares:
-                            galleryType = GalleryType.SQUARES;
-                            break;
-                        case R.id.radio_tiled:
-                            galleryType = GalleryType.TILED;
-                            break;
-                        default:
-                            galleryType = GalleryType.DEFAULT;
-                            break;
+                    case R.id.radio_circles:
+                        galleryType = GalleryType.CIRCLES;
+                        break;
+                    case R.id.radio_slideshow:
+                        galleryType = GalleryType.SLIDESHOW;
+                        break;
+                    case R.id.radio_squares:
+                        galleryType = GalleryType.SQUARES;
+                        break;
+                    case R.id.radio_tiled:
+                        galleryType = GalleryType.TILED;
+                        break;
+                    default:
+                        galleryType = GalleryType.DEFAULT;
+                        break;
                     }
                     setGalleryType(galleryType);
                 }
@@ -237,7 +237,7 @@ public class InsertMediaDialog extends AppCompatDialogFragment {
         mInsertType = insertType;
 
         @IdRes int radioId = insertType == InsertType.GALLERY
-                ? R.id.radio_insert_as_gallery : R.id.radio_insert_individually;
+                             ? R.id.radio_insert_as_gallery : R.id.radio_insert_individually;
         RadioButton radio = (RadioButton) getView().findViewById(radioId);
         if (!radio.isChecked()) {
             radio.setChecked(true);
@@ -274,26 +274,26 @@ public class InsertMediaDialog extends AppCompatDialogFragment {
         @IdRes final int resId;
         @DrawableRes final int drawableId;
         switch (galleryType) {
-            case CIRCLES:
-                resId = R.id.radio_circles;
-                drawableId = R.drawable.gallery_icon_circles;
-                break;
-            case SLIDESHOW:
-                resId = R.id.radio_slideshow;
-                drawableId = R.drawable.gallery_icon_slideshow;
-                break;
-            case SQUARES:
-                resId = R.id.radio_squares;
-                drawableId = R.drawable.gallery_icon_squares;
-                break;
-            case TILED:
-                resId = R.id.radio_tiled;
-                drawableId = R.drawable.gallery_icon_tiled;
-                break;
-            default:
-                resId = R.id.radio_thumbnail_grid;
-                drawableId = R.drawable.gallery_icon_thumbnailgrid;
-                break;
+        case CIRCLES:
+            resId = R.id.radio_circles;
+            drawableId = R.drawable.gallery_icon_circles;
+            break;
+        case SLIDESHOW:
+            resId = R.id.radio_slideshow;
+            drawableId = R.drawable.gallery_icon_slideshow;
+            break;
+        case SQUARES:
+            resId = R.id.radio_squares;
+            drawableId = R.drawable.gallery_icon_squares;
+            break;
+        case TILED:
+            resId = R.id.radio_tiled;
+            drawableId = R.drawable.gallery_icon_tiled;
+            break;
+        default:
+            resId = R.id.radio_thumbnail_grid;
+            drawableId = R.drawable.gallery_icon_thumbnailgrid;
+            break;
         }
 
         RadioButton radio = (RadioButton) mGalleryRadioGroup.findViewById(resId);

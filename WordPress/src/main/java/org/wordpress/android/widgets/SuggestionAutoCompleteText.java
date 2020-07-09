@@ -155,7 +155,7 @@ public class SuggestionAutoCompleteText extends AppCompatMultiAutoCompleteTextVi
         // if no hardware keys are present, associate being focused to having the on-screen keyboard visible
         if (!DeviceUtils.getInstance().hasHardwareKeyboard(getContext())) {
             InputMethodManager inputMethodManager = (InputMethodManager) getContext()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+                                                    .getSystemService(Context.INPUT_METHOD_SERVICE);
 
             if (focused) {
                 // show the on-screen keybpoard if we got focused

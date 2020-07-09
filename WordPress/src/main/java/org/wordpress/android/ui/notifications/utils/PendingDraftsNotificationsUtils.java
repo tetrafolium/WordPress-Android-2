@@ -24,18 +24,18 @@ public class PendingDraftsNotificationsUtils {
         if (post == null || context == null) {
             return;
         }
-            /*
-            Have +1 day, +1 week, +1 month reminders, with different messages randomly chosen, that could even be fun:
+        /*
+        Have +1 day, +1 week, +1 month reminders, with different messages randomly chosen, that could even be fun:
 
-            1 day:
-                You drafted “post title” yesterday. Don’t forget to publish it!
-                Did you know that “post title” is still a draft? Publish away!
-            1 week:
-                Your draft, “post title” awaits you — be sure to publish it!
-                “Post title” remains a draft. Remember to publish it!
-            1 month
-                Don’t leave it hanging! “Post title” is waiting to be published.
-            * */
+        1 day:
+            You drafted “post title” yesterday. Don’t forget to publish it!
+            Did you know that “post title” is still a draft? Publish away!
+        1 week:
+            Your draft, “post title” awaits you — be sure to publish it!
+            “Post title” remains a draft. Remember to publish it!
+        1 month
+            Don’t leave it hanging! “Post title” is waiting to be published.
+        * */
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -110,34 +110,34 @@ public class PendingDraftsNotificationsUtils {
     }
 
     private static PendingIntent getOneDayAlarmIntent(Context context, Intent notifPendingDraftReceiverIntent,
-                                                      int postId) {
+            int postId) {
         PendingIntent alarmIntentOneDay = PendingIntent.getBroadcast(context,
-                                                                     BROADCAST_BASE_REQUEST_CODE
-                                                                     + makePendingDraftNotificationId(postId),
-                                                                     notifPendingDraftReceiverIntent,
-                                                                     PendingIntent.FLAG_UPDATE_CURRENT);
+                                          BROADCAST_BASE_REQUEST_CODE
+                                          + makePendingDraftNotificationId(postId),
+                                          notifPendingDraftReceiverIntent,
+                                          PendingIntent.FLAG_UPDATE_CURRENT);
         return alarmIntentOneDay;
     }
 
     private static PendingIntent getOneWeekAlarmIntent(Context context, Intent notifPendingDraftReceiverIntent,
-                                                       int postId) {
+            int postId) {
         PendingIntent alarmIntentOneWeek = PendingIntent
-                .getBroadcast(context,
-                              BROADCAST_BASE_REQUEST_CODE + 1 + makePendingDraftNotificationId(postId),
-                              // need to add + 1 so the request code is different from oneDay and oneMonth
-                              // pendingIntents, otherwise they overlap
-                              notifPendingDraftReceiverIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                           .getBroadcast(context,
+                                                   BROADCAST_BASE_REQUEST_CODE + 1 + makePendingDraftNotificationId(postId),
+                                                   // need to add + 1 so the request code is different from oneDay and oneMonth
+                                                   // pendingIntents, otherwise they overlap
+                                                   notifPendingDraftReceiverIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return alarmIntentOneWeek;
     }
 
     private static PendingIntent getOneMonthAlarmIntent(Context context, Intent notifPendingDraftReceiverIntent,
-                                                        int postId) {
+            int postId) {
         PendingIntent alarmIntentOneMonth = PendingIntent
-                .getBroadcast(context,
-                              BROADCAST_BASE_REQUEST_CODE + 2 + makePendingDraftNotificationId(postId),
-                              // need to add + 2 so the request code is different from oneDay and oneWeek
-                              // pendingIntents, otherwise they overlap
-                              notifPendingDraftReceiverIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                            .getBroadcast(context,
+                                                    BROADCAST_BASE_REQUEST_CODE + 2 + makePendingDraftNotificationId(postId),
+                                                    // need to add + 2 so the request code is different from oneDay and oneWeek
+                                                    // pendingIntents, otherwise they overlap
+                                                    notifPendingDraftReceiverIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return alarmIntentOneMonth;
     }
 }

@@ -24,9 +24,9 @@ import org.wordpress.android.util.ToastUtils;
 import javax.inject.Inject;
 
 public class PublicizeDetailFragment extends PublicizeBaseFragment
-        implements PublicizeConnectionAdapter.OnAdapterLoadedListener {
+    implements PublicizeConnectionAdapter.OnAdapterLoadedListener {
     public static final String FACEBOOK_SHARING_CHANGE_BLOG_POST =
-            "https://en.blog.wordpress.com/2018/07/23/sharing-options-from-wordpress-com-to-facebook-are-changing/";
+        "https://en.blog.wordpress.com/2018/07/23/sharing-options-from-wordpress-com-to-facebook-are-changing/";
     private SiteModel mSite;
     private String mServiceId;
 
@@ -129,7 +129,7 @@ public class PublicizeDetailFragment extends PublicizeBaseFragment
 
         long currentUserId = mAccountStore.getAccount().getUserId();
         PublicizeConnectionAdapter adapter = new PublicizeConnectionAdapter(
-                getActivity(), mSite.getSiteId(), mService, currentUserId);
+            getActivity(), mSite.getSiteId(), mService, currentUserId);
         adapter.setOnPublicizeActionListener(getOnPublicizeActionListener());
         adapter.setOnAdapterLoadedListener(this);
 
@@ -155,7 +155,7 @@ public class PublicizeDetailFragment extends PublicizeBaseFragment
         learnMoreButton.setOnClickListener(new OnClickListener() {
             @Override public void onClick(View v) {
                 WPWebViewActivity.openURL(getActivity(),
-                        FACEBOOK_SHARING_CHANGE_BLOG_POST);
+                                          FACEBOOK_SHARING_CHANGE_BLOG_POST);
             }
         });
         learnMoreButton.setVisibility(View.VISIBLE);

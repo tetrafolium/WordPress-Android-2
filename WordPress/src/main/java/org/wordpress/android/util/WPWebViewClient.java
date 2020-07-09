@@ -72,8 +72,8 @@ public class WPWebViewClient extends URLFilteredWebViewClient {
 
         // Intercept requests for private images and add the WP.com authorization header
         if (imageUrl != null
-            && WPUrlUtils.safeToAddWordPressComAuthToken(imageUrl)
-            && !TextUtils.isEmpty(mToken)) {
+                && WPUrlUtils.safeToAddWordPressComAuthToken(imageUrl)
+                && !TextUtils.isEmpty(mToken)) {
             try {
                 // Force use of HTTPS for the resource, otherwise the request will fail for private sites
                 HttpURLConnection urlConnection = (HttpURLConnection) imageUrl.openConnection();
@@ -81,8 +81,8 @@ public class WPWebViewClient extends URLFilteredWebViewClient {
                 urlConnection.setReadTimeout(TIMEOUT_MS);
                 urlConnection.setConnectTimeout(TIMEOUT_MS);
                 WebResourceResponse response = new WebResourceResponse(urlConnection.getContentType(),
-                                                                       urlConnection.getContentEncoding(),
-                                                                       urlConnection.getInputStream());
+                        urlConnection.getContentEncoding(),
+                        urlConnection.getInputStream());
                 return response;
             } catch (ClassCastException e) {
                 AppLog.e(AppLog.T.POSTS, "Invalid connection type - URL: " + stringUrl);

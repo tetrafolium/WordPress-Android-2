@@ -65,10 +65,10 @@ public class SmartLockHelper {
             return false;
         }
         mCredentialsClient = new GoogleApiClient.Builder(activity)
-                .addConnectionCallbacks((ConnectionCallbacks) activity)
-                .enableAutoManage(activity, (OnConnectionFailedListener) activity)
-                .addApi(Auth.CREDENTIALS_API)
-                .build();
+        .addConnectionCallbacks((ConnectionCallbacks) activity)
+        .enableAutoManage(activity, (OnConnectionFailedListener) activity)
+        .addApi(Auth.CREDENTIALS_API)
+        .build();
         return true;
     }
 
@@ -78,39 +78,39 @@ public class SmartLockHelper {
             return;
         }
         CredentialRequest credentialRequest = new CredentialRequest.Builder()
-                .setPasswordLoginSupported(true)
-                .build();
+        .setPasswordLoginSupported(true)
+        .build();
         Auth.CredentialsApi.request(mCredentialsClient, credentialRequest).setResultCallback(
-                new ResultCallback<CredentialRequestResult>() {
-                    @Override
-                    public void onResult(@NonNull CredentialRequestResult result) {
-                        Status status = result.getStatus();
-                        if (status.isSuccess()) {
-                            Credential credential = result.getCredential();
-                            callback.onCredentialRetrieved(credential);
-                        } else {
-                            if (status.getStatusCode() == CommonStatusCodes.RESOLUTION_REQUIRED) {
-                                try {
-                                    Activity activity = getActivityAndCheckAvailability();
-                                    if (activity == null) {
-                                        return;
-                                    }
-                                    // Prompt the user to choose a saved credential
-                                    status.startResolutionForResult(activity, RequestCodes.SMART_LOCK_READ);
-                                } catch (IntentSender.SendIntentException e) {
-                                    AppLog.d(T.NUX, "SmartLock: Failed to send resolution for credential request");
-
-                                    callback.onCredentialsUnavailable();
-                                }
-                            } else {
-                                // The user must create an account or log in manually.
-                                AppLog.d(T.NUX, "SmartLock: Unsuccessful credential request.");
-
-                                callback.onCredentialsUnavailable();
+        new ResultCallback<CredentialRequestResult>() {
+            @Override
+            public void onResult(@NonNull CredentialRequestResult result) {
+                Status status = result.getStatus();
+                if (status.isSuccess()) {
+                    Credential credential = result.getCredential();
+                    callback.onCredentialRetrieved(credential);
+                } else {
+                    if (status.getStatusCode() == CommonStatusCodes.RESOLUTION_REQUIRED) {
+                        try {
+                            Activity activity = getActivityAndCheckAvailability();
+                            if (activity == null) {
+                                return;
                             }
+                            // Prompt the user to choose a saved credential
+                            status.startResolutionForResult(activity, RequestCodes.SMART_LOCK_READ);
+                        } catch (IntentSender.SendIntentException e) {
+                            AppLog.d(T.NUX, "SmartLock: Failed to send resolution for credential request");
+
+                            callback.onCredentialsUnavailable();
                         }
+                    } else {
+                        // The user must create an account or log in manually.
+                        AppLog.d(T.NUX, "SmartLock: Unsuccessful credential request.");
+
+                        callback.onCredentialsUnavailable();
                     }
-                });
+                }
+            }
+        });
     }
 
 
@@ -120,7 +120,7 @@ public class SmartLockHelper {
         // https://github.com/wordpress-mobile/WordPress-Android/issues/5850
         if (TextUtils.isEmpty(password) || TextUtils.isEmpty(username)) {
             AppLog.i(T.MAIN, String.format(
-                    "Cannot save Smart Lock credentials, username (%s) or password (%s) is empty", username, password));
+                         "Cannot save Smart Lock credentials, username (%s) or password (%s) is empty", username, password));
             return;
         }
 
@@ -129,26 +129,26 @@ public class SmartLockHelper {
             return;
         }
         Credential credential = new Credential.Builder(username).setPassword(password)
-                                                                .setName(displayName)
-                                                                .setProfilePictureUri(profilePicture).build();
+        .setName(displayName)
+        .setProfilePictureUri(profilePicture).build();
         Auth.CredentialsApi.save(mCredentialsClient, credential).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        if (!status.isSuccess() && status.hasResolution()) {
-                            try {
-                                Activity activity = getActivityAndCheckAvailability();
-                                if (activity == null) {
-                                    return;
-                                }
-                                // This prompt the user to resolve the save request
-                                status.startResolutionForResult(activity, RequestCodes.SMART_LOCK_SAVE);
-                            } catch (IntentSender.SendIntentException e) {
-                                // Could not resolve the request
-                            }
+        new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                if (!status.isSuccess() && status.hasResolution()) {
+                    try {
+                        Activity activity = getActivityAndCheckAvailability();
+                        if (activity == null) {
+                            return;
                         }
+                        // This prompt the user to resolve the save request
+                        status.startResolutionForResult(activity, RequestCodes.SMART_LOCK_SAVE);
+                    } catch (IntentSender.SendIntentException e) {
+                        // Could not resolve the request
                     }
-                });
+                }
+            }
+        });
     }
 
     public void deleteCredentialsInSmartLock(@NonNull final String username, @NonNull final String password) {
@@ -159,13 +159,13 @@ public class SmartLockHelper {
 
         Credential credential = new Credential.Builder(username).setPassword(password).build();
         Auth.CredentialsApi.delete(mCredentialsClient, credential).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        AppLog.i(T.NUX, status.isSuccess() ? "SmartLock: credentials deleted for username: " + username
-                                : "SmartLock: Credentials not deleted for username: " + username);
-                    }
-                });
+        new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                AppLog.i(T.NUX, status.isSuccess() ? "SmartLock: credentials deleted for username: " + username
+                         : "SmartLock: Credentials not deleted for username: " + username);
+            }
+        });
     }
 
     public void disableAutoSignIn() {

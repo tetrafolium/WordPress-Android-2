@@ -163,22 +163,22 @@ import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
 @Component(modules = {
-        ApplicationModule.class,
-        AppConfigModule.class,
-        ReleaseBaseModule.class,
-        ReleaseOkHttpClientModule.class,
-        ReleaseNetworkModule.class,
-        LegacyModule.class,
-        ReleaseToolsModule.class,
-        AndroidSupportInjectionModule.class,
-        ViewModelModule.class,
-        StatsModule.class,
-        SupportModule.class,
-        ThreadModule.class,
-        // Login flow library
-        LoginAnalyticsModule.class,
-        LoginFragmentModule.class,
-        LoginServiceModule.class
+    ApplicationModule.class,
+    AppConfigModule.class,
+    ReleaseBaseModule.class,
+    ReleaseOkHttpClientModule.class,
+    ReleaseNetworkModule.class,
+    LegacyModule.class,
+    ReleaseToolsModule.class,
+    AndroidSupportInjectionModule.class,
+    ViewModelModule.class,
+    StatsModule.class,
+    SupportModule.class,
+    ThreadModule.class,
+    // Login flow library
+    LoginAnalyticsModule.class,
+    LoginFragmentModule.class,
+    LoginServiceModule.class
 })
 public interface AppComponent extends AndroidInjector<WordPress> {
     @Override

@@ -95,12 +95,12 @@ public class LoginWpcomService extends AutoForeground<LoginState> {
         @Override
         public boolean isError() {
             return mStep == LoginStep.FAILURE
-                    || mStep == LoginStep.FAILURE_EMAIL_WRONG_PASSWORD
-                    || mStep == LoginStep.FAILURE_2FA
-                    || mStep == LoginStep.FAILURE_SOCIAL_2FA
-                    || mStep == LoginStep.FAILURE_FETCHING_ACCOUNT
-                    || mStep == LoginStep.FAILURE_CANNOT_ADD_DUPLICATE_SITE
-                    || mStep == LoginStep.FAILURE_USE_WPCOM_USERNAME_INSTEAD_OF_EMAIL;
+                   || mStep == LoginStep.FAILURE_EMAIL_WRONG_PASSWORD
+                   || mStep == LoginStep.FAILURE_2FA
+                   || mStep == LoginStep.FAILURE_SOCIAL_2FA
+                   || mStep == LoginStep.FAILURE_FETCHING_ACCOUNT
+                   || mStep == LoginStep.FAILURE_CANNOT_ADD_DUPLICATE_SITE
+                   || mStep == LoginStep.FAILURE_USE_WPCOM_USERNAME_INSTEAD_OF_EMAIL;
         }
 
         @Override
@@ -157,11 +157,11 @@ public class LoginWpcomService extends AutoForeground<LoginState> {
     private boolean mIsSocialLogin;
 
     public static void loginWithEmailAndPassword(
-            Context context,
-            String email,
-            String password,
-            String idToken, String service,
-            boolean isSocialLogin) {
+        Context context,
+        String email,
+        String password,
+        String idToken, String service,
+        boolean isSocialLogin) {
         Intent intent = new Intent(context, LoginWpcomService.class);
         intent.putExtra(ARG_EMAIL, email);
         intent.putExtra(ARG_PASSWORD, password);
@@ -192,26 +192,26 @@ public class LoginWpcomService extends AutoForeground<LoginState> {
     @Override
     public Notification getNotification(LoginState state) {
         switch (state.getStep()) {
-            case AUTHENTICATING:
-            case SOCIAL_LOGIN:
-            case FETCHING_ACCOUNT:
-            case FETCHING_SETTINGS:
-            case FETCHING_SITES:
-                return LoginNotification.progress(this, state.getStep().progressPercent);
-            case SUCCESS:
-                return LoginNotification.success(this);
-            case FAILURE_EMAIL_WRONG_PASSWORD:
-                return LoginNotification.failure(this, R.string.notification_error_wrong_password);
-            case FAILURE_2FA:
-                return LoginNotification.failure(this, R.string.notification_2fa_needed);
-            case FAILURE_SOCIAL_2FA:
-                return LoginNotification.failure(this, R.string.notification_2fa_needed);
-            case FAILURE_USE_WPCOM_USERNAME_INSTEAD_OF_EMAIL:
-                return LoginNotification.failure(this, R.string.notification_wpcom_username_needed);
-            case FAILURE_FETCHING_ACCOUNT:
-            case FAILURE_CANNOT_ADD_DUPLICATE_SITE:
-            case FAILURE:
-                return LoginNotification.failure(this, R.string.notification_login_failed);
+        case AUTHENTICATING:
+        case SOCIAL_LOGIN:
+        case FETCHING_ACCOUNT:
+        case FETCHING_SETTINGS:
+        case FETCHING_SITES:
+            return LoginNotification.progress(this, state.getStep().progressPercent);
+        case SUCCESS:
+            return LoginNotification.success(this);
+        case FAILURE_EMAIL_WRONG_PASSWORD:
+            return LoginNotification.failure(this, R.string.notification_error_wrong_password);
+        case FAILURE_2FA:
+            return LoginNotification.failure(this, R.string.notification_2fa_needed);
+        case FAILURE_SOCIAL_2FA:
+            return LoginNotification.failure(this, R.string.notification_2fa_needed);
+        case FAILURE_USE_WPCOM_USERNAME_INSTEAD_OF_EMAIL:
+            return LoginNotification.failure(this, R.string.notification_wpcom_username_needed);
+        case FAILURE_FETCHING_ACCOUNT:
+        case FAILURE_CANNOT_ADD_DUPLICATE_SITE:
+        case FAILURE:
+            return LoginNotification.failure(this, R.string.notification_login_failed);
         }
 
         return null;
@@ -267,41 +267,41 @@ public class LoginWpcomService extends AutoForeground<LoginState> {
     private void handleAuthError(AuthenticationErrorType error, String errorMessage) {
         if (error != AuthenticationErrorType.NEEDS_2FA) {
             mAnalyticsListener.trackLoginFailed(error.getClass().getSimpleName(),
-                    error.toString(), errorMessage);
+                                                error.toString(), errorMessage);
 
             if (mIsSocialLogin) {
                 mAnalyticsListener.trackSocialFailure(error.getClass().getSimpleName(),
-                        error.toString(), errorMessage);
+                                                      error.toString(), errorMessage);
             }
         }
 
         switch (error) {
-            case INCORRECT_USERNAME_OR_PASSWORD:
-            case NOT_AUTHENTICATED: // NOT_AUTHENTICATED is the generic error from XMLRPC response on first call.
-                setState(LoginStep.FAILURE_EMAIL_WRONG_PASSWORD);
-                break;
-            case NEEDS_2FA:
-                // login credentials were correct anyway so, offer to save to SmartLock
-                signalCredentialsOK();
+        case INCORRECT_USERNAME_OR_PASSWORD:
+        case NOT_AUTHENTICATED: // NOT_AUTHENTICATED is the generic error from XMLRPC response on first call.
+            setState(LoginStep.FAILURE_EMAIL_WRONG_PASSWORD);
+            break;
+        case NEEDS_2FA:
+            // login credentials were correct anyway so, offer to save to SmartLock
+            signalCredentialsOK();
 
-                if (mIsSocialLogin) {
-                    setState(LoginStep.FAILURE_SOCIAL_2FA);
-                } else {
-                    setState(LoginStep.FAILURE_2FA);
-                }
+            if (mIsSocialLogin) {
+                setState(LoginStep.FAILURE_SOCIAL_2FA);
+            } else {
+                setState(LoginStep.FAILURE_2FA);
+            }
 
-                break;
-            case EMAIL_LOGIN_NOT_ALLOWED:
-                setState(LoginStep.FAILURE_USE_WPCOM_USERNAME_INSTEAD_OF_EMAIL);
-                break;
-            case INVALID_REQUEST:
-                // TODO: FluxC: could be specific?
-            default:
-                setState(LoginStep.FAILURE);
-                AppLog.e(T.NUX, "Server response: " + errorMessage);
+            break;
+        case EMAIL_LOGIN_NOT_ALLOWED:
+            setState(LoginStep.FAILURE_USE_WPCOM_USERNAME_INSTEAD_OF_EMAIL);
+            break;
+        case INVALID_REQUEST:
+        // TODO: FluxC: could be specific?
+        default:
+            setState(LoginStep.FAILURE);
+            AppLog.e(T.NUX, "Server response: " + errorMessage);
 
-                ToastUtils.showToast(this, errorMessage == null ? getString(R.string.error_generic) : errorMessage);
-                break;
+            ToastUtils.showToast(this, errorMessage == null ? getString(R.string.error_generic) : errorMessage);
+            break;
         }
     }
 
@@ -343,12 +343,12 @@ public class LoginWpcomService extends AutoForeground<LoginState> {
         if (event.isError()) {
             mAnalyticsListener.trackSocialConnectFailure();
             switch (event.error.type) {
-                case UNABLE_CONNECT:
-                    AppLog.e(T.API, "Unable to connect WordPress.com account to social account.");
-                    break;
-                case USER_ALREADY_ASSOCIATED:
-                    AppLog.e(T.API, "This social account is already associated with a WordPress.com account.");
-                    break;
+            case UNABLE_CONNECT:
+                AppLog.e(T.API, "Unable to connect WordPress.com account to social account.");
+                break;
+            case USER_ALREADY_ASSOCIATED:
+                AppLog.e(T.API, "This social account is already associated with a WordPress.com account.");
+                break;
                 // Ignore other error cases.  The above are the only two we have chosen to log.
             }
 

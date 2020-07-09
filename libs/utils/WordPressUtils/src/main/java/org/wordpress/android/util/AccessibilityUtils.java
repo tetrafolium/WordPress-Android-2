@@ -24,6 +24,6 @@ public class AccessibilityUtils {
      */
     public static int getSnackbarDuration(Context ctx, int defaultDuration) {
         return defaultDuration == Snackbar.LENGTH_INDEFINITE ? Snackbar.LENGTH_INDEFINITE
-                : isAccessibilityEnabled(ctx) ? SNACKBAR_WITH_ACTION_DURATION_IN_MILLIS : defaultDuration;
+               : isAccessibilityEnabled(ctx) ? SNACKBAR_WITH_ACTION_DURATION_IN_MILLIS : defaultDuration;
     }
 }

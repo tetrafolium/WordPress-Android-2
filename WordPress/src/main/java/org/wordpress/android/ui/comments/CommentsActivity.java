@@ -45,9 +45,9 @@ import org.wordpress.android.widgets.WPSnackbar;
 import javax.inject.Inject;
 
 public class CommentsActivity extends AppCompatActivity
-        implements OnCommentSelectedListener,
-        NotificationFragment.OnPostClickListener,
-        BasicFragmentDialog.BasicDialogPositiveClickInterface {
+    implements OnCommentSelectedListener,
+    NotificationFragment.OnPostClickListener,
+    BasicFragmentDialog.BasicDialogPositiveClickInterface {
     static final String KEY_AUTO_REFRESHED = "has_auto_refreshed";
     static final String KEY_EMPTY_VIEW_MESSAGE = "empty_view_message";
     private static final String SAVED_COMMENTS_STATUS_TYPE = "saved_comments_status_type";
@@ -107,9 +107,9 @@ public class CommentsActivity extends AppCompatActivity
             // initialize comment status filter first time
             commentsListFragment.setCommentStatusFilter(mCurrentCommentStatusType);
             getSupportFragmentManager().beginTransaction()
-                                .add(R.id.layout_fragment_container, commentsListFragment,
-                                     getString(R.string.fragment_tag_comment_list))
-                                .commitAllowingStateLoss();
+            .add(R.id.layout_fragment_container, commentsListFragment,
+                 getString(R.string.fragment_tag_comment_list))
+            .commitAllowingStateLoss();
         } else {
             getIntent().putExtra(KEY_AUTO_REFRESHED, savedInstanceState.getBoolean(KEY_AUTO_REFRESHED));
             getIntent().putExtra(KEY_EMPTY_VIEW_MESSAGE, savedInstanceState.getString(KEY_EMPTY_VIEW_MESSAGE));
@@ -149,7 +149,7 @@ public class CommentsActivity extends AppCompatActivity
 
     private CommentsListFragment getListFragment() {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(getString(
-                R.string.fragment_tag_comment_list));
+                                R.string.fragment_tag_comment_list));
         if (fragment == null) {
             return null;
         }
@@ -168,8 +168,8 @@ public class CommentsActivity extends AppCompatActivity
         FragmentTransaction ft = fm.beginTransaction();
         String tagForFragment = getString(R.string.fragment_tag_reader_post_detail);
         ft.add(R.id.layout_fragment_container, fragment, tagForFragment)
-          .addToBackStack(tagForFragment)
-          .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        .addToBackStack(tagForFragment)
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
 
@@ -240,8 +240,8 @@ public class CommentsActivity extends AppCompatActivity
             getListFragment().removeComment(comment);
 
             String message = (newStatus == CommentStatus.TRASH ? getString(R.string.comment_trashed)
-                    : newStatus == CommentStatus.SPAM ? getString(R.string.comment_spammed)
-                            : getString(R.string.comment_deleted_permanently));
+                              : newStatus == CommentStatus.SPAM ? getString(R.string.comment_spammed)
+                              : getString(R.string.comment_deleted_permanently));
             View.OnClickListener undoListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -251,7 +251,7 @@ public class CommentsActivity extends AppCompatActivity
             };
 
             WPSnackbar snackbar = WPSnackbar.make(getListFragment().getView(), message, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.undo, undoListener);
+                                  .setAction(R.string.undo, undoListener);
 
             // do the actual moderation once the undo bar has been hidden
             snackbar.setCallback(new Snackbar.Callback() {

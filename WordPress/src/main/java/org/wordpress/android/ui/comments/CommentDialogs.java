@@ -23,23 +23,23 @@ class CommentDialogs {
     public static Dialog createCommentDialog(Activity activity, int dialogId) {
         final int resId;
         switch (dialogId) {
-            case ID_COMMENT_DLG_APPROVING:
-                resId = R.string.dlg_approving_comments;
-                break;
-            case ID_COMMENT_DLG_DISAPPROVING:
-                resId = R.string.dlg_unapproving_comments;
-                break;
-            case ID_COMMENT_DLG_TRASHING:
-                resId = R.string.dlg_trashing_comments;
-                break;
-            case ID_COMMENT_DLG_SPAMMING:
-                resId = R.string.dlg_spamming_comments;
-                break;
-            case ID_COMMENT_DLG_DELETING:
-                resId = R.string.dlg_deleting_comments;
-                break;
-            default:
-                return null;
+        case ID_COMMENT_DLG_APPROVING:
+            resId = R.string.dlg_approving_comments;
+            break;
+        case ID_COMMENT_DLG_DISAPPROVING:
+            resId = R.string.dlg_unapproving_comments;
+            break;
+        case ID_COMMENT_DLG_TRASHING:
+            resId = R.string.dlg_trashing_comments;
+            break;
+        case ID_COMMENT_DLG_SPAMMING:
+            resId = R.string.dlg_spamming_comments;
+            break;
+        case ID_COMMENT_DLG_DELETING:
+            resId = R.string.dlg_deleting_comments;
+            break;
+        default:
+            return null;
         }
 
         ProgressDialog dialog = new ProgressDialog(activity);

@@ -47,9 +47,9 @@ public class QuickStartReminderReceiver extends BroadcastReceiver {
 
         // Failsafes
         if (quickStartTaskDetails == null || siteLocalId == -1 || AppPrefs.isQuickStartDisabled()
-            || !mQuickStartStore.hasDoneTask(siteLocalId, QuickStartTask.CREATE_SITE)
-            || mQuickStartStore.getQuickStartCompleted(siteLocalId)
-            || mQuickStartStore.hasDoneTask(siteLocalId, quickStartTaskDetails.getTask())) {
+                || !mQuickStartStore.hasDoneTask(siteLocalId, QuickStartTask.CREATE_SITE)
+                || mQuickStartStore.getQuickStartCompleted(siteLocalId)
+                || mQuickStartStore.hasDoneTask(siteLocalId, quickStartTaskDetails.getTask())) {
             return;
         }
 
@@ -65,15 +65,15 @@ public class QuickStartReminderReceiver extends BroadcastReceiver {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         Notification notification = new NotificationCompat.Builder(context,
                 context.getString(R.string.notification_channel_reminder_id))
-                .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
-                .setContentTitle(context.getString(quickStartTaskDetails.getTitleResId()))
-                .setContentText(context.getString(quickStartTaskDetails.getSubtitleResId()))
-                .setOnlyAlertOnce(true)
-                .setAutoCancel(true)
-                .setContentIntent(notificationContentIntent)
-                .setDeleteIntent(NotificationsProcessingService
-                        .getPendingIntentForNotificationDismiss(context, QUICK_START_REMINDER_NOTIFICATION))
-                .build();
+        .setSmallIcon(R.drawable.ic_my_sites_white_24dp)
+        .setContentTitle(context.getString(quickStartTaskDetails.getTitleResId()))
+        .setContentText(context.getString(quickStartTaskDetails.getSubtitleResId()))
+        .setOnlyAlertOnce(true)
+        .setAutoCancel(true)
+        .setContentIntent(notificationContentIntent)
+        .setDeleteIntent(NotificationsProcessingService
+                         .getPendingIntentForNotificationDismiss(context, QUICK_START_REMINDER_NOTIFICATION))
+        .build();
 
         notificationManager.notify(QUICK_START_REMINDER_NOTIFICATION, notification);
         AnalyticsTracker.track(Stat.QUICK_START_NOTIFICATION_SENT);

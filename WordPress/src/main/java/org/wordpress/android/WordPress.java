@@ -115,7 +115,7 @@ import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 public class WordPress extends MultiDexApplication implements HasServiceInjector, HasSupportFragmentInjector,
-        LifecycleObserver {
+    LifecycleObserver {
     public static final String SITE = "SITE";
     public static final String LOCAL_SITE_ID = "LOCAL_SITE_ID";
     public static String versionName;
@@ -238,7 +238,7 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
             public void onLog(T tag, LogLevel logLevel, String message) {
                 StringBuffer sb = new StringBuffer();
                 sb.append(logLevel.toString()).append("/").append(AppLog.TAG).append("-")
-                  .append(tag.toString()).append(": ").append(message);
+                .append(tag.toString()).append(": ").append(message);
                 CrashLoggingUtils.log(sb.toString());
             }
         });
@@ -253,16 +253,16 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
         // EventBus setup
         EventBus.TAG = "WordPress-EVENT";
         EventBus.builder()
-                .logNoSubscriberMessages(false)
-                .sendNoSubscriberEvent(false)
-                .throwSubscriberException(true)
-                .installDefaultEventBus();
+        .logNoSubscriberMessages(false)
+        .sendNoSubscriberEvent(false)
+        .throwSubscriberException(true)
+        .installDefaultEventBus();
 
 
         RestClientUtils.setUserAgent(getUserAgent());
 
         mZendeskHelper.setupZendesk(this, BuildConfig.ZENDESK_DOMAIN, BuildConfig.ZENDESK_APP_ID,
-                BuildConfig.ZENDESK_OAUTH_CLIENT_ID);
+                                    BuildConfig.ZENDESK_OAUTH_CLIENT_ID);
 
         MemoryAndConfigChangeMonitor memoryAndConfigChangeMonitor = new MemoryAndConfigChangeMonitor();
         registerComponentCallbacks(memoryAndConfigChangeMonitor);
@@ -291,17 +291,17 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
 
         // setup the Credentials Client so we can clean it up on wpcom logout
         mCredentialsClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(@Nullable Bundle bundle) {
-                    }
+        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+            }
 
-                    @Override
-                    public void onConnectionSuspended(int i) {
-                    }
-                })
-                .addApi(Auth.CREDENTIALS_API)
-                .build();
+            @Override
+            public void onConnectionSuspended(int i) {
+            }
+        })
+        .addApi(Auth.CREDENTIALS_API)
+        .build();
         mCredentialsClient.connect();
 
         initWorkManager();
@@ -314,7 +314,7 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
     protected void initWorkManager() {
         UploadWorker.Factory factory = new UploadWorker.Factory(mUploadStarter, mSiteStore);
         androidx.work.Configuration config =
-                (new androidx.work.Configuration.Builder()).setWorkerFactory(factory).build();
+            (new androidx.work.Configuration.Builder()).setWorkerFactory(factory).build();
         WorkManager.initialize(this, config);
     }
 
@@ -325,8 +325,8 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
 
     protected void initDaggerComponent() {
         mAppComponent = DaggerAppComponent.builder()
-                                          .application(this)
-                                          .build();
+                        .application(this)
+                        .build();
     }
 
     private void sanitizeMediaUploadStateForSite() {
@@ -347,27 +347,27 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NORMAL channel (used for likes, comments, replies, etc.)
             NotificationChannel normalChannel = new NotificationChannel(
-                    getString(R.string.notification_channel_normal_id),
-                    getString(R.string.notification_channel_general_title), NotificationManager.IMPORTANCE_DEFAULT);
+                getString(R.string.notification_channel_normal_id),
+                getString(R.string.notification_channel_general_title), NotificationManager.IMPORTANCE_DEFAULT);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = (NotificationManager) getSystemService(
-                    NOTIFICATION_SERVICE);
+                        NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(normalChannel);
 
 
             // Create the IMPORTANT channel (used for 2fa auth, for example)
             NotificationChannel importantChannel = new NotificationChannel(
-                    getString(R.string.notification_channel_important_id),
-                    getString(R.string.notification_channel_important_title), NotificationManager.IMPORTANCE_HIGH);
+                getString(R.string.notification_channel_important_id),
+                getString(R.string.notification_channel_important_title), NotificationManager.IMPORTANCE_HIGH);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             notificationManager.createNotificationChannel(importantChannel);
 
             // Create the REMINDER channel (used for various reminders, like Quick Start, etc.)
             NotificationChannel reminderChannel = new NotificationChannel(
-                    getString(R.string.notification_channel_reminder_id),
-                    getString(R.string.notification_channel_reminder_title), NotificationManager.IMPORTANCE_LOW);
+                getString(R.string.notification_channel_reminder_id),
+                getString(R.string.notification_channel_reminder_title), NotificationManager.IMPORTANCE_LOW);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             notificationManager.createNotificationChannel(reminderChannel);
@@ -375,8 +375,8 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
             // Create the TRANSIENT channel (used for short-lived notifications such as processing a Like/Approve,
             // or media upload)
             NotificationChannel transientChannel = new NotificationChannel(
-                    getString(R.string.notification_channel_transient_id),
-                    getString(R.string.notification_channel_transient_title), NotificationManager.IMPORTANCE_DEFAULT);
+                getString(R.string.notification_channel_transient_id),
+                getString(R.string.notification_channel_transient_title), NotificationManager.IMPORTANCE_DEFAULT);
             transientChannel.setSound(null, null);
             transientChannel.enableVibration(false);
             transientChannel.enableLights(false);
@@ -468,7 +468,7 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
     public static RestClientUtils getRestClientUtilsV1_1() {
         if (sRestClientUtilsVersion1p1 == null) {
             sRestClientUtilsVersion1p1 = new RestClientUtils(mContext, sRequestQueue, sOAuthAuthenticator,
-                                                             null, RestClient.REST_CLIENT_VERSIONS.V1_1);
+                    null, RestClient.REST_CLIENT_VERSIONS.V1_1);
         }
         return sRestClientUtilsVersion1p1;
     }
@@ -476,7 +476,7 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
     public static RestClientUtils getRestClientUtilsV1_2() {
         if (sRestClientUtilsVersion1p2 == null) {
             sRestClientUtilsVersion1p2 = new RestClientUtils(mContext, sRequestQueue, sOAuthAuthenticator,
-                                                             null, RestClient.REST_CLIENT_VERSIONS.V1_2);
+                    null, RestClient.REST_CLIENT_VERSIONS.V1_2);
         }
         return sRestClientUtilsVersion1p2;
     }
@@ -484,7 +484,7 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
     public static RestClientUtils getRestClientUtilsV1_3() {
         if (sRestClientUtilsVersion1p3 == null) {
             sRestClientUtilsVersion1p3 = new RestClientUtils(mContext, sRequestQueue, sOAuthAuthenticator,
-                                                             null, RestClient.REST_CLIENT_VERSIONS.V1_3);
+                    null, RestClient.REST_CLIENT_VERSIONS.V1_3);
         }
         return sRestClientUtilsVersion1p3;
     }
@@ -492,7 +492,7 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
     public static RestClientUtils getRestClientUtilsV0() {
         if (sRestClientUtilsVersion0 == null) {
             sRestClientUtilsVersion0 = new RestClientUtils(mContext, sRequestQueue, sOAuthAuthenticator,
-                                                           null, RestClient.REST_CLIENT_VERSIONS.V0);
+                    null, RestClient.REST_CLIENT_VERSIONS.V0);
         }
         return sRestClientUtilsVersion0;
     }
@@ -832,7 +832,7 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
             if (!mConnectionReceiverRegistered) {
                 mConnectionReceiverRegistered = true;
                 registerReceiver(ConnectionChangeReceiver.getInstance(),
-                        new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+                                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
             }
             AnalyticsUtils.refreshMetadata(mAccountStore, mSiteStore);
             mApplicationOpenedDate = new Date();
@@ -886,17 +886,17 @@ public class WordPress extends MultiDexApplication implements HasServiceInjector
         public void onTrimMemory(final int level) {
             boolean evictBitmaps = false;
             switch (level) {
-                case TRIM_MEMORY_COMPLETE:
-                case TRIM_MEMORY_MODERATE:
-                case TRIM_MEMORY_RUNNING_MODERATE:
-                case TRIM_MEMORY_RUNNING_CRITICAL:
-                case TRIM_MEMORY_RUNNING_LOW:
-                    evictBitmaps = true;
-                    break;
-                case TRIM_MEMORY_BACKGROUND:
-                case TRIM_MEMORY_UI_HIDDEN:
-                default:
-                    break;
+            case TRIM_MEMORY_COMPLETE:
+            case TRIM_MEMORY_MODERATE:
+            case TRIM_MEMORY_RUNNING_MODERATE:
+            case TRIM_MEMORY_RUNNING_CRITICAL:
+            case TRIM_MEMORY_RUNNING_LOW:
+                evictBitmaps = true;
+                break;
+            case TRIM_MEMORY_BACKGROUND:
+            case TRIM_MEMORY_UI_HIDDEN:
+            default:
+                break;
             }
 
             if (evictBitmaps && mBitmapCache != null) {

@@ -50,7 +50,7 @@ import static android.app.Activity.RESULT_OK;
 import dagger.android.support.AndroidSupportInjection;
 
 public class SignupEmailFragment extends LoginBaseFormFragment<LoginListener> implements TextWatcher,
-        OnEditorCommitListener, ConnectionCallbacks, OnConnectionFailedListener {
+    OnEditorCommitListener, ConnectionCallbacks, OnConnectionFailedListener {
     private static final String KEY_HAS_DISMISSED_EMAIL_HINTS = "KEY_HAS_DISMISSED_EMAIL_HINTS";
     private static final String KEY_IS_DISPLAYING_EMAIL_HINTS = "KEY_IS_DISPLAYING_EMAIL_HINTS";
     private static final String KEY_REQUESTED_EMAIL = "KEY_REQUESTED_EMAIL";
@@ -146,10 +146,10 @@ public class SignupEmailFragment extends LoginBaseFormFragment<LoginListener> im
     @Override public void onStart() {
         super.onStart();
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(SignupEmailFragment.this)
-                .enableAutoManage(getActivity(), GOOGLE_API_CLIENT_ID, SignupEmailFragment.this)
-                .addApi(Auth.CREDENTIALS_API)
-                .build();
+        .addConnectionCallbacks(SignupEmailFragment.this)
+        .enableAutoManage(getActivity(), GOOGLE_API_CLIENT_ID, SignupEmailFragment.this)
+        .addApi(Auth.CREDENTIALS_API)
+        .build();
     }
 
     @Override
@@ -233,9 +233,9 @@ public class SignupEmailFragment extends LoginBaseFormFragment<LoginListener> im
 
     protected void showErrorDialog(String message) {
         AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginTheme))
-                .setMessage(message)
-                .setPositiveButton(R.string.login_error_button, null)
-                .create();
+        .setMessage(message)
+        .setPositiveButton(R.string.login_error_button, null)
+        .create();
         dialog.show();
     }
 
@@ -262,26 +262,26 @@ public class SignupEmailFragment extends LoginBaseFormFragment<LoginListener> im
                 showErrorDialog(getString(R.string.signup_email_error_generic));
             } else {
                 switch (event.type) {
-                    case EMAIL:
-                        ActivityUtils.hideKeyboard(getActivity());
+                case EMAIL:
+                    ActivityUtils.hideKeyboard(getActivity());
 
-                        if (mLoginListener != null) {
-                            if (event.isAvailable) {
-                                mLoginListener.showSignupMagicLink(event.value);
-                            } else {
-                                mAnalyticsListener.trackSignupEmailToLogin();
-                                mLoginListener.showSignupToLoginMessage();
-                                mLoginListener.gotWpcomEmail(event.value);
-                                // Kill connections with FluxC and this fragment since the flow is changing to login.
-                                mDispatcher.unregister(this);
-                                getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-                            }
+                    if (mLoginListener != null) {
+                        if (event.isAvailable) {
+                            mLoginListener.showSignupMagicLink(event.value);
+                        } else {
+                            mAnalyticsListener.trackSignupEmailToLogin();
+                            mLoginListener.showSignupToLoginMessage();
+                            mLoginListener.gotWpcomEmail(event.value);
+                            // Kill connections with FluxC and this fragment since the flow is changing to login.
+                            mDispatcher.unregister(this);
+                            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
                         }
+                    }
 
-                        break;
-                    default:
-                        AppLog.e(T.API, "OnAvailabilityChecked unhandled event: " + event.error.type);
-                        break;
+                    break;
+                default:
+                    AppLog.e(T.API, "OnAvailabilityChecked unhandled event: " + event.error.type);
+                    break;
                 }
             }
         }
@@ -305,16 +305,16 @@ public class SignupEmailFragment extends LoginBaseFormFragment<LoginListener> im
     public void getEmailHints() {
         GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
         if (getContext() == null
-            || googleApiAvailability.isGooglePlayServicesAvailable(getContext()) != ConnectionResult.SUCCESS) {
+                || googleApiAvailability.isGooglePlayServicesAvailable(getContext()) != ConnectionResult.SUCCESS) {
             AppLog.w(T.NUX, LOG_TAG + ": Couldn't start hint picker - Play Services unavailable");
             return;
         }
         HintRequest hintRequest = new HintRequest.Builder()
-                .setHintPickerConfig(new CredentialPickerConfig.Builder()
-                        .setShowCancelButton(true)
-                        .build())
-                .setEmailAddressIdentifierSupported(true)
-                .build();
+        .setHintPickerConfig(new CredentialPickerConfig.Builder()
+                             .setShowCancelButton(true)
+                             .build())
+        .setEmailAddressIdentifierSupported(true)
+        .build();
 
         PendingIntent intent = Auth.CredentialsApi.getHintPickerIntent(mGoogleApiClient, hintRequest);
 

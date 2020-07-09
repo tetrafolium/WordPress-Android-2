@@ -85,7 +85,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogueListener>
-        implements OnConfirmListener, OnDismissListener {
+    implements OnConfirmListener, OnDismissListener {
     private EditText mEditTextDisplayName;
     private EditText mEditTextUsername;
     private FullScreenDialogFragment mDialog;
@@ -122,8 +122,8 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
     @Inject protected AppPrefsWrapper mAppPrefsWrapper;
 
     public static SignupEpilogueFragment newInstance(String displayName, String emailAddress,
-                                                     String photoUrl, String username,
-                                                     boolean isEmailSignup) {
+            String photoUrl, String username,
+            boolean isEmailSignup) {
         SignupEpilogueFragment signupEpilogueFragment = new SignupEpilogueFragment();
         Bundle args = new Bundle();
         args.putString(ARG_DISPLAY_NAME, displayName);
@@ -267,7 +267,7 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
         if (savedInstanceState == null) {
             // Start loading reader tags so they will be available asap
             ReaderUpdateServiceStarter.startService(WordPress.getContext(),
-                    EnumSet.of(ReaderUpdateLogic.UpdateTask.TAGS));
+                                                    EnumSet.of(ReaderUpdateLogic.UpdateTask.TAGS));
 
             if (mIsEmailSignup) {
                 AnalyticsTracker.track(AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_VIEWED);
@@ -313,63 +313,63 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
 
         if (isAdded()) {
             switch (resultCode) {
-                case Activity.RESULT_OK:
-                    switch (requestCode) {
-                        case RequestCodes.PHOTO_PICKER:
-                            if (data != null) {
-                                String mediaUriString = data.getStringExtra(PhotoPickerActivity.EXTRA_MEDIA_URI);
+            case Activity.RESULT_OK:
+                switch (requestCode) {
+                case RequestCodes.PHOTO_PICKER:
+                    if (data != null) {
+                        String mediaUriString = data.getStringExtra(PhotoPickerActivity.EXTRA_MEDIA_URI);
 
-                                if (mediaUriString != null) {
-                                    PhotoPickerMediaSource source = PhotoPickerMediaSource.fromString(
-                                            data.getStringExtra(PhotoPickerActivity.EXTRA_MEDIA_SOURCE));
-                                    AnalyticsTracker.Stat stat =
-                                            source == PhotoPickerActivity.PhotoPickerMediaSource.ANDROID_CAMERA
-                                                ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_GRAVATAR_SHOT_NEW
-                                                : AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_GRAVATAR_GALLERY_PICKED;
-                                    AnalyticsTracker.track(stat);
-                                    Uri imageUri = Uri.parse(mediaUriString);
+                        if (mediaUriString != null) {
+                            PhotoPickerMediaSource source = PhotoPickerMediaSource.fromString(
+                                                                data.getStringExtra(PhotoPickerActivity.EXTRA_MEDIA_SOURCE));
+                            AnalyticsTracker.Stat stat =
+                                source == PhotoPickerActivity.PhotoPickerMediaSource.ANDROID_CAMERA
+                                ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_GRAVATAR_SHOT_NEW
+                                : AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_GRAVATAR_GALLERY_PICKED;
+                            AnalyticsTracker.track(stat);
+                            Uri imageUri = Uri.parse(mediaUriString);
 
-                                    if (imageUri != null) {
-                                        boolean wasSuccess = WPMediaUtils.fetchMediaAndDoNext(
-                                                getActivity(), imageUri,
-                                                new WPMediaUtils.MediaFetchDoNext() {
-                                                    @Override
-                                                    public void doNext(Uri uri) {
-                                                        startCropActivity(uri);
-                                                    }
-                                                });
-
-                                        if (!wasSuccess) {
-                                            AppLog.e(T.UTILS, "Can't download picked or captured image");
-                                        }
-                                    } else {
-                                        AppLog.e(T.UTILS, "Can't parse media string");
+                            if (imageUri != null) {
+                                boolean wasSuccess = WPMediaUtils.fetchMediaAndDoNext(
+                                                         getActivity(), imageUri,
+                                new WPMediaUtils.MediaFetchDoNext() {
+                                    @Override
+                                    public void doNext(Uri uri) {
+                                        startCropActivity(uri);
                                     }
-                                } else {
-                                    AppLog.e(T.UTILS, "Can't resolve picked or captured image");
+                                });
+
+                                if (!wasSuccess) {
+                                    AppLog.e(T.UTILS, "Can't download picked or captured image");
                                 }
+                            } else {
+                                AppLog.e(T.UTILS, "Can't parse media string");
                             }
-
-                            break;
-                        case UCrop.REQUEST_CROP:
-                            AnalyticsTracker.track(AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_GRAVATAR_CROPPED);
-                            WPMediaUtils.fetchMediaAndDoNext(getActivity(), UCrop.getOutput(data),
-                                                             new WPMediaUtils.MediaFetchDoNext() {
-                                                                 @Override
-                                                                 public void doNext(Uri uri) {
-                                                                     startGravatarUpload(MediaUtils.getRealPathFromURI(
-                                                                             getActivity(), uri));
-                                                                 }
-                                                             });
-
-                            break;
+                        } else {
+                            AppLog.e(T.UTILS, "Can't resolve picked or captured image");
+                        }
                     }
 
                     break;
-                case UCrop.RESULT_ERROR:
-                    AppLog.e(T.NUX, "Image cropping failed", UCrop.getError(data));
-                    ToastUtils.showToast(getActivity(), R.string.error_cropping_image, ToastUtils.Duration.SHORT);
+                case UCrop.REQUEST_CROP:
+                    AnalyticsTracker.track(AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_GRAVATAR_CROPPED);
+                    WPMediaUtils.fetchMediaAndDoNext(getActivity(), UCrop.getOutput(data),
+                    new WPMediaUtils.MediaFetchDoNext() {
+                        @Override
+                        public void doNext(Uri uri) {
+                            startGravatarUpload(MediaUtils.getRealPathFromURI(
+                                                    getActivity(), uri));
+                        }
+                    });
+
                     break;
+                }
+
+                break;
+            case UCrop.RESULT_ERROR:
+                AppLog.e(T.NUX, "Image cropping failed", UCrop.getError(data));
+                ToastUtils.showToast(getActivity(), R.string.error_cropping_image, ToastUtils.Duration.SHORT);
+                break;
             }
         }
     }
@@ -434,10 +434,10 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
     public void onAccountChanged(OnAccountChanged event) {
         if (event.isError()) {
             AnalyticsTracker.track(mIsEmailSignup
-                    ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UPDATE_DISPLAY_NAME_FAILED
-                    : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UPDATE_DISPLAY_NAME_FAILED);
+                                   ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UPDATE_DISPLAY_NAME_FAILED
+                                   : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UPDATE_DISPLAY_NAME_FAILED);
             AppLog.e(T.API, "SignupEpilogueFragment.onAccountChanged: "
-                            + event.error.type + " - " + event.error.message);
+                     + event.error.type + " - " + event.error.message);
             endProgress();
 
             if (isPasswordInErrorMessage(event.error.message)) {
@@ -445,8 +445,8 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
             } else {
                 showErrorDialog(getString(R.string.signup_epilogue_error_generic));
             }
-        // Wait to populate epilogue for email interface until account is fetched and email address
-        // is available since flow is coming from magic link with no instance argument values.
+            // Wait to populate epilogue for email interface until account is fetched and email address
+            // is available since flow is coming from magic link with no instance argument values.
         } else if (mIsEmailSignup && event.causeOfChange == AccountAction.FETCH_ACCOUNT
                    && !TextUtils.isEmpty(mAccountStore.getAccount().getEmail())) {
             endProgress();
@@ -454,12 +454,12 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
         } else if (changedUsername()) {
             startProgress(false);
             PushUsernamePayload payload = new PushUsernamePayload(
-                    mUsername, AccountUsernameActionType.KEEP_OLD_SITE_AND_ADDRESS);
+                mUsername, AccountUsernameActionType.KEEP_OLD_SITE_AND_ADDRESS);
             mDispatcher.dispatch(AccountActionBuilder.newPushUsernameAction(payload));
         } else if (event.causeOfChange == AccountAction.PUSH_SETTINGS && mSignupEpilogueListener != null) {
             AnalyticsTracker.track(mIsEmailSignup
-                    ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UPDATE_DISPLAY_NAME_SUCCEEDED
-                    : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UPDATE_DISPLAY_NAME_SUCCEEDED);
+                                   ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UPDATE_DISPLAY_NAME_SUCCEEDED
+                                   : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UPDATE_DISPLAY_NAME_SUCCEEDED);
             mSignupEpilogueListener.onContinue();
         }
     }
@@ -469,16 +469,16 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
     public void onUsernameChanged(OnUsernameChanged event) {
         if (event.isError()) {
             AnalyticsTracker.track(mIsEmailSignup
-                    ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UPDATE_USERNAME_FAILED
-                    : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UPDATE_USERNAME_FAILED);
+                                   ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UPDATE_USERNAME_FAILED
+                                   : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UPDATE_USERNAME_FAILED);
             AppLog.e(T.API, "SignupEpilogueFragment.onUsernameChanged: "
-                            + event.error.type + " - " + event.error.message);
+                     + event.error.type + " - " + event.error.message);
             endProgress();
             showErrorDialog(getString(R.string.signup_epilogue_error_generic));
         } else if (mSignupEpilogueListener != null) {
             AnalyticsTracker.track(mIsEmailSignup
-                    ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UPDATE_USERNAME_SUCCEEDED
-                    : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UPDATE_USERNAME_SUCCEEDED);
+                                   ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UPDATE_USERNAME_SUCCEEDED
+                                   : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UPDATE_USERNAME_SUCCEEDED);
             mSignupEpilogueListener.onContinue();
         }
     }
@@ -533,19 +533,19 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
 
     protected void launchDialog() {
         AnalyticsTracker.track(mIsEmailSignup
-                ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_USERNAME_TAPPED
-                : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_USERNAME_TAPPED);
+                               ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_USERNAME_TAPPED
+                               : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_USERNAME_TAPPED);
 
         final Bundle bundle = UsernameChangerFullScreenDialogFragment.newBundle(
-                mEditTextDisplayName.getText().toString(), mEditTextUsername.getText().toString());
+                                  mEditTextDisplayName.getText().toString(), mEditTextUsername.getText().toString());
 
         mDialog = new FullScreenDialogFragment.Builder(getContext())
-                .setTitle(R.string.username_changer_title)
-                .setAction(R.string.username_changer_action)
-                .setOnConfirmListener(this)
-                .setOnDismissListener(this)
-                .setContent(UsernameChangerFullScreenDialogFragment.class, bundle)
-                .build();
+        .setTitle(R.string.username_changer_title)
+        .setAction(R.string.username_changer_action)
+        .setOnConfirmListener(this)
+        .setOnDismissListener(this)
+        .setContent(UsernameChangerFullScreenDialogFragment.class, bundle)
+        .build();
 
         mDialog.show(getActivity().getSupportFragmentManager(), FullScreenDialogFragment.TAG);
     }
@@ -567,23 +567,23 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
             mImageManager.load(mHeaderAvatar, bitmap);
         } else {
             mImageManager.loadIntoCircle(mHeaderAvatar, ImageType.AVATAR_WITHOUT_BACKGROUND,
-                    newAvatarUploaded ? injectFilePath : avatarUrl, new RequestListener<Drawable>() {
-                        @Override
-                        public void onLoadFailed(@Nullable Exception e) {
-                            AppLog.e(T.NUX, "Uploading image to Gravatar succeeded, but setting image view failed");
-                            showErrorDialogWithCloseButton(getString(R.string.signup_epilogue_error_avatar_view));
-                        }
+            newAvatarUploaded ? injectFilePath : avatarUrl, new RequestListener<Drawable>() {
+                @Override
+                public void onLoadFailed(@Nullable Exception e) {
+                    AppLog.e(T.NUX, "Uploading image to Gravatar succeeded, but setting image view failed");
+                    showErrorDialogWithCloseButton(getString(R.string.signup_epilogue_error_avatar_view));
+                }
 
-                        @Override
-                        public void onResourceReady(@NotNull Drawable resource) {
-                            if (newAvatarUploaded && resource instanceof BitmapDrawable) {
-                                Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
-                                // create a copy since the original bitmap may by automatically recycled
-                                bitmap = bitmap.copy(bitmap.getConfig(), true);
-                                WordPress.getBitmapCache().put(avatarUrl, bitmap);
-                            }
-                        }
-                    }, mAppPrefsWrapper.getAvatarVersion());
+                @Override
+                public void onResourceReady(@NotNull Drawable resource) {
+                    if (newAvatarUploaded && resource instanceof BitmapDrawable) {
+                        Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
+                        // create a copy since the original bitmap may by automatically recycled
+                        bitmap = bitmap.copy(bitmap.getConfig(), true);
+                        WordPress.getBitmapCache().put(avatarUrl, bitmap);
+                    }
+                }
+            }, mAppPrefsWrapper.getAvatarVersion());
         }
     }
 
@@ -591,7 +591,7 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
         mEmailAddress = mAccountStore.getAccount().getEmail();
         mDisplayName = createDisplayNameFromEmail();
         mUsername = !TextUtils.isEmpty(mAccountStore.getAccount().getUserName())
-                ? mAccountStore.getAccount().getUserName() : createUsernameFromEmail();
+                    ? mAccountStore.getAccount().getUserName() : createUsernameFromEmail();
         mHeaderDisplayName.setText(mDisplayName);
         mHeaderEmailAddress.setText(mEmailAddress);
         mEditTextDisplayName.setText(mDisplayName);
@@ -611,31 +611,31 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        undoChanges();
-                        break;
-                    case DialogInterface.BUTTON_POSITIVE:
-                        updateAccountOrContinue();
-                        break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    undoChanges();
+                    break;
+                case DialogInterface.BUTTON_POSITIVE:
+                    updateAccountOrContinue();
+                    break;
                     // DialogInterface.BUTTON_NEUTRAL is intentionally ignored. Just dismiss dialog.
                 }
             }
         };
 
         AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginTheme))
-                .setMessage(message)
-                .setNeutralButton(R.string.login_error_button, dialogListener)
-                .setNegativeButton(R.string.signup_epilogue_error_button_negative, dialogListener)
-                .setPositiveButton(R.string.signup_epilogue_error_button_positive, dialogListener)
-                .create();
+        .setMessage(message)
+        .setNeutralButton(R.string.login_error_button, dialogListener)
+        .setNegativeButton(R.string.signup_epilogue_error_button_negative, dialogListener)
+        .setPositiveButton(R.string.signup_epilogue_error_button_positive, dialogListener)
+        .create();
         dialog.show();
     }
 
     protected void showErrorDialogWithCloseButton(String message) {
         AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginTheme))
-                .setMessage(message)
-                .setPositiveButton(R.string.login_error_button, null)
-                .create();
+        .setMessage(message)
+        .setPositiveButton(R.string.login_error_button, null)
+        .create();
         dialog.show();
     }
 
@@ -651,9 +651,9 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
             options.setHideBottomControls(true);
 
             UCrop.of(uri, Uri.fromFile(new File(context.getCacheDir(), "cropped.jpg")))
-                 .withAspectRatio(1, 1)
-                 .withOptions(options)
-                 .start(getActivity(), this);
+            .withAspectRatio(1, 1)
+            .withOptions(options)
+            .start(getActivity(), this);
         }
     }
 
@@ -665,24 +665,24 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
                 startProgress(false);
 
                 GravatarApi.uploadGravatar(file, mAccountStore.getAccount().getEmail(), mAccountStore.getAccessToken(),
-                        new GravatarApi.GravatarUploadListener() {
-                            @Override
-                            public void onSuccess() {
-                                endProgress();
-                                mPhotoUrl = GravatarUtils.fixGravatarUrl(mAccount.getAccount().getAvatarUrl(),
-                                        getResources().getDimensionPixelSize(R.dimen.avatar_sz_large));
-                                loadAvatar(mPhotoUrl, filePath);
-                                mHeaderAvatarAdd.setVisibility(View.GONE);
-                                mIsAvatarAdded = true;
-                            }
+                new GravatarApi.GravatarUploadListener() {
+                    @Override
+                    public void onSuccess() {
+                        endProgress();
+                        mPhotoUrl = GravatarUtils.fixGravatarUrl(mAccount.getAccount().getAvatarUrl(),
+                                    getResources().getDimensionPixelSize(R.dimen.avatar_sz_large));
+                        loadAvatar(mPhotoUrl, filePath);
+                        mHeaderAvatarAdd.setVisibility(View.GONE);
+                        mIsAvatarAdded = true;
+                    }
 
-                            @Override
-                            public void onError() {
-                                endProgress();
-                                showErrorDialogWithCloseButton(getString(R.string.signup_epilogue_error_avatar));
-                                AppLog.e(T.NUX, "Uploading image to Gravatar failed");
-                            }
-                        });
+                    @Override
+                    public void onError() {
+                        endProgress();
+                        showErrorDialogWithCloseButton(getString(R.string.signup_epilogue_error_avatar));
+                        AppLog.e(T.NUX, "Uploading image to Gravatar failed");
+                    }
+                });
             } else {
                 ToastUtils.showToast(getActivity(), R.string.error_locating_image, ToastUtils.Duration.SHORT);
             }
@@ -721,12 +721,12 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
         } else if (changedUsername()) {
             startProgress(false);
             PushUsernamePayload payload = new PushUsernamePayload(
-                    mUsername, AccountUsernameActionType.KEEP_OLD_SITE_AND_ADDRESS);
+                mUsername, AccountUsernameActionType.KEEP_OLD_SITE_AND_ADDRESS);
             mDispatcher.dispatch(AccountActionBuilder.newPushUsernameAction(payload));
         } else if (mSignupEpilogueListener != null) {
             AnalyticsTracker.track(mIsEmailSignup
-                    ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UNCHANGED
-                    : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UNCHANGED);
+                                   ? AnalyticsTracker.Stat.SIGNUP_EMAIL_EPILOGUE_UNCHANGED
+                                   : AnalyticsTracker.Stat.SIGNUP_SOCIAL_EPILOGUE_UNCHANGED);
             mSignupEpilogueListener.onContinue();
         }
     }
@@ -748,20 +748,20 @@ public class SignupEpilogueFragment extends LoginBaseFormFragment<SignupEpilogue
                 Uri uri = MediaUtils.downloadExternalMedia(getContext(), Uri.parse(mUrl));
                 File file = new File(new URI(uri.toString()));
                 GravatarApi.uploadGravatar(file, mEmail, mToken,
-                        new GravatarApi.GravatarUploadListener() {
-                            @Override
-                            public void onSuccess() {
-                                AppLog.i(T.NUX, "Google avatar download and Gravatar upload succeeded.");
-                            }
+                new GravatarApi.GravatarUploadListener() {
+                    @Override
+                    public void onSuccess() {
+                        AppLog.i(T.NUX, "Google avatar download and Gravatar upload succeeded.");
+                    }
 
-                            @Override
-                            public void onError() {
-                                AppLog.i(T.NUX, "Google avatar download and Gravatar upload failed.");
-                            }
-                        });
+                    @Override
+                    public void onError() {
+                        AppLog.i(T.NUX, "Google avatar download and Gravatar upload failed.");
+                    }
+                });
             } catch (NullPointerException | URISyntaxException exception) {
                 AppLog.e(T.NUX, "Google avatar download and Gravatar upload failed - "
-                                + exception.toString() + " - " + exception.getMessage());
+                         + exception.toString() + " - " + exception.getMessage());
             }
         }
     }

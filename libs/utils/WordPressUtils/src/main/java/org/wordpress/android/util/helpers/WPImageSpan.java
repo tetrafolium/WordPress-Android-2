@@ -98,7 +98,7 @@ public class WPImageSpan extends ImageSpan implements Parcelable {
     }
 
     public static final Parcelable.Creator<WPImageSpan> CREATOR
-            = new Parcelable.Creator<WPImageSpan>() {
+    = new Parcelable.Creator<WPImageSpan>() {
         public WPImageSpan createFromParcel(Parcel in) {
             WPImageSpan imageSpan = new WPImageSpan();
             imageSpan.setupFromParcel(in);
@@ -117,7 +117,7 @@ public class WPImageSpan extends ImageSpan implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeBooleanArray(new boolean[]{mNetworkImageLoaded, mMediaFile.isVideo()});
+        parcel.writeBooleanArray(new boolean[] {mNetworkImageLoaded, mMediaFile.isVideo()});
         parcel.writeString(mImageSource.toString());
         parcel.writeString(mMediaFile.getMediaId());
         parcel.writeString(mMediaFile.getBlogId());

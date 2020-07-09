@@ -104,7 +104,7 @@ import javax.inject.Inject;
 import static org.wordpress.android.editor.EditorImageMetaData.ARG_EDITOR_IMAGE_METADATA;
 
 public class MediaSettingsActivity extends AppCompatActivity
-        implements ActivityCompat.OnRequestPermissionsResultCallback {
+    implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String ARG_MEDIA_LOCAL_ID = "media_local_id";
     private static final String ARG_ID_LIST = "id_list";
     private static final String ARG_DELETE_MEDIA_DIALOG_VISIBLE = "delete_media_dialog_visible";
@@ -165,8 +165,8 @@ public class MediaSettingsActivity extends AppCompatActivity
         // go directly to preview for local images, videos and audio (do nothing for local documents)
         if (MediaUtils.isLocalFile(media.getUploadState())) {
             if (MediaUtils.isValidImage(media.getFilePath())
-                || MediaUtils.isAudio(media.getFilePath())
-                || media.isVideo()) {
+                    || MediaUtils.isAudio(media.getFilePath())
+                    || media.isVideo()) {
                 MediaPreviewActivity.showPreview(activity, site, media.getFilePath());
             }
             return;
@@ -181,9 +181,9 @@ public class MediaSettingsActivity extends AppCompatActivity
         }
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(
-                activity,
-                R.anim.activity_slide_up_from_bottom,
-                R.anim.do_nothing);
+                                            activity,
+                                            R.anim.activity_slide_up_from_bottom,
+                                            R.anim.do_nothing);
         ActivityCompat.startActivityForResult(activity, intent, RequestCodes.MEDIA_SETTINGS, options.toBundle());
     }
 
@@ -200,9 +200,9 @@ public class MediaSettingsActivity extends AppCompatActivity
         intent.putExtra(ARG_EDITOR_IMAGE_METADATA, editorMedia);
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(
-                activity,
-                R.anim.activity_slide_up_from_bottom,
-                R.anim.do_nothing);
+                                            activity,
+                                            R.anim.activity_slide_up_from_bottom,
+                                            R.anim.do_nothing);
 
         ActivityCompat.startActivityForResult(activity, intent, RequestCodes.MEDIA_SETTINGS, options.toBundle());
     }
@@ -373,7 +373,7 @@ public class MediaSettingsActivity extends AppCompatActivity
 
         mImagePlay.setVisibility(isVideo() || isAudio() ? View.VISIBLE : View.GONE);
         findViewById(R.id.edit_alt_text_layout)
-                .setVisibility(isVideo() || isAudio() || isDocument() ? View.GONE : View.VISIBLE);
+        .setVisibility(isVideo() || isAudio() || isDocument() ? View.GONE : View.VISIBLE);
 
         showMetaData();
 
@@ -400,10 +400,10 @@ public class MediaSettingsActivity extends AppCompatActivity
         mediaModel.setAlt(mEditorImageMetaData.getAlt());
         if (!TextUtils.isEmpty(mEditorImageMetaData.getSrc())) {
             mediaModel.setFileName(
-                    mEditorImageMetaData.getSrc().substring(mEditorImageMetaData.getSrc().lastIndexOf("/") + 1));
+                mEditorImageMetaData.getSrc().substring(mEditorImageMetaData.getSrc().lastIndexOf("/") + 1));
         }
         mediaModel.setFileExtension(
-                org.wordpress.android.fluxc.utils.MediaUtils.getExtension(mEditorImageMetaData.getSrc()));
+            org.wordpress.android.fluxc.utils.MediaUtils.getExtension(mEditorImageMetaData.getSrc()));
         mediaModel.setWidth(mEditorImageMetaData.getWidthInt());
         mediaModel.setHeight(mEditorImageMetaData.getHeightInt());
         return mediaModel;
@@ -698,7 +698,7 @@ public class MediaSettingsActivity extends AppCompatActivity
             txtDimensions.setVisibility(View.VISIBLE);
             txtDimensionsLabel.setVisibility(View.VISIBLE);
             txtDimensionsLabel.setText(isVideo() ? R.string.media_edit_video_dimensions_caption : R.string
-                    .media_edit_image_dimensions_caption);
+                                       .media_edit_image_dimensions_caption);
             String dimens = width + " x " + height;
             txtDimensions.setText(dimens);
         } else {
@@ -765,29 +765,29 @@ public class MediaSettingsActivity extends AppCompatActivity
             imageUrl = PhotonUtils.getPhotonImageUrl(mediaUri, size, 0);
         }
         mImageManager.loadWithResultListener(mImageView, ImageType.IMAGE, imageUrl, ScaleType.CENTER, null,
-                new RequestListener<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NotNull Drawable resource) {
-                        if (!isFinishing()) {
-                            showProgress(false);
+        new RequestListener<Drawable>() {
+            @Override
+            public void onResourceReady(@NotNull Drawable resource) {
+                if (!isFinishing()) {
+                    showProgress(false);
 
-                            if (isMediaFromEditor()) {
-                                hideImageDimensions();
-                            }
-                        }
+                    if (isMediaFromEditor()) {
+                        hideImageDimensions();
                     }
+                }
+            }
 
-                    @Override
-                    public void onLoadFailed(@Nullable Exception e) {
-                        if (!isFinishing()) {
-                            if (e != null) {
-                                AppLog.e(T.MEDIA, e);
-                            }
-                            showProgress(false);
-                            delayedFinishWithError();
-                        }
+            @Override
+            public void onLoadFailed(@Nullable Exception e) {
+                if (!isFinishing()) {
+                    if (e != null) {
+                        AppLog.e(T.MEDIA, e);
                     }
-                });
+                    showProgress(false);
+                    delayedFinishWithError();
+                }
+            }
+        });
     }
 
     /*
@@ -812,7 +812,7 @@ public class MediaSettingsActivity extends AppCompatActivity
                     });
                 }
             }
-        }.start();
+        } .start();
     }
 
     private void showFullScreen() {
@@ -848,7 +848,7 @@ public class MediaSettingsActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         boolean allGranted = WPPermissionUtils.setPermissionListAsked(
-                this, requestCode, permissions, grantResults, true);
+                                 this, requestCode, permissions, grantResults, true);
         if (allGranted && requestCode == WPPermissionUtils.MEDIA_PREVIEW_PERMISSION_REQUEST_CODE) {
             saveMediaToDevice();
         }
@@ -990,8 +990,8 @@ public class MediaSettingsActivity extends AppCompatActivity
     private void saveMediaToDevice() {
         // must request permissions even though they're already defined in the manifest
         String[] permissionList = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
         if (!PermissionUtils.checkAndRequestPermissions(this, WPPermissionUtils.MEDIA_PREVIEW_PERMISSION_REQUEST_CODE,
                 permissionList)) {
@@ -1056,19 +1056,19 @@ public class MediaSettingsActivity extends AppCompatActivity
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert))
-                .setMessage(resId)
-                .setCancelable(true).setPositiveButton(
-                        isMediaFromEditor() ? R.string.remove : R.string.delete, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (isMediaFromEditor()) {
-                                    removeMediaFromPost();
-                                } else {
-                                    deleteMedia();
-                                }
-                            }
-                        }).setNegativeButton(R.string.cancel, null);
+            new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert))
+        .setMessage(resId)
+        .setCancelable(true).setPositiveButton(
+        isMediaFromEditor() ? R.string.remove : R.string.delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (isMediaFromEditor()) {
+                    removeMediaFromPost();
+                } else {
+                    deleteMedia();
+                }
+            }
+        }).setNegativeButton(R.string.cancel, null);
 
         mDeleteMediaConfirmationDialog = builder.create();
         mDeleteMediaConfirmationDialog.show();
@@ -1144,7 +1144,7 @@ public class MediaSettingsActivity extends AppCompatActivity
 
     public enum MediaSettingsImageSize {
         THUMBNAIL(R.string.image_size_thumbnail_label, R.string.image_size_thumbnail_css_class,
-                R.integer.image_size_thumbnail_px),
+                  R.integer.image_size_thumbnail_px),
         MEDIUM(R.string.image_size_medium_label, R.string.image_size_medium_css_class, R.integer.image_size_medium_px),
         LARGE(R.string.image_size_large_label, R.string.image_size_large_css_class, R.integer.image_size_large_px),
         FULL(R.string.image_size_full_label, R.string.image_size_full_css_class, R.integer.image_size_large_px);

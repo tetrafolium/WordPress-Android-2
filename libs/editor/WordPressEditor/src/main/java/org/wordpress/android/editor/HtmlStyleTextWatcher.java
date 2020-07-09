@@ -209,16 +209,16 @@ public class HtmlStyleTextWatcher implements TextWatcher {
      */
     private String getMatchingSymbol(String symbol) {
         switch (symbol) {
-            case "<":
-                return ">";
-            case ">":
-                return "<";
-            case "&":
-                return ";";
-            case ";":
-                return "&";
-            default:
-                return "";
+        case "<":
+            return ">";
+        case ">":
+            return "<";
+        case "&":
+            return ";";
+        case ";":
+            return "&";
+        default:
+            return "";
         }
     }
 

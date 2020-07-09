@@ -19,8 +19,8 @@ public class WPPrefUtils {
      * Gets a preference and sets the {@link android.preference.Preference.OnPreferenceChangeListener}.
      */
     public static Preference getPrefAndSetClickListener(PreferenceFragment prefFrag,
-                                                        int id,
-                                                        Preference.OnPreferenceClickListener listener) {
+            int id,
+            Preference.OnPreferenceClickListener listener) {
         Preference pref = prefFrag.findPreference(prefFrag.getString(id));
         if (pref != null) {
             pref.setOnPreferenceClickListener(listener);
@@ -32,8 +32,8 @@ public class WPPrefUtils {
      * Gets a preference and sets the {@link android.preference.Preference.OnPreferenceChangeListener}.
      */
     public static Preference getPrefAndSetChangeListener(PreferenceFragment prefFrag,
-                                                         int id,
-                                                         Preference.OnPreferenceChangeListener listener) {
+            int id,
+            Preference.OnPreferenceChangeListener listener) {
         Preference pref = prefFrag.findPreference(prefFrag.getString(id));
         if (pref != null) {
             pref.setOnPreferenceChangeListener(listener);
@@ -69,7 +69,7 @@ public class WPPrefUtils {
     public static void layoutAsDarkTitle(TextView view) {
         int size = view.getResources().getDimensionPixelSize(R.dimen.text_sz_extra_large);
         setTextViewAttributes(view, size,
-                ContextExtensionsKt.getColorResIdFromAttribute(view.getContext(), R.attr.wpColorText));
+                              ContextExtensionsKt.getColorResIdFromAttribute(view.getContext(), R.attr.wpColorText));
     }
 
     /**
@@ -77,8 +77,8 @@ public class WPPrefUtils {
      */
     public static void layoutAsSubhead(TextView view) {
         int color =
-                view.isEnabled() ? ContextExtensionsKt.getColorResIdFromAttribute(view.getContext(), R.attr.wpColorText)
-                        : R.color.neutral_20;
+            view.isEnabled() ? ContextExtensionsKt.getColorResIdFromAttribute(view.getContext(), R.attr.wpColorText)
+            : R.color.neutral_20;
         int size = view.getResources().getDimensionPixelSize(R.dimen.text_sz_large);
         setTextViewAttributes(view, size, color);
     }
@@ -130,7 +130,7 @@ public class WPPrefUtils {
     public static void layoutAsInput(EditText view) {
         int size = view.getResources().getDimensionPixelSize(R.dimen.text_sz_large);
         setTextViewAttributes(view, size,
-                ContextExtensionsKt.getColorResIdFromAttribute(view.getContext(), R.attr.wpColorText));
+                              ContextExtensionsKt.getColorResIdFromAttribute(view.getContext(), R.attr.wpColorText));
         view.setHintTextColor(view.getResources().getColor(R.color.neutral_20));
         view.setTextColor(ContextExtensionsKt.getColorFromAttribute(view.getContext(), R.attr.wpColorText));
         view.setSingleLine(true);
@@ -150,7 +150,7 @@ public class WPPrefUtils {
     public static void layoutAsNumberPickerPeek(TextView view) {
         int size = view.getResources().getDimensionPixelSize(R.dimen.text_sz_large);
         setTextViewAttributes(view, size,
-                ContextExtensionsKt.getColorResIdFromAttribute(view.getContext(), R.attr.wpColorText));
+                              ContextExtensionsKt.getColorResIdFromAttribute(view.getContext(), R.attr.wpColorText));
     }
 
     /**

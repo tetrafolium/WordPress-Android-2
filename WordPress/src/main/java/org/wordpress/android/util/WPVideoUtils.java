@@ -45,9 +45,9 @@ public class WPVideoUtils {
      * or null in case the video cannot be transcoded.
      */
     public static MediaComposer getVideoOptimizationComposer(@NonNull Context ctx, @NonNull String inputFile,
-                                                             @NonNull String outFile,
-                                                             @NonNull org.m4m.IProgressListener listener,
-                                                             int width, int bitrate) {
+            @NonNull String outFile,
+            @NonNull org.m4m.IProgressListener listener,
+            int width, int bitrate) {
         AndroidMediaObjectFactory factory = new AndroidMediaObjectFactory(ctx);
 
         Uri m4mUri = new Uri(inputFile);
@@ -71,7 +71,7 @@ public class WPVideoUtils {
         }
         if (videoFormat.getVideoFrameSize().height() == 0) {
             AppLog.w(AppLog.T.MEDIA, "Input file height is unknown. Can't calculate the correct "
-                                     + "ratio for resizing. Keeping the original file");
+                     + "ratio for resizing. Keeping the original file");
             return null;
         }
         // Calculate the height keeping the correct aspect ratio
@@ -107,7 +107,7 @@ public class WPVideoUtils {
     }
 
     private static void configureVideoEncoderWithDefaults(MediaComposer mediaComposer, int width, int height,
-                                                          int bitrate) {
+            int bitrate) {
         VideoFormatAndroid videoFormat = new VideoFormatAndroid(VIDEO_MIME_TYPE, width, height);
         videoFormat.setVideoBitRateInKBytes(bitrate);
         videoFormat.setVideoFrameRate(FRAME_RATE);
@@ -121,7 +121,7 @@ public class WPVideoUtils {
          * Output sample rate and channel count are the same as for input.
          */
         AudioFormatAndroid aFormat = new AudioFormatAndroid(AUDIO_MIME_TYPE, audioFormat.getAudioSampleRateInHz(),
-                                                            audioFormat.getAudioChannelCount());
+                audioFormat.getAudioChannelCount());
 
         aFormat.setAudioBitrateInBytes(AUDIO_OUTPUT_BIT_RATE);
         aFormat.setAudioProfile(MediaCodecInfo.CodecProfileLevel.AACObjectLC);

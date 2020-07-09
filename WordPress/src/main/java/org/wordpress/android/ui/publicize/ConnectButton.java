@@ -39,20 +39,20 @@ public class ConnectButton extends FrameLayout {
     private void updateView() {
         @StringRes int captionResId;
         switch (mConnectAction) {
-            case CONNECT:
-                captionResId = R.string.share_btn_connect;
-                break;
-            case DISCONNECT:
-                captionResId = R.string.share_btn_disconnect;
-                break;
-            case RECONNECT:
-                captionResId = R.string.share_btn_reconnect;
-                break;
-            case CONNECT_ANOTHER_ACCOUNT:
-                captionResId = R.string.share_btn_connect_another_account;
-                break;
-            default:
-                return;
+        case CONNECT:
+            captionResId = R.string.share_btn_connect;
+            break;
+        case DISCONNECT:
+            captionResId = R.string.share_btn_disconnect;
+            break;
+        case RECONNECT:
+            captionResId = R.string.share_btn_reconnect;
+            break;
+        case CONNECT_ANOTHER_ACCOUNT:
+            captionResId = R.string.share_btn_connect_another_account;
+            break;
+        default:
+            return;
         }
         TextView txtConnect = (TextView) findViewById(R.id.text_connect);
         txtConnect.setText(captionResId);

@@ -64,12 +64,12 @@ public class ReleaseNotesActivity extends WebViewActivity {
         super.onCreate(savedInstanceState);
         ((WordPress) getApplication()).component().inject(this);
         mWebView.setWebViewClient(
-                new WebViewClient() {
-                    @Override
-                    public void onPageFinished(WebView view, String url) {
-                        ReleaseNotesActivity.this.setTitle(view.getTitle());
-                    }
-                }
+        new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                ReleaseNotesActivity.this.setTitle(view.getTitle());
+            }
+        }
         );
     }
 
@@ -88,18 +88,18 @@ public class ReleaseNotesActivity extends WebViewActivity {
         }
 
         switch (item.getItemId()) {
-            case R.id.menu_share:
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType("text/plain");
-                share.putExtra(Intent.EXTRA_TEXT, mWebView.getUrl());
-                share.putExtra(Intent.EXTRA_SUBJECT, mWebView.getTitle());
-                startActivity(Intent.createChooser(share, getText(R.string.share_link)));
-                return true;
-            case R.id.menu_bug:
-                HelpActivity.Origin origin = (HelpActivity.Origin) getIntent().getSerializableExtra(KEY_ORIGIN);
-                SiteModel selectedSite = (SiteModel) getIntent().getSerializableExtra(WordPress.SITE);
-                mZendeskHelper.createNewTicket(ReleaseNotesActivity.this, origin, selectedSite);
-                return true;
+        case R.id.menu_share:
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("text/plain");
+            share.putExtra(Intent.EXTRA_TEXT, mWebView.getUrl());
+            share.putExtra(Intent.EXTRA_SUBJECT, mWebView.getTitle());
+            startActivity(Intent.createChooser(share, getText(R.string.share_link)));
+            return true;
+        case R.id.menu_bug:
+            HelpActivity.Origin origin = (HelpActivity.Origin) getIntent().getSerializableExtra(KEY_ORIGIN);
+            SiteModel selectedSite = (SiteModel) getIntent().getSerializableExtra(WordPress.SITE);
+            mZendeskHelper.createNewTicket(ReleaseNotesActivity.this, origin, selectedSite);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

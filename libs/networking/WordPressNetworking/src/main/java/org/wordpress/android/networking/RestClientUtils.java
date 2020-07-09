@@ -177,7 +177,7 @@ public class RestClientUtils {
     }
 
     public void setJetpackSettings(long siteId, Map<String, Object> bodyData,
-                                  Listener listener, ErrorListener errorListener) {
+                                   Listener listener, ErrorListener errorListener) {
         String path = String.format(Locale.US, "jetpack-blogs/%d/rest-api/", siteId);
         JSONObject params = new JSONObject();
         JSONObject body = new JSONObject();
@@ -193,7 +193,7 @@ public class RestClientUtils {
             // make sure to invoke error listener, caller will be expecting it
             if (errorListener != null) {
                 errorListener.onErrorResponse(
-                        new VolleyError("Error: Attempted to update Jetpack settings with malformed body data", e));
+                    new VolleyError("Error: Attempted to update Jetpack settings with malformed body data", e));
             }
         }
     }
@@ -247,7 +247,7 @@ public class RestClientUtils {
      * Make GET request with params
      */
     public Request<JSONObject> get(String path, Map<String, String> params, RetryPolicy retryPolicy, Listener listener,
-                    ErrorListener errorListener) {
+                                   ErrorListener errorListener) {
         // turn params into query string
         HashMap<String, String> paramsWithLocale = getRestLocaleParams(mContext);
         if (params != null) {
@@ -261,7 +261,7 @@ public class RestClientUtils {
         paramsWithLocale.putAll(getSanitizedParameters(path));
 
         RestRequest request = mRestClient.makeRequest(Method.GET, mRestClient
-                        .getAbsoluteURL(realPath, paramsWithLocale), null, listener, errorListener);
+                              .getAbsoluteURL(realPath, paramsWithLocale), null, listener, errorListener);
 
         if (retryPolicy == null) {
             retryPolicy = new DefaultRetryPolicy(REST_TIMEOUT_MS, REST_MAX_RETRIES_GET, REST_BACKOFF_MULT);
@@ -285,10 +285,10 @@ public class RestClientUtils {
     public void post(final String path, Map<String, String> params, RetryPolicy retryPolicy, Listener listener,
                      ErrorListener errorListener) {
         final RestRequest request = mRestClient.makeRequest(Method.POST, mRestClient
-                        .getAbsoluteURL(path, getRestLocaleParams(mContext)), params, listener, errorListener);
+                                    .getAbsoluteURL(path, getRestLocaleParams(mContext)), params, listener, errorListener);
         if (retryPolicy == null) {
             retryPolicy = new DefaultRetryPolicy(REST_TIMEOUT_MS, REST_MAX_RETRIES_POST,
-                    REST_BACKOFF_MULT); // Do not retry on failure
+                                                 REST_BACKOFF_MULT); // Do not retry on failure
         }
         request.setRetryPolicy(retryPolicy);
         AuthenticatorRequest authCheck = new AuthenticatorRequest(request, errorListener, mRestClient, mAuthenticator);
@@ -302,10 +302,10 @@ public class RestClientUtils {
     public void post(final String path, JSONObject params, RetryPolicy retryPolicy, Listener listener,
                      ErrorListener errorListener) {
         final JsonRestRequest request = mRestClient.makeRequest(mRestClient
-                        .getAbsoluteURL(path, getRestLocaleParams(mContext)), params, listener, errorListener);
+                                        .getAbsoluteURL(path, getRestLocaleParams(mContext)), params, listener, errorListener);
         if (retryPolicy == null) {
             retryPolicy = new DefaultRetryPolicy(REST_TIMEOUT_MS, REST_MAX_RETRIES_POST,
-                    REST_BACKOFF_MULT); // Do not retry on failure
+                                                 REST_BACKOFF_MULT); // Do not retry on failure
         }
         request.setRetryPolicy(retryPolicy);
         AuthenticatorRequest authCheck = new AuthenticatorRequest(request, errorListener, mRestClient, mAuthenticator);
@@ -338,7 +338,7 @@ public class RestClientUtils {
 
         if (uri.getHost() == null) {
             uri = Uri.parse("://" + unsanitizedPath); // path may contain a ":" leading to Uri.parse to misinterpret
-                    // it as opaque so, try it with a empty scheme in front
+            // it as opaque so, try it with a empty scheme in front
         }
 
         if (uri.getQueryParameterNames() != null) {

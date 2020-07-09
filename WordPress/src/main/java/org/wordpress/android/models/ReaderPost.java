@@ -188,14 +188,14 @@ public class ReaderPost {
         // we can find a suitable image from the content
         if (!post.hasFeaturedImage() && post.hasImages()) {
             post.mFeaturedImage = new ReaderImageScanner(post.mText, post.isPrivate)
-                    .getLargestImage(ReaderConstants.MIN_FEATURED_IMAGE_WIDTH);
+            .getLargestImage(ReaderConstants.MIN_FEATURED_IMAGE_WIDTH);
         }
 
         // if there's no featured image or featured video and the post contains an iframe, scan
         // the content for a suitable featured video
         if (!post.hasFeaturedImage()
-            && !post.hasFeaturedVideo()
-            && post.getText().contains("<iframe")) {
+                && !post.hasFeaturedVideo()
+                && post.getText().contains("<iframe")) {
             post.setFeaturedVideo(new ReaderIframeScanner(post.getText()).getFirstUsableVideo());
         }
 

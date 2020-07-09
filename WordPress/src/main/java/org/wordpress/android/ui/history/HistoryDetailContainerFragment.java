@@ -139,9 +139,9 @@ public class HistoryDetailContainerFragment extends Fragment {
         mVisualContent = rootView.findViewById(R.id.visual_content);
 
         Drawable loadingImagePlaceholder = EditorMediaUtils.getAztecPlaceholderDrawableFromResID(
-                requireContext(),
-                org.wordpress.android.editor.R.drawable.ic_gridicons_image,
-                EditorMediaUtils.getMaximumThumbnailSizeForEditor(requireContext()));
+                                               requireContext(),
+                                               org.wordpress.android.editor.R.drawable.ic_gridicons_image,
+                                               EditorMediaUtils.getMaximumThumbnailSizeForEditor(requireContext()));
 
         mVisualContent.setImageGetter(new AztecImageLoader(requireContext(), mImageManager, loadingImagePlaceholder));
         mVisualContent.setKeyListener(null);
@@ -218,7 +218,7 @@ public class HistoryDetailContainerFragment extends Fragment {
                 AniUtils.fadeIn(mPreviousButton, Duration.SHORT);
             } else {
                 String title = TextUtils.isEmpty(mRevision.getPostTitle())
-                        ? getString(R.string.history_no_title) : mRevision.getPostTitle();
+                               ? getString(R.string.history_no_title) : mRevision.getPostTitle();
                 mVisualTitle.setText(title);
                 mVisualContent.fromHtml(StringUtils.notNullStr(mRevision.getPostContent()), false);
                 AniUtils.fadeOut(mNextButton, Duration.SHORT, View.INVISIBLE);

@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class EditorExampleActivity extends FragmentActivity implements EditorFragmentListener,
-        EditorDragAndDropListener {
+    EditorDragAndDropListener {
     public static final String EDITOR_PARAM = "EDITOR_PARAM";
     public static final String TITLE_PARAM = "TITLE_PARAM";
     public static final String CONTENT_PARAM = "CONTENT_PARAM";
@@ -113,7 +113,7 @@ public class EditorExampleActivity extends FragmentActivity implements EditorFra
     @Override
     public void onBackPressed() {
         Fragment fragment =
-                getSupportFragmentManager().findFragmentByTag(ImageSettingsDialogFragment.IMAGE_SETTINGS_DIALOG_TAG);
+            getSupportFragmentManager().findFragmentByTag(ImageSettingsDialogFragment.IMAGE_SETTINGS_DIALOG_TAG);
         if (fragment != null && fragment.isVisible()) {
             ((ImageSettingsDialogFragment) fragment).dismissFragment();
         } else {
@@ -135,43 +135,43 @@ public class EditorExampleActivity extends FragmentActivity implements EditorFra
         Intent intent = new Intent(Intent.ACTION_PICK);
 
         switch (item.getItemId()) {
-            case SELECT_IMAGE_MENU_POSITION:
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent = Intent.createChooser(intent, getString(R.string.select_image));
+        case SELECT_IMAGE_MENU_POSITION:
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent = Intent.createChooser(intent, getString(R.string.select_image));
 
-                startActivityForResult(intent, ADD_MEDIA_ACTIVITY_REQUEST_CODE);
-                return true;
-            case SELECT_IMAGE_FAIL_MENU_POSITION:
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent = Intent.createChooser(intent, getString(R.string.select_image_fail));
+            startActivityForResult(intent, ADD_MEDIA_ACTIVITY_REQUEST_CODE);
+            return true;
+        case SELECT_IMAGE_FAIL_MENU_POSITION:
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent = Intent.createChooser(intent, getString(R.string.select_image_fail));
 
-                startActivityForResult(intent, ADD_MEDIA_FAIL_ACTIVITY_REQUEST_CODE);
-                return true;
-            case SELECT_VIDEO_MENU_POSITION:
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent = Intent.createChooser(intent, getString(R.string.select_video));
+            startActivityForResult(intent, ADD_MEDIA_FAIL_ACTIVITY_REQUEST_CODE);
+            return true;
+        case SELECT_VIDEO_MENU_POSITION:
+            intent.setType("video/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent = Intent.createChooser(intent, getString(R.string.select_video));
 
-                startActivityForResult(intent, ADD_MEDIA_ACTIVITY_REQUEST_CODE);
-                return true;
-            case SELECT_VIDEO_FAIL_MENU_POSITION:
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent = Intent.createChooser(intent, getString(R.string.select_video_fail));
+            startActivityForResult(intent, ADD_MEDIA_ACTIVITY_REQUEST_CODE);
+            return true;
+        case SELECT_VIDEO_FAIL_MENU_POSITION:
+            intent.setType("video/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent = Intent.createChooser(intent, getString(R.string.select_video_fail));
 
-                startActivityForResult(intent, ADD_MEDIA_FAIL_ACTIVITY_REQUEST_CODE);
-                return true;
-            case SELECT_IMAGE_SLOW_MENU_POSITION:
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent = Intent.createChooser(intent, getString(R.string.select_image_slow_network));
+            startActivityForResult(intent, ADD_MEDIA_FAIL_ACTIVITY_REQUEST_CODE);
+            return true;
+        case SELECT_IMAGE_SLOW_MENU_POSITION:
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent = Intent.createChooser(intent, getString(R.string.select_image_slow_network));
 
-                startActivityForResult(intent, ADD_MEDIA_SLOW_NETWORK_REQUEST_CODE);
-                return true;
-            default:
-                return false;
+            startActivityForResult(intent, ADD_MEDIA_SLOW_NETWORK_REQUEST_CODE);
+            return true;
+        default:
+            return false;
         }
     }
 
@@ -191,27 +191,27 @@ public class EditorExampleActivity extends FragmentActivity implements EditorFra
         mediaFile.setVideo(mediaUri.toString().contains("video"));
 
         switch (requestCode) {
-            case ADD_MEDIA_ACTIVITY_REQUEST_CODE:
-                mEditorFragment.appendMediaFile(mediaFile, mediaUri.toString(), null);
+        case ADD_MEDIA_ACTIVITY_REQUEST_CODE:
+            mEditorFragment.appendMediaFile(mediaFile, mediaUri.toString(), null);
 
-                if (mEditorFragment instanceof EditorMediaUploadListener) {
-                    simulateFileUpload(mediaId, mediaUri.toString());
-                }
-                break;
-            case ADD_MEDIA_FAIL_ACTIVITY_REQUEST_CODE:
-                mEditorFragment.appendMediaFile(mediaFile, mediaUri.toString(), null);
+            if (mEditorFragment instanceof EditorMediaUploadListener) {
+                simulateFileUpload(mediaId, mediaUri.toString());
+            }
+            break;
+        case ADD_MEDIA_FAIL_ACTIVITY_REQUEST_CODE:
+            mEditorFragment.appendMediaFile(mediaFile, mediaUri.toString(), null);
 
-                if (mEditorFragment instanceof EditorMediaUploadListener) {
-                    simulateFileUploadFail(mediaId, mediaUri.toString());
-                }
-                break;
-            case ADD_MEDIA_SLOW_NETWORK_REQUEST_CODE:
-                mEditorFragment.appendMediaFile(mediaFile, mediaUri.toString(), null);
+            if (mEditorFragment instanceof EditorMediaUploadListener) {
+                simulateFileUploadFail(mediaId, mediaUri.toString());
+            }
+            break;
+        case ADD_MEDIA_SLOW_NETWORK_REQUEST_CODE:
+            mEditorFragment.appendMediaFile(mediaFile, mediaUri.toString(), null);
 
-                if (mEditorFragment instanceof EditorMediaUploadListener) {
-                    simulateSlowFileUpload(mediaId, mediaUri.toString());
-                }
-                break;
+            if (mEditorFragment instanceof EditorMediaUploadListener) {
+                simulateSlowFileUpload(mediaId, mediaUri.toString());
+            }
+            break;
         }
     }
 

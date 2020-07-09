@@ -115,7 +115,7 @@ import static org.wordpress.android.ui.plans.PlanUtilsKt.isDomainCreditAvailable
 import static org.wordpress.android.util.DomainRegistrationUtilsKt.requestEmailValidation;
 
 public class PluginDetailActivity extends AppCompatActivity implements OnDomainRegistrationRequestedListener,
-        BasicDialogPositiveClickInterface {
+    BasicDialogPositiveClickInterface {
     public static final String KEY_PLUGIN_SLUG = "KEY_PLUGIN_SLUG";
     private static final String KEY_IS_CONFIGURING_PLUGIN = "KEY_IS_CONFIGURING_PLUGIN";
     private static final String KEY_IS_INSTALLING_PLUGIN = "KEY_IS_INSTALLING_PLUGIN";
@@ -124,13 +124,13 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
     private static final String KEY_IS_ACTIVE = "KEY_IS_ACTIVE";
     private static final String KEY_IS_AUTO_UPDATE_ENABLED = "KEY_IS_AUTO_UPDATE_ENABLED";
     private static final String KEY_IS_SHOWING_REMOVE_PLUGIN_CONFIRMATION_DIALOG
-            = "KEY_IS_SHOWING_REMOVE_PLUGIN_CONFIRMATION_DIALOG";
+        = "KEY_IS_SHOWING_REMOVE_PLUGIN_CONFIRMATION_DIALOG";
     private static final String KEY_IS_SHOWING_INSTALL_FIRST_PLUGIN_CONFIRMATION_DIALOG
-            = "KEY_IS_SHOWING_INSTALL_FIRST_PLUGIN_CONFIRMATION_DIALOG";
+        = "KEY_IS_SHOWING_INSTALL_FIRST_PLUGIN_CONFIRMATION_DIALOG";
     private static final String KEY_IS_SHOWING_AUTOMATED_TRANSFER_PROGRESS
-            = "KEY_IS_SHOWING_AUTOMATED_TRANSFER_PROGRESS";
+        = "KEY_IS_SHOWING_AUTOMATED_TRANSFER_PROGRESS";
     private static final String KEY_IS_SHOWING_DOMAIN_CREDIT_CHECK_PROGRESS
-            = "KEY_IS_SHOWING_DOMAIN_CREDIT_CHECK_PROGRESS";
+        = "KEY_IS_SHOWING_DOMAIN_CREDIT_CHECK_PROGRESS";
     private static final String KEY_PLUGIN_RECHECKED_TIMES = "KEY_PLUGIN_RECHECKED_TIMES";
     private static final String TAG_ERROR_DIALOG = "ERROR_DIALOG";
 
@@ -239,13 +239,13 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
             mIsActive = savedInstanceState.getBoolean(KEY_IS_ACTIVE);
             mIsAutoUpdateEnabled = savedInstanceState.getBoolean(KEY_IS_AUTO_UPDATE_ENABLED);
             mIsShowingRemovePluginConfirmationDialog =
-                    savedInstanceState.getBoolean(KEY_IS_SHOWING_REMOVE_PLUGIN_CONFIRMATION_DIALOG);
+                savedInstanceState.getBoolean(KEY_IS_SHOWING_REMOVE_PLUGIN_CONFIRMATION_DIALOG);
             mIsShowingInstallFirstPluginConfirmationDialog = savedInstanceState
                     .getBoolean(KEY_IS_SHOWING_INSTALL_FIRST_PLUGIN_CONFIRMATION_DIALOG);
             mIsShowingAutomatedTransferProgress = savedInstanceState
-                    .getBoolean(KEY_IS_SHOWING_AUTOMATED_TRANSFER_PROGRESS);
+                                                  .getBoolean(KEY_IS_SHOWING_AUTOMATED_TRANSFER_PROGRESS);
             isShowingDomainCreditCheckProgress = savedInstanceState
-                    .getBoolean(KEY_IS_SHOWING_DOMAIN_CREDIT_CHECK_PROGRESS);
+                                                 .getBoolean(KEY_IS_SHOWING_DOMAIN_CREDIT_CHECK_PROGRESS);
             mPluginReCheckTimer = savedInstanceState.getInt(KEY_PLUGIN_RECHECKED_TIMES, 0);
         }
 
@@ -296,9 +296,9 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         cancelDomainCreditsCheckProgressDialog();
         if (event.isError()) {
             AppLog.e(T.PLANS, PluginDetailActivity.class.getSimpleName() + ".onPlansFetched: "
-                              + event.error.type + " - " + event.error.message);
+                     + event.error.type + " - " + event.error.message);
             WPSnackbar.make(mContainer, getString(R.string.plugin_check_domain_credit_error), Snackbar.LENGTH_LONG)
-                      .show();
+            .show();
         } else {
             // This should not happen
             if (event.plans == null) {
@@ -307,7 +307,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
                     throw new IllegalStateException(errorMessage);
                 }
                 WPSnackbar.make(mContainer, getString(R.string.plugin_check_domain_credit_error), Snackbar.LENGTH_LONG)
-                          .show();
+                .show();
                 AppLog.e(T.PLANS, errorMessage);
                 return;
             }
@@ -354,24 +354,24 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(
-                    new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
             builder.setTitle(R.string.plugin_install_custom_domain_required_dialog_title);
             builder.setMessage(R.string.plugin_install_custom_domain_required_dialog_message);
             builder.setPositiveButton(R.string.plugin_install_custom_domain_required_dialog_register_btn,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if (isAdded() && getActivity() instanceof OnDomainRegistrationRequestedListener) {
-                                ((OnDomainRegistrationRequestedListener) getActivity()).onDomainRegistrationRequested();
-                            }
-                        }
-                    });
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (isAdded() && getActivity() instanceof OnDomainRegistrationRequestedListener) {
+                        ((OnDomainRegistrationRequestedListener) getActivity()).onDomainRegistrationRequested();
+                    }
+                }
+            });
             builder.setNegativeButton(R.string.cancel,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    });
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
 
             builder.setCancelable(true);
             return builder.create();
@@ -442,10 +442,10 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         outState.putBoolean(KEY_IS_AUTO_UPDATE_ENABLED, mIsAutoUpdateEnabled);
         outState.putBoolean(KEY_IS_SHOWING_REMOVE_PLUGIN_CONFIRMATION_DIALOG, mIsShowingRemovePluginConfirmationDialog);
         outState.putBoolean(KEY_IS_SHOWING_INSTALL_FIRST_PLUGIN_CONFIRMATION_DIALOG,
-                mIsShowingInstallFirstPluginConfirmationDialog);
+                            mIsShowingInstallFirstPluginConfirmationDialog);
         outState.putBoolean(KEY_IS_SHOWING_AUTOMATED_TRANSFER_PROGRESS, mIsShowingAutomatedTransferProgress);
         outState.putBoolean(KEY_IS_SHOWING_DOMAIN_CREDIT_CHECK_PROGRESS,
-                mCheckingDomainCreditsProgressDialog != null && mCheckingDomainCreditsProgressDialog.isShowing());
+                            mCheckingDomainCreditsProgressDialog != null && mCheckingDomainCreditsProgressDialog.isShowing());
         outState.putInt(KEY_PLUGIN_RECHECKED_TIMES, mPluginReCheckTimer);
     }
 
@@ -620,7 +620,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
 
         mTitleTextView.setText(mPlugin.getDisplayName());
         mImageManager.load(mImageBanner, ImageType.PHOTO, StringUtils.notNullStr(mPlugin.getBanner()),
-                ScaleType.CENTER_CROP);
+                           ScaleType.CENTER_CROP);
         mImageManager.load(mImageIcon, ImageType.PLUGIN, StringUtils.notNullStr(mPlugin.getIcon()));
         if (mPlugin.doesHaveWPOrgPluginDetails()) {
             mWPOrgPluginDetailsContainer.setVisibility(View.VISIBLE);
@@ -648,11 +648,11 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         }
 
         findViewById(R.id.plugin_card_site)
-                .setVisibility(mPlugin.isInstalled() && isNotAutoManaged() ? View.VISIBLE : View.GONE);
+        .setVisibility(mPlugin.isInstalled() && isNotAutoManaged() ? View.VISIBLE : View.GONE);
         findViewById(R.id.plugin_state_active_container)
-                .setVisibility(canPluginBeDisabledOrRemoved() ? View.VISIBLE : View.GONE);
+        .setVisibility(canPluginBeDisabledOrRemoved() ? View.VISIBLE : View.GONE);
         findViewById(R.id.plugin_state_autoupdates_container)
-                .setVisibility(mSite.isAutomatedTransfer() ? View.GONE : View.VISIBLE);
+        .setVisibility(mSite.isAutomatedTransfer() ? View.GONE : View.VISIBLE);
         mSwitchActive.setChecked(mIsActive);
         mSwitchAutoupdates.setChecked(mIsAutoUpdateEnabled);
 
@@ -778,10 +778,10 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         int[] to = {R.id.text1, R.id.text2};
         String[] from = {KEY_LABEL, KEY_TEXT};
         String[] labels = {
-                getString(R.string.plugin_info_version),
-                getString(R.string.plugin_info_lastupdated),
-                getString(R.string.plugin_info_requires_version),
-                getString(R.string.plugin_info_your_version)
+            getString(R.string.plugin_info_version),
+            getString(R.string.plugin_info_lastupdated),
+            getString(R.string.plugin_info_requires_version),
+            getString(R.string.plugin_info_your_version)
         };
 
         Map<String, String> mapVersion = new HashMap<>();
@@ -792,7 +792,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         Map<String, String> mapUpdated = new HashMap<>();
         mapUpdated.put(KEY_LABEL, labels[1]);
         mapUpdated
-                .put(KEY_TEXT, timespanFromUpdateDate(StringUtils.notNullStr(mPlugin.getLastUpdatedForWPOrgPlugin())));
+        .put(KEY_TEXT, timespanFromUpdateDate(StringUtils.notNullStr(mPlugin.getLastUpdatedForWPOrgPlugin())));
         data.add(mapUpdated);
 
         Map<String, String> mapRequiredVer = new HashMap<>();
@@ -848,8 +848,8 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Calypso_Dialog_Alert);
         builder.setTitle(getResources().getText(R.string.plugin_remove_dialog_title));
         String confirmationMessage = getString(R.string.plugin_remove_dialog_message,
-                mPlugin.getDisplayName(),
-                SiteUtils.getSiteNameOrHomeURL(mSite));
+                                               mPlugin.getDisplayName(),
+                                               SiteUtils.getSiteNameOrHomeURL(mSite));
         builder.setMessage(confirmationMessage);
         builder.setPositiveButton(R.string.remove, new DialogInterface.OnClickListener() {
             @Override
@@ -878,54 +878,54 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
 
     private void showSuccessfulUpdateSnackbar() {
         WPSnackbar.make(mContainer,
-                getString(R.string.plugin_updated_successfully, mPlugin.getDisplayName()),
-                Snackbar.LENGTH_LONG)
-                  .show();
+                        getString(R.string.plugin_updated_successfully, mPlugin.getDisplayName()),
+                        Snackbar.LENGTH_LONG)
+        .show();
     }
 
     private void showSuccessfulInstallSnackbar() {
         WPSnackbar.make(mContainer,
-                getString(R.string.plugin_installed_successfully, mPlugin.getDisplayName()),
-                Snackbar.LENGTH_LONG)
-                  .show();
+                        getString(R.string.plugin_installed_successfully, mPlugin.getDisplayName()),
+                        Snackbar.LENGTH_LONG)
+        .show();
     }
 
     private void showSuccessfulPluginRemovedSnackbar() {
         WPSnackbar.make(mContainer,
-                getString(R.string.plugin_removed_successfully, mPlugin.getDisplayName()),
-                Snackbar.LENGTH_LONG)
-                  .show();
+                        getString(R.string.plugin_removed_successfully, mPlugin.getDisplayName()),
+                        Snackbar.LENGTH_LONG)
+        .show();
     }
 
     private void showUpdateFailedSnackbar() {
         WPSnackbar.make(mContainer,
-                getString(R.string.plugin_updated_failed, mPlugin.getDisplayName()), Snackbar.LENGTH_LONG)
-                  .setAction(R.string.retry, new View.OnClickListener() {
-                      @Override
-                      public void onClick(View view) {
-                          dispatchUpdatePluginAction();
-                      }
-                  })
-                  .show();
+                        getString(R.string.plugin_updated_failed, mPlugin.getDisplayName()), Snackbar.LENGTH_LONG)
+        .setAction(R.string.retry, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchUpdatePluginAction();
+            }
+        })
+        .show();
     }
 
     private void showInstallFailedSnackbar() {
         WPSnackbar.make(mContainer,
-                getString(R.string.plugin_installed_failed, mPlugin.getDisplayName()), Snackbar.LENGTH_LONG)
-                  .setAction(R.string.retry, new View.OnClickListener() {
-                      @Override
-                      public void onClick(View view) {
-                          dispatchInstallPluginAction();
-                      }
-                  })
-                  .show();
+                        getString(R.string.plugin_installed_failed, mPlugin.getDisplayName()), Snackbar.LENGTH_LONG)
+        .setAction(R.string.retry, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchInstallPluginAction();
+            }
+        })
+        .show();
     }
 
     private void showPluginRemoveFailedSnackbar() {
         WPSnackbar.make(mContainer,
-                getString(R.string.plugin_remove_failed, mPlugin.getDisplayName()),
-                Snackbar.LENGTH_LONG)
-                  .show();
+                        getString(R.string.plugin_remove_failed, mPlugin.getDisplayName()),
+                        Snackbar.LENGTH_LONG)
+        .show();
     }
 
     private void showDomainCreditsCheckProgressDialog() {
@@ -935,7 +935,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
             mCheckingDomainCreditsProgressDialog.setIndeterminate(true);
 
             mCheckingDomainCreditsProgressDialog
-                    .setMessage(getString(R.string.plugin_check_domain_credits_progress_dialog_message));
+            .setMessage(getString(R.string.plugin_check_domain_credits_progress_dialog_message));
         }
         if (!mCheckingDomainCreditsProgressDialog.isShowing()) {
             mCheckingDomainCreditsProgressDialog.show();
@@ -956,8 +956,8 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
             // Even though we are deactivating the plugin to make sure it's disabled on the server side, since the user
             // sees that the plugin is disabled, it'd be confusing to say we are disabling the plugin
             String message = mIsActive
-                    ? getString(R.string.plugin_disable_progress_dialog_message, mPlugin.getDisplayName())
-                    : getRemovingPluginMessage();
+                             ? getString(R.string.plugin_disable_progress_dialog_message, mPlugin.getDisplayName())
+                             : getRemovingPluginMessage();
             mRemovePluginProgressDialog.setMessage(message);
         }
         if (!mRemovePluginProgressDialog.isShowing()) {
@@ -985,8 +985,8 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         }
         mIsConfiguringPlugin = true;
         mDispatcher.dispatch(PluginActionBuilder.newConfigureSitePluginAction(
-                new ConfigureSitePluginPayload(mSite, mPlugin.getName(), mPlugin.getSlug(),
-                        mIsActive, mIsAutoUpdateEnabled)));
+                                 new ConfigureSitePluginPayload(mSite, mPlugin.getName(), mPlugin.getSlug(),
+                                         mIsActive, mIsAutoUpdateEnabled)));
     }
 
     protected void dispatchUpdatePluginAction() {
@@ -1058,7 +1058,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         if (event.isError()) {
             // The plugin was already removed in remote, there is no need to show an error to the user
             if (mIsRemovingPlugin
-                && event.error.type == PluginStore.ConfigureSitePluginErrorType.UNKNOWN_PLUGIN) {
+                    && event.error.type == PluginStore.ConfigureSitePluginErrorType.UNKNOWN_PLUGIN) {
                 // We still need to dispatch the remove plugin action to remove the local copy
                 // and complete the flow gracefully. We can ignore `!mSitePlugin.isActive()` check here since the
                 // plugin is not installed anymore on remote
@@ -1096,8 +1096,8 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         }
         if (mPlugin.isAutoUpdateEnabled() != configuredPlugin.isAutoUpdateEnabled()) {
             Stat stat = configuredPlugin.isAutoUpdateEnabled()
-                    ? Stat.PLUGIN_AUTOUPDATE_ENABLED
-                    : Stat.PLUGIN_AUTOUPDATE_DISABLED;
+                        ? Stat.PLUGIN_AUTOUPDATE_ENABLED
+                        : Stat.PLUGIN_AUTOUPDATE_DISABLED;
             AnalyticsUtils.trackWithSiteDetails(stat, mSite);
         }
         // Now we can update the plugin with the new one from store
@@ -1134,7 +1134,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
 
         if (event.isError()) {
             AppLog.e(T.PLUGINS, "An error occurred while fetching wporg plugin" + event.pluginSlug
-                                + " with type: " + event.error.type);
+                     + " with type: " + event.error.type);
         } else {
             refreshPluginFromStore();
             refreshViews();
@@ -1155,7 +1155,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         mIsUpdatingPlugin = false;
         if (event.isError()) {
             AppLog.e(T.PLUGINS, "An error occurred while updating the plugin with type: "
-                                + event.error.type + " and message: " + event.error.message);
+                     + event.error.type + " and message: " + event.error.message);
             refreshPluginVersionViews();
             showUpdateFailedSnackbar();
             return;
@@ -1183,7 +1183,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         mIsInstallingPlugin = false;
         if (event.isError()) {
             AppLog.e(T.PLUGINS, "An error occurred while installing the plugin with type: "
-                                + event.error.type + " and message: " + event.error.message);
+                     + event.error.type + " and message: " + event.error.message);
             refreshPluginVersionViews();
             showInstallFailedSnackbar();
             return;
@@ -1221,9 +1221,9 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         cancelRemovePluginProgressDialog();
         if (event.isError()) {
             AppLog.e(T.PLUGINS, "An error occurred while removing the plugin with type: "
-                                + event.error.type + " and message: " + event.error.message);
+                     + event.error.type + " and message: " + event.error.message);
             String toastMessage = getString(R.string.plugin_updated_failed_detailed,
-                    mPlugin.getDisplayName(), event.error.message);
+                                            mPlugin.getDisplayName(), event.error.message);
             ToastUtils.showToast(this, toastMessage, Duration.LONG);
             return;
         }
@@ -1307,13 +1307,13 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         builder.setTitle(getResources().getText(R.string.plugin_install_first_plugin_confirmation_dialog_title));
         builder.setMessage(R.string.plugin_install_first_plugin_confirmation_dialog_message);
         builder.setPositiveButton(R.string.plugin_install_first_plugin_confirmation_dialog_install_btn,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mIsShowingInstallFirstPluginConfirmationDialog = false;
-                        startAutomatedTransfer();
-                    }
-                });
+        new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mIsShowingInstallFirstPluginConfirmationDialog = false;
+                startAutomatedTransfer();
+            }
+        });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -1342,7 +1342,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
      */
     private void startAutomatedTransfer() {
         AppLog.v(T.PLUGINS, "Starting the Automated Transfer for '" + mSite.getDisplayName()
-                            + "' by checking its eligibility");
+                 + "' by checking its eligibility");
         showAutomatedTransferProgressDialog();
 
         AnalyticsUtils.trackWithSiteDetails(Stat.AUTOMATED_TRANSFER_CHECK_ELIGIBILITY, mSite);
@@ -1402,7 +1402,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         cancelAutomatedTransferDialog();
         BasicFragmentDialog errorDialog = new BasicFragmentDialog();
         errorDialog.initialize(TAG_ERROR_DIALOG, null, errorMessage,
-                getString(R.string.dialog_button_ok), null, null);
+                               getString(R.string.dialog_button_ok), null, null);
         errorDialog.show(getSupportFragmentManager(), TAG_ERROR_DIALOG);
     }
 
@@ -1429,12 +1429,12 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
                 // This error shouldn't happen under normal circumstances. Instead the call will succeed and return
                 // error codes.
                 AppLog.e(T.PLUGINS, "Eligibility API error with type: " + event.error.type + " and message: "
-                                    + event.error.message);
+                         + event.error.message);
             }
             String errorCode = event.eligibilityErrorCodes.isEmpty() ? "" : event.eligibilityErrorCodes.get(0);
             if (errorCode.equalsIgnoreCase("transfer_already_exists")) {
                 AppLog.v(T.PLUGINS, "Automated Transfer eligibility check resulted in `transfer_already_exists` "
-                                    + "error, checking its status...");
+                         + "error, checking its status...");
                 mDispatcher.dispatch(SiteActionBuilder.newCheckAutomatedTransferStatusAction(mSite));
             } else {
                 AnalyticsUtils.trackWithSiteDetails(Stat.AUTOMATED_TRANSFER_NOT_ELIGIBLE, mSite);
@@ -1444,7 +1444,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
             AppLog.v(T.PLUGINS, "The site is eligible for Automated Transfer. Initiating the transfer...");
             AnalyticsUtils.trackWithSiteDetails(Stat.AUTOMATED_TRANSFER_INITIATE, mSite);
             mDispatcher.dispatch(SiteActionBuilder
-                    .newInitiateAutomatedTransferAction(new InitiateAutomatedTransferPayload(mSite, mSlug)));
+                                 .newInitiateAutomatedTransferAction(new InitiateAutomatedTransferPayload(mSite, mSlug)));
         }
     }
 
@@ -1467,7 +1467,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         }
         if (event.isError()) {
             AppLog.e(T.PLUGINS, "Automated Transfer failed during initiation with error type " + event.error.type
-                                + " and message: " + event.error.message);
+                     + " and message: " + event.error.message);
             AnalyticsUtils.trackWithSiteDetails(Stat.AUTOMATED_TRANSFER_INITIATION_FAILED, mSite);
             handleAutomatedTransferFailed(event.error.message);
         } else {
@@ -1498,7 +1498,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         }
         if (event.isError()) {
             AppLog.e(T.PLUGINS, "Automated Transfer failed after initiation with error type " + event.error.type
-                                + " and message: " + event.error.message);
+                     + " and message: " + event.error.message);
             AnalyticsUtils.trackWithSiteDetails(Stat.AUTOMATED_TRANSFER_STATUS_FAILED, mSite);
             handleAutomatedTransferFailed(event.error.message);
         } else {
@@ -1508,12 +1508,12 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
                 // and its plugins
                 mAutomatedTransferProgressDialog.setProgress(99);
                 mAutomatedTransferProgressDialog.setMessage(
-                        getString(R.string.plugin_install_first_plugin_almost_finished_dialog_message));
+                    getString(R.string.plugin_install_first_plugin_almost_finished_dialog_message));
                 AnalyticsUtils.trackWithSiteDetails(Stat.AUTOMATED_TRANSFER_STATUS_COMPLETE, mSite);
                 mDispatcher.dispatch(SiteActionBuilder.newFetchSiteAction(mSite));
             } else {
                 AppLog.v(T.PLUGINS, "Automated Transfer is still in progress: " + event.currentStep + "/"
-                                    + event.totalSteps);
+                         + event.totalSteps);
                 mAutomatedTransferProgressDialog.setProgress(event.currentStep * 100 / event.totalSteps);
                 mHandler.postDelayed(new Runnable() {
                     @Override
@@ -1546,7 +1546,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
             mSite = mSiteStore.getSiteBySiteId(mSite.getSiteId());
         } else if (mIsShowingAutomatedTransferProgress) {
             AppLog.e(T.PLUGINS, "Fetching the site after Automated Transfer has failed with error type "
-                                + event.error.type + " and message: " + event.error.message);
+                     + event.error.type + " and message: " + event.error.message);
         }
 
         if (mIsShowingAutomatedTransferProgress) {
@@ -1554,7 +1554,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
             // we are still showing the AT progress and the site is AT site, we can continue with plugins fetch
             if (mSite.isAutomatedTransfer()) {
                 AppLog.v(T.PLUGINS, "Site is successfully fetched after Automated Transfer, fetching"
-                                    + " the site plugins to complete the process...");
+                         + " the site plugins to complete the process...");
                 fetchPluginDirectory(0);
             } else {
                 // Either an error occurred while fetching the site or Automated Transfer is not yet reflected in the
@@ -1566,7 +1566,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
                     @Override
                     public void run() {
                         AppLog.v(T.PLUGINS, "Fetching the site again after Automated Transfer since the changes "
-                                            + "are not yet reflected");
+                                 + "are not yet reflected");
                         // Wait 3 seconds before fetching the site again
                         mDispatcher.dispatch(SiteActionBuilder.newFetchSiteAction(mSite));
                     }
@@ -1595,11 +1595,11 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
         if (event.isError()) {
             if (mIsShowingAutomatedTransferProgress) {
                 AppLog.e(T.PLUGINS, "Fetching the plugin directory after Automated Transfer has failed with error type"
-                                    + event.error.type + " and message: " + event.error.message);
+                         + event.error.type + " and message: " + event.error.message);
                 // Although unlikely, fetching the plugins after a successful Automated Transfer can result in an error.
                 // This should hopefully be an edge case and fetching the plugins again should
                 AppLog.v(T.PLUGINS, "Fetching the site plugins again after Automated Transfer since the"
-                                    + " changes are not yet reflected");
+                         + " changes are not yet reflected");
                 fetchPluginDirectory(PLUGIN_RETRY_DELAY_MS);
             }
             // We are safe to ignore the errors for this event unless it's for Automated Transfer since that's the only
@@ -1611,7 +1611,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
             if (mIsShowingAutomatedTransferProgress) {
                 if (mPluginReCheckTimer < MAX_PLUGIN_CHECK_TRIES) {
                     AppLog.v(T.PLUGINS, "Targeted plugin is not marked as installed after Automated Transfer."
-                                        + " Fetching the site plugins to reflect the changes.");
+                             + " Fetching the site plugins to reflect the changes.");
                     fetchPluginDirectory(PLUGIN_RETRY_DELAY_MS);
                     mPluginReCheckTimer++;
                     return;
@@ -1639,7 +1639,7 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
             @Override
             public void run() {
                 mDispatcher.dispatch(PluginActionBuilder.newFetchPluginDirectoryAction(new PluginStore
-                        .FetchPluginDirectoryPayload(PluginDirectoryType.SITE, mSite, false)));
+                                     .FetchPluginDirectoryPayload(PluginDirectoryType.SITE, mSite, false)));
             }
         }, delay);
     }
@@ -1647,37 +1647,37 @@ public class PluginDetailActivity extends AppCompatActivity implements OnDomainR
     private String getEligibilityErrorMessage(String errorCode) {
         int errorMessageRes;
         switch (errorCode) {
-            case "email_unverified":
-                errorMessageRes = R.string.plugin_install_site_ineligible_email_unverified;
-                break;
-            case "excessive_disk_space":
-                errorMessageRes = R.string.plugin_install_site_ineligible_excessive_disk_space;
-                break;
-            case "no_business_plan":
-                errorMessageRes = R.string.plugin_install_site_ineligible_no_business_plan;
-                break;
-            case "no_vip_sites":
-                errorMessageRes = R.string.plugin_install_site_ineligible_no_vip_sites;
-                break;
-            case "non_admin_user":
-                errorMessageRes = R.string.plugin_install_site_ineligible_non_admin_user;
-                break;
-            case "not_domain_owner":
-                errorMessageRes = R.string.plugin_install_site_ineligible_not_domain_owner;
-                break;
-            case "not_using_custom_domain":
-                errorMessageRes = R.string.plugin_install_site_ineligible_not_using_custom_domain;
-                break;
-            case "site_graylisted":
-                errorMessageRes = R.string.plugin_install_site_ineligible_site_graylisted;
-                break;
-            case "site_private":
-                errorMessageRes = R.string.plugin_install_site_ineligible_site_private;
-                break;
-            default:
-                // no_jetpack_sites, no_ssl_certificate, no_wpcom_nameservers, not_resolving_to_wpcom
-                errorMessageRes = R.string.plugin_install_site_ineligible_default_error;
-                break;
+        case "email_unverified":
+            errorMessageRes = R.string.plugin_install_site_ineligible_email_unverified;
+            break;
+        case "excessive_disk_space":
+            errorMessageRes = R.string.plugin_install_site_ineligible_excessive_disk_space;
+            break;
+        case "no_business_plan":
+            errorMessageRes = R.string.plugin_install_site_ineligible_no_business_plan;
+            break;
+        case "no_vip_sites":
+            errorMessageRes = R.string.plugin_install_site_ineligible_no_vip_sites;
+            break;
+        case "non_admin_user":
+            errorMessageRes = R.string.plugin_install_site_ineligible_non_admin_user;
+            break;
+        case "not_domain_owner":
+            errorMessageRes = R.string.plugin_install_site_ineligible_not_domain_owner;
+            break;
+        case "not_using_custom_domain":
+            errorMessageRes = R.string.plugin_install_site_ineligible_not_using_custom_domain;
+            break;
+        case "site_graylisted":
+            errorMessageRes = R.string.plugin_install_site_ineligible_site_graylisted;
+            break;
+        case "site_private":
+            errorMessageRes = R.string.plugin_install_site_ineligible_site_private;
+            break;
+        default:
+            // no_jetpack_sites, no_ssl_certificate, no_wpcom_nameservers, not_resolving_to_wpcom
+            errorMessageRes = R.string.plugin_install_site_ineligible_default_error;
+            break;
         }
         return getString(errorMessageRes);
     }

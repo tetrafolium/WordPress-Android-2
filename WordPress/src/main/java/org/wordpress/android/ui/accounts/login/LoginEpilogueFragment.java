@@ -54,7 +54,7 @@ public class LoginEpilogueFragment extends LoginBaseFormFragment<LoginEpilogueLi
     @Inject ImageManager mImageManager;
 
     public static LoginEpilogueFragment newInstance(boolean doLoginUpdate, boolean showAndReturn,
-                                                    ArrayList<Integer> oldSitesIds) {
+            ArrayList<Integer> oldSitesIds) {
         LoginEpilogueFragment fragment = new LoginEpilogueFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_DO_LOGIN_UPDATE, doLoginUpdate);
@@ -153,41 +153,41 @@ public class LoginEpilogueFragment extends LoginBaseFormFragment<LoginEpilogueLi
 
     private void setNewAdapter() {
         mAdapter = new SitePickerAdapter(
-                getActivity(), R.layout.login_epilogue_sites_listitem, 0, "", false,
-                new SitePickerAdapter.OnDataLoadedListener() {
-                    @Override
-                    public void onBeforeLoad(boolean isEmpty) {
-                    }
+            getActivity(), R.layout.login_epilogue_sites_listitem, 0, "", false,
+        new SitePickerAdapter.OnDataLoadedListener() {
+            @Override
+            public void onBeforeLoad(boolean isEmpty) {
+            }
 
+            @Override
+            public void onAfterLoad() {
+                mSitesList.post(new Runnable() {
                     @Override
-                    public void onAfterLoad() {
-                        mSitesList.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!isAdded()) {
-                                    return;
-                                }
+                    public void run() {
+                        if (!isAdded()) {
+                            return;
+                        }
 
-                                if (mSitesList.computeVerticalScrollRange() > mSitesList.getHeight()) {
-                                    mBottomShadow.setVisibility(View.VISIBLE);
-                                    mBottomButtonsContainer.setBackgroundResource(android.R.color.white);
-                                    ViewUtils.setButtonBackgroundColor(getContext(), mConnectMore,
-                                                                       R.style.WordPress_Button_Grey,
-                                                                       R.attr.colorButtonNormal);
-                                } else {
-                                    mBottomShadow.setVisibility(View.GONE);
-                                    mBottomButtonsContainer.setBackground(null);
-                                    ViewUtils.setButtonBackgroundColor(getContext(), mConnectMore,
-                                                                       R.style.WordPress_Button,
-                                                                       R.attr.colorButtonNormal);
-                                }
-                            }
-                        });
+                        if (mSitesList.computeVerticalScrollRange() > mSitesList.getHeight()) {
+                            mBottomShadow.setVisibility(View.VISIBLE);
+                            mBottomButtonsContainer.setBackgroundResource(android.R.color.white);
+                            ViewUtils.setButtonBackgroundColor(getContext(), mConnectMore,
+                                                               R.style.WordPress_Button_Grey,
+                                                               R.attr.colorButtonNormal);
+                        } else {
+                            mBottomShadow.setVisibility(View.GONE);
+                            mBottomButtonsContainer.setBackground(null);
+                            ViewUtils.setButtonBackgroundColor(getContext(), mConnectMore,
+                                                               R.style.WordPress_Button,
+                                                               R.attr.colorButtonNormal);
+                        }
                     }
-                }, new SitePickerAdapter.HeaderHandler() {
+                });
+            }
+        }, new SitePickerAdapter.HeaderHandler() {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(LayoutInflater layoutInflater, ViewGroup parent,
-                                                              boolean attachToRoot) {
+                    boolean attachToRoot) {
                 return new LoginHeaderViewHolder(layoutInflater.inflate(R.layout.login_epilogue_header, parent, false));
             }
 
@@ -243,8 +243,8 @@ public class LoginEpilogueFragment extends LoginBaseFormFragment<LoginEpilogueLi
             mConnectMore.setText(R.string.connect_site);
         } else {
             holder.showSitesHeading(StringUtils.getQuantityString(
-                    getActivity(), R.string.days_quantity_one, R.string.login_epilogue_mysites_one,
-                    R.string.login_epilogue_mysites_other, sites.size()));
+                                        getActivity(), R.string.days_quantity_one, R.string.login_epilogue_mysites_one,
+                                        R.string.login_epilogue_mysites_other, sites.size()));
 
             mConnectMore.setText(R.string.connect_more);
         }

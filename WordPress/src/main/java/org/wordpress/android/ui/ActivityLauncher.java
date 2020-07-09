@@ -95,7 +95,7 @@ import static org.wordpress.android.viewmodel.activitylog.ActivityLogDetailViewM
 
 public class ActivityLauncher {
     public static void showMainActivityAndLoginEpilogue(Activity activity, ArrayList<Integer> oldSitesIds,
-                                                        boolean doLoginUpdate) {
+            boolean doLoginUpdate) {
         Intent intent = new Intent(activity, WPMainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(WPMainActivity.ARG_DO_LOGIN_UPDATE, doLoginUpdate);
@@ -105,7 +105,7 @@ public class ActivityLauncher {
     }
 
     public static void showMainActivityAndSignupEpilogue(Activity activity, String name, String email, String photoUrl,
-                                                         String username) {
+            String username) {
         Intent intent = new Intent(activity, WPMainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(WPMainActivity.ARG_SHOW_SIGNUP_EPILOGUE, true);
@@ -123,9 +123,9 @@ public class ActivityLauncher {
     }
 
     public static void showPhotoPickerForResult(Activity activity,
-                                                @NonNull MediaBrowserType browserType,
-                                                @Nullable SiteModel site,
-                                                @Nullable Integer localPostId) {
+            @NonNull MediaBrowserType browserType,
+            @Nullable SiteModel site,
+            @Nullable Integer localPostId) {
         Intent intent = new Intent(activity, PhotoPickerActivity.class);
         intent.putExtra(PhotoPickerFragment.ARG_BROWSER_TYPE, browserType);
         if (site != null) {
@@ -138,8 +138,8 @@ public class ActivityLauncher {
     }
 
     public static void showStockMediaPickerForResult(Activity activity,
-                                                     @NonNull SiteModel site,
-                                                     int requestCode) {
+            @NonNull SiteModel site,
+            int requestCode) {
         Map<String, String> properties = new HashMap<>();
         properties.put("from", activity.getClass().getSimpleName());
         AnalyticsTracker.track(AnalyticsTracker.Stat.STOCK_MEDIA_ACCESSED, properties);
@@ -171,12 +171,12 @@ public class ActivityLauncher {
 
     public static void continueJetpackConnect(Context context, JetpackConnectionSource source, SiteModel site) {
         switch (source) {
-            case NOTIFICATIONS:
-                continueJetpackConnectForNotifications(context, site);
-                break;
-            case STATS:
-                continueJetpackConnectForStats(context, site);
-                break;
+        case NOTIFICATIONS:
+            continueJetpackConnectForNotifications(context, site);
+            break;
+        case STATS:
+            continueJetpackConnectForStats(context, site);
+            break;
         }
     }
 
@@ -236,11 +236,11 @@ public class ActivityLauncher {
         if (site == null) {
             AppLog.e(T.STATS, "SiteModel is null when opening the stats from the deeplink.");
             AnalyticsTracker.track(
-                    STATS_ACCESS_ERROR,
-                    ActivityLauncher.class.getName(),
-                    "NullPointerException",
-                    "Failed to open Stats from the deeplink because of the null SiteModel"
-                                  );
+                STATS_ACCESS_ERROR,
+                ActivityLauncher.class.getName(),
+                "NullPointerException",
+                "Failed to open Stats from the deeplink because of the null SiteModel"
+            );
             ToastUtils.showToast(context, R.string.stats_cannot_be_started, ToastUtils.Duration.SHORT);
             return;
         }
@@ -280,11 +280,11 @@ public class ActivityLauncher {
         if (site == null) {
             AppLog.e(T.STATS, "SiteModel is null when opening the stats.");
             AnalyticsTracker.track(
-                    STATS_ACCESS_ERROR,
-                    ActivityLauncher.class.getName(),
-                    "NullPointerException",
-                    "Failed to open Stats because of the null SiteModel"
-                                  );
+                STATS_ACCESS_ERROR,
+                ActivityLauncher.class.getName(),
+                "NullPointerException",
+                "Failed to open Stats because of the null SiteModel"
+            );
             ToastUtils.showToast(context, R.string.stats_cannot_be_started, ToastUtils.Duration.SHORT);
         } else {
             StatsActivity.start(context, site);
@@ -292,7 +292,7 @@ public class ActivityLauncher {
     }
 
     public static void viewAllTabbedInsightsStats(Context context, StatsViewType statsType, int selectedTab,
-                                                  int localSiteId) {
+            int localSiteId) {
         StatsViewAllActivity.startForTabbedInsightsStats(context, statsType, selectedTab, localSiteId);
     }
 
@@ -315,11 +315,11 @@ public class ActivityLauncher {
         if (site == null) {
             AppLog.e(T.STATS, "SiteModel is null when opening the stats.");
             AnalyticsTracker.track(
-                    STATS_ACCESS_ERROR,
-                    ActivityLauncher.class.getName(),
-                    "NullPointerException",
-                    "Failed to open Stats because of the null SiteModel"
-                                  );
+                STATS_ACCESS_ERROR,
+                ActivityLauncher.class.getName(),
+                "NullPointerException",
+                "Failed to open Stats because of the null SiteModel"
+            );
             ToastUtils.showToast(context, R.string.stats_cannot_be_started, ToastUtils.Duration.SHORT);
             return;
         }
@@ -413,7 +413,7 @@ public class ActivityLauncher {
     }
 
     public static void viewDomainRegistrationActivityForResult(Activity activity, SiteModel site,
-                                                               @NonNull DomainRegistrationPurpose purpose) {
+            @NonNull DomainRegistrationPurpose purpose) {
         Intent intent = new Intent(activity, DomainRegistrationActivity.class);
         intent.putExtra(WordPress.SITE, site);
         intent.putExtra(DomainRegistrationActivity.DOMAIN_REGISTRATION_PURPOSE_KEY, purpose);
@@ -458,7 +458,7 @@ public class ActivityLauncher {
 
     public static void viewCurrentSite(Context context, SiteModel site, boolean openFromHeader) {
         AnalyticsTracker.Stat stat = openFromHeader ? AnalyticsTracker.Stat.OPENED_VIEW_SITE_FROM_HEADER
-                : AnalyticsTracker.Stat.OPENED_VIEW_SITE;
+                                     : AnalyticsTracker.Stat.OPENED_VIEW_SITE;
         AnalyticsUtils.trackWithSiteDetails(stat, site);
 
         if (site == null) {
@@ -474,8 +474,8 @@ public class ActivityLauncher {
             } else if (!TextUtils.isEmpty(site.getUsername()) && !TextUtils.isEmpty(site.getPassword())) {
                 // Show self-hosted sites as authenticated since we should have the username & password
                 WPWebViewActivity
-                        .openUrlByUsingBlogCredentials(context, site, null, siteUrl, new String[]{}, false, true,
-                                false);
+                .openUrlByUsingBlogCredentials(context, site, null, siteUrl, new String[] {}, false, true,
+                                               false);
             } else {
                 // Show non-wp.com sites without a password unauthenticated. These would be Jetpack sites that are
                 // connected through REST API.
@@ -513,9 +513,9 @@ public class ActivityLauncher {
     }
 
     public static void editPostOrPageForResult(Activity activity, SiteModel site, PostModel post,
-                                               boolean loadAutoSaveRevision) {
+            boolean loadAutoSaveRevision) {
         editPostOrPageForResult(new Intent(activity, EditPostActivity.class), activity, site, post.getId(),
-                loadAutoSaveRevision);
+                                loadAutoSaveRevision);
     }
 
     public static void editPostOrPageForResult(Intent intent, Activity activity, SiteModel site, int postLocalId) {
@@ -523,7 +523,7 @@ public class ActivityLauncher {
     }
 
     public static void editPostOrPageForResult(Intent intent, Activity activity, SiteModel site, int postLocalId,
-                                               boolean loadAutoSaveRevision) {
+            boolean loadAutoSaveRevision) {
         if (site == null) {
             return;
         }
@@ -573,25 +573,25 @@ public class ActivityLauncher {
     }
 
     public static void previewPostOrPageForResult(
-            Activity activity,
-            SiteModel site,
-            PostModel post,
-            RemotePreviewType remotePreviewType
+        Activity activity,
+        SiteModel site,
+        PostModel post,
+        RemotePreviewType remotePreviewType
     ) {
         browsePostOrPageEx(activity, site, post, remotePreviewType);
     }
 
     private static void browsePostOrPageEx(
-            Context context,
-            SiteModel site,
-            PostModel post,
-            RemotePreviewType remotePreviewType) {
+        Context context,
+        SiteModel site,
+        PostModel post,
+        RemotePreviewType remotePreviewType) {
         if (site == null || post == null || TextUtils.isEmpty(post.getLink())) {
             return;
         }
 
         if (remotePreviewType == RemotePreviewType.REMOTE_PREVIEW_WITH_REMOTE_AUTO_SAVE
-                        && TextUtils.isEmpty(post.getAutoSavePreviewUrl())) {
+                && TextUtils.isEmpty(post.getAutoSavePreviewUrl())) {
             return;
         }
 
@@ -603,22 +603,22 @@ public class ActivityLauncher {
 
         if (site.isWPCom()) {
             WPWebViewActivity.openPostUrlByUsingGlobalWPCOMCredentials(
-                    context,
-                    url,
-                    shareableUrl,
-                    shareSubject,
-                    true,
-                    startPreviewForResult);
+                context,
+                url,
+                shareableUrl,
+                shareSubject,
+                true,
+                startPreviewForResult);
         } else if (site.isJetpackConnected() && site.isUsingWpComRestApi()) {
             WPWebViewActivity
-                    .openJetpackBlogPostPreview(
-                            context,
-                            url,
-                            shareableUrl,
-                            shareSubject,
-                            site.getFrameNonce(),
-                            true,
-                            startPreviewForResult);
+            .openJetpackBlogPostPreview(
+                context,
+                url,
+                shareableUrl,
+                shareSubject,
+                site.getFrameNonce(),
+                true,
+                startPreviewForResult);
         } else {
             // Add the original post URL to the list of allowed URLs.
             // This is necessary because links are disabled in the webview, but WP removes "?preview=true"
@@ -626,21 +626,21 @@ public class ActivityLauncher {
             // permalink structure settings.
             // Ref: https://github.com/wordpress-mobile/WordPress-Android/issues/4873
             WPWebViewActivity.openUrlByUsingBlogCredentials(
-                    context,
-                    site,
-                    post,
-                    url,
-                    new String[]{post.getLink()},
-                    true,
-                    true,
-                    startPreviewForResult);
+                context,
+                site,
+                post,
+                url,
+                new String[] {post.getLink()},
+                true,
+                true,
+                startPreviewForResult);
         }
     }
 
     public static void showActionableEmptyView(
-            Context context,
-            WPWebViewUsageCategory actionableState,
-            String postTitle
+        Context context,
+        WPWebViewUsageCategory actionableState,
+        String postTitle
     ) {
         WPWebViewActivity.openActionableEmptyViewDirectly(context, actionableState, postTitle);
     }
@@ -711,7 +711,7 @@ public class ActivityLauncher {
     }
 
     public static void showLoginEpilogueForResult(Activity activity, boolean showAndReturn,
-                                                  ArrayList<Integer> oldSitesIds, boolean doLoginUpdate) {
+            ArrayList<Integer> oldSitesIds, boolean doLoginUpdate) {
         Intent intent = new Intent(activity, LoginEpilogueActivity.class);
         intent.putExtra(LoginEpilogueActivity.EXTRA_DO_LOGIN_UPDATE, doLoginUpdate);
         intent.putExtra(LoginEpilogueActivity.EXTRA_SHOW_AND_RETURN, showAndReturn);
@@ -731,7 +731,7 @@ public class ActivityLauncher {
     }
 
     public static void showSignupEpilogueForResult(Activity activity, String name, String email, String photoUrl,
-                                                   String username, boolean isEmail) {
+            String username, boolean isEmail) {
         Intent intent = new Intent(activity, SignupEpilogueActivity.class);
         intent.putExtra(SignupEpilogueActivity.EXTRA_SIGNUP_DISPLAY_NAME, name);
         intent.putExtra(SignupEpilogueActivity.EXTRA_SIGNUP_EMAIL_ADDRESS, email);
@@ -746,13 +746,13 @@ public class ActivityLauncher {
             return;
         }
         StatsDetailActivity.Companion
-                .start(context, site, post.getRemotePostId(), StatsConstants.ITEM_TYPE_POST, post.getTitle(),
-                        post.getLink());
+        .start(context, site, post.getRemotePostId(), StatsConstants.ITEM_TYPE_POST, post.getTitle(),
+               post.getLink());
     }
 
     public static void viewMediaPickerForResult(Activity activity,
-                                                @NonNull SiteModel site,
-                                                @NonNull MediaBrowserType browserType) {
+            @NonNull SiteModel site,
+            @NonNull MediaBrowserType browserType) {
         Intent intent = new Intent(activity, MediaBrowserActivity.class);
         intent.putExtra(WordPress.SITE, site);
         intent.putExtra(MediaBrowserActivity.ARG_BROWSER_TYPE, browserType);

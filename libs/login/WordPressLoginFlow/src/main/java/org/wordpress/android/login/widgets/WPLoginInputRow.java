@@ -78,9 +78,9 @@ public class WPLoginInputRow extends RelativeLayout {
             try {
                 if (a.hasValue(R.styleable.wpLoginInputRow_wpIconDrawable)) {
                     int iconResId = a.getResourceId(R.styleable.wpLoginInputRow_wpIconDrawable,
-                            R.drawable.ic_user_grey_24dp);
+                                                    R.drawable.ic_user_grey_24dp);
                     int tintResId = a.getResourceId(R.styleable.wpLoginInputRow_wpIconDrawableTint,
-                            R.color.login_input_icon_color);
+                                                    R.color.login_input_icon_color);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         mIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, tintResId)));
@@ -115,17 +115,17 @@ public class WPLoginInputRow extends RelativeLayout {
 
                 if (a.hasValue(R.styleable.wpLoginInputRow_passwordToggleEnabled)) {
                     mTextInputLayout.setPasswordVisibilityToggleEnabled(
-                            a.getBoolean(R.styleable.wpLoginInputRow_passwordToggleEnabled, false));
+                        a.getBoolean(R.styleable.wpLoginInputRow_passwordToggleEnabled, false));
                 }
 
                 if (a.hasValue(R.styleable.wpLoginInputRow_passwordToggleTint)) {
                     mTextInputLayout.setPasswordVisibilityToggleTintList(
-                            a.getColorStateList(R.styleable.wpLoginInputRow_passwordToggleTint));
+                        a.getColorStateList(R.styleable.wpLoginInputRow_passwordToggleTint));
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     if (a.hasValue(R.styleable.wpLoginInputRow_android_textAlignment)) {
                         mEditText.setTextAlignment(
-                                a.getInt(R.styleable.wpLoginInputRow_android_textAlignment, TEXT_ALIGNMENT_GRAVITY));
+                            a.getInt(R.styleable.wpLoginInputRow_android_textAlignment, TEXT_ALIGNMENT_GRAVITY));
                     }
                 }
             } finally {
@@ -186,8 +186,8 @@ public class WPLoginInputRow extends RelativeLayout {
                 if (actionId == EditorInfo.IME_ACTION_DONE
                         || actionId == EditorInfo.IME_ACTION_NEXT
                         || (event != null
-                        && event.getAction() == KeyEvent.ACTION_UP
-                        && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                            && event.getAction() == KeyEvent.ACTION_UP
+                            && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     listener.onEditorCommit();
                 }
 

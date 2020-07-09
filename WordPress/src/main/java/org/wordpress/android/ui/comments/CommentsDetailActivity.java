@@ -40,8 +40,8 @@ import javax.inject.Inject;
 import static org.wordpress.android.ui.comments.CommentsListFragment.COMMENTS_PER_PAGE;
 
 public class CommentsDetailActivity extends AppCompatActivity
-        implements CommentAdapter.OnLoadMoreListener,
-        CommentActions.OnCommentActionListener {
+    implements CommentAdapter.OnLoadMoreListener,
+    CommentActions.OnCommentActionListener {
     public static final String COMMENT_ID_EXTRA = "commentId";
     public static final String COMMENT_STATUS_FILTER_EXTRA = "commentStatusFilter";
 
@@ -157,7 +157,7 @@ public class CommentsDetailActivity extends AppCompatActivity
 
         final int offset = mAdapter.getCount();
         mDispatcher.dispatch(CommentActionBuilder.newFetchCommentsAction(
-                new FetchCommentsPayload(mSite, mStatusFilter, COMMENTS_PER_PAGE, offset)));
+                                 new FetchCommentsPayload(mSite, mStatusFilter, COMMENTS_PER_PAGE, offset)));
         mIsUpdatingComments = true;
         setLoadingState(true);
     }
@@ -213,7 +213,7 @@ public class CommentsDetailActivity extends AppCompatActivity
         } else {
             // If current items change, rebuild the adapter
             mAdapter = new CommentDetailFragmentAdapter(getSupportFragmentManager(), commentList, mSite,
-                                                        CommentsDetailActivity.this);
+                    CommentsDetailActivity.this);
             mViewPager.setAdapter(mAdapter);
         }
 

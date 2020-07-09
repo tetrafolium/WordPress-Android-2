@@ -69,7 +69,7 @@ public class ReaderSimplePostView extends LinearLayout {
                          final OnSimplePostClickListener listener) {
         mSimplePost = simplePost;
         int avatarSize =
-                DisplayUtils.dpToPx(getContext(), getResources().getDimensionPixelSize(R.dimen.avatar_sz_extra_small));
+            DisplayUtils.dpToPx(getContext(), getResources().getDimensionPixelSize(R.dimen.avatar_sz_extra_small));
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
@@ -160,7 +160,7 @@ public class ReaderSimplePostView extends LinearLayout {
                     mSimplePost.setIsFollowing(isAskingToFollow);
                 } else {
                     int errResId = isAskingToFollow ? R.string.reader_toast_err_follow_blog
-                            : R.string.reader_toast_err_unfollow_blog;
+                                   : R.string.reader_toast_err_unfollow_blog;
                     ToastUtils.showToast(getContext(), errResId);
                     btnFollow.setIsFollowed(!isAskingToFollow);
                 }
@@ -190,10 +190,10 @@ public class ReaderSimplePostView extends LinearLayout {
             public void onGlobalLayout() {
                 postView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 int cropWidth =
-                        getContext().getResources().getDimensionPixelSize(R.dimen.reader_simple_post_image_width);
+                    getContext().getResources().getDimensionPixelSize(R.dimen.reader_simple_post_image_width);
                 int cropHeight = postView.getHeight();
                 String photonUrl = PhotonUtils.getPhotonImageUrl(
-                        mSimplePost.getFeaturedImageUrl(), cropWidth, cropHeight);
+                                       mSimplePost.getFeaturedImageUrl(), cropWidth, cropHeight);
                 ViewGroup.LayoutParams layoutParams = imgFeatured.getLayoutParams();
                 layoutParams.height = cropHeight;
 

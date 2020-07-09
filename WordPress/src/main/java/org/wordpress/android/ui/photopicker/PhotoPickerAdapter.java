@@ -163,8 +163,8 @@ public class PhotoPickerAdapter extends RecyclerView.Adapter<PhotoPickerAdapter.
     }
 
     private void updateSelectionCountForPosition(int position,
-                                                 boolean isSelected,
-                                                 @NonNull TextView txtSelectionCount) {
+            boolean isSelected,
+            @NonNull TextView txtSelectionCount) {
         if (canMultiselect() && isSelected) {
             int count = mSelectedPositions.indexOf(position) + 1;
             txtSelectionCount.setText(String.format(Locale.getDefault(), "%d", count));
@@ -387,9 +387,9 @@ public class PhotoPickerAdapter extends RecyclerView.Adapter<PhotoPickerAdapter.
         if (item != null) {
             trackOpenPreviewScreenEvent(item);
             MediaPreviewActivity.showPreview(
-                    mContext,
-                    null,
-                    item.mUri.toString());
+                mContext,
+                null,
+                item.mUri.toString());
         }
     }
 
@@ -401,7 +401,7 @@ public class PhotoPickerAdapter extends RecyclerView.Adapter<PhotoPickerAdapter.
         new Thread(new Runnable() {
             public void run() {
                 Map<String, Object> properties =
-                        AnalyticsUtils.getMediaProperties(mContext, item.mIsVideo, item.mUri, null);
+                    AnalyticsUtils.getMediaProperties(mContext, item.mIsVideo, item.mUri, null);
                 properties.put("is_video", item.mIsVideo);
                 AnalyticsTracker.track(AnalyticsTracker.Stat.MEDIA_PICKER_PREVIEW_OPENED, properties);
             }
@@ -451,11 +451,11 @@ public class PhotoPickerAdapter extends RecyclerView.Adapter<PhotoPickerAdapter.
             Cursor cursor = null;
             try {
                 cursor = mContext.getContentResolver().query(
-                        baseUri,
-                        projection,
-                        null,
-                        null,
-                        null);
+                             baseUri,
+                             projection,
+                             null,
+                             null,
+                             null);
             } catch (SecurityException e) {
                 AppLog.e(AppLog.T.MEDIA, e);
             }

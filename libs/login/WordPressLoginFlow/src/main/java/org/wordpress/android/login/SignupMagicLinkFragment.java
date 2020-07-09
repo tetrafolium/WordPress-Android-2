@@ -55,7 +55,7 @@ public class SignupMagicLinkFragment extends Fragment {
     protected boolean mInProgress;
 
     public static SignupMagicLinkFragment newInstance(String email, boolean isJetpackConnect,
-                                                      String jetpackConnectSource) {
+            String jetpackConnectSource) {
         SignupMagicLinkFragment fragment = new SignupMagicLinkFragment();
         Bundle args = new Bundle();
         args.putString(ARG_EMAIL_ADDRESS, email);
@@ -169,14 +169,14 @@ public class SignupMagicLinkFragment extends Fragment {
         mOpenMailButton.setEnabled(false);
 
         mProgressDialog = ProgressDialog.show(getActivity(), "", message, true, true,
-                new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        if (mInProgress) {
-                            endProgress();
-                        }
-                    }
-                });
+        new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (mInProgress) {
+                    endProgress();
+                }
+            }
+        });
 
         mInProgress = true;
     }
@@ -221,19 +221,19 @@ public class SignupMagicLinkFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        sendMagicLinkEmail();
-                        break;
+                case DialogInterface.BUTTON_POSITIVE:
+                    sendMagicLinkEmail();
+                    break;
                     // DialogInterface.BUTTON_NEGATIVE is intentionally ignored. Just dismiss dialog.
                 }
             }
         };
 
         AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.LoginTheme))
-                .setMessage(message)
-                .setNegativeButton(R.string.signup_magic_link_error_button_negative, dialogListener)
-                .setPositiveButton(R.string.signup_magic_link_error_button_positive, dialogListener)
-                .create();
+        .setMessage(message)
+        .setNegativeButton(R.string.signup_magic_link_error_button_negative, dialogListener)
+        .setPositiveButton(R.string.signup_magic_link_error_button_positive, dialogListener)
+        .create();
         dialog.show();
     }
 

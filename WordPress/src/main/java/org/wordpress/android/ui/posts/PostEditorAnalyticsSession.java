@@ -43,7 +43,7 @@ public class PostEditorAnalyticsSession implements Serializable {
     enum Outcome {
         CANCEL,
         DISCARD,    // not used in WPAndroid, but kept for parity with iOS
-                    // see https://github.com/wordpress-mobile/gutenberg-mobile/issues/556#issuecomment-462678807
+        // see https://github.com/wordpress-mobile/gutenberg-mobile/issues/556#issuecomment-462678807
         SAVE,
         PUBLISH
     }
@@ -84,12 +84,12 @@ public class PostEditorAnalyticsSession implements Serializable {
             mHasUnsupportedBlocks = unsupportedBlocksList != null && unsupportedBlocksList.size() > 0;
             Map<String, Object> properties = getCommonProperties();
             properties.put(KEY_UNSUPPORTED_BLOCKS,
-                    unsupportedBlocksList != null ? unsupportedBlocksList : new ArrayList<>());
+                           unsupportedBlocksList != null ? unsupportedBlocksList : new ArrayList<>());
             AnalyticsTracker.track(Stat.EDITOR_SESSION_START, properties);
             mStarted = true;
         } else {
             AppLog.w(T.EDITOR, "An editor session cannot be attempted to be started more than once, "
-                               + "unless it's due to rotation or Editor switch");
+                     + "unless it's due to rotation or Editor switch");
         }
     }
 

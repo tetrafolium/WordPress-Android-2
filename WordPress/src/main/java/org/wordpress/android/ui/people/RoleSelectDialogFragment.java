@@ -41,7 +41,7 @@ public class RoleSelectDialogFragment extends DialogFragment {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(
-                new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(getActivity(), R.style.Calypso_Dialog_Alert));
         builder.setTitle(R.string.role);
         builder.setItems(stringRoles, new DialogInterface.OnClickListener() {
             @Override
@@ -62,7 +62,7 @@ public class RoleSelectDialogFragment extends DialogFragment {
     }
 
     public static <T extends Fragment & OnRoleSelectListener> void show(T parentFragment, int requestCode,
-                                                                        @NonNull SiteModel site) {
+            @NonNull SiteModel site) {
         RoleSelectDialogFragment roleChangeDialogFragment = new RoleSelectDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable(WordPress.SITE, site);

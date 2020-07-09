@@ -35,7 +35,7 @@ import org.wordpress.android.widgets.WPViewPagerTransformer.TransformType;
  * post, but also supports viewing a single image
  */
 public class ReaderPhotoViewerActivity extends AppCompatActivity
-        implements PhotoViewListener {
+    implements PhotoViewListener {
     private String mInitialImageUrl;
     private boolean mIsPrivate;
     private boolean mIsGallery;
@@ -289,8 +289,8 @@ public class ReaderPhotoViewerActivity extends AppCompatActivity
         @Override
         public Fragment getItem(int position) {
             return ReaderPhotoViewerFragment.newInstance(
-                    mImageList.get(position),
-                    mImageList.isPrivate());
+                       mImageList.get(position),
+                       mImageList.isPrivate());
         }
 
         @Override

@@ -96,7 +96,7 @@ public class ThemeBrowserActivity extends AppCompatActivity implements ThemeBrow
             fetchWpComThemesIfSyncTimedOut(false);
         } else {
             mThemeBrowserFragment =
-                    (ThemeBrowserFragment) getSupportFragmentManager().findFragmentByTag(ThemeBrowserFragment.TAG);
+                (ThemeBrowserFragment) getSupportFragmentManager().findFragmentByTag(ThemeBrowserFragment.TAG);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -293,9 +293,9 @@ public class ThemeBrowserActivity extends AppCompatActivity implements ThemeBrow
 
     private void updateCurrentThemeView() {
         if (mCurrentTheme != null && mThemeBrowserFragment != null
-            && mThemeBrowserFragment.getCurrentThemeTextView() != null) {
+                && mThemeBrowserFragment.getCurrentThemeTextView() != null) {
             String text =
-                    TextUtils.isEmpty(mCurrentTheme.getName()) ? getString(R.string.unknown) : mCurrentTheme.getName();
+                TextUtils.isEmpty(mCurrentTheme.getName()) ? getString(R.string.unknown) : mCurrentTheme.getName();
             mThemeBrowserFragment.getCurrentThemeTextView().setText(text);
             mThemeBrowserFragment.setCurrentThemeId(mCurrentTheme.getThemeId());
         }
@@ -346,13 +346,13 @@ public class ThemeBrowserActivity extends AppCompatActivity implements ThemeBrow
     private void addBrowserFragment() {
         mThemeBrowserFragment = ThemeBrowserFragment.newInstance(mSite);
         getSupportFragmentManager().beginTransaction()
-                            .add(R.id.theme_browser_container, mThemeBrowserFragment, ThemeBrowserFragment.TAG)
-                            .commit();
+        .add(R.id.theme_browser_container, mThemeBrowserFragment, ThemeBrowserFragment.TAG)
+        .commit();
     }
 
     private void showAlertDialogOnNewSettingNewTheme(ThemeModel newTheme) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(
-                new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
+            new ContextThemeWrapper(this, R.style.Calypso_Dialog_Alert));
 
         String thanksMessage = String.format(getString(R.string.theme_prompt), newTheme.getName());
         if (!TextUtils.isEmpty(newTheme.getAuthorName())) {
@@ -375,7 +375,7 @@ public class ThemeBrowserActivity extends AppCompatActivity implements ThemeBrow
 
     private void startWebActivity(String themeId, ThemeWebActivity.ThemeWebActivityType type) {
         ThemeModel theme =
-                TextUtils.isEmpty(themeId) ? null : mThemeStore.getWpComThemeByThemeId(themeId.replace("-wpcom", ""));
+            TextUtils.isEmpty(themeId) ? null : mThemeStore.getWpComThemeByThemeId(themeId.replace("-wpcom", ""));
         if (theme == null) {
             theme = mThemeStore.getInstalledThemeByThemeId(mSite, themeId);
             if (theme == null) {
@@ -389,18 +389,18 @@ public class ThemeBrowserActivity extends AppCompatActivity implements ThemeBrow
         theme.setActive(isActiveThemeForSite(theme.getThemeId()));
 
         switch (type) {
-            case PREVIEW:
-                AnalyticsUtils.trackWithSiteDetails(Stat.THEMES_PREVIEWED_SITE, mSite, themeProperties);
-                break;
-            case DEMO:
-                AnalyticsUtils.trackWithSiteDetails(Stat.THEMES_DEMO_ACCESSED, mSite, themeProperties);
-                break;
-            case DETAILS:
-                AnalyticsUtils.trackWithSiteDetails(Stat.THEMES_DETAILS_ACCESSED, mSite, themeProperties);
-                break;
-            case SUPPORT:
-                AnalyticsUtils.trackWithSiteDetails(Stat.THEMES_SUPPORT_ACCESSED, mSite, themeProperties);
-                break;
+        case PREVIEW:
+            AnalyticsUtils.trackWithSiteDetails(Stat.THEMES_PREVIEWED_SITE, mSite, themeProperties);
+            break;
+        case DEMO:
+            AnalyticsUtils.trackWithSiteDetails(Stat.THEMES_DEMO_ACCESSED, mSite, themeProperties);
+            break;
+        case DETAILS:
+            AnalyticsUtils.trackWithSiteDetails(Stat.THEMES_DETAILS_ACCESSED, mSite, themeProperties);
+            break;
+        case SUPPORT:
+            AnalyticsUtils.trackWithSiteDetails(Stat.THEMES_SUPPORT_ACCESSED, mSite, themeProperties);
+            break;
         }
         ThemeWebActivity.openTheme(this, mSite, theme, type);
     }

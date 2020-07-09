@@ -109,7 +109,7 @@ public class HeaderGridView extends GridView {
 
         if (adapter != null && !(adapter instanceof HeaderViewGridAdapter)) {
             throw new IllegalStateException(
-                    "Cannot add header view to grid -- setAdapter has already been called.");
+                "Cannot add header view to grid -- setAdapter has already been called.");
         }
 
         FixedViewInfo info = new FixedViewInfo();
@@ -199,10 +199,10 @@ public class HeaderGridView extends GridView {
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             int targetWidth = HeaderGridView.this.getMeasuredWidth()
-                    - ViewCompat.getPaddingStart(HeaderGridView.this)
-                    - ViewCompat.getPaddingEnd(HeaderGridView.this);
+                              - ViewCompat.getPaddingStart(HeaderGridView.this)
+                              - ViewCompat.getPaddingEnd(HeaderGridView.this);
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(targetWidth,
-                    MeasureSpec.getMode(widthMeasureSpec));
+                               MeasureSpec.getMode(widthMeasureSpec));
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
@@ -311,7 +311,7 @@ public class HeaderGridView extends GridView {
             int numHeadersAndPlaceholders = getHeadersCount() * mNumColumns;
             if (position < numHeadersAndPlaceholders) {
                 return (position % mNumColumns == 0)
-                        && mHeaderViewInfos.get(position / mNumColumns).isSelectable;
+                       && mHeaderViewInfos.get(position / mNumColumns).isSelectable;
             }
 
             // Adapter
@@ -378,7 +378,7 @@ public class HeaderGridView extends GridView {
             int numHeadersAndPlaceholders = getHeadersCount() * mNumColumns;
             if (position < numHeadersAndPlaceholders) {
                 View headerViewContainer = mHeaderViewInfos
-                        .get(position / mNumColumns).viewContainer;
+                                           .get(position / mNumColumns).viewContainer;
                 if (position % mNumColumns == 0) {
                     return headerViewContainer;
                 } else {

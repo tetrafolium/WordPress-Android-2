@@ -97,7 +97,7 @@ public class EmoticonsUtils {
     public static String replaceEmoticonsWithEmoji(final String text) {
         if (text != null && text.contains("icon_")) {
             final SpannableStringBuilder html =
-                    (SpannableStringBuilder) replaceEmoticonsWithEmoji((SpannableStringBuilder) Html.fromHtml(text));
+                (SpannableStringBuilder) replaceEmoticonsWithEmoji((SpannableStringBuilder) Html.fromHtml(text));
             // Html.toHtml() is used here rather than toString() since the latter strips html
             return Html.toHtml(html);
         } else {

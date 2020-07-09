@@ -32,7 +32,7 @@ public class EditorPage {
     private static ViewInteraction titleField = onView(allOf(withId(R.id.title),
             withHint("Title")));
     private static ViewInteraction publishConfirmation = onView(allOf(
-            withText("Post published"), isDescendantOfA(withId(R.id.snackbar))));
+                withText("Post published"), isDescendantOfA(withId(R.id.snackbar))));
     private static ViewInteraction allowMediaAccessButton = onView(allOf(withId(R.id.button),
             withText("Allow")));
     private static ViewInteraction confirmButton = onView(withId(R.id.mnu_confirm_selection));

@@ -61,13 +61,13 @@ public class TextDrawable extends Drawable {
 
     /* Attribute lists to pull default values from the current theme */
     private static final int[] THEME_ATTRIBUTES = {
-            android.R.attr.textAppearance
+        android.R.attr.textAppearance
     };
     private static final int[] APPEARANCE_ATTRIBUTES = {
-            android.R.attr.textSize,
-            android.R.attr.typeface,
-            android.R.attr.textStyle,
-            android.R.attr.textColor
+        android.R.attr.textSize,
+        android.R.attr.typeface,
+        android.R.attr.textStyle,
+        android.R.attr.textColor
     };
 
 
@@ -100,20 +100,20 @@ public class TextDrawable extends Drawable {
             for (int i = 0; i < ap.getIndexCount(); i++) {
                 int attr = ap.getIndex(i);
                 switch (attr) {
-                    case 0: // Text Size
-                        textSize = a.getDimensionPixelSize(attr, textSize);
-                        break;
-                    case 1: // Typeface
-                        typefaceIndex = a.getInt(attr, typefaceIndex);
-                        break;
-                    case 2: // Text Style
-                        styleIndex = a.getInt(attr, styleIndex);
-                        break;
-                    case 3: // Text Color
-                        textColor = a.getColorStateList(attr);
-                        break;
-                    default:
-                        break;
+                case 0: // Text Size
+                    textSize = a.getDimensionPixelSize(attr, textSize);
+                    break;
+                case 1: // Typeface
+                    typefaceIndex = a.getInt(attr, typefaceIndex);
+                    break;
+                case 2: // Text Style
+                    styleIndex = a.getInt(attr, styleIndex);
+                    break;
+                case 3: // Text Color
+                    textColor = a.getColorStateList(attr);
+                    break;
+                default:
+                    break;
                 }
             }
 
@@ -125,17 +125,17 @@ public class TextDrawable extends Drawable {
 
         Typeface tf = null;
         switch (typefaceIndex) {
-            case SANS:
-                tf = Typeface.SANS_SERIF;
-                break;
+        case SANS:
+            tf = Typeface.SANS_SERIF;
+            break;
 
-            case SERIF:
-                tf = Typeface.SERIF;
-                break;
+        case SERIF:
+            tf = Typeface.SERIF;
+            break;
 
-            case MONOSPACE:
-                tf = Typeface.MONOSPACE;
-                break;
+        case MONOSPACE:
+            tf = Typeface.MONOSPACE;
+            break;
         }
 
         setTypeface(tf, styleIndex);
@@ -189,7 +189,7 @@ public class TextDrawable extends Drawable {
      */
     public void setTextSize(int unit, float size) {
         float dimension = TypedValue.applyDimension(unit, size,
-                                                    mResources.getDisplayMetrics());
+                          mResources.getDisplayMetrics());
         setRawTextSize(dimension);
     }
 

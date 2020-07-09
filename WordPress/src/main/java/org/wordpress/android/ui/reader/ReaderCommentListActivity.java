@@ -154,20 +154,20 @@ public class ReaderCommentListActivity extends AppCompatActivity {
             mBlogId = getIntent().getLongExtra(ReaderConstants.ARG_BLOG_ID, 0);
             mPostId = getIntent().getLongExtra(ReaderConstants.ARG_POST_ID, 0);
             mDirectOperation = (DirectOperation) getIntent()
-                    .getSerializableExtra(ReaderConstants.ARG_DIRECT_OPERATION);
+                               .getSerializableExtra(ReaderConstants.ARG_DIRECT_OPERATION);
             mCommentId = getIntent().getLongExtra(ReaderConstants.ARG_COMMENT_ID, 0);
             mInterceptedUri = getIntent().getStringExtra(ReaderConstants.ARG_INTERCEPTED_URI);
         }
 
         mSwipeToRefreshHelper = buildSwipeToRefreshHelper(
-                (CustomSwipeRefreshLayout) findViewById(R.id.swipe_to_refresh),
-                new SwipeToRefreshHelper.RefreshListener() {
-                    @Override
-                    public void onRefreshStarted() {
-                        updatePostAndComments();
-                    }
-                }
-        );
+                                    (CustomSwipeRefreshLayout) findViewById(R.id.swipe_to_refresh),
+        new SwipeToRefreshHelper.RefreshListener() {
+            @Override
+            public void onRefreshStarted() {
+                updatePostAndComments();
+            }
+        }
+                                );
 
         mRecyclerView = (ReaderRecyclerView) findViewById(R.id.recycler_view);
         int spacingHorizontal = 0;
@@ -223,7 +223,7 @@ public class ReaderCommentListActivity extends AppCompatActivity {
 
         mSuggestionServiceConnectionManager = new SuggestionServiceConnectionManager(this, mBlogId);
         mSuggestionAdapter = SuggestionUtils.setupSuggestions(mBlogId, this, mSuggestionServiceConnectionManager,
-                                                              mPost.isWP());
+                             mPost.isWP());
         if (mSuggestionAdapter != null) {
             mEditComment.setAdapter(mSuggestionAdapter);
         }
@@ -232,43 +232,43 @@ public class ReaderCommentListActivity extends AppCompatActivity {
 
         ImageView buttonExpand = findViewById(R.id.button_expand);
         buttonExpand.setOnClickListener(
-            new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = CommentFullScreenDialogFragment.Companion
-                            .newBundle(mEditComment.getText().toString(),
-                                    mEditComment.getSelectionStart(),
-                                    mEditComment.getSelectionEnd());
+        new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = CommentFullScreenDialogFragment.Companion
+                                .newBundle(mEditComment.getText().toString(),
+                                           mEditComment.getSelectionStart(),
+                                           mEditComment.getSelectionEnd());
 
-                    new Builder(ReaderCommentListActivity.this)
-                        .setTitle(R.string.comment)
-                        .setOnCollapseListener(new OnCollapseListener() {
-                            @Override
-                            public void onCollapse(@Nullable Bundle result) {
-                                if (result != null) {
-                                    mEditComment.setText(result.getString(RESULT_REPLY));
-                                    mEditComment.setSelection(result.getInt(RESULT_SELECTION_START),
-                                            result.getInt(RESULT_SELECTION_END));
-                                    mEditComment.requestFocus();
-                                }
-                            }
-                        })
-                        .setOnConfirmListener(new OnConfirmListener() {
-                            @Override
-                            public void onConfirm(@Nullable Bundle result) {
-                                if (result != null) {
-                                    mEditComment.setText(result.getString(RESULT_REPLY));
-                                    submitComment();
-                                }
-                            }
-                        })
-                        .setContent(CommentFullScreenDialogFragment.class, bundle)
-                        .setAction(R.string.send)
-                        .setHideActivityBar(true)
-                        .build()
-                        .show(getSupportFragmentManager(), CollapseFullScreenDialogFragment.TAG);
-                }
+                new Builder(ReaderCommentListActivity.this)
+                .setTitle(R.string.comment)
+                .setOnCollapseListener(new OnCollapseListener() {
+                    @Override
+                    public void onCollapse(@Nullable Bundle result) {
+                        if (result != null) {
+                            mEditComment.setText(result.getString(RESULT_REPLY));
+                            mEditComment.setSelection(result.getInt(RESULT_SELECTION_START),
+                                                      result.getInt(RESULT_SELECTION_END));
+                            mEditComment.requestFocus();
+                        }
+                    }
+                })
+                .setOnConfirmListener(new OnConfirmListener() {
+                    @Override
+                    public void onConfirm(@Nullable Bundle result) {
+                        if (result != null) {
+                            mEditComment.setText(result.getString(RESULT_REPLY));
+                            submitComment();
+                        }
+                    }
+                })
+                .setContent(CommentFullScreenDialogFragment.class, bundle)
+                .setAction(R.string.send)
+                .setHideActivityBar(true)
+                .build()
+                .show(getSupportFragmentManager(), CollapseFullScreenDialogFragment.TAG);
             }
+        }
         );
 
         buttonExpand.setOnLongClickListener(new OnLongClickListener() {
@@ -358,7 +358,7 @@ public class ReaderCommentListActivity extends AppCompatActivity {
     private void setReplyToCommentId(long commentId, boolean doFocus) {
         mReplyToCommentId = commentId;
         mEditComment.setHint(mReplyToCommentId == 0
-                                     ? R.string.reader_hint_comment_on_post : R.string.reader_hint_comment_on_comment);
+                             ? R.string.reader_hint_comment_on_post : R.string.reader_hint_comment_on_comment);
 
         if (doFocus) {
             mEditComment.postDelayed(new Runnable() {
@@ -536,57 +536,57 @@ public class ReaderCommentListActivity extends AppCompatActivity {
     private void doDirectOperation() {
         if (mDirectOperation != null) {
             switch (mDirectOperation) {
-                case COMMENT_JUMP:
-                    mCommentAdapter.setHighlightCommentId(mCommentId, false);
+            case COMMENT_JUMP:
+                mCommentAdapter.setHighlightCommentId(mCommentId, false);
 
-                    // clear up the direct operation vars. Only performing it once.
-                    mDirectOperation = null;
-                    mCommentId = 0;
-                    break;
-                case COMMENT_REPLY:
-                    setReplyToCommentId(mCommentId, mAccountStore.hasAccessToken());
+                // clear up the direct operation vars. Only performing it once.
+                mDirectOperation = null;
+                mCommentId = 0;
+                break;
+            case COMMENT_REPLY:
+                setReplyToCommentId(mCommentId, mAccountStore.hasAccessToken());
 
-                    // clear up the direct operation vars. Only performing it once.
-                    mDirectOperation = null;
-                    mCommentId = 0;
-                    break;
-                case COMMENT_LIKE:
-                    getCommentAdapter().setHighlightCommentId(mCommentId, false);
-                    if (!mAccountStore.hasAccessToken()) {
-                        WPSnackbar.make(mRecyclerView,
-                                      R.string.reader_snackbar_err_cannot_like_post_logged_out,
-                                      Snackbar.LENGTH_INDEFINITE)
-                                .setAction(R.string.sign_in, mSignInClickListener)
-                                .show();
+                // clear up the direct operation vars. Only performing it once.
+                mDirectOperation = null;
+                mCommentId = 0;
+                break;
+            case COMMENT_LIKE:
+                getCommentAdapter().setHighlightCommentId(mCommentId, false);
+                if (!mAccountStore.hasAccessToken()) {
+                    WPSnackbar.make(mRecyclerView,
+                                    R.string.reader_snackbar_err_cannot_like_post_logged_out,
+                                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.sign_in, mSignInClickListener)
+                    .show();
+                } else {
+                    ReaderComment comment = ReaderCommentTable.getComment(mPost.blogId, mPost.postId, mCommentId);
+                    if (comment == null) {
+                        ToastUtils.showToast(ReaderCommentListActivity.this,
+                                             R.string.reader_toast_err_comment_not_found);
+                    } else if (comment.isLikedByCurrentUser) {
+                        ToastUtils.showToast(ReaderCommentListActivity.this,
+                                             R.string.reader_toast_err_already_liked);
                     } else {
-                        ReaderComment comment = ReaderCommentTable.getComment(mPost.blogId, mPost.postId, mCommentId);
-                        if (comment == null) {
-                            ToastUtils.showToast(ReaderCommentListActivity.this,
-                                                 R.string.reader_toast_err_comment_not_found);
-                        } else if (comment.isLikedByCurrentUser) {
-                            ToastUtils.showToast(ReaderCommentListActivity.this,
-                                                 R.string.reader_toast_err_already_liked);
-                        } else {
-                            long wpComUserId = mAccountStore.getAccount().getUserId();
-                            if (ReaderCommentActions.performLikeAction(comment, true, wpComUserId)
+                        long wpComUserId = mAccountStore.getAccount().getUserId();
+                        if (ReaderCommentActions.performLikeAction(comment, true, wpComUserId)
                                 && getCommentAdapter().refreshComment(mCommentId)) {
-                                getCommentAdapter().setAnimateLikeCommentId(mCommentId);
+                            getCommentAdapter().setAnimateLikeCommentId(mCommentId);
 
-                                AnalyticsUtils.trackWithReaderPostDetails(
-                                        AnalyticsTracker.Stat.READER_ARTICLE_COMMENT_LIKED, mPost);
-                            } else {
-                                ToastUtils.showToast(ReaderCommentListActivity.this,
-                                                     R.string.reader_toast_err_generic);
-                            }
+                            AnalyticsUtils.trackWithReaderPostDetails(
+                                AnalyticsTracker.Stat.READER_ARTICLE_COMMENT_LIKED, mPost);
+                        } else {
+                            ToastUtils.showToast(ReaderCommentListActivity.this,
+                                                 R.string.reader_toast_err_generic);
                         }
-
-                        // clear up the direct operation vars. Only performing it once.
-                        mDirectOperation = null;
                     }
-                    break;
-                case POST_LIKE:
-                    // nothing special to do in this case
-                    break;
+
+                    // clear up the direct operation vars. Only performing it once.
+                    mDirectOperation = null;
+                }
+                break;
+            case POST_LIKE:
+                // nothing special to do in this case
+                break;
             }
         } else {
             mCommentId = 0;
@@ -721,7 +721,7 @@ public class ReaderCommentListActivity extends AppCompatActivity {
         }
 
         AnalyticsUtils.trackWithReaderPostDetails(
-                AnalyticsTracker.Stat.READER_ARTICLE_COMMENTED_ON, mPost);
+            AnalyticsTracker.Stat.READER_ARTICLE_COMMENTED_ON, mPost);
 
         mSubmitReplyBtn.setEnabled(false);
         mEditComment.setEnabled(false);
@@ -752,8 +752,8 @@ public class ReaderCommentListActivity extends AppCompatActivity {
                     mSubmitReplyBtn.setEnabled(true);
                     getCommentAdapter().removeComment(fakeCommentId);
                     ToastUtils.showToast(
-                            ReaderCommentListActivity.this, R.string.reader_toast_err_comment_failed,
-                            ToastUtils.Duration.LONG);
+                        ReaderCommentListActivity.this, R.string.reader_toast_err_comment_failed,
+                        ToastUtils.Duration.LONG);
                 }
                 checkEmptyView();
             }
@@ -761,12 +761,12 @@ public class ReaderCommentListActivity extends AppCompatActivity {
 
         long wpComUserId = mAccountStore.getAccount().getUserId();
         ReaderComment newComment = ReaderCommentActions.submitPostComment(
-                getPost(),
-                fakeCommentId,
-                commentText,
-                mReplyToCommentId,
-                actionListener,
-                wpComUserId);
+                                       getPost(),
+                                       fakeCommentId,
+                                       commentText,
+                                       mReplyToCommentId,
+                                       actionListener,
+                                       wpComUserId);
 
         if (newComment != null) {
             mEditComment.setText(null);

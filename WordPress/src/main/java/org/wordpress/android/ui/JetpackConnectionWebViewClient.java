@@ -52,9 +52,9 @@ class JetpackConnectionWebViewClient extends ErrorManagedWebViewClient {
             final String loadedPath = uri.getPath();
             final String currentSiteHost = Uri.parse(mSiteUrl).getHost();
             if (loadedHost.equals(currentSiteHost)
-                && loadedPath != null
-                && loadedPath.contains(LOGIN_PATH)
-                && stringUrl.contains(REDIRECT_PARAMETER)) {
+                    && loadedPath != null
+                    && loadedPath.contains(LOGIN_PATH)
+                    && stringUrl.contains(REDIRECT_PARAMETER)) {
                 extractRedirect(stringUrl);
                 mJetpackConnectionListener.onRequiresWPComLogin(view, mRedirectPage);
                 return true;

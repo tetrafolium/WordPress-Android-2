@@ -193,126 +193,126 @@ public class NotificationsDetailListFragment extends ListFragment implements Not
     }
 
     private final NoteBlock.OnNoteBlockTextClickListener mOnNoteBlockTextClickListener =
-            new NoteBlock.OnNoteBlockTextClickListener() {
-                @Override
-                public void onNoteBlockTextClicked(NoteBlockClickableSpan clickedSpan) {
-                    if (!isAdded() || !(getActivity() instanceof NotificationsDetailActivity)) {
-                        return;
-                    }
+    new NoteBlock.OnNoteBlockTextClickListener() {
+        @Override
+        public void onNoteBlockTextClicked(NoteBlockClickableSpan clickedSpan) {
+            if (!isAdded() || !(getActivity() instanceof NotificationsDetailActivity)) {
+                return;
+            }
 
-                    handleNoteBlockSpanClick((NotificationsDetailActivity) getActivity(), clickedSpan);
+            handleNoteBlockSpanClick((NotificationsDetailActivity) getActivity(), clickedSpan);
+        }
+
+        @Override
+        public void showDetailForNoteIds() {
+            if (!isAdded() || mNote == null || !(getActivity() instanceof NotificationsDetailActivity)) {
+                return;
+            }
+
+            NotificationsDetailActivity detailActivity = (NotificationsDetailActivity) getActivity();
+            if (mNote.isCommentReplyType() || (!mNote.isCommentType() && mNote.getCommentId() > 0)) {
+                long commentId = mNote.isCommentReplyType() ? mNote.getParentCommentId() : mNote.getCommentId();
+
+                // show comments list if it exists in the reader
+                if (ReaderUtils.postAndCommentExists(mNote.getSiteId(), mNote.getPostId(), commentId)) {
+                    detailActivity.showReaderCommentsList(mNote.getSiteId(), mNote.getPostId(), commentId);
+                } else {
+                    detailActivity.showWebViewActivityForUrl(mNote.getUrl());
                 }
+            } else if (mNote.isFollowType()) {
+                detailActivity.showBlogPreviewActivity(mNote.getSiteId());
+            } else {
+                // otherwise, load the post in the Reader
+                detailActivity.showPostActivity(mNote.getSiteId(), mNote.getPostId());
+            }
+        }
 
-                @Override
-                public void showDetailForNoteIds() {
-                    if (!isAdded() || mNote == null || !(getActivity() instanceof NotificationsDetailActivity)) {
-                        return;
-                    }
+        @Override
+        public void showReaderPostComments() {
+            if (!isAdded() || mNote == null || mNote.getCommentId() == 0) {
+                return;
+            }
 
-                    NotificationsDetailActivity detailActivity = (NotificationsDetailActivity) getActivity();
-                    if (mNote.isCommentReplyType() || (!mNote.isCommentType() && mNote.getCommentId() > 0)) {
-                        long commentId = mNote.isCommentReplyType() ? mNote.getParentCommentId() : mNote.getCommentId();
+            ReaderActivityLauncher.showReaderComments(getActivity(), mNote.getSiteId(), mNote.getPostId(),
+                    mNote.getCommentId());
+        }
 
-                        // show comments list if it exists in the reader
-                        if (ReaderUtils.postAndCommentExists(mNote.getSiteId(), mNote.getPostId(), commentId)) {
-                            detailActivity.showReaderCommentsList(mNote.getSiteId(), mNote.getPostId(), commentId);
-                        } else {
-                            detailActivity.showWebViewActivityForUrl(mNote.getUrl());
-                        }
-                    } else if (mNote.isFollowType()) {
-                        detailActivity.showBlogPreviewActivity(mNote.getSiteId());
-                    } else {
-                        // otherwise, load the post in the Reader
-                        detailActivity.showPostActivity(mNote.getSiteId(), mNote.getPostId());
-                    }
+        @Override
+        public void showSitePreview(long siteId, String siteUrl) {
+            if (!isAdded() || mNote == null || !(getActivity() instanceof NotificationsDetailActivity)) {
+                return;
+            }
+
+            NotificationsDetailActivity detailActivity = (NotificationsDetailActivity) getActivity();
+            if (siteId != 0) {
+                detailActivity.showBlogPreviewActivity(siteId);
+            } else if (!TextUtils.isEmpty(siteUrl)) {
+                detailActivity.showWebViewActivityForUrl(siteUrl);
+            }
+        }
+
+        public void handleNoteBlockSpanClick(NotificationsDetailActivity activity,
+                                             NoteBlockClickableSpan clickedSpan) {
+            switch (clickedSpan.getRangeType()) {
+            case SITE:
+                // Show blog preview
+                activity.showBlogPreviewActivity(clickedSpan.getId());
+                break;
+            case USER:
+                // Show blog preview
+                activity.showBlogPreviewActivity(clickedSpan.getSiteId());
+                break;
+            case POST:
+                // Show post detail
+                activity.showPostActivity(clickedSpan.getSiteId(), clickedSpan.getId());
+                break;
+            case COMMENT:
+                // Load the comment in the reader list if it exists, otherwise show a webview
+                if (ReaderUtils.postAndCommentExists(clickedSpan.getSiteId(), clickedSpan.getPostId(),
+                                                     clickedSpan.getId())) {
+                    activity.showReaderCommentsList(clickedSpan.getSiteId(), clickedSpan.getPostId(),
+                                                    clickedSpan.getId());
+                } else {
+                    activity.showWebViewActivityForUrl(clickedSpan.getUrl());
                 }
-
-                @Override
-                public void showReaderPostComments() {
-                    if (!isAdded() || mNote == null || mNote.getCommentId() == 0) {
-                        return;
-                    }
-
-                    ReaderActivityLauncher.showReaderComments(getActivity(), mNote.getSiteId(), mNote.getPostId(),
-                                                              mNote.getCommentId());
+                break;
+            case STAT:
+            case FOLLOW:
+                // We can open native stats if the site is a wpcom or Jetpack sites
+                activity.showStatsActivityForSite(clickedSpan.getSiteId(), clickedSpan.getRangeType());
+                break;
+            case LIKE:
+                if (ReaderPostTable.postExists(clickedSpan.getSiteId(), clickedSpan.getId())) {
+                    activity.showReaderPostLikeUsers(clickedSpan.getSiteId(), clickedSpan.getId());
+                } else {
+                    activity.showPostActivity(clickedSpan.getSiteId(), clickedSpan.getId());
                 }
-
-                @Override
-                public void showSitePreview(long siteId, String siteUrl) {
-                    if (!isAdded() || mNote == null || !(getActivity() instanceof NotificationsDetailActivity)) {
-                        return;
-                    }
-
-                    NotificationsDetailActivity detailActivity = (NotificationsDetailActivity) getActivity();
-                    if (siteId != 0) {
-                        detailActivity.showBlogPreviewActivity(siteId);
-                    } else if (!TextUtils.isEmpty(siteUrl)) {
-                        detailActivity.showWebViewActivityForUrl(siteUrl);
-                    }
+                break;
+            default:
+                // We don't know what type of id this is, let's see if it has a URL and push a webview
+                if (!TextUtils.isEmpty(clickedSpan.getUrl())) {
+                    activity.showWebViewActivityForUrl(clickedSpan.getUrl());
                 }
-
-                public void handleNoteBlockSpanClick(NotificationsDetailActivity activity,
-                                                     NoteBlockClickableSpan clickedSpan) {
-                    switch (clickedSpan.getRangeType()) {
-                        case SITE:
-                            // Show blog preview
-                            activity.showBlogPreviewActivity(clickedSpan.getId());
-                            break;
-                        case USER:
-                            // Show blog preview
-                            activity.showBlogPreviewActivity(clickedSpan.getSiteId());
-                            break;
-                        case POST:
-                            // Show post detail
-                            activity.showPostActivity(clickedSpan.getSiteId(), clickedSpan.getId());
-                            break;
-                        case COMMENT:
-                            // Load the comment in the reader list if it exists, otherwise show a webview
-                            if (ReaderUtils.postAndCommentExists(clickedSpan.getSiteId(), clickedSpan.getPostId(),
-                                                                 clickedSpan.getId())) {
-                                activity.showReaderCommentsList(clickedSpan.getSiteId(), clickedSpan.getPostId(),
-                                                                clickedSpan.getId());
-                            } else {
-                                activity.showWebViewActivityForUrl(clickedSpan.getUrl());
-                            }
-                            break;
-                        case STAT:
-                        case FOLLOW:
-                            // We can open native stats if the site is a wpcom or Jetpack sites
-                            activity.showStatsActivityForSite(clickedSpan.getSiteId(), clickedSpan.getRangeType());
-                            break;
-                        case LIKE:
-                            if (ReaderPostTable.postExists(clickedSpan.getSiteId(), clickedSpan.getId())) {
-                                activity.showReaderPostLikeUsers(clickedSpan.getSiteId(), clickedSpan.getId());
-                            } else {
-                                activity.showPostActivity(clickedSpan.getSiteId(), clickedSpan.getId());
-                            }
-                            break;
-                        default:
-                            // We don't know what type of id this is, let's see if it has a URL and push a webview
-                            if (!TextUtils.isEmpty(clickedSpan.getUrl())) {
-                                activity.showWebViewActivityForUrl(clickedSpan.getUrl());
-                            }
-                    }
-                }
-            };
+            }
+        }
+    };
 
     private final UserNoteBlock.OnGravatarClickedListener mOnGravatarClickedListener =
-            new UserNoteBlock.OnGravatarClickedListener() {
-                @Override
-                public void onGravatarClicked(long siteId, long userId, String siteUrl) {
-                    if (!isAdded() || !(getActivity() instanceof NotificationsDetailActivity)) {
-                        return;
-                    }
+    new UserNoteBlock.OnGravatarClickedListener() {
+        @Override
+        public void onGravatarClicked(long siteId, long userId, String siteUrl) {
+            if (!isAdded() || !(getActivity() instanceof NotificationsDetailActivity)) {
+                return;
+            }
 
-                    NotificationsDetailActivity detailActivity = (NotificationsDetailActivity) getActivity();
-                    if (siteId == 0 && !TextUtils.isEmpty(siteUrl)) {
-                        detailActivity.showWebViewActivityForUrl(siteUrl);
-                    } else if (siteId != 0) {
-                        detailActivity.showBlogPreviewActivity(siteId);
-                    }
-                }
-            };
+            NotificationsDetailActivity detailActivity = (NotificationsDetailActivity) getActivity();
+            if (siteId == 0 && !TextUtils.isEmpty(siteUrl)) {
+                detailActivity.showWebViewActivityForUrl(siteUrl);
+            } else if (siteId != 0) {
+                detailActivity.showBlogPreviewActivity(siteId);
+            }
+        }
+    };
 
     private boolean hasNoteBlockAdapter() {
         return mNoteBlockAdapter != null;
@@ -337,13 +337,13 @@ public class NotificationsDetailListFragment extends ListFragment implements Not
             if (mNote.getHeader() != null) {
                 ImageType imageType = mNote.isFollowType() ? ImageType.BLAVATAR : ImageType.AVATAR_WITH_BACKGROUND;
                 HeaderNoteBlock headerNoteBlock = new HeaderNoteBlock(
-                        getActivity(),
-                        transformToFormattableContentList(mNote.getHeader()),
-                        imageType,
-                        mOnNoteBlockTextClickListener,
-                        mOnGravatarClickedListener,
-                        mImageManager,
-                        mNotificationsUtilsWrapper
+                    getActivity(),
+                    transformToFormattableContentList(mNote.getHeader()),
+                    imageType,
+                    mOnNoteBlockTextClickListener,
+                    mOnGravatarClickedListener,
+                    mImageManager,
+                    mNotificationsUtilsWrapper
                 );
 
                 headerNoteBlock.setIsComment(mNote.isCommentType());
@@ -356,7 +356,7 @@ public class NotificationsDetailListFragment extends ListFragment implements Not
                 for (int i = 0; i < bodyArray.length(); i++) {
                     try {
                         FormattableContent noteObject = mNotificationsUtilsWrapper
-                                .mapJsonToFormattableContent(bodyArray.getJSONObject(i));
+                                                        .mapJsonToFormattableContent(bodyArray.getJSONObject(i));
                         // Determine NoteBlock type and add it to the array
                         NoteBlock noteBlock;
                         if (BlockType.fromString(noteObject.getType()) == BlockType.USER) {
@@ -369,19 +369,19 @@ public class NotificationsDetailListFragment extends ListFragment implements Not
                                 // Next item in the bodyArray is comment text
                                 if (i + 1 < bodyArray.length()) {
                                     commentTextBlock = mNotificationsUtilsWrapper
-                                            .mapJsonToFormattableContent(bodyArray.getJSONObject(i + 1));
+                                                       .mapJsonToFormattableContent(bodyArray.getJSONObject(i + 1));
                                     i++;
                                 }
 
                                 noteBlock = new CommentUserNoteBlock(
-                                        getActivity(),
-                                        noteObject,
-                                        commentTextBlock,
-                                        mNote.getTimestamp(),
-                                        mOnNoteBlockTextClickListener,
-                                        mOnGravatarClickedListener,
-                                        mImageManager,
-                                        mNotificationsUtilsWrapper
+                                    getActivity(),
+                                    noteObject,
+                                    commentTextBlock,
+                                    mNote.getTimestamp(),
+                                    mOnNoteBlockTextClickListener,
+                                    mOnGravatarClickedListener,
+                                    mImageManager,
+                                    mNotificationsUtilsWrapper
                                 );
                                 pingbackUrl = noteBlock.getMetaSiteUrl();
 
@@ -392,25 +392,25 @@ public class NotificationsDetailListFragment extends ListFragment implements Not
                                 commentUserNoteBlock.configureResources(getActivity());
                             } else {
                                 noteBlock = new UserNoteBlock(
-                                        getActivity(),
-                                        noteObject,
-                                        mOnNoteBlockTextClickListener,
-                                        mOnGravatarClickedListener,
-                                        mImageManager,
-                                        mNotificationsUtilsWrapper
+                                    getActivity(),
+                                    noteObject,
+                                    mOnNoteBlockTextClickListener,
+                                    mOnGravatarClickedListener,
+                                    mImageManager,
+                                    mNotificationsUtilsWrapper
                                 );
                             }
                         } else if (isFooterBlock(noteObject)) {
                             noteBlock = new FooterNoteBlock(noteObject, mImageManager, mNotificationsUtilsWrapper,
-                                    mOnNoteBlockTextClickListener);
+                                                            mOnNoteBlockTextClickListener);
                             if (noteObject.getRanges() != null && noteObject.getRanges().size() > 0) {
                                 FormattableRange range =
-                                        noteObject.getRanges().get(noteObject.getRanges().size() - 1);
+                                    noteObject.getRanges().get(noteObject.getRanges().size() - 1);
                                 ((FooterNoteBlock) noteBlock).setClickableSpan(range, mNote.getType());
                             }
                         } else {
                             noteBlock = new NoteBlock(noteObject, mImageManager, mNotificationsUtilsWrapper,
-                                    mOnNoteBlockTextClickListener);
+                                                      mOnNoteBlockTextClickListener);
                         }
 
                         // Badge notifications apply different colors and formatting
@@ -437,8 +437,8 @@ public class NotificationsDetailListFragment extends ListFragment implements Not
             if (isPingback) {
                 // Remove this when we start receiving "Read the source post block" from the backend
                 NoteBlock generatedBlock =
-                        buildGeneratedLinkBlock(mOnNoteBlockTextClickListener, pingbackUrl,
-                                getActivity().getString(R.string.comment_read_source_post));
+                    buildGeneratedLinkBlock(mOnNoteBlockTextClickListener, pingbackUrl,
+                                            getActivity().getString(R.string.comment_read_source_post));
                 generatedBlock.setIsPingback();
                 noteList.add(generatedBlock);
             }
@@ -452,7 +452,7 @@ public class NotificationsDetailListFragment extends ListFragment implements Not
                 for (int i = 0; i < headerArray.length(); i++) {
                     try {
                         headersList.add(mNotificationsUtilsWrapper.mapJsonToFormattableContent(
-                                headerArray.getJSONObject(i)));
+                                            headerArray.getJSONObject(i)));
                     } catch (JSONException e) {
                         AppLog.e(T.NOTIFS, "Header array has invalid format.");
                     }
@@ -483,14 +483,14 @@ public class NotificationsDetailListFragment extends ListFragment implements Not
         }
 
         private NoteBlock buildGeneratedLinkBlock(OnNoteBlockTextClickListener onNoteBlockTextClickListener,
-                                                  String pingbackUrl,
-                                                  String message) {
+                String pingbackUrl,
+                String message) {
             return new GeneratedNoteBlock(
-                    message,
-                    mImageManager,
-                    mNotificationsUtilsWrapper,
-                    onNoteBlockTextClickListener,
-                    pingbackUrl);
+                       message,
+                       mImageManager,
+                       mNotificationsUtilsWrapper,
+                       onNoteBlockTextClickListener,
+                       pingbackUrl);
         }
 
         @Override
@@ -572,9 +572,9 @@ public class NotificationsDetailListFragment extends ListFragment implements Not
 
         // Request reader comments until we retrieve the comment for this note
         if ((mNote.isCommentLikeType() || mNote.isCommentReplyType() || mNote.isCommentWithUserReply())
-            && !ReaderCommentTable.commentExists(mNote.getSiteId(), mNote.getPostId(), mNote.getCommentId())) {
+                && !ReaderCommentTable.commentExists(mNote.getSiteId(), mNote.getPostId(), mNote.getCommentId())) {
             ReaderCommentService
-                    .startServiceForComment(getActivity(), mNote.getSiteId(), mNote.getPostId(), mNote.getCommentId());
+            .startServiceForComment(getActivity(), mNote.getSiteId(), mNote.getPostId(), mNote.getCommentId());
         }
     }
 }

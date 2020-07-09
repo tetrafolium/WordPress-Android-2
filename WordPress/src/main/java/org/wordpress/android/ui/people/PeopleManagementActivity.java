@@ -39,7 +39,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class PeopleManagementActivity extends AppCompatActivity
-        implements PeopleListFragment.OnPersonSelectedListener, PeopleListFragment.OnFetchPeopleListener {
+    implements PeopleListFragment.OnPersonSelectedListener, PeopleListFragment.OnFetchPeopleListener {
     private static final String KEY_PEOPLE_LIST_FRAGMENT = "people-list-fragment";
     private static final String KEY_PERSON_DETAIL_FRAGMENT = "person-detail-fragment";
     private static final String KEY_PEOPLE_INVITE_FRAGMENT = "people-invite-fragment";
@@ -53,7 +53,7 @@ public class PeopleManagementActivity extends AppCompatActivity
     private static final String KEY_USERS_FETCH_REQUEST_IN_PROGRESS = "users-fetch-request-in-progress";
     private static final String KEY_FOLLOWERS_FETCH_REQUEST_IN_PROGRESS = "followers-fetch-request-in-progress";
     private static final String KEY_EMAIL_FOLLOWERS_FETCH_REQUEST_IN_PROGRESS =
-            "email-followers-fetch-request-in-progress";
+        "email-followers-fetch-request-in-progress";
     private static final String KEY_VIEWERS_FETCH_REQUEST_IN_PROGRESS = "viewers-fetch-request-in-progress";
 
     private static final String KEY_HAS_REFRESHED_USERS = "has-refreshed-users";
@@ -163,8 +163,8 @@ public class PeopleManagementActivity extends AppCompatActivity
 
 
             fragmentManager.beginTransaction()
-                           .add(R.id.fragment_container, peopleListFragment, KEY_PEOPLE_LIST_FRAGMENT)
-                           .commit();
+            .add(R.id.fragment_container, peopleListFragment, KEY_PEOPLE_LIST_FRAGMENT)
+            .commit();
         } else {
             mUsersEndOfListReached = savedInstanceState.getBoolean(KEY_USERS_END_OF_LIST_REACHED);
             mFollowersEndOfListReached = savedInstanceState.getBoolean(KEY_FOLLOWERS_END_OF_LIST_REACHED);
@@ -179,7 +179,7 @@ public class PeopleManagementActivity extends AppCompatActivity
             mUsersFetchRequestInProgress = savedInstanceState.getBoolean(KEY_USERS_FETCH_REQUEST_IN_PROGRESS);
             mFollowersFetchRequestInProgress = savedInstanceState.getBoolean(KEY_FOLLOWERS_FETCH_REQUEST_IN_PROGRESS);
             mEmailFollowersFetchRequestInProgress =
-                    savedInstanceState.getBoolean(KEY_EMAIL_FOLLOWERS_FETCH_REQUEST_IN_PROGRESS);
+                savedInstanceState.getBoolean(KEY_EMAIL_FOLLOWERS_FETCH_REQUEST_IN_PROGRESS);
             mViewersFetchRequestInProgress = savedInstanceState.getBoolean(KEY_VIEWERS_FETCH_REQUEST_IN_PROGRESS);
 
             mFollowersLastFetchedPage = savedInstanceState.getInt(KEY_FOLLOWERS_LAST_FETCHED_PAGE);
@@ -453,7 +453,7 @@ public class PeopleManagementActivity extends AppCompatActivity
 
         if (personDetailFragment == null) {
             personDetailFragment = PersonDetailFragment.newInstance(mAccountStore.getAccount().getUserId(), personID,
-                                                                    localTableBlogID, person.getPersonType());
+                                   localTableBlogID, person.getPersonType());
         } else {
             personDetailFragment.setPersonDetails(personID, localTableBlogID);
         }
@@ -492,25 +492,25 @@ public class PeopleManagementActivity extends AppCompatActivity
         }
 
         PeopleUtils.updateRole(mSite, person.getPersonID(), event.getNewRole(), event.getLocalTableBlogId(),
-                               new PeopleUtils.UpdateUserCallback() {
-                                   @Override
-                                   public void onSuccess(Person person) {
-                                       AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.PERSON_UPDATED, mSite);
-                                       PeopleTable.saveUser(person);
-                                       refreshOnScreenFragmentDetails();
-                                   }
+        new PeopleUtils.UpdateUserCallback() {
+            @Override
+            public void onSuccess(Person person) {
+                AnalyticsUtils.trackWithSiteDetails(AnalyticsTracker.Stat.PERSON_UPDATED, mSite);
+                PeopleTable.saveUser(person);
+                refreshOnScreenFragmentDetails();
+            }
 
-                                   @Override
-                                   public void onError() {
-                                       // change the role back to it's original value
-                                       if (personDetailFragment != null) {
-                                           personDetailFragment.refreshPersonDetails();
-                                       }
-                                       ToastUtils.showToast(PeopleManagementActivity.this,
-                                                            R.string.error_update_role,
-                                                            ToastUtils.Duration.LONG);
-                                   }
-                               });
+            @Override
+            public void onError() {
+                // change the role back to it's original value
+                if (personDetailFragment != null) {
+                    personDetailFragment.refreshPersonDetails();
+                }
+                ToastUtils.showToast(PeopleManagementActivity.this,
+                                     R.string.error_update_role,
+                                     ToastUtils.Duration.LONG);
+            }
+        });
     }
 
     private void confirmRemovePerson() {
@@ -572,15 +572,15 @@ public class PeopleManagementActivity extends AppCompatActivity
             public void onError() {
                 int errorMessageRes;
                 switch (personType) {
-                    case USER:
-                        errorMessageRes = R.string.error_remove_user;
-                        break;
-                    case VIEWER:
-                        errorMessageRes = R.string.error_remove_viewer;
-                        break;
-                    default:
-                        errorMessageRes = R.string.error_remove_follower;
-                        break;
+                case USER:
+                    errorMessageRes = R.string.error_remove_user;
+                    break;
+                case VIEWER:
+                    errorMessageRes = R.string.error_remove_viewer;
+                    break;
+                default:
+                    errorMessageRes = R.string.error_remove_follower;
+                    break;
                 }
                 ToastUtils.showToast(PeopleManagementActivity.this,
                                      errorMessageRes,
@@ -692,7 +692,7 @@ public class PeopleManagementActivity extends AppCompatActivity
     public void onUserRolesChanged(OnUserRolesChanged event) {
         if (event.isError()) {
             AppLog.e(AppLog.T.PEOPLE, "An error occurred while fetching the user roles with type: "
-                                      + event.error.type);
+                     + event.error.type);
         }
         PeopleListFragment peopleListFragment = getListFragment();
         if (peopleListFragment != null) {

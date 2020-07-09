@@ -20,18 +20,18 @@ public enum BlockType {
         }
 
         switch (blockType) {
-            case "basic":
-                return BASIC;
-            case "user":
-                return USER;
-            case "user_header":
-                return USER_HEADER;
-            case "user_comment":
-                return USER_COMMENT;
-            case "footer":
-                return FOOTER;
-            default:
-                return UNKNOWN;
+        case "basic":
+            return BASIC;
+        case "user":
+            return USER;
+        case "user_header":
+            return USER_HEADER;
+        case "user_comment":
+            return USER_COMMENT;
+        case "footer":
+            return FOOTER;
+        default:
+            return UNKNOWN;
         }
     }
 }

@@ -198,15 +198,15 @@ public class ReaderCommentAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case VIEW_TYPE_HEADER:
-                View headerView = new ReaderCommentsPostHeaderView(parent.getContext());
-                headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
-                return new PostHeaderHolder(headerView);
-            default:
-                View commentView = LayoutInflater.from(parent.getContext())
-                                                 .inflate(R.layout.reader_listitem_comment, parent, false);
-                return new CommentHolder(commentView);
+        case VIEW_TYPE_HEADER:
+            View headerView = new ReaderCommentsPostHeaderView(parent.getContext());
+            headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                       ViewGroup.LayoutParams.WRAP_CONTENT));
+            return new PostHeaderHolder(headerView);
+        default:
+            View commentView = LayoutInflater.from(parent.getContext())
+                               .inflate(R.layout.reader_listitem_comment, parent, false);
+            return new CommentHolder(commentView);
         }
     }
 
@@ -272,7 +272,7 @@ public class ReaderCommentAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (comment.parentId != 0 && comment.level > 0) {
             indentWidth = Math.min(MAX_INDENT_LEVEL, comment.level) * mIndentPerLevel;
             RelativeLayout.LayoutParams params =
-                    (RelativeLayout.LayoutParams) commentHolder.mSpacerIndent.getLayoutParams();
+                (RelativeLayout.LayoutParams) commentHolder.mSpacerIndent.getLayoutParams();
             params.width = indentWidth;
             commentHolder.mSpacerIndent.setVisibility(View.VISIBLE);
         } else {
@@ -331,11 +331,11 @@ public class ReaderCommentAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public long getItemId(int position) {
         switch (getItemViewType(position)) {
-            case VIEW_TYPE_HEADER:
-                return ID_HEADER;
-            default:
-                ReaderComment comment = getItem(position);
-                return comment != null ? comment.commentId : 0;
+        case VIEW_TYPE_HEADER:
+            return ID_HEADER;
+        default:
+            ReaderComment comment = getItem(position);
+            return comment != null ? comment.commentId : 0;
         }
     }
 
@@ -364,7 +364,7 @@ public class ReaderCommentAdapter extends RecyclerView.Adapter<RecyclerView.View
             holder.mCountLikes.setSelected(comment.isLikedByCurrentUser);
             holder.mCountLikes.setCount(comment.numLikes);
             holder.mCountLikes.setContentDescription(ReaderUtils.getLongLikeLabelText(
-                    holder.mCountLikes.getContext(), comment.numLikes, comment.isLikedByCurrentUser));
+                        holder.mCountLikes.getContext(), comment.numLikes, comment.isLikedByCurrentUser));
 
             if (!mAccountStore.hasAccessToken()) {
                 holder.mCountLikes.setEnabled(false);
@@ -410,8 +410,8 @@ public class ReaderCommentAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         AnalyticsUtils.trackWithReaderPostDetails(isAskingToLike
-                                                    ? AnalyticsTracker.Stat.READER_ARTICLE_COMMENT_LIKED
-                                                    : AnalyticsTracker.Stat.READER_ARTICLE_COMMENT_UNLIKED, mPost);
+                ? AnalyticsTracker.Stat.READER_ARTICLE_COMMENT_LIKED
+                : AnalyticsTracker.Stat.READER_ARTICLE_COMMENT_UNLIKED, mPost);
     }
 
     public boolean refreshComment(long commentId) {

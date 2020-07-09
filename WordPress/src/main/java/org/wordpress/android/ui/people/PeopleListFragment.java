@@ -108,7 +108,7 @@ public class PeopleListFragment extends Fragment {
         mActionableEmptyView = rootView.findViewById(R.id.actionable_empty_view);
         mFilteredRecyclerView = rootView.findViewById(R.id.filtered_recycler_view);
         mFilteredRecyclerView
-                .addItemDecoration(new PeopleItemDecoration(getActivity(), R.drawable.people_list_divider));
+        .addItemDecoration(new PeopleItemDecoration(getActivity(), R.drawable.people_list_divider));
         mFilteredRecyclerView.setLogT(AppLog.T.PEOPLE);
         mFilteredRecyclerView.setSwipeToRefreshEnabled(false);
 
@@ -117,8 +117,8 @@ public class PeopleListFragment extends Fragment {
         mFilteredRecyclerView.setToolbarSpinnerTextColor(ContextCompat.getColor(getActivity(), android.R.color.white));
         mFilteredRecyclerView.setToolbarSpinnerDrawable(R.drawable.ic_dropdown_primary_30_24dp);
         mFilteredRecyclerView.setToolbarLeftAndRightPadding(
-                getResources().getDimensionPixelSize(R.dimen.margin_filter_spinner),
-                getResources().getDimensionPixelSize(R.dimen.margin_none));
+            getResources().getDimensionPixelSize(R.dimen.margin_filter_spinner),
+            getResources().getDimensionPixelSize(R.dimen.margin_none));
 
         mFilteredRecyclerView.setFilterListener(new FilteredRecyclerView.FilterListener() {
             @Override
@@ -134,7 +134,7 @@ public class PeopleListFragment extends Fragment {
 
             @Override
             public void onLoadFilterCriteriaOptionsAsync(
-                    FilteredRecyclerView.FilterCriteriaAsyncLoaderListener listener, boolean refresh) {
+                FilteredRecyclerView.FilterCriteriaAsyncLoaderListener listener, boolean refresh) {
                 // no-op
             }
 
@@ -168,45 +168,45 @@ public class PeopleListFragment extends Fragment {
                         | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
 
                 switch (emptyViewMsgType) {
-                    case LOADING:
-                        return getString(R.string.people_fetching);
-                    case NETWORK_ERROR:
-                        return getString(R.string.no_network_message);
-                    case NO_CONTENT:
-                        String title = "";
+                case LOADING:
+                    return getString(R.string.people_fetching);
+                case NETWORK_ERROR:
+                    return getString(R.string.no_network_message);
+                case NO_CONTENT:
+                    String title = "";
 
-                        switch (mPeopleListFilter) {
-                            case TEAM:
-                                title = getString(R.string.people_empty_list_filtered_users);
-                                break;
-                            case FOLLOWERS:
-                                title = getString(R.string.people_empty_list_filtered_followers);
-                                break;
-                            case EMAIL_FOLLOWERS:
-                                title = getString(R.string.people_empty_list_filtered_email_followers);
-                                break;
-                            case VIEWERS:
-                                title = getString(R.string.people_empty_list_filtered_viewers);
-                                break;
-                        }
+                    switch (mPeopleListFilter) {
+                    case TEAM:
+                        title = getString(R.string.people_empty_list_filtered_users);
+                        break;
+                    case FOLLOWERS:
+                        title = getString(R.string.people_empty_list_filtered_followers);
+                        break;
+                    case EMAIL_FOLLOWERS:
+                        title = getString(R.string.people_empty_list_filtered_email_followers);
+                        break;
+                    case VIEWERS:
+                        title = getString(R.string.people_empty_list_filtered_viewers);
+                        break;
+                    }
 
-                        mActionableEmptyView.title.setText(title);
-                        mActionableEmptyView.setVisibility(View.VISIBLE);
-                        mFilteredRecyclerView.setToolbarScrollFlags(0);
-                        return "";
-                    case GENERIC_ERROR:
-                        switch (mPeopleListFilter) {
-                            case TEAM:
-                                return getString(R.string.error_fetch_users_list);
-                            case FOLLOWERS:
-                                return getString(R.string.error_fetch_followers_list);
-                            case EMAIL_FOLLOWERS:
-                                return getString(R.string.error_fetch_email_followers_list);
-                            case VIEWERS:
-                                return getString(R.string.error_fetch_viewers_list);
-                        }
-                    default:
-                        return "";
+                    mActionableEmptyView.title.setText(title);
+                    mActionableEmptyView.setVisibility(View.VISIBLE);
+                    mFilteredRecyclerView.setToolbarScrollFlags(0);
+                    return "";
+                case GENERIC_ERROR:
+                    switch (mPeopleListFilter) {
+                    case TEAM:
+                        return getString(R.string.error_fetch_users_list);
+                    case FOLLOWERS:
+                        return getString(R.string.error_fetch_followers_list);
+                    case EMAIL_FOLLOWERS:
+                        return getString(R.string.error_fetch_email_followers_list);
+                    case VIEWERS:
+                        return getString(R.string.error_fetch_viewers_list);
+                    }
+                default:
+                    return "";
                 }
             }
 
@@ -264,21 +264,21 @@ public class PeopleListFragment extends Fragment {
 
         List<Person> peopleList;
         switch (mPeopleListFilter) {
-            case TEAM:
-                peopleList = PeopleTable.getUsers(mSite.getId());
-                break;
-            case FOLLOWERS:
-                peopleList = PeopleTable.getFollowers(mSite.getId());
-                break;
-            case EMAIL_FOLLOWERS:
-                peopleList = PeopleTable.getEmailFollowers(mSite.getId());
-                break;
-            case VIEWERS:
-                peopleList = PeopleTable.getViewers(mSite.getId());
-                break;
-            default:
-                peopleList = new ArrayList<>();
-                break;
+        case TEAM:
+            peopleList = PeopleTable.getUsers(mSite.getId());
+            break;
+        case FOLLOWERS:
+            peopleList = PeopleTable.getFollowers(mSite.getId());
+            break;
+        case EMAIL_FOLLOWERS:
+            peopleList = PeopleTable.getEmailFollowers(mSite.getId());
+            break;
+        case VIEWERS:
+            peopleList = PeopleTable.getViewers(mSite.getId());
+            break;
+        default:
+            peopleList = new ArrayList<>();
+            break;
         }
         PeopleAdapter peopleAdapter = (PeopleAdapter) mFilteredRecyclerView.getAdapter();
         if (peopleAdapter == null) {
@@ -417,7 +417,7 @@ public class PeopleListFragment extends Fragment {
                     peopleViewHolder.mTxtUsername.setVisibility(View.GONE);
                 }
                 if (person.getPersonType() == Person.PersonType.USER
-                    || person.getPersonType() == Person.PersonType.VIEWER) {
+                        || person.getPersonType() == Person.PersonType.VIEWER) {
                     peopleViewHolder.mTxtSubscribed.setVisibility(View.GONE);
                 } else {
                     peopleViewHolder.mTxtSubscribed.setVisibility(View.VISIBLE);

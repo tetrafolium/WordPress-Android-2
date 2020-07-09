@@ -77,7 +77,7 @@ import static org.wordpress.android.fluxc.generated.AccountActionBuilder.newUpda
 import static org.wordpress.android.ui.RequestCodes.NOTIFICATION_SETTINGS;
 
 public class NotificationsSettingsFragment extends PreferenceFragment
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+    implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String KEY_SEARCH_QUERY = "search_query";
     private static final int SITE_SEARCH_VISIBILITY_COUNT = 15;
     // The number of notification types we support (e.g. timeline, email, mobile)
@@ -132,11 +132,11 @@ public class NotificationsSettingsFragment extends PreferenceFragment
         // wouldn't either reflect nor have any effect anyway.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             PreferenceScreen preferenceScreen =
-                    (PreferenceScreen) findPreference(getActivity().getString(R.string.wp_pref_notifications_root));
+                (PreferenceScreen) findPreference(getActivity().getString(R.string.wp_pref_notifications_root));
 
             PreferenceCategory categorySightsAndSounds =
-                    (PreferenceCategory) preferenceScreen.findPreference(getActivity()
-                    .getString(
+                (PreferenceCategory) preferenceScreen.findPreference(getActivity()
+                        .getString(
                             R.string.pref_notification_sights_sounds));
             preferenceScreen.removePreference(categorySightsAndSounds);
         }
@@ -189,9 +189,9 @@ public class NotificationsSettingsFragment extends PreferenceFragment
         mSearchView = (SearchView) mSearchMenuItem.getActionView();
         mSearchView.setQueryHint(getString(R.string.search_sites));
         mBlogsCategory = (PreferenceCategory) findPreference(
-                getString(R.string.pref_notification_blogs));
+                             getString(R.string.pref_notification_blogs));
         mFollowedBlogsCategory = (PreferenceCategory) findPreference(
-                getString(R.string.pref_notification_blogs_followed));
+                                     getString(R.string.pref_notification_blogs_followed));
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -254,13 +254,13 @@ public class NotificationsSettingsFragment extends PreferenceFragment
 
         if (data != null && requestCode == NOTIFICATION_SETTINGS) {
             boolean notifyPosts =
-                    data.getBooleanExtra(NotificationSettingsFollowedDialog.KEY_NOTIFICATION_POSTS, false);
+                data.getBooleanExtra(NotificationSettingsFollowedDialog.KEY_NOTIFICATION_POSTS, false);
             boolean emailPosts =
-                    data.getBooleanExtra(NotificationSettingsFollowedDialog.KEY_EMAIL_POSTS, false);
+                data.getBooleanExtra(NotificationSettingsFollowedDialog.KEY_EMAIL_POSTS, false);
             String emailPostsFrequency =
-                    data.getStringExtra(NotificationSettingsFollowedDialog.KEY_EMAIL_POSTS_FREQUENCY);
+                data.getStringExtra(NotificationSettingsFollowedDialog.KEY_EMAIL_POSTS_FREQUENCY);
             boolean emailComments =
-                    data.getBooleanExtra(NotificationSettingsFollowedDialog.KEY_EMAIL_COMMENTS, false);
+                data.getBooleanExtra(NotificationSettingsFollowedDialog.KEY_EMAIL_COMMENTS, false);
 
             if (notifyPosts != mPreviousNotifyPosts) {
                 ReaderBlogTable.setNotificationsEnabledByBlogId(Long.parseLong(mNotificationUpdatedSite), notifyPosts);
@@ -304,7 +304,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
                     mUpdateEmailPostsFirst = true;
                 } else {
                     mDispatcher.dispatch(newUpdateSubscriptionEmailPostFrequencyAction(
-                            mUpdateSubscriptionFrequencyPayload));
+                                             mUpdateSubscriptionFrequencyPayload));
                 }
             }
 
@@ -363,7 +363,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
     private void refreshSettings() {
         if (!hasNotificationsSettings()) {
             EventBus.getDefault()
-                    .post(new NotificationEvents.NotificationsSettingsStatusChanged(getString(R.string.loading)));
+            .post(new NotificationEvents.NotificationsSettingsStatusChanged(getString(R.string.loading)));
         }
 
         if (hasNotificationsSettings()) {
@@ -405,7 +405,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
 
                 if (!hasNotificationsSettings()) {
                     EventBus.getDefault().post(new NotificationEvents.NotificationsSettingsStatusChanged(
-                            getString(R.string.error_loading_notifications)));
+                                                   getString(R.string.error_loading_notifications)));
                 }
             }
         });
@@ -416,7 +416,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             settingsJson = new JSONObject(
-                    sharedPreferences.getString(NotificationsUtils.WPCOM_PUSH_DEVICE_NOTIFICATION_SETTINGS, "")
+                sharedPreferences.getString(NotificationsUtils.WPCOM_PUSH_DEVICE_NOTIFICATION_SETTINGS, "")
             );
         } catch (JSONException e) {
             AppLog.e(T.NOTIFS, "Could not parse notifications settings JSON");
@@ -432,12 +432,12 @@ public class NotificationsSettingsFragment extends PreferenceFragment
         if (shouldUpdateUI) {
             if (mBlogsCategory == null) {
                 mBlogsCategory = (PreferenceCategory) findPreference(
-                        getString(R.string.pref_notification_blogs));
+                                     getString(R.string.pref_notification_blogs));
             }
 
             if (mFollowedBlogsCategory == null) {
                 mFollowedBlogsCategory = (PreferenceCategory) findPreference(
-                        getString(R.string.pref_notification_blogs_followed));
+                                             getString(R.string.pref_notification_blogs_followed));
             }
 
             configureBlogsSettings(mBlogsCategory, false);
@@ -471,7 +471,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
                         Intent intent = new Intent();
                         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         Uri uri =
-                                Uri.fromParts("package", getActivity().getApplicationContext().getPackageName(), null);
+                            Uri.fromParts("package", getActivity().getApplicationContext().getPackageName(), null);
                         intent.setData(uri);
 
                         startActivity(intent);
@@ -483,7 +483,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
             }
 
             if (category.getPreferenceCount() >= TYPE_COUNT
-                && category.getPreference(TYPE_COUNT - 1) != null) {
+                    && category.getPreference(TYPE_COUNT - 1) != null) {
                 category.getPreference(TYPE_COUNT - 1).setEnabled(mNotificationsEnabled);
             }
         }
@@ -539,7 +539,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
         if (mSiteCount == 0 && !TextUtils.isEmpty(trimmedQuery)) {
             Preference searchResultsPref = new Preference(context);
             searchResultsPref
-                    .setSummary(String.format(getString(R.string.notifications_no_search_results), trimmedQuery));
+            .setSummary(String.format(getString(R.string.notifications_no_search_results), trimmedQuery));
             blogsCategory.addPreference(searchResultsPref);
         }
 
@@ -576,7 +576,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
             Collections.sort(subscriptions, new Comparator<SubscriptionModel>() {
                 @Override public int compare(SubscriptionModel o1, SubscriptionModel o2) {
                     return getSiteNameOrHostFromSubscription(o1)
-                            .compareToIgnoreCase(getSiteNameOrHostFromSubscription(o2));
+                           .compareToIgnoreCase(getSiteNameOrHostFromSubscription(o2));
                 }
             });
         }
@@ -611,13 +611,13 @@ public class NotificationsSettingsFragment extends PreferenceFragment
                     NotificationSettingsFollowedDialog dialog = new NotificationSettingsFollowedDialog();
                     Bundle args = new Bundle();
                     args.putBoolean(NotificationSettingsFollowedDialog.ARG_NOTIFICATION_POSTS,
-                            mPreviousNotifyPosts);
+                                    mPreviousNotifyPosts);
                     args.putBoolean(NotificationSettingsFollowedDialog.ARG_EMAIL_POSTS,
-                            mPreviousEmailPosts);
+                                    mPreviousEmailPosts);
                     args.putString(NotificationSettingsFollowedDialog.ARG_EMAIL_POSTS_FREQUENCY,
-                            mPreviousEmailPostsFrequency);
+                                   mPreviousEmailPostsFrequency);
                     args.putBoolean(NotificationSettingsFollowedDialog.ARG_EMAIL_COMMENTS,
-                            mPreviousEmailComments);
+                                    mPreviousEmailComments);
                     dialog.setArguments(args);
                     dialog.setTargetFragment(NotificationsSettingsFragment.this, NOTIFICATION_SETTINGS);
                     dialog.show(getFragmentManager(), NotificationSettingsFollowedDialog.TAG);
@@ -666,7 +666,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
 
         PreferenceScreen prefScreen = getPreferenceManager().createPreferenceScreen(context);
         prefScreen.setTitle(isFollowed ? R.string.notification_settings_item_your_sites_all_followed_sites
-                : R.string.notification_settings_item_your_sites_all_your_sites);
+                            : R.string.notification_settings_item_your_sites_all_your_sites);
         addSitesForViewAllSitesScreen(prefScreen, isFollowed);
         blogsCategory.addPreference(prefScreen);
     }
@@ -681,16 +681,16 @@ public class NotificationsSettingsFragment extends PreferenceFragment
 
     private void configureOtherSettings() {
         PreferenceScreen otherBlogsScreen = (PreferenceScreen) findPreference(
-                getString(R.string.pref_notification_other_blogs));
+                                                getString(R.string.pref_notification_other_blogs));
         addPreferencesForPreferenceScreen(otherBlogsScreen, Channel.OTHER, 0);
     }
 
     private void configureWPComSettings() {
         PreferenceCategory otherPreferenceCategory = (PreferenceCategory) findPreference(
-                getString(R.string.pref_notification_other_category));
+                    getString(R.string.pref_notification_other_category));
         NotificationsSettingsDialogPreference devicePreference = new NotificationsSettingsDialogPreference(
-                getActivity(), null, Channel.WPCOM, NotificationsSettings.Type.DEVICE, 0, mNotificationsSettings,
-                mOnSettingsChangedListener
+            getActivity(), null, Channel.WPCOM, NotificationsSettings.Type.DEVICE, 0, mNotificationsSettings,
+            mOnSettingsChangedListener
         );
         devicePreference.setTitle(R.string.notification_settings_item_other_account_emails);
         devicePreference.setDialogTitle(R.string.notification_settings_item_other_account_emails);
@@ -710,24 +710,24 @@ public class NotificationsSettingsFragment extends PreferenceFragment
         preferenceScreen.addPreference(rootCategory);
 
         NotificationsSettingsDialogPreference timelinePreference = new NotificationsSettingsDialogPreference(
-                context, null, channel, NotificationsSettings.Type.TIMELINE, blogId, mNotificationsSettings,
-                mOnSettingsChangedListener
+            context, null, channel, NotificationsSettings.Type.TIMELINE, blogId, mNotificationsSettings,
+            mOnSettingsChangedListener
         );
 
         timelinePreference.setIcon(ColorUtils.INSTANCE.applyTintToDrawable(context, R.drawable.ic_bell_white_24dp,
-                R.color.neutral_60));
+                                   R.color.neutral_60));
         timelinePreference.setTitle(R.string.notifications_tab);
         timelinePreference.setDialogTitle(R.string.notifications_tab);
         timelinePreference.setSummary(R.string.notifications_tab_summary);
         rootCategory.addPreference(timelinePreference);
 
         NotificationsSettingsDialogPreference emailPreference = new NotificationsSettingsDialogPreference(
-                context, null, channel, NotificationsSettings.Type.EMAIL, blogId, mNotificationsSettings,
-                mOnSettingsChangedListener
+            context, null, channel, NotificationsSettings.Type.EMAIL, blogId, mNotificationsSettings,
+            mOnSettingsChangedListener
         );
 
         emailPreference.setIcon(ColorUtils.INSTANCE.applyTintToDrawable(context, R.drawable.ic_mail_white_24dp,
-                R.color.neutral_60));
+                                R.color.neutral_60));
         emailPreference.setTitle(R.string.email);
         emailPreference.setDialogTitle(R.string.email);
         emailPreference.setSummary(R.string.notifications_email_summary);
@@ -737,12 +737,12 @@ public class NotificationsSettingsFragment extends PreferenceFragment
         String deviceID = settings.getString(NotificationsUtils.WPCOM_PUSH_DEVICE_SERVER_ID, null);
         if (!TextUtils.isEmpty(deviceID)) {
             NotificationsSettingsDialogPreference devicePreference = new NotificationsSettingsDialogPreference(
-                    context, null, channel, NotificationsSettings.Type.DEVICE, blogId, mNotificationsSettings,
-                    mOnSettingsChangedListener
+                context, null, channel, NotificationsSettings.Type.DEVICE, blogId, mNotificationsSettings,
+                mOnSettingsChangedListener
             );
 
             devicePreference.setIcon(ColorUtils.INSTANCE.applyTintToDrawable(context, R.drawable.ic_phone_white_24dp,
-                    R.color.neutral_60));
+                                     R.color.neutral_60));
             devicePreference.setTitle(R.string.app_notifications);
             devicePreference.setDialogTitle(R.string.app_notifications);
             devicePreference.setSummary(R.string.notifications_push_summary);
@@ -762,7 +762,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
         PreferenceCategory rootCategory = new PreferenceCategory(context);
         rootCategory.setLayoutResource(R.layout.wp_preference_category);
         rootCategory.setTitle(isFollowed ? R.string.notification_settings_category_followed_sites
-                : R.string.notification_settings_category_your_sites);
+                              : R.string.notification_settings_category_your_sites);
         preferenceScreen.addPreference(rootCategory);
 
         if (isFollowed) {
@@ -773,73 +773,73 @@ public class NotificationsSettingsFragment extends PreferenceFragment
     }
 
     private final NotificationsSettingsDialogPreference.OnNotificationsSettingsChangedListener
-            mOnSettingsChangedListener =
-            new NotificationsSettingsDialogPreference.OnNotificationsSettingsChangedListener() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public void onSettingsChanged(Channel channel, NotificationsSettings.Type type, long blogId,
-                                              JSONObject newValues) {
-                    if (!isAdded()) {
-                        return;
+    mOnSettingsChangedListener =
+    new NotificationsSettingsDialogPreference.OnNotificationsSettingsChangedListener() {
+        @SuppressWarnings("unchecked")
+        @Override
+        public void onSettingsChanged(Channel channel, NotificationsSettings.Type type, long blogId,
+                                      JSONObject newValues) {
+            if (!isAdded()) {
+                return;
+            }
+
+            // Construct a new settings JSONObject to send back to WP.com
+            JSONObject settingsObject = new JSONObject();
+            switch (channel) {
+            case BLOGS:
+                try {
+                    JSONObject blogObject = new JSONObject();
+                    blogObject.put(NotificationsSettings.KEY_BLOG_ID, blogId);
+
+                    JSONArray blogsArray = new JSONArray();
+                    if (type == Type.DEVICE) {
+                        newValues.put(NotificationsSettings.KEY_DEVICE_ID, Long.parseLong(mDeviceId));
+                        JSONArray devicesArray = new JSONArray();
+                        devicesArray.put(newValues);
+                        blogObject.put(NotificationsSettings.KEY_DEVICES, devicesArray);
+                        blogsArray.put(blogObject);
+                    } else {
+                        blogObject.put(type.toString(), newValues);
+                        blogsArray.put(blogObject);
                     }
 
-                    // Construct a new settings JSONObject to send back to WP.com
-                    JSONObject settingsObject = new JSONObject();
-                    switch (channel) {
-                        case BLOGS:
-                            try {
-                                JSONObject blogObject = new JSONObject();
-                                blogObject.put(NotificationsSettings.KEY_BLOG_ID, blogId);
-
-                                JSONArray blogsArray = new JSONArray();
-                                if (type == Type.DEVICE) {
-                                    newValues.put(NotificationsSettings.KEY_DEVICE_ID, Long.parseLong(mDeviceId));
-                                    JSONArray devicesArray = new JSONArray();
-                                    devicesArray.put(newValues);
-                                    blogObject.put(NotificationsSettings.KEY_DEVICES, devicesArray);
-                                    blogsArray.put(blogObject);
-                                } else {
-                                    blogObject.put(type.toString(), newValues);
-                                    blogsArray.put(blogObject);
-                                }
-
-                                settingsObject.put(NotificationsSettings.KEY_BLOGS, blogsArray);
-                            } catch (JSONException e) {
-                                AppLog.e(T.NOTIFS, "Could not build notification settings object");
-                            }
-                            break;
-                        case OTHER:
-                            try {
-                                JSONObject otherObject = new JSONObject();
-                                if (type == Type.DEVICE) {
-                                    newValues.put(NotificationsSettings.KEY_DEVICE_ID, Long.parseLong(mDeviceId));
-                                    JSONArray devicesArray = new JSONArray();
-                                    devicesArray.put(newValues);
-                                    otherObject.put(NotificationsSettings.KEY_DEVICES, devicesArray);
-                                } else {
-                                    otherObject.put(type.toString(), newValues);
-                                }
-
-                                settingsObject.put(NotificationsSettings.KEY_OTHER, otherObject);
-                            } catch (JSONException e) {
-                                AppLog.e(T.NOTIFS, "Could not build notification settings object");
-                            }
-                            break;
-                        case WPCOM:
-                            try {
-                                settingsObject.put(NotificationsSettings.KEY_WPCOM, newValues);
-                            } catch (JSONException e) {
-                                AppLog.e(T.NOTIFS, "Could not build notification settings object");
-                            }
-                            break;
-                    }
-
-                    if (settingsObject.length() > 0) {
-                        WordPress.getRestClientUtilsV1_1()
-                                 .post("/me/notifications/settings", settingsObject, null, null, null);
-                    }
+                    settingsObject.put(NotificationsSettings.KEY_BLOGS, blogsArray);
+                } catch (JSONException e) {
+                    AppLog.e(T.NOTIFS, "Could not build notification settings object");
                 }
-            };
+                break;
+            case OTHER:
+                try {
+                    JSONObject otherObject = new JSONObject();
+                    if (type == Type.DEVICE) {
+                        newValues.put(NotificationsSettings.KEY_DEVICE_ID, Long.parseLong(mDeviceId));
+                        JSONArray devicesArray = new JSONArray();
+                        devicesArray.put(newValues);
+                        otherObject.put(NotificationsSettings.KEY_DEVICES, devicesArray);
+                    } else {
+                        otherObject.put(type.toString(), newValues);
+                    }
+
+                    settingsObject.put(NotificationsSettings.KEY_OTHER, otherObject);
+                } catch (JSONException e) {
+                    AppLog.e(T.NOTIFS, "Could not build notification settings object");
+                }
+                break;
+            case WPCOM:
+                try {
+                    settingsObject.put(NotificationsSettings.KEY_WPCOM, newValues);
+                } catch (JSONException e) {
+                    AppLog.e(T.NOTIFS, "Could not build notification settings object");
+                }
+                break;
+            }
+
+            if (settingsObject.length() > 0) {
+                WordPress.getRestClientUtilsV1_1()
+                .post("/me/notifications/settings", settingsObject, null, null, null);
+            }
+        }
+    };
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
@@ -864,7 +864,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
         if (key.equals(getString(R.string.pref_key_notification_pending_drafts))) {
             if (getActivity() != null) {
                 SharedPreferences prefs =
-                        androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    androidx.preference.PreferenceManager.getDefaultSharedPreferences(getActivity());
                 boolean shouldNotifyOfPendingDrafts = prefs.getBoolean("wp_pref_notification_pending_drafts", true);
                 if (shouldNotifyOfPendingDrafts) {
                     AnalyticsTracker.track(AnalyticsTracker.Stat.NOTIFICATION_PENDING_DRAFTS_SETTINGS_ENABLED);
@@ -874,7 +874,7 @@ public class NotificationsSettingsFragment extends PreferenceFragment
             }
         } else if (key.equals(getString(R.string.wp_pref_custom_notification_sound))) {
             final String defaultPath =
-                    getString(R.string.notification_settings_item_sights_and_sounds_choose_sound_default);
+                getString(R.string.notification_settings_item_sights_and_sounds_choose_sound_default);
             final String value = sharedPreferences.getString(key, defaultPath);
 
             if (value.trim().toLowerCase(Locale.ROOT).startsWith("file://")) {

@@ -83,13 +83,13 @@ public class ReaderLinkMovementMethod extends LinkMovementMethod {
                 }
                 String imageUrl = StringUtils.notNullStr(images[0].getSource());
                 ReaderActivityLauncher.showReaderPhotoViewer(
-                        textView.getContext(),
-                        imageUrl,
-                        null,
-                        textView,
-                        options,
-                        (int) event.getX(),
-                        (int) event.getY());
+                    textView.getContext(),
+                    imageUrl,
+                    null,
+                    textView,
+                    options,
+                    (int) event.getX(),
+                    (int) event.getY());
                 return true;
             }
         }

@@ -19,7 +19,7 @@ import java.util.List;
  * adapter which shows the results of a reader site search
  */
 public class ReaderSiteSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements ReaderSiteSearchResultView.OnSiteFollowedListener {
+    implements ReaderSiteSearchResultView.OnSiteFollowedListener {
     public interface SiteSearchAdapterListener {
         void onSiteClicked(@NonNull ReaderSiteModel site);
         void onLoadMore(int offset);
@@ -60,9 +60,9 @@ public class ReaderSiteSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void checkLoadMore(int position) {
         if (mCanLoadMore
-            && !mIsLoadingMore
-            && position >= getItemCount() - 1
-            && getItemCount() >= ReaderConstants.READER_MAX_SEARCH_RESULTS_TO_REQUEST) {
+                && !mIsLoadingMore
+                && position >= getItemCount() - 1
+                && getItemCount() >= ReaderConstants.READER_MAX_SEARCH_RESULTS_TO_REQUEST) {
             mIsLoadingMore = true;
             mListener.onLoadMore(getItemCount());
         }

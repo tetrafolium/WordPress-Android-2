@@ -37,11 +37,11 @@ public class ReaderCommentActions {
      * to give the comment that's generated locally
      */
     public static ReaderComment submitPostComment(final ReaderPost post,
-                                                  final long fakeCommentId,
-                                                  final String commentText,
-                                                  final long replyToCommentId,
-                                                  final ReaderActions.CommentActionListener actionListener,
-                                                  final long wpComUserId) {
+            final long fakeCommentId,
+            final String commentText,
+            final long replyToCommentId,
+            final ReaderActions.CommentActionListener actionListener,
+            final long wpComUserId) {
         if (post == null || TextUtils.isEmpty(commentText)) {
             return null;
         }

@@ -42,13 +42,13 @@ public class ReaderUserTable {
     }
 
     private static final String COLUMN_NAMES =
-            " user_id," // 1
-            + " blog_id," // 2
-            + " user_name," // 3
-            + " display_name," // 4
-            + " url," // 5
-            + " profile_url," // 6
-            + " avatar_url"; // 7
+        " user_id," // 1
+        + " blog_id," // 2
+        + " user_name," // 3
+        + " display_name," // 4
+        + " url," // 5
+        + " profile_url," // 6
+        + " avatar_url"; // 7
 
     public static void addOrUpdateUsers(ReaderUserList users) {
         if (users == null || users.size() == 0) {
@@ -58,7 +58,7 @@ public class ReaderUserTable {
         SQLiteDatabase db = ReaderDatabase.getWritableDb();
         db.beginTransaction();
         SQLiteStatement stmt = db.compileStatement(
-                "INSERT OR REPLACE INTO tbl_users (" + COLUMN_NAMES + ") VALUES (?1,?2,?3,?4,?5,?6,?7)");
+                                   "INSERT OR REPLACE INTO tbl_users (" + COLUMN_NAMES + ") VALUES (?1,?2,?3,?4,?5,?6,?7)");
         try {
             for (ReaderUser user : users) {
                 stmt.bindLong(1, user.userId);
@@ -153,8 +153,8 @@ public class ReaderUserTable {
     private static String getAvatarForUser(long userId) {
         String[] args = {Long.toString(userId)};
         return SqlUtils
-                .stringForQuery(ReaderDatabase.getReadableDb(), "SELECT avatar_url FROM tbl_users WHERE user_id=?",
-                                args);
+               .stringForQuery(ReaderDatabase.getReadableDb(), "SELECT avatar_url FROM tbl_users WHERE user_id=?",
+                               args);
     }
 
     public static ReaderUserList getUsersWhoLikePost(long blogId, long postId, int max) {
@@ -181,7 +181,8 @@ public class ReaderUserTable {
 
     public static ReaderUserList getUsersWhoLikeComment(long blogId, long commentId, int max) {
         String[] args = {Long.toString(blogId),
-                Long.toString(commentId)};
+                         Long.toString(commentId)
+                        };
         String sql = "SELECT * from tbl_users WHERE user_id IN"
                      + " (SELECT user_id FROM tbl_comment_likes WHERE blog_id=? AND comment_id=?)"
                      + " ORDER BY display_name";
