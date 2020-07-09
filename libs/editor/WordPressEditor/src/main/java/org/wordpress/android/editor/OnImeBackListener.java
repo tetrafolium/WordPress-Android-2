@@ -1,5 +1,3 @@
 package org.wordpress.android.editor;
 
-public interface OnImeBackListener {
-    void onImeBack();
-}
+public interface OnImeBackListener { void onImeBack(); }

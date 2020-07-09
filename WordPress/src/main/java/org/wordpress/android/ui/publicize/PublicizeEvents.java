@@ -1,7 +1,6 @@
 package org.wordpress.android.ui.publicize;
 
 import androidx.annotation.Nullable;
-
 import org.json.JSONObject;
 import org.wordpress.android.ui.publicize.PublicizeConstants.ConnectAction;
 
@@ -9,101 +8,83 @@ import org.wordpress.android.ui.publicize.PublicizeConstants.ConnectAction;
  * Publicize-related EventBus event classes
  */
 public class PublicizeEvents {
-    private PublicizeEvents() {
-        throw new AssertionError();
+  private PublicizeEvents() { throw new AssertionError(); }
+
+  public static class ConnectionsChanged {}
+
+  public static class ActionCompleted {
+    private final boolean mSucceeded;
+    private final ConnectAction mAction;
+    /**
+     * The reason for why {@link #mSucceeded} is false.
+     */
+    @Nullable private final Integer mReasonResId;
+    private String mService;
+
+    public ActionCompleted(boolean succeeded, ConnectAction action,
+                           String service) {
+      this(succeeded, action, service, null);
     }
 
-    public static class ConnectionsChanged {
+    ActionCompleted(boolean succeeded, ConnectAction action, String service,
+                    @Nullable Integer reasonResId) {
+      mSucceeded = succeeded;
+      mAction = action;
+      mService = service;
+      mReasonResId = reasonResId;
     }
 
-    public static class ActionCompleted {
-        private final boolean mSucceeded;
-        private final ConnectAction mAction;
-        /**
-         * The reason for why {@link #mSucceeded} is false.
-         */
-        @Nullable private final Integer mReasonResId;
-        private String mService;
+    public ConnectAction getAction() { return mAction; }
 
-        public ActionCompleted(boolean succeeded, ConnectAction action, String service) {
-            this(succeeded, action, service, null);
-        }
+    public boolean didSucceed() { return mSucceeded; }
 
-        ActionCompleted(boolean succeeded, ConnectAction action, String service, @Nullable Integer reasonResId) {
-            mSucceeded = succeeded;
-            mAction = action;
-            mService = service;
-            mReasonResId = reasonResId;
-        }
+    public String getService() { return mService; }
 
-        public ConnectAction getAction() {
-            return mAction;
-        }
+    @Nullable
+    public Integer getReasonResId() {
+      return mReasonResId;
+    }
+  }
 
-        public boolean didSucceed() {
-            return mSucceeded;
-        }
+  public static class ActionAccountChosen {
+    private long mSiteId;
+    private int mKeychainId;
+    private String mService;
+    private String mExternalUserId;
 
-        public String getService() {
-            return mService;
-        }
-
-        @Nullable public Integer getReasonResId() {
-            return mReasonResId;
-        }
+    public ActionAccountChosen(long siteId, int keychainId, String service,
+                               String externalUserId) {
+      mSiteId = siteId;
+      mKeychainId = keychainId;
+      mService = service;
+      mExternalUserId = externalUserId;
     }
 
-    public static class ActionAccountChosen {
-        private long mSiteId;
-        private int mKeychainId;
-        private String mService;
-        private String mExternalUserId;
+    public long getSiteId() { return mSiteId; }
 
-        public ActionAccountChosen(long siteId, int keychainId, String service, String externalUserId) {
-            mSiteId = siteId;
-            mKeychainId = keychainId;
-            mService = service;
-            mExternalUserId = externalUserId;
-        }
+    public int getKeychainId() { return mKeychainId; }
 
-        public long getSiteId() {
-            return mSiteId;
-        }
+    public String getService() { return mService; }
 
-        public int getKeychainId() {
-            return mKeychainId;
-        }
+    public String getExternalUserId() { return mExternalUserId; }
+  }
 
-        public String getService() {
-            return mService;
-        }
+  public static class ActionRequestChooseAccount {
+    private long mSiteId;
+    private String mServiceId;
+    private JSONObject mJSONObject;
 
-        public String getExternalUserId() {
-            return mExternalUserId;
-        }
+    public ActionRequestChooseAccount(long siteId, String serviceId,
+                                      JSONObject jsonObject) {
+      mSiteId = siteId;
+      mServiceId = serviceId;
+      mJSONObject = jsonObject;
     }
 
-    public static class ActionRequestChooseAccount {
-        private long mSiteId;
-        private String mServiceId;
-        private JSONObject mJSONObject;
+    public JSONObject getJSONObject() { return mJSONObject; }
 
-        public ActionRequestChooseAccount(long siteId, String serviceId, JSONObject jsonObject) {
-            mSiteId = siteId;
-            mServiceId = serviceId;
-            mJSONObject = jsonObject;
-        }
+    public long getSiteId() { return mSiteId; }
 
-        public JSONObject getJSONObject() {
-            return mJSONObject;
-        }
-
-        public long getSiteId() {
-            return mSiteId;
-        }
-
-        public String getServiceId() {
-            return mServiceId;
-        }
-    }
+    public String getServiceId() { return mServiceId; }
+  }
 }

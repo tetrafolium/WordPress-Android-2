@@ -1,5 +1,3 @@
 package org.wordpress.android.models;
 
-public interface FilterCriteria {
-    String getLabel();
-}
+public interface FilterCriteria { String getLabel(); }

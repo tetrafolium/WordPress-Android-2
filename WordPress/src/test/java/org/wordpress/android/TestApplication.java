@@ -2,5 +2,4 @@ package org.wordpress.android;
 
 import android.app.Application;
 
-public class TestApplication extends Application {
-}
+public class TestApplication extends Application {}

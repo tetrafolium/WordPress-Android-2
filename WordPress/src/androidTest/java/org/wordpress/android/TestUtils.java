@@ -1,15 +1,14 @@
 package org.wordpress.android;
 
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.wordpress.android.util.DateTimeUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,146 +21,149 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import org.greenrobot.eventbus.EventBus;
+import org.wordpress.android.util.DateTimeUtils;
 
 public class TestUtils {
-    private static final String DATABASE_NAME = "wordpress";
+  private static final String DATABASE_NAME = "wordpress";
 
-    public static SQLiteDatabase loadDBFromDump(Context targetContext, Context testContext, String filename) {
-        targetContext.deleteDatabase(DATABASE_NAME);
-        WordPress.wpDB = new WordPressDB(targetContext);
+  public static SQLiteDatabase
+  loadDBFromDump(Context targetContext, Context testContext, String filename) {
+    targetContext.deleteDatabase(DATABASE_NAME);
+    WordPress.wpDB = new WordPressDB(targetContext);
 
-        Field dbField;
+    Field dbField;
+    try {
+      dbField = WordPressDB.class.getDeclaredField("db");
+      dbField.setAccessible(true);
+      SQLiteDatabase db = (SQLiteDatabase)dbField.get(WordPress.wpDB);
+      assertNotNull(db);
+
+      // Load file
+      InputStream is = testContext.getAssets().open(filename);
+      InputStreamReader inputStreamReader = new InputStreamReader(is);
+      BufferedReader f = new BufferedReader(inputStreamReader);
+      for (String line = f.readLine(); line != null; line = f.readLine()) {
+        if (TextUtils.isEmpty(line)) {
+          continue;
+        }
         try {
-            dbField = WordPressDB.class.getDeclaredField("db");
-            dbField.setAccessible(true);
-            SQLiteDatabase db = (SQLiteDatabase) dbField.get(WordPress.wpDB);
-            assertNotNull(db);
-
-            // Load file
-            InputStream is = testContext.getAssets().open(filename);
-            InputStreamReader inputStreamReader = new InputStreamReader(is);
-            BufferedReader f = new BufferedReader(inputStreamReader);
-            for (String line = f.readLine(); line != null; line = f.readLine()) {
-                if (TextUtils.isEmpty(line)) {
-                    continue;
-                }
-                try {
-                    db.execSQL(line);
-                } catch (android.database.sqlite.SQLiteException e) {
-                    // ignore import errors
-                }
-            }
-            f.close();
-            return db;
-        } catch (NoSuchFieldException e) {
-            assertTrue(e.toString(), false);
-        } catch (IllegalAccessException e) {
-            assertTrue(e.toString(), false);
-        } catch (IOException e) {
-            assertTrue(e.toString(), false);
+          db.execSQL(line);
+        } catch (android.database.sqlite.SQLiteException e) {
+          // ignore import errors
         }
-        return null;
+      }
+      f.close();
+      return db;
+    } catch (NoSuchFieldException e) {
+      assertTrue(e.toString(), false);
+    } catch (IllegalAccessException e) {
+      assertTrue(e.toString(), false);
+    } catch (IOException e) {
+      assertTrue(e.toString(), false);
     }
+    return null;
+  }
 
-    public static void resetEventBus() {
-        Field dbField;
-        try {
-            dbField = EventBus.class.getDeclaredField("defaultInstance");
-            dbField.setAccessible(true);
-            dbField.set(EventBus.class, null);
-        } catch (NoSuchFieldException e) {
-            assertTrue(e.toString(), false);
-        } catch (IllegalAccessException e) {
-            assertTrue(e.toString(), false);
-        }
+  public static void resetEventBus() {
+    Field dbField;
+    try {
+      dbField = EventBus.class.getDeclaredField("defaultInstance");
+      dbField.setAccessible(true);
+      dbField.set(EventBus.class, null);
+    } catch (NoSuchFieldException e) {
+      assertTrue(e.toString(), false);
+    } catch (IllegalAccessException e) {
+      assertTrue(e.toString(), false);
     }
+  }
 
-    public static void clearDefaultSharedPreferences(Context targetContext) {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(targetContext);
-        Editor editor = settings.edit();
-        editor.clear();
-        editor.commit();
+  public static void clearDefaultSharedPreferences(Context targetContext) {
+    SharedPreferences settings =
+        PreferenceManager.getDefaultSharedPreferences(targetContext);
+    Editor editor = settings.edit();
+    editor.clear();
+    editor.commit();
+  }
+
+  public static void dropDB(Context targetContext) {
+    targetContext.deleteDatabase(DATABASE_NAME);
+  }
+
+  public static void clearApplicationState(Context context) {
+    if (WordPress.getContext() != null) {
+      try {
+        WordPress app = (WordPress)context.getApplicationContext();
+        app.wordPressComSignOut();
+      } catch (Exception e) {
+        // noop
+      }
     }
+    TestUtils.clearDefaultSharedPreferences(context);
+    TestUtils.dropDB(context);
+  }
 
-    public static void dropDB(Context targetContext) {
-        targetContext.deleteDatabase(DATABASE_NAME);
+  public static String convertStreamToString(java.io.InputStream is) {
+    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+    return s.hasNext() ? s.next() : "";
+  }
+
+  public static Date gsonStringToJavaDate(final String strDate) {
+    try {
+      SimpleDateFormat df =
+          new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+      return df.parse(strDate);
+    } catch (ParseException e) {
+      return null;
     }
+  }
 
-    public static void clearApplicationState(Context context) {
-        if (WordPress.getContext() != null) {
-            try {
-                WordPress app = (WordPress) context.getApplicationContext();
-                app.wordPressComSignOut();
-            } catch (Exception e) {
-                // noop
-            }
-        }
-        TestUtils.clearDefaultSharedPreferences(context);
-        TestUtils.dropDB(context);
+  public static Date parseStringToDate(String value) {
+    // try do parseit as a Date
+    Date newValue = DateTimeUtils.dateFromIso8601(value);
+    if (newValue != null) {
+      return newValue;
     }
-
-    public static String convertStreamToString(java.io.InputStream is) {
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
+    newValue = gsonStringToJavaDate(value);
+    if (newValue != null) {
+      return newValue;
     }
+    return null;
+  }
 
-    public static Date gsonStringToJavaDate(final String strDate) {
-        try {
-            SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
-            return df.parse(strDate);
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
-    public static Date parseStringToDate(String value) {
-        // try do parseit as a Date
-        Date newValue = DateTimeUtils.dateFromIso8601(value);
-        if (newValue != null) {
-            return newValue;
-        }
-        newValue = gsonStringToJavaDate(value);
-        if (newValue != null) {
-            return newValue;
-        }
-        return null;
-    }
-
-    public static Object castIt(Object value) {
-        if (value instanceof HashMap) {
-            return injectDateInMap((Map<String, Object>) value);
-        } else if (value instanceof String) {
-            Date newValue = parseStringToDate((String) value);
-            if (newValue != null) {
-                return newValue;
-            } else {
-                return value;
-            }
-        } else if (value instanceof Double) {
-            return (int) Math.round((Double) value);
-        } else if (value instanceof Object[]) {
-            return injectDateInArray((Object[]) value);
-        }
+  public static Object castIt(Object value) {
+    if (value instanceof HashMap) {
+      return injectDateInMap((Map<String, Object>)value);
+    } else if (value instanceof String) {
+      Date newValue = parseStringToDate((String)value);
+      if (newValue != null) {
+        return newValue;
+      } else {
         return value;
+      }
+    } else if (value instanceof Double) {
+      return (int)Math.round((Double)value);
+    } else if (value instanceof Object[]) {
+      return injectDateInArray((Object[])value);
     }
+    return value;
+  }
 
-    public static Object[] injectDateInArray(Object[] array) {
-        HashSet<Object> res = new HashSet<Object>();
-        for (Object value : array) {
-            res.add(castIt(value));
-        }
-        return res.toArray();
+  public static Object[] injectDateInArray(Object[] array) {
+    HashSet<Object> res = new HashSet<Object>();
+    for (Object value : array) {
+      res.add(castIt(value));
     }
+    return res.toArray();
+  }
 
-    public static Map<String, Object> injectDateInMap(Map<String, Object> hashMap) {
-        Map<String, Object> res = new HashMap<String, Object>();
-        for (String key : hashMap.keySet()) {
-            Object value = hashMap.get(key);
-            res.put(key, castIt(value));
-        }
-        return res;
+  public static Map<String, Object>
+  injectDateInMap(Map<String, Object> hashMap) {
+    Map<String, Object> res = new HashMap<String, Object>();
+    for (String key : hashMap.keySet()) {
+      Object value = hashMap.get(key);
+      res.put(key, castIt(value));
     }
+    return res;
+  }
 }

@@ -1,17 +1,5 @@
 package org.wordpress.android.e2e.flows;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.view.View;
-import android.widget.EditText;
-
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.rule.ActivityTestRule;
-
-import org.hamcrest.Matchers;
-import org.wordpress.android.R;
-import org.wordpress.android.ui.accounts.LoginMagicLinkInterceptActivity;
-
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
@@ -26,94 +14,114 @@ import static org.wordpress.android.support.WPSupportUtils.clickOn;
 import static org.wordpress.android.support.WPSupportUtils.populateTextField;
 import static org.wordpress.android.support.WPSupportUtils.waitForElementToBeDisplayed;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.view.View;
+import android.widget.EditText;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.rule.ActivityTestRule;
+import org.hamcrest.Matchers;
+import org.wordpress.android.R;
+import org.wordpress.android.ui.accounts.LoginMagicLinkInterceptActivity;
+
 public class LoginFlow {
-    private void chooseLogin() {
-        // Login Prologue – We want to log in, not sign up
-        // See LoginPrologueFragment
-        clickOn(R.id.login_button);
+  private void chooseLogin() {
+    // Login Prologue – We want to log in, not sign up
+    // See LoginPrologueFragment
+    clickOn(R.id.login_button);
+  }
+
+  private void enterEmailAddress() {
+    // Email Address Screen – Fill it in and click "Next"
+    // See LoginEmailFragment
+    populateTextField(R.id.input, E2E_WP_COM_USER_EMAIL);
+    clickOn(R.id.primary_button);
+  }
+
+  private void enterPassword() {
+    // Receive Magic Link or Enter Password Screen – Choose "Enter Password"
+    // See LoginMagicLinkRequestFragment
+    clickOn(R.id.login_enter_password);
+
+    // Password Screen – Fill it in and click "Next"
+    // See LoginEmailPasswordFragment
+    populateTextField(R.id.input, E2E_WP_COM_USER_PASSWORD);
+    clickOn(R.id.primary_button);
+  }
+
+  private void confirmLogin() {
+    // If we get bumped to the "enter your username and password" screen, fill
+    // it in
+    if (atLeastOneElementWithIdIsDisplayed(R.id.login_password_row)) {
+      enterUsernameAndPassword(E2E_WP_COM_USER_USERNAME,
+                               E2E_WP_COM_USER_PASSWORD);
     }
 
-    private void enterEmailAddress() {
-        // Email Address Screen – Fill it in and click "Next"
-        // See LoginEmailFragment
-        populateTextField(R.id.input, E2E_WP_COM_USER_EMAIL);
-        clickOn(R.id.primary_button);
-    }
+    ViewInteraction continueButton = onView(withId(R.id.primary_button));
 
-    private void enterPassword() {
-        // Receive Magic Link or Enter Password Screen – Choose "Enter Password"
-        // See LoginMagicLinkRequestFragment
-        clickOn(R.id.login_enter_password);
+    waitForElementToBeDisplayed(continueButton);
+    clickOn(continueButton);
 
-        // Password Screen – Fill it in and click "Next"
-        // See LoginEmailPasswordFragment
-        populateTextField(R.id.input, E2E_WP_COM_USER_PASSWORD);
-        clickOn(R.id.primary_button);
-    }
+    waitForElementToBeDisplayed(R.id.nav_me);
+  }
 
-    private void confirmLogin() {
-        // If we get bumped to the "enter your username and password" screen, fill it in
-        if (atLeastOneElementWithIdIsDisplayed(R.id.login_password_row)) {
-            enterUsernameAndPassword(E2E_WP_COM_USER_USERNAME, E2E_WP_COM_USER_PASSWORD);
-        }
+  private void chooseMagicLink(ActivityTestRule<LoginMagicLinkInterceptActivity>
+                                   magicLinkActivityTestRule) {
+    // Receive Magic Link or Enter Password Screen – Choose "Send Link"
+    // See LoginMagicLinkRequestFragment
+    clickOn(R.id.login_request_magic_link);
 
-        ViewInteraction continueButton = onView(withId(R.id.primary_button));
+    // Should See Open Mail button
+    waitForElementToBeDisplayed(R.id.login_open_email_client);
 
-        waitForElementToBeDisplayed(continueButton);
-        clickOn(continueButton);
+    // Follow the magic link to continue login
+    // Intent is invoked directly rather than through a browser as WireMock is
+    // unavailable once in the background
+    Intent intent =
+        new Intent(Intent.ACTION_VIEW,
+                   Uri.parse("wordpress://magic-login?token=valid_token"))
+            .setPackage(getApplicationContext().getPackageName());
+    magicLinkActivityTestRule.launchActivity(intent);
+  }
 
-        waitForElementToBeDisplayed(R.id.nav_me);
-    }
+  private void enterUsernameAndPassword(String username, String password) {
+    ViewInteraction usernameElement =
+        onView(allOf(isDescendantOfA(withId(R.id.login_username_row)),
+                     Matchers.<View>instanceOf(EditText.class)));
+    ViewInteraction passwordElement =
+        onView(allOf(isDescendantOfA(withId(R.id.login_password_row)),
+                     Matchers.<View>instanceOf(EditText.class)));
+    populateTextField(usernameElement, username + "\n");
+    populateTextField(passwordElement, password + "\n");
+    clickOn(R.id.primary_button);
+  }
 
-    private void chooseMagicLink(ActivityTestRule<LoginMagicLinkInterceptActivity> magicLinkActivityTestRule) {
-        // Receive Magic Link or Enter Password Screen – Choose "Send Link"
-        // See LoginMagicLinkRequestFragment
-        clickOn(R.id.login_request_magic_link);
+  private void chooseAndEnterSiteAddress(String siteAddress) {
+    clickOn(onView(withText(R.string.enter_site_address_instead)));
+    populateTextField(R.id.input, siteAddress);
+    clickOn(R.id.primary_button);
+  }
 
-        // Should See Open Mail button
-        waitForElementToBeDisplayed(R.id.login_open_email_client);
+  public void loginEmailPassword() {
+    chooseLogin();
+    enterEmailAddress();
+    enterPassword();
+    confirmLogin();
+  }
 
-        // Follow the magic link to continue login
-        // Intent is invoked directly rather than through a browser as WireMock is unavailable once in the background
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("wordpress://magic-login?token=valid_token"))
-        .setPackage(getApplicationContext().getPackageName());
-        magicLinkActivityTestRule.launchActivity(intent);
-    }
+  public void loginMagicLink(ActivityTestRule<LoginMagicLinkInterceptActivity>
+                                 magicLinkActivityTestRule) {
+    chooseLogin();
+    enterEmailAddress();
+    chooseMagicLink(magicLinkActivityTestRule);
+    confirmLogin();
+  }
 
-    private void enterUsernameAndPassword(String username, String password) {
-        ViewInteraction usernameElement = onView(allOf(isDescendantOfA(withId(R.id.login_username_row)),
-                                          Matchers.<View>instanceOf(EditText.class)));
-        ViewInteraction passwordElement = onView(allOf(isDescendantOfA(withId(R.id.login_password_row)),
-                                          Matchers.<View>instanceOf(EditText.class)));
-        populateTextField(usernameElement, username + "\n");
-        populateTextField(passwordElement, password + "\n");
-        clickOn(R.id.primary_button);
-    }
-
-    private void chooseAndEnterSiteAddress(String siteAddress) {
-        clickOn(onView(withText(R.string.enter_site_address_instead)));
-        populateTextField(R.id.input, siteAddress);
-        clickOn(R.id.primary_button);
-    }
-
-    public void loginEmailPassword() {
-        chooseLogin();
-        enterEmailAddress();
-        enterPassword();
-        confirmLogin();
-    }
-
-    public void loginMagicLink(ActivityTestRule<LoginMagicLinkInterceptActivity> magicLinkActivityTestRule) {
-        chooseLogin();
-        enterEmailAddress();
-        chooseMagicLink(magicLinkActivityTestRule);
-        confirmLogin();
-    }
-
-    public void loginSiteAddress(String siteAddress, String username, String password) {
-        chooseLogin();
-        chooseAndEnterSiteAddress(siteAddress);
-        enterUsernameAndPassword(username, password);
-        confirmLogin();
-    }
+  public void loginSiteAddress(String siteAddress, String username,
+                               String password) {
+    chooseLogin();
+    chooseAndEnterSiteAddress(siteAddress);
+    enterUsernameAndPassword(username, password);
+    confirmLogin();
+  }
 }

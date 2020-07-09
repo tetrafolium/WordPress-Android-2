@@ -4,28 +4,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ShortcodeUtils {
-    public static String getVideoPressShortcodeFromId(String videoPressId) {
-        if (videoPressId == null || videoPressId.isEmpty()) {
-            return "";
-        }
-
-        return "[wpvideo " + videoPressId + "]";
+  public static String getVideoPressShortcodeFromId(String videoPressId) {
+    if (videoPressId == null || videoPressId.isEmpty()) {
+      return "";
     }
 
-    public static String getVideoPressIdFromShortCode(String shortcode) {
-        String videoPressId = "";
+    return "[wpvideo " + videoPressId + "]";
+  }
 
-        if (shortcode != null) {
-            String videoPressShortcodeRegex = "^\\[wpvideo (.*)]$";
+  public static String getVideoPressIdFromShortCode(String shortcode) {
+    String videoPressId = "";
 
-            Pattern pattern = Pattern.compile(videoPressShortcodeRegex);
-            Matcher matcher = pattern.matcher(shortcode);
+    if (shortcode != null) {
+      String videoPressShortcodeRegex = "^\\[wpvideo (.*)]$";
 
-            if (matcher.find()) {
-                videoPressId = matcher.group(1);
-            }
-        }
+      Pattern pattern = Pattern.compile(videoPressShortcodeRegex);
+      Matcher matcher = pattern.matcher(shortcode);
 
-        return videoPressId;
+      if (matcher.find()) {
+        videoPressId = matcher.group(1);
+      }
     }
+
+    return videoPressId;
+  }
 }

@@ -3,28 +3,26 @@ package org.wordpress.android.ui;
 import androidx.annotation.Nullable;
 
 public enum JetpackConnectionSource {
-    NOTIFICATIONS("notifications"),
-    STATS("stats");
+  NOTIFICATIONS("notifications"),
+  STATS("stats");
 
-    private final String mValue;
+  private final String mValue;
 
-    JetpackConnectionSource(String value) {
-        mValue = value;
+  JetpackConnectionSource(String value) { mValue = value; }
+
+  @Nullable
+  public static JetpackConnectionSource fromString(String value) {
+    if (NOTIFICATIONS.mValue.equals(value)) {
+      return NOTIFICATIONS;
+    } else if (STATS.mValue.equals(value)) {
+      return STATS;
+    } else {
+      return null;
     }
+  }
 
-    @Nullable
-    public static JetpackConnectionSource fromString(String value) {
-        if (NOTIFICATIONS.mValue.equals(value)) {
-            return NOTIFICATIONS;
-        } else if (STATS.mValue.equals(value)) {
-            return STATS;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return mValue;
-    }
+  @Override
+  public String toString() {
+    return mValue;
+  }
 }

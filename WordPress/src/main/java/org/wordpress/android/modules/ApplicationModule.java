@@ -2,9 +2,11 @@ package org.wordpress.android.modules;
 
 import android.app.Application;
 import android.content.Context;
-
 import androidx.lifecycle.LiveData;
-
+import dagger.Binds;
+import dagger.Module;
+import dagger.Provides;
+import dagger.android.ContributesAndroidInjector;
 import org.wordpress.android.ui.CommentFullScreenDialogFragment;
 import org.wordpress.android.ui.accounts.signup.SettingsUsernameChangerFragment;
 import org.wordpress.android.ui.accounts.signup.UsernameChangerFullScreenDialogFragment;
@@ -29,75 +31,78 @@ import org.wordpress.android.viewmodel.ContextProvider;
 import org.wordpress.android.viewmodel.helpers.ConnectionStatus;
 import org.wordpress.android.viewmodel.helpers.ConnectionStatusLiveData;
 
-import dagger.Binds;
-import dagger.Module;
-import dagger.Provides;
-import dagger.android.ContributesAndroidInjector;
-
 @Module
 public abstract class ApplicationModule {
-    // Expose Application as an injectable context
-    @Binds
-    abstract Context bindContext(Application application);
+  // Expose Application as an injectable context
+  @Binds abstract Context bindContext(Application application);
 
-    @Provides
-    public static NewsService provideLocalNewsService(ContextProvider contextProvider) {
-        return new LocalNewsService(contextProvider);
-    }
+  @Provides
+  public static NewsService
+  provideLocalNewsService(ContextProvider contextProvider) {
+    return new LocalNewsService(contextProvider);
+  }
 
-    @ContributesAndroidInjector
-    abstract StatsListFragment contributeStatListFragment();
+  @ContributesAndroidInjector
+  abstract StatsListFragment contributeStatListFragment();
 
-    @ContributesAndroidInjector
-    abstract StatsViewAllFragment contributeStatsViewAllFragment();
+  @ContributesAndroidInjector
+  abstract StatsViewAllFragment contributeStatsViewAllFragment();
 
-    @ContributesAndroidInjector
-    abstract InsightsManagementFragment contributeInsightsManagementFragment();
+  @ContributesAndroidInjector
+  abstract InsightsManagementFragment contributeInsightsManagementFragment();
 
-    @ContributesAndroidInjector
-    abstract StatsFragment contributeStatsFragment();
+  @ContributesAndroidInjector abstract StatsFragment contributeStatsFragment();
 
-    @ContributesAndroidInjector
-    abstract StatsDetailFragment contributeStatsDetailFragment();
+  @ContributesAndroidInjector
+  abstract StatsDetailFragment contributeStatsDetailFragment();
 
-    @ContributesAndroidInjector
-    abstract CountryPickerDialogFragment contributeCountryPickerDialogFragment();
+  @ContributesAndroidInjector
+  abstract CountryPickerDialogFragment contributeCountryPickerDialogFragment();
 
-    @ContributesAndroidInjector
-    abstract StatePickerDialogFragment contributeCStatePickerDialogFragment();
+  @ContributesAndroidInjector
+  abstract StatePickerDialogFragment contributeCStatePickerDialogFragment();
 
-    @ContributesAndroidInjector
-    abstract StatsWidgetConfigureFragment contributeStatsViewsWidgetConfigureFragment();
+  @ContributesAndroidInjector
+  abstract StatsWidgetConfigureFragment
+  contributeStatsViewsWidgetConfigureFragment();
 
-    @ContributesAndroidInjector
-    abstract StatsWidgetSiteSelectionDialogFragment contributeSiteSelectionDialogFragment();
+  @ContributesAndroidInjector
+  abstract StatsWidgetSiteSelectionDialogFragment
+  contributeSiteSelectionDialogFragment();
 
-    @ContributesAndroidInjector
-    abstract StatsWidgetColorSelectionDialogFragment contributeViewModeSelectionDialogFragment();
+  @ContributesAndroidInjector
+  abstract StatsWidgetColorSelectionDialogFragment
+  contributeViewModeSelectionDialogFragment();
 
-    @ContributesAndroidInjector
-    abstract StatsMinifiedWidgetConfigureFragment contributeStatsMinifiedWidgetConfigureFragment();
+  @ContributesAndroidInjector
+  abstract StatsMinifiedWidgetConfigureFragment
+  contributeStatsMinifiedWidgetConfigureFragment();
 
-    @ContributesAndroidInjector
-    abstract StatsWidgetDataTypeSelectionDialogFragment contributeDataTypeSelectionDialogFragment();
+  @ContributesAndroidInjector
+  abstract StatsWidgetDataTypeSelectionDialogFragment
+  contributeDataTypeSelectionDialogFragment();
 
-    @ContributesAndroidInjector
-    abstract CommentFullScreenDialogFragment contributecommentFullScreenDialogFragment();
+  @ContributesAndroidInjector
+  abstract CommentFullScreenDialogFragment
+  contributecommentFullScreenDialogFragment();
 
-    @ContributesAndroidInjector
-    abstract UsernameChangerFullScreenDialogFragment contributeUsernameChangerFullScreenDialogFragment();
+  @ContributesAndroidInjector
+  abstract UsernameChangerFullScreenDialogFragment
+  contributeUsernameChangerFullScreenDialogFragment();
 
-    @ContributesAndroidInjector
-    abstract SettingsUsernameChangerFragment contributeSettingsUsernameChangerFragment();
+  @ContributesAndroidInjector
+  abstract SettingsUsernameChangerFragment
+  contributeSettingsUsernameChangerFragment();
 
-    @Provides
-    public static WizardManager<SiteCreationStep> provideWizardManager(
-        SiteCreationStepsProvider stepsProvider) {
-        return new WizardManager<>(stepsProvider.getSteps());
-    }
+  @Provides
+  public static WizardManager<SiteCreationStep>
+  provideWizardManager(SiteCreationStepsProvider stepsProvider) {
+    return new WizardManager<>(stepsProvider.getSteps());
+  }
 
-    @Provides
-    static LiveData<ConnectionStatus> provideConnectionStatusLiveData(Context context) {
-        return new ConnectionStatusLiveData.Factory(context).create();
-    }
+  @Provides
+  static LiveData<ConnectionStatus>
+  provideConnectionStatusLiveData(Context context) {
+    return new ConnectionStatusLiveData.Factory(context).create();
+  }
 }

@@ -1,9 +1,7 @@
 package org.wordpress.android.ui.screenshots;
 
-
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
-
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -11,47 +9,48 @@ import org.wordpress.android.WordPress;
 import org.wordpress.android.util.LocaleManager;
 
 public class WPLocaleTestRule implements TestRule {
-    private static final String FASTLANE_TEST_LOCALE_KEY = "testLocale";
-    private static final String FASTLANE_ENDING_LOCALE_KEY = "endingLocale";
+  private static final String FASTLANE_TEST_LOCALE_KEY = "testLocale";
+  private static final String FASTLANE_ENDING_LOCALE_KEY = "endingLocale";
 
-    private String mTestLocaleCode;
-    private String mEndLocaleCode;
+  private String mTestLocaleCode;
+  private String mEndLocaleCode;
 
-    public WPLocaleTestRule() {
-        this(localeCodeFromInstrumentation(FASTLANE_TEST_LOCALE_KEY),
-             localeCodeFromInstrumentation(FASTLANE_ENDING_LOCALE_KEY));
-    }
+  public WPLocaleTestRule() {
+    this(localeCodeFromInstrumentation(FASTLANE_TEST_LOCALE_KEY),
+         localeCodeFromInstrumentation(FASTLANE_ENDING_LOCALE_KEY));
+  }
 
-    public WPLocaleTestRule(String testLocaleCode, String endLocaleCode) {
-        mTestLocaleCode = testLocaleCode;
-        mEndLocaleCode = endLocaleCode;
-    }
+  public WPLocaleTestRule(String testLocaleCode, String endLocaleCode) {
+    mTestLocaleCode = testLocaleCode;
+    mEndLocaleCode = endLocaleCode;
+  }
 
-    @Override
-    public Statement apply(final Statement base, Description description) {
-        return new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                try {
-                    if (mTestLocaleCode != null) {
-                        changeLocale(mTestLocaleCode);
-                    }
-                    base.evaluate();
-                } finally {
-                    if (mEndLocaleCode != null) {
-                        changeLocale(mEndLocaleCode);
-                    }
-                }
-            }
-        };
-    }
+  @Override
+  public Statement apply(final Statement base, Description description) {
+    return new Statement() {
+      @Override
+      public void evaluate() throws Throwable {
+        try {
+          if (mTestLocaleCode != null) {
+            changeLocale(mTestLocaleCode);
+          }
+          base.evaluate();
+        } finally {
+          if (mEndLocaleCode != null) {
+            changeLocale(mEndLocaleCode);
+          }
+        }
+      }
+    };
+  }
 
-    private static void changeLocale(String localeCode) {
-        LocaleManager.setNewLocale(ApplicationProvider.getApplicationContext(), localeCode);
-        WordPress.updateContextLocale();
-    }
+  private static void changeLocale(String localeCode) {
+    LocaleManager.setNewLocale(ApplicationProvider.getApplicationContext(),
+                               localeCode);
+    WordPress.updateContextLocale();
+  }
 
-    private static String localeCodeFromInstrumentation(String key) {
-        return InstrumentationRegistry.getArguments().getString(key);
-    }
+  private static String localeCodeFromInstrumentation(String key) {
+    return InstrumentationRegistry.getArguments().getString(key);
+  }
 }
